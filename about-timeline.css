@@ -4,12 +4,21 @@ body[data-page="about"] .about-layout{
   grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)!important;
   gap:76px!important;
   align-items:start!important;
-  padding-top:86px!important;
+  padding-top:72px!important;
 }
 
-/* Biography stays in the left column and begins below the shared section title. */
+/* Move the education title above the full two-column composition. */
+body[data-page="about"] .education-column>.page-label{
+  position:absolute!important;
+  top:0!important;
+  left:0!important;
+  margin:0!important;
+  width:auto!important;
+  z-index:2!important;
+}
+
 body[data-page="about"] .about-copy{
-  padding-top:0!important;
+  padding-top:10px!important;
   max-width:520px!important;
 }
 
@@ -22,30 +31,12 @@ body[data-page="about"] .about-copy .about-body{
 }
 
 body[data-page="about"] .education-column{
-  position:static!important;
-  padding-top:0!important;
+  padding-top:8px!important;
   padding-left:34px!important;
 }
 
-/* Shared title: above the whole two-column section, as indicated in the mockup. */
-body[data-page="about"] .education-column>.page-label{
-  position:absolute!important;
-  top:0!important;
-  left:0!important;
-  margin:0!important;
-  width:auto!important;
-  max-width:620px!important;
-  font-family:"Manrope",sans-serif!important;
-  font-size:clamp(26px,2.15vw,36px)!important;
-  font-weight:800!important;
-  line-height:1!important;
-  letter-spacing:-.045em!important;
-  color:var(--text)!important;
-  z-index:2!important;
-}
-
 body[data-page="about"] .education-column>.about-body{
-  margin:0 0 32px 32px!important;
+  margin:0 0 32px 66px!important;
   max-width:680px!important;
 }
 
@@ -55,7 +46,6 @@ body[data-page="about"] .education-list{
   margin-top:8px!important;
 }
 
-/* The vertical line begins at the centre of the first dot. */
 body[data-page="about"] .education-list::before{
   left:12px!important;
   top:37px!important;
@@ -64,7 +54,6 @@ body[data-page="about"] .education-list::before{
   background:linear-gradient(to bottom,var(--purple),var(--blue))!important;
 }
 
-/* Dots are centred exactly over the line. */
 body[data-page="about"] .education-item::before{
   box-sizing:border-box!important;
   left:-52px!important;
@@ -90,41 +79,114 @@ body[data-page="about"] .education-list::after{
   pointer-events:none!important;
 }
 
+/* About — How I work: editorial layout instead of nested cards/pills. */
+body[data-page="about"] .approach-layout{
+  display:grid!important;
+  grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)!important;
+  gap:72px!important;
+  align-items:start!important;
+}
+
+body[data-page="about"] .approach-copy{
+  padding:4px 0 0 0!important;
+  max-width:560px!important;
+}
+
+body[data-page="about"] .approach-copy p{
+  margin:0!important;
+  font-size:clamp(18px,1.45vw,22px)!important;
+  line-height:1.58!important;
+  letter-spacing:-.02em!important;
+  color:var(--text)!important;
+}
+
+body[data-page="about"] .strength-list{
+  counter-reset:strength!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:0 28px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  background:none!important;
+}
+
+body[data-page="about"] .strength-list span{
+  counter-increment:strength!important;
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  min-height:62px!important;
+  padding:17px 4px!important;
+  margin:0!important;
+  border:0!important;
+  border-top:1px solid var(--line)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:var(--text)!important;
+  font-size:14px!important;
+  font-weight:600!important;
+  line-height:1.35!important;
+}
+
+body[data-page="about"] .strength-list span::before{
+  content:"0" counter(strength)!important;
+  position:static!important;
+  display:block!important;
+  flex:0 0 auto!important;
+  width:26px!important;
+  height:auto!important;
+  border-radius:0!important;
+  background:none!important;
+  transform:none!important;
+  font:500 10px "DM Mono",monospace!important;
+  letter-spacing:.08em!important;
+  color:var(--purple)!important;
+}
+
+body[data-page="about"] .strength-list span:nth-last-child(-n+2){
+  border-bottom:1px solid var(--line)!important;
+}
+
 @media(max-width:980px){
   body[data-page="about"] .about-layout{
     grid-template-columns:1fr!important;
     gap:42px!important;
-    padding-top:76px!important;
+    padding-top:64px!important;
   }
   body[data-page="about"] .about-copy{
+    padding-top:0!important;
     max-width:680px!important;
   }
   body[data-page="about"] .education-column{
     padding-left:10px!important;
-  }
-  body[data-page="about"] .education-column>.page-label{
-    left:0!important;
-    font-size:30px!important;
+    padding-top:8px!important;
   }
   body[data-page="about"] .education-column>.about-body{
-    margin-left:20px!important;
+    margin-left:34px!important;
+  }
+  body[data-page="about"] .approach-layout{
+    grid-template-columns:1fr!important;
+    gap:34px!important;
+  }
+  body[data-page="about"] .approach-copy{
+    max-width:700px!important;
   }
 }
 
 @media(max-width:620px){
   body[data-page="about"] .about-layout{
     gap:32px!important;
-    padding-top:66px!important;
+    padding-top:58px!important;
   }
   body[data-page="about"] .education-column{
     padding-left:0!important;
-  }
-  body[data-page="about"] .education-column>.page-label{
-    font-size:26px!important;
-    max-width:100%!important;
+    padding-top:4px!important;
   }
   body[data-page="about"] .education-column>.about-body{
-    margin:0 0 24px 14px!important;
+    margin:16px 0 24px 16px!important;
   }
   body[data-page="about"] .education-list{
     padding-left:42px!important;
@@ -137,5 +199,21 @@ body[data-page="about"] .education-list::after{
   }
   body[data-page="about"] .education-list::after{
     left:3px!important;
+  }
+  body[data-page="about"] .approach-layout{
+    gap:26px!important;
+  }
+  body[data-page="about"] .approach-copy p{
+    font-size:17px!important;
+  }
+  body[data-page="about"] .strength-list{
+    grid-template-columns:1fr!important;
+    gap:0!important;
+  }
+  body[data-page="about"] .strength-list span{
+    border-bottom:0!important;
+  }
+  body[data-page="about"] .strength-list span:last-child{
+    border-bottom:1px solid var(--line)!important;
   }
 }
