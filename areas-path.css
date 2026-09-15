@@ -18,22 +18,27 @@ body[data-page="home"] .portal-grid{
   overflow:visible!important;
 }
 
-/* Central route */
+/* Wavy route: its geometric centre is exactly the same axis used by every node. */
 body[data-page="home"] .portal-grid::before{
   content:"";
   position:absolute;
+  z-index:0;
   left:50%;
-  top:58px;
-  bottom:58px;
-  width:3px;
+  top:0;
+  bottom:0;
+  width:160px;
   transform:translateX(-50%);
-  border-radius:999px;
-  background:linear-gradient(180deg,var(--purple) 0%,var(--blue) 46%,var(--gold) 100%);
-  box-shadow:0 0 0 7px rgba(121,108,240,.045);
+  pointer-events:none;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:100% 100%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 1070' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop stop-color='%23796cf0'/%3E%3Cstop offset='.52' stop-color='%235ea0f0'/%3E%3Cstop offset='1' stop-color='%23f4d75c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M80 0 C135 30 135 60 80 95 C25 140 25 270 80 315 C135 360 135 490 80 535 C25 580 25 710 80 755 C135 800 135 930 80 975 C25 1015 50 1050 80 1070' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
+  filter:drop-shadow(0 0 8px rgba(94,160,240,.16));
 }
 
 body[data-page="home"] .portal-card{
   position:relative!important;
+  z-index:2!important;
   grid-column:auto!important;
   min-height:190px!important;
   padding:30px 34px!important;
@@ -53,28 +58,30 @@ body[data-page="home"] .portal-card:hover{
   box-shadow:0 24px 58px rgba(46,57,96,.14)!important;
 }
 
-/* Place every stop on its own row, alternating around the route */
+/* Place every stop on its own row, alternating around the route. */
 body[data-page="home"] .portal-card:nth-child(1){grid-column:1!important;grid-row:1!important}
 body[data-page="home"] .portal-card:nth-child(2){grid-column:3!important;grid-row:2!important}
 body[data-page="home"] .portal-card:nth-child(3){grid-column:1!important;grid-row:3!important}
 body[data-page="home"] .portal-card:nth-child(4){grid-column:3!important;grid-row:4!important}
 body[data-page="home"] .portal-card:nth-child(5){grid-column:1!important;grid-row:5!important}
 
-/* Connector from every stop to the route */
+/* Connector reaches the exact centre axis of the path. */
 body[data-page="home"] .portal-card::before{
   content:"";
   position:absolute;
+  z-index:1;
   top:50%;
   width:52px;
   height:2px;
   transform:translateY(-50%);
-  background:linear-gradient(90deg,rgba(121,108,240,.28),rgba(94,160,240,.75));
+  background:linear-gradient(90deg,rgba(121,108,240,.20),rgba(94,160,240,.72));
 }
 
-/* Route node */
+/* Nodes are centred on the same 50% axis as the route. */
 body[data-page="home"] .portal-card::after{
   content:"";
   position:absolute;
+  z-index:4;
   top:50%;
   width:16px;
   height:16px;
@@ -90,6 +97,8 @@ body[data-page="home"] .portal-card:nth-child(even)::after{background:var(--blue
 body[data-page="home"] .portal-card:nth-child(4)::after{background:var(--gold)}
 body[data-page="home"] .portal-card:nth-child(5)::after{background:var(--purple)}
 
+/* 104px central column => centre is 52px from either card edge.
+   A 16px node therefore needs its outer edge at 60px to put its centre at 52px. */
 body[data-page="home"] .portal-card:nth-child(odd)::before{right:-52px}
 body[data-page="home"] .portal-card:nth-child(odd)::after{right:-60px}
 body[data-page="home"] .portal-card:nth-child(even)::before{left:-52px;transform:translateY(-50%) rotate(180deg)}
@@ -100,13 +109,8 @@ body[data-page="home"] .portal-card:hover::after{
   box-shadow:0 0 0 7px rgba(121,108,240,.16),0 9px 22px rgba(66,76,126,.18);
 }
 
-body[data-page="home"] .portal-card h3{
-  margin:0 0 10px!important;
-}
-
-body[data-page="home"] .portal-card p{
-  max-width:560px!important;
-}
+body[data-page="home"] .portal-card h3{margin:0 0 10px!important}
+body[data-page="home"] .portal-card p{max-width:560px!important}
 
 body[data-page="home"] .portal-card .arrow{
   right:26px!important;
@@ -130,26 +134,32 @@ body[data-page="home"] .portal-card:hover .arrow{
     padding-top:72px!important;
     padding-bottom:90px!important;
   }
+
   body[data-page="home"] .portal-grid{
     grid-template-columns:48px minmax(0,1fr)!important;
     gap:22px 0!important;
   }
+
+  /* Keep the wavy route centred at x=18px on tablet/mobile. */
   body[data-page="home"] .portal-grid::before{
     left:18px!important;
-    top:48px!important;
-    bottom:48px!important;
-    transform:none!important;
+    width:80px!important;
+    transform:translateX(-50%)!important;
   }
+
   body[data-page="home"] .portal-card:nth-child(n){
     grid-column:2!important;
     grid-row:auto!important;
   }
+
   body[data-page="home"] .portal-card::before{
     left:-30px!important;
     right:auto!important;
     width:30px!important;
     transform:translateY(-50%)!important;
   }
+
+  /* Card begins at x=48px; node left=-38px => centre at x=18px. */
   body[data-page="home"] .portal-card::after{
     left:-38px!important;
     right:auto!important;
@@ -161,24 +171,30 @@ body[data-page="home"] .portal-card:hover .arrow{
     padding-top:60px!important;
     padding-bottom:72px!important;
   }
-  body[data-page="home"] .areas-label{
-    margin-bottom:30px!important;
-  }
+
+  body[data-page="home"] .areas-label{margin-bottom:30px!important}
+
   body[data-page="home"] .portal-grid{
     grid-template-columns:36px minmax(0,1fr)!important;
   }
+
   body[data-page="home"] .portal-grid::before{
     left:12px!important;
+    width:68px!important;
   }
+
   body[data-page="home"] .portal-card{
     min-height:170px!important;
     padding:25px!important;
     border-radius:22px!important;
   }
+
   body[data-page="home"] .portal-card::before{
     left:-24px!important;
     width:24px!important;
   }
+
+  /* Card begins at x=36px; node left=-32px => centre at x=12px. */
   body[data-page="home"] .portal-card::after{
     left:-32px!important;
   }
