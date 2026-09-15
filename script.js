@@ -19,6 +19,8 @@ if (window.TRANSLATIONS) {
   Object.assign(window.TRANSLATIONS.en, {
     "nav.portfolio": "Portfolio",
     "nav.contact": "Contact",
+    "nav.narrative": "Narrative Design",
+    "nav.communication": "Communication & Collaboration",
     "title.contact": "Contact — Lorenzo Soriano",
     "contact.pageLabel": "CONTACT",
     "contact.pageTitle": "Let’s build something together.",
@@ -55,6 +57,8 @@ if (window.TRANSLATIONS) {
   Object.assign(window.TRANSLATIONS.it, {
     "nav.portfolio": "Portfolio",
     "nav.contact": "Contattami",
+    "nav.narrative": "Narrative Design",
+    "nav.communication": "Comunicazione & Collaborazione",
     "title.contact": "Contattami — Lorenzo Soriano",
     "contact.pageLabel": "CONTATTAMI",
     "contact.pageTitle": "Costruiamo qualcosa insieme.",
@@ -112,6 +116,8 @@ function buildPrimaryNav() {
       <a href="game-development.html" data-page="game-dev" data-i18n="nav.game-dev">Game Dev</a>
       <a href="3d-art.html" data-page="3d-art" data-i18n="nav.3d-art">3D Art</a>
       <a href="game-design.html" data-page="game-design" data-i18n="nav.game-design">Game Design</a>
+      <a href="narrative-design.html" data-page="narrative" data-i18n="nav.narrative">Narrative Design</a>
+      <a href="communication-collaboration.html" data-page="communication" data-i18n="nav.communication">Communication & Collaboration</a>
     </div>`;
 
   const about = document.createElement('a');
@@ -150,7 +156,7 @@ function buildPrimaryNav() {
     }
   });
 
-  if (['game-dev', '3d-art', 'game-design', 'vitis'].includes(page)) {
+  if (['game-dev', '3d-art', 'game-design', 'narrative', 'communication', 'vitis', 'remember'].includes(page)) {
     toggle?.classList.add('active');
   }
 }
