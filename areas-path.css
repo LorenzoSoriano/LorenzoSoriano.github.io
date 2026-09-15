@@ -8,6 +8,35 @@ body[data-page="home"] .areas-label{
   margin-bottom:42px!important;
 }
 
+/* One continuous journey line for the whole Home page. It starts at the end of the hero image
+   and continues until the top edge of the footer. */
+body[data-page="home"] main{
+  position:relative;
+  isolation:isolate;
+}
+
+body[data-page="home"] main::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  left:50%;
+  top:calc(100vh - 2px);
+  bottom:0;
+  width:160px;
+  transform:translateX(-50%);
+  pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 360' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop stop-color='%23796cf0'/%3E%3Cstop offset='.52' stop-color='%235ea0f0'/%3E%3Cstop offset='1' stop-color='%23f4d75c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M80 0 C138 52 136 112 80 154 C24 196 24 266 80 306 C104 324 104 344 80 360' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:repeat-y;
+  background-position:center top;
+  background-size:160px 360px;
+  filter:drop-shadow(0 0 8px rgba(94,160,240,.14));
+}
+
+body[data-page="home"] main>section{
+  position:relative;
+  z-index:1;
+}
+
 body[data-page="home"] .portal-grid{
   position:relative!important;
   display:grid!important;
@@ -18,43 +47,10 @@ body[data-page="home"] .portal-grid{
   overflow:visible!important;
 }
 
-/* Main wavy route. The curve crosses the exact centre axis at every card row. */
-body[data-page="home"] .portal-grid::before{
-  content:"";
-  position:absolute;
-  z-index:0;
-  left:50%;
-  top:0;
-  bottom:0;
-  width:160px;
-  transform:translateX(-50%);
-  pointer-events:none;
-  background-repeat:no-repeat;
-  background-position:center;
-  background-size:100% 100%;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 1070' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop stop-color='%23796cf0'/%3E%3Cstop offset='.52' stop-color='%235ea0f0'/%3E%3Cstop offset='1' stop-color='%23f4d75c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M80 0 C135 30 135 60 80 95 C25 140 25 270 80 315 C135 360 135 490 80 535 C25 580 25 710 80 755 C135 800 135 930 80 975 C25 1015 50 1050 80 1070' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
-  filter:drop-shadow(0 0 8px rgba(94,160,240,.16));
-}
-
-/* Wavy continuation above the first stop and below the last stop.
-   Kept separate so the centre curve is never stretched and every sphere stays aligned. */
+/* The line now belongs to the entire page, so the local route itself is disabled. */
+body[data-page="home"] .portal-grid::before,
 body[data-page="home"] .portal-grid::after{
-  content:"";
-  position:absolute;
-  z-index:0;
-  left:50%;
-  top:-72px;
-  bottom:-72px;
-  width:160px;
-  transform:translateX(-50%);
-  pointer-events:none;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 72' preserveAspectRatio='none'%3E%3Cpath d='M112 0 C128 18 118 38 94 50 C86 54 82 62 80 72' fill='none' stroke='%23796cf0' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 72' preserveAspectRatio='none'%3E%3Cpath d='M80 0 C78 10 70 18 60 24 C36 38 32 55 48 72' fill='none' stroke='%23f4d75c' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-position:center top,center bottom;
-  background-size:160px 72px,160px 72px;
-  background-repeat:no-repeat;
-  filter:drop-shadow(0 0 8px rgba(94,160,240,.12));
+  content:none!important;
 }
 
 body[data-page="home"] .portal-card{
@@ -151,22 +147,16 @@ body[data-page="home"] .portal-card:hover .arrow{
     padding-bottom:90px!important;
   }
 
+  body[data-page="home"] main::before{
+    left:18px;
+    width:80px;
+    transform:translateX(-50%);
+    background-size:80px 360px;
+  }
+
   body[data-page="home"] .portal-grid{
     grid-template-columns:48px minmax(0,1fr)!important;
     gap:22px 0!important;
-  }
-
-  body[data-page="home"] .portal-grid::before{
-    left:18px!important;
-    width:80px!important;
-    transform:translateX(-50%)!important;
-  }
-
-  body[data-page="home"] .portal-grid::after{
-    left:18px!important;
-    width:80px!important;
-    transform:translateX(-50%)!important;
-    background-size:80px 72px,80px 72px!important;
   }
 
   body[data-page="home"] .portal-card:nth-child(n){
@@ -195,18 +185,14 @@ body[data-page="home"] .portal-card:hover .arrow{
 
   body[data-page="home"] .areas-label{margin-bottom:30px!important}
 
+  body[data-page="home"] main::before{
+    left:12px;
+    width:68px;
+    background-size:68px 360px;
+  }
+
   body[data-page="home"] .portal-grid{
     grid-template-columns:36px minmax(0,1fr)!important;
-  }
-
-  body[data-page="home"] .portal-grid::before,
-  body[data-page="home"] .portal-grid::after{
-    left:12px!important;
-    width:68px!important;
-  }
-
-  body[data-page="home"] .portal-grid::after{
-    background-size:68px 72px,68px 72px!important;
   }
 
   body[data-page="home"] .portal-card{
