@@ -8,6 +8,11 @@ timelineStyles.rel = 'stylesheet';
 timelineStyles.href = 'about-timeline.css?v=3';
 document.head.appendChild(timelineStyles);
 
+const typographyStyles = document.createElement('link');
+typographyStyles.rel = 'stylesheet';
+typographyStyles.href = 'typography.css?v=1';
+document.head.appendChild(typographyStyles);
+
 const page = document.body.dataset.page || 'home';
 
 if (window.TRANSLATIONS) {
