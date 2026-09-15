@@ -3,6 +3,11 @@ graphicsStyles.rel = 'stylesheet';
 graphicsStyles.href = 'graphics-overrides.css?v=9';
 document.head.appendChild(graphicsStyles);
 
+const timelineStyles = document.createElement('link');
+timelineStyles.rel = 'stylesheet';
+timelineStyles.href = 'about-timeline.css?v=1';
+document.head.appendChild(timelineStyles);
+
 const page = document.body.dataset.page || 'home';
 
 if (window.TRANSLATIONS) {
