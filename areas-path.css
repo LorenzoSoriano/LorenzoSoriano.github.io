@@ -8,27 +8,28 @@ body[data-page="home"] .areas-label{
   margin-bottom:42px!important;
 }
 
-/* One continuous journey line for the whole Home page. It starts at the end of the hero image
-   and continues until the top edge of the footer. */
+/* The entire Home uses one SVG path, drawn from the lower hero to the footer. */
 body[data-page="home"] main{
   position:relative;
   isolation:isolate;
 }
 
-body[data-page="home"] main::before{
-  content:"";
+body[data-page="home"] .home-journey-svg{
   position:absolute;
   z-index:0;
-  left:50%;
-  top:calc(100vh - 2px);
-  bottom:0;
-  width:160px;
-  transform:translateX(-50%);
+  inset:0;
+  width:100%;
+  height:100%;
+  overflow:visible;
   pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 360' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop stop-color='%23796cf0'/%3E%3Cstop offset='.52' stop-color='%235ea0f0'/%3E%3Cstop offset='1' stop-color='%23f4d75c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M80 0 C138 52 136 112 80 154 C24 196 24 266 80 306 C104 324 104 344 80 360' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:repeat-y;
-  background-position:center top;
-  background-size:160px 360px;
+}
+
+body[data-page="home"] .home-journey-line{
+  fill:none;
+  stroke:url(#homeJourneyGradient);
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
   filter:drop-shadow(0 0 8px rgba(94,160,240,.14));
 }
 
@@ -47,7 +48,6 @@ body[data-page="home"] .portal-grid{
   overflow:visible!important;
 }
 
-/* The line now belongs to the entire page, so the local route itself is disabled. */
 body[data-page="home"] .portal-grid::before,
 body[data-page="home"] .portal-grid::after{
   content:none!important;
@@ -81,6 +81,7 @@ body[data-page="home"] .portal-card:nth-child(3){grid-column:1!important;grid-ro
 body[data-page="home"] .portal-card:nth-child(4){grid-column:3!important;grid-row:4!important}
 body[data-page="home"] .portal-card:nth-child(5){grid-column:1!important;grid-row:5!important}
 
+/* Horizontal connector: its end and the sphere share exactly the same route axis. */
 body[data-page="home"] .portal-card::before{
   content:"";
   position:absolute;
@@ -92,11 +93,13 @@ body[data-page="home"] .portal-card::before{
   background:linear-gradient(90deg,rgba(121,108,240,.20),rgba(94,160,240,.72));
 }
 
+/* Route sphere */
 body[data-page="home"] .portal-card::after{
   content:"";
   position:absolute;
   z-index:4;
   top:50%;
+  box-sizing:border-box;
   width:16px;
   height:16px;
   transform:translateY(-50%);
@@ -111,6 +114,7 @@ body[data-page="home"] .portal-card:nth-child(even)::after{background:var(--blue
 body[data-page="home"] .portal-card:nth-child(4)::after{background:var(--gold)}
 body[data-page="home"] .portal-card:nth-child(5)::after{background:var(--purple)}
 
+/* Desktop centre column is 104px: node centres therefore sit exactly 52px from a card edge. */
 body[data-page="home"] .portal-card:nth-child(odd)::before{right:-52px}
 body[data-page="home"] .portal-card:nth-child(odd)::after{right:-60px}
 body[data-page="home"] .portal-card:nth-child(even)::before{left:-52px;transform:translateY(-50%) rotate(180deg)}
@@ -147,13 +151,6 @@ body[data-page="home"] .portal-card:hover .arrow{
     padding-bottom:90px!important;
   }
 
-  body[data-page="home"] main::before{
-    left:18px;
-    width:80px;
-    transform:translateX(-50%);
-    background-size:80px 360px;
-  }
-
   body[data-page="home"] .portal-grid{
     grid-template-columns:48px minmax(0,1fr)!important;
     gap:22px 0!important;
@@ -171,6 +168,7 @@ body[data-page="home"] .portal-card:hover .arrow{
     transform:translateY(-50%)!important;
   }
 
+  /* Card begins at x=48px, therefore this puts the sphere centre at x=18px. */
   body[data-page="home"] .portal-card::after{
     left:-38px!important;
     right:auto!important;
@@ -184,12 +182,6 @@ body[data-page="home"] .portal-card:hover .arrow{
   }
 
   body[data-page="home"] .areas-label{margin-bottom:30px!important}
-
-  body[data-page="home"] main::before{
-    left:12px;
-    width:68px;
-    background-size:68px 360px;
-  }
 
   body[data-page="home"] .portal-grid{
     grid-template-columns:36px minmax(0,1fr)!important;
@@ -206,6 +198,7 @@ body[data-page="home"] .portal-card:hover .arrow{
     width:24px!important;
   }
 
+  /* Card begins at x=36px, therefore this puts the sphere centre at x=12px. */
   body[data-page="home"] .portal-card::after{
     left:-32px!important;
   }
