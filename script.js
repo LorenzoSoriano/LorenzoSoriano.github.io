@@ -1,6 +1,6 @@
 const graphicsStyles = document.createElement('link');
 graphicsStyles.rel = 'stylesheet';
-graphicsStyles.href = 'graphics-overrides.css?v=7';
+graphicsStyles.href = 'graphics-overrides.css?v=8';
 document.head.appendChild(graphicsStyles);
 
 const page = document.body.dataset.page || 'home';
@@ -11,8 +11,10 @@ if (window.TRANSLATIONS) {
     "nav.contact": "Contact",
     "title.contact": "Contact — Lorenzo Soriano",
     "contact.pageLabel": "CONTACT",
-    "contact.pageTitle": "Let’s talk about a project, opportunity or collaboration.",
-    "contact.pageIntro": "You can contact me directly or use the form below to prepare an email.",
+    "contact.pageTitle": "Let’s build something together.",
+    "contact.pageIntro": "For opportunities, collaborations or project discussions, you can reach me directly or send a message.",
+    "contact.directTitle": "Direct contacts",
+    "contact.formTitle": "Send me a message",
     "contact.email": "Email",
     "contact.phone": "Phone",
     "contact.linkedin": "LinkedIn",
@@ -45,8 +47,10 @@ if (window.TRANSLATIONS) {
     "nav.contact": "Contattami",
     "title.contact": "Contattami — Lorenzo Soriano",
     "contact.pageLabel": "CONTATTAMI",
-    "contact.pageTitle": "Parliamo di un progetto, un’opportunità o una collaborazione.",
-    "contact.pageIntro": "Puoi contattarmi direttamente oppure usare il form qui sotto per preparare una email.",
+    "contact.pageTitle": "Costruiamo qualcosa insieme.",
+    "contact.pageIntro": "Per opportunità, collaborazioni o progetti, puoi contattarmi direttamente oppure inviarmi un messaggio.",
+    "contact.directTitle": "Contatti diretti",
+    "contact.formTitle": "Scrivimi",
     "contact.email": "Email",
     "contact.phone": "Telefono",
     "contact.linkedin": "LinkedIn",
