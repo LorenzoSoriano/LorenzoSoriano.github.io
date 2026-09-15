@@ -5,7 +5,7 @@ document.head.appendChild(graphicsStyles);
 
 const timelineStyles = document.createElement('link');
 timelineStyles.rel = 'stylesheet';
-timelineStyles.href = 'about-timeline.css?v=2';
+timelineStyles.href = 'about-timeline.css?v=3';
 document.head.appendChild(timelineStyles);
 
 const page = document.body.dataset.page || 'home';
