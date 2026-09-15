@@ -1,0 +1,91 @@
+/* About — education timeline alignment */
+body[data-page="about"] .education-column{
+  padding-top:20px!important;
+  padding-left:22px!important;
+}
+
+body[data-page="about"] .education-column>.page-label{
+  margin:8px 0 0 18px!important;
+}
+
+body[data-page="about"] .education-column>.about-body{
+  margin:22px 0 30px 44px!important;
+  max-width:680px!important;
+}
+
+body[data-page="about"] .education-list{
+  position:relative!important;
+  padding-left:54px!important;
+  margin-top:8px!important;
+}
+
+/* The line starts at the centre of the first dot. */
+body[data-page="about"] .education-list::before{
+  left:11px!important;
+  top:37px!important;
+  bottom:20px!important;
+  width:2px!important;
+  background:linear-gradient(to bottom,var(--purple),var(--blue))!important;
+}
+
+body[data-page="about"] .education-item::before{
+  box-sizing:border-box!important;
+  left:-50px!important;
+  top:30px!important;
+  width:14px!important;
+  height:14px!important;
+  border:2px solid #fff!important;
+  border-radius:50%!important;
+  background:var(--gold)!important;
+  box-shadow:0 0 0 5px rgba(244,215,92,.24)!important;
+}
+
+body[data-page="about"] .education-list::after{
+  content:""!important;
+  position:absolute!important;
+  left:7px!important;
+  bottom:8px!important;
+  width:9px!important;
+  height:9px!important;
+  border-right:2px solid var(--blue)!important;
+  border-bottom:2px solid var(--blue)!important;
+  transform:rotate(45deg)!important;
+  pointer-events:none!important;
+}
+
+@media(max-width:980px){
+  body[data-page="about"] .education-column{
+    padding-left:10px!important;
+  }
+  body[data-page="about"] .education-column>.page-label{
+    margin-left:12px!important;
+  }
+  body[data-page="about"] .education-column>.about-body{
+    margin-left:30px!important;
+  }
+}
+
+@media(max-width:620px){
+  body[data-page="about"] .education-column{
+    padding-left:0!important;
+    padding-top:12px!important;
+  }
+  body[data-page="about"] .education-column>.page-label{
+    margin-left:8px!important;
+  }
+  body[data-page="about"] .education-column>.about-body{
+    margin:16px 0 24px 16px!important;
+  }
+  body[data-page="about"] .education-list{
+    padding-left:42px!important;
+  }
+  body[data-page="about"] .education-list::before{
+    left:7px!important;
+  }
+  body[data-page="about"] .education-item::before{
+    left:-41px!important;
+  }
+  body[data-page="about"] .education-list::after{
+    left:3px!important;
+  }
+}
