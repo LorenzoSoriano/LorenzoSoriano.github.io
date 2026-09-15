@@ -1,6 +1,6 @@
 const graphicsStyles = document.createElement('link');
 graphicsStyles.rel = 'stylesheet';
-graphicsStyles.href = 'graphics-overrides.css?v=8';
+graphicsStyles.href = 'graphics-overrides.css?v=9';
 document.head.appendChild(graphicsStyles);
 
 const page = document.body.dataset.page || 'home';
