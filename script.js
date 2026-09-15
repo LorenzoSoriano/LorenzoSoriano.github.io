@@ -10,7 +10,7 @@ document.head.appendChild(timelineStyles);
 
 const typographyStyles = document.createElement('link');
 typographyStyles.rel = 'stylesheet';
-typographyStyles.href = 'typography.css?v=1';
+typographyStyles.href = 'typography.css?v=2';
 document.head.appendChild(typographyStyles);
 
 const page = document.body.dataset.page || 'home';
