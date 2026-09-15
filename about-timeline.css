@@ -1,36 +1,58 @@
-/* About — education timeline alignment */
-body[data-page="about"] .education-column{
-  padding-top:20px!important;
-  padding-left:22px!important;
+/* About — education timeline alignment and first-section composition */
+body[data-page="about"] .about-layout{
+  grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)!important;
+  gap:76px!important;
+  align-items:start!important;
 }
 
+/* Keep the biography in the left column, but start it below the education heading level. */
+body[data-page="about"] .about-copy{
+  padding-top:92px!important;
+  max-width:520px!important;
+}
+
+body[data-page="about"] .about-copy .about-lead{
+  margin-top:0!important;
+}
+
+body[data-page="about"] .about-copy .about-body{
+  margin-top:28px!important;
+}
+
+body[data-page="about"] .education-column{
+  padding-top:18px!important;
+  padding-left:34px!important;
+}
+
+/* Push the section heading toward the right side of the overall layout. */
 body[data-page="about"] .education-column>.page-label{
-  margin:8px 0 0 18px!important;
+  margin:8px 0 0 46px!important;
 }
 
 body[data-page="about"] .education-column>.about-body{
-  margin:22px 0 30px 44px!important;
+  margin:22px 0 32px 66px!important;
   max-width:680px!important;
 }
 
 body[data-page="about"] .education-list{
   position:relative!important;
-  padding-left:54px!important;
+  padding-left:58px!important;
   margin-top:8px!important;
 }
 
-/* The line starts at the centre of the first dot. */
+/* The vertical line begins at the centre of the first dot. */
 body[data-page="about"] .education-list::before{
-  left:11px!important;
+  left:12px!important;
   top:37px!important;
   bottom:20px!important;
   width:2px!important;
   background:linear-gradient(to bottom,var(--purple),var(--blue))!important;
 }
 
+/* Dots are centred exactly over the line. */
 body[data-page="about"] .education-item::before{
   box-sizing:border-box!important;
-  left:-50px!important;
+  left:-52px!important;
   top:30px!important;
   width:14px!important;
   height:14px!important;
@@ -43,7 +65,7 @@ body[data-page="about"] .education-item::before{
 body[data-page="about"] .education-list::after{
   content:""!important;
   position:absolute!important;
-  left:7px!important;
+  left:8px!important;
   bottom:8px!important;
   width:9px!important;
   height:9px!important;
@@ -54,21 +76,33 @@ body[data-page="about"] .education-list::after{
 }
 
 @media(max-width:980px){
+  body[data-page="about"] .about-layout{
+    grid-template-columns:1fr!important;
+    gap:42px!important;
+  }
+  body[data-page="about"] .about-copy{
+    padding-top:0!important;
+    max-width:680px!important;
+  }
   body[data-page="about"] .education-column{
     padding-left:10px!important;
+    padding-top:8px!important;
   }
   body[data-page="about"] .education-column>.page-label{
-    margin-left:12px!important;
+    margin-left:18px!important;
   }
   body[data-page="about"] .education-column>.about-body{
-    margin-left:30px!important;
+    margin-left:34px!important;
   }
 }
 
 @media(max-width:620px){
+  body[data-page="about"] .about-layout{
+    gap:32px!important;
+  }
   body[data-page="about"] .education-column{
     padding-left:0!important;
-    padding-top:12px!important;
+    padding-top:4px!important;
   }
   body[data-page="about"] .education-column>.page-label{
     margin-left:8px!important;
