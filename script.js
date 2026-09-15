@@ -250,3 +250,8 @@ contactForm?.addEventListener('submit', event => {
 
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
+
+const transitionController = document.createElement('script');
+transitionController.src = 'page-transitions.js?v=1';
+transitionController.async = false;
+document.head.appendChild(transitionController);
