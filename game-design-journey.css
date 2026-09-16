@@ -1,7 +1,7 @@
 /* Game Design — chronological journey */
 body[data-page="game-design"] .design-journey-section{
   position:relative;
-  padding-top:124px!important;
+  padding-top:72px!important;
   padding-bottom:130px!important;
   overflow:visible;
 }
@@ -252,7 +252,7 @@ body[data-page="game-design"] .design-journey-card.is-study{
 
 @media(max-width:620px){
   body[data-page="game-design"] .design-journey-section{
-    padding-top:102px!important;
+    padding-top:58px!important;
     padding-bottom:102px!important;
   }
   body[data-page="game-design"] .design-journey-divider{
