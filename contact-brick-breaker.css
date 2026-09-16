@@ -11,7 +11,6 @@ body.brick-egg-running{
 }
 
 body.brick-egg-running .site-header{
-  position:relative;
   z-index:2147482905!important;
 }
 
