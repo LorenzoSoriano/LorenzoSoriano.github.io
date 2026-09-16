@@ -30,6 +30,21 @@
   const startDivider = makeDivider('start');
   const endDivider = makeDivider('end');
 
+  // The closing boundary is deliberately part of normal flow. This makes it
+  // impossible for it to render after the footer when zoom or viewport changes.
+  Object.assign(endDivider.divider.style, {
+    position: 'relative',
+    left: '0',
+    right: 'auto',
+    width: '100%',
+    transform: 'none',
+    margin: '0'
+  });
+
+  // Keep the skills section reasonably close to the final boundary.
+  const lastContentSection = flowSections[flowSections.length - 1];
+  lastContentSection.style.paddingBottom = '52px';
+
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
   svg.classList.add('design-journey-svg');
@@ -111,18 +126,9 @@
     return result;
   }
 
-  function layoutBottom() {
-    const last = flowSections[flowSections.length - 1];
-    return offsetWithin(last, pageMain, 'y') + last.offsetHeight;
-  }
-
   function redraw() {
     const width = pageMain.clientWidth;
-    const contentBottom = layoutBottom();
-    if (!width || !contentBottom) return;
-
-    svg.style.height = `${contentBottom}px`;
-    svg.setAttribute('viewBox', `0 0 ${width} ${contentBottom}`);
+    if (!width) return;
 
     const axisX = routeAxisX();
     const mobile = window.matchMedia('(max-width:980px)').matches;
@@ -131,11 +137,13 @@
     const sectionTop = offsetWithin(section, pageMain, 'y');
     const startY = sectionTop + 8;
 
-    // The journey no longer stops at the end of the project cards. The closing
-    // portal is anchored to the bottom of page-main, immediately before footer.
-    const endDividerHeight = endDivider.divider.offsetHeight || 96;
-    endDivider.divider.style.top = `${Math.max(startY + 160, contentBottom - endDividerHeight)}px`;
-    const endY = (parseFloat(endDivider.divider.style.top) || 0) + visualNodeCenter(endDivider);
+    // The end point is the centre of the in-flow boundary, immediately before footer.
+    const contentBottom = offsetWithin(endDivider.divider, pageMain, 'y') + endDivider.divider.offsetHeight;
+    const endY = offsetWithin(endDivider.divider, pageMain, 'y') + visualNodeCenter(endDivider);
+    if (!contentBottom || endY <= startY) return;
+
+    svg.style.height = `${contentBottom}px`;
+    svg.setAttribute('viewBox', `0 0 ${width} ${contentBottom}`);
 
     positionDividerNodeAt(startDivider, startY);
 
@@ -147,8 +155,7 @@
     endDivider.node.style.left = `${(routeViewportX - endRect.left).toFixed(2)}px`;
 
     const nodeYs = cards.map(card => offsetWithin(card, pageMain, 'y') + card.offsetHeight / 2);
-    const continuationStart = nodeYs[nodeYs.length - 1] + stem;
-    const anchors = addIntermediateAnchors([startY + stem, ...nodeYs, continuationStart, endY - stem]);
+    const anchors = addIntermediateAnchors([startY + stem, ...nodeYs, endY - stem]);
     const amplitude = mobile ? 18 : 38;
 
     let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)} L ${axisX.toFixed(2)} ${(startY + stem).toFixed(2)}`;
@@ -186,8 +193,6 @@
 
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(schedule);
-    // Observe only real-flow sections/cards. The generated overlay is excluded
-    // so zoom cannot recursively increase the page height.
     flowSections.forEach(item => observer.observe(item));
     observer.observe(grid);
     cards.forEach(card => observer.observe(card));
