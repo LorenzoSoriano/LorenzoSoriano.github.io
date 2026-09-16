@@ -18,6 +18,11 @@ backgroundLayerStyles.rel = 'stylesheet';
 backgroundLayerStyles.href = 'background-layer.css?v=2';
 document.head.appendChild(backgroundLayerStyles);
 
+const sectionThemeStyles = document.createElement('link');
+sectionThemeStyles.rel = 'stylesheet';
+sectionThemeStyles.href = 'section-themes.css?v=1';
+document.head.appendChild(sectionThemeStyles);
+
 const page = document.body.dataset.page || 'home';
 
 if (window.TRANSLATIONS) {
