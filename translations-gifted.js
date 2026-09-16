@@ -21,16 +21,16 @@ Object.assign(window.TRANSLATIONS.en, {
   "serious.s3d":"All visible elements can be localized. Screens also expose background cropping, vertex adaptation, button placement and extra clickable objects for custom interactions.",
   "serious.s4":"Adaptive Quiz System",
   "serious.s4d":"Each question stores its correct answer, while a hidden difficulty level selects which question variant is shown and is updated after every pair of answers.",
-  "serious.logicTitle":"Adaptive quiz logic",
-  "serious.logicSubtitle":"Two answers are evaluated together before changing the hidden difficulty level.",
-  "serious.logicUp":"2 correct answers",
-  "serious.logicUpDesc":"Increase difficulty level",
-  "serious.logicStay":"1 correct + 1 wrong",
-  "serious.logicStayDesc":"Keep the same level",
-  "serious.logicDown":"2 wrong answers",
-  "serious.logicDownDesc":"Decrease difficulty level",
-  "serious.callTitle":"The main goal was to make content scalable without rebuilding the scene each time.",
-  "serious.callDesc":"Narrative events, quiz logic, localization and screen composition were separated into reusable systems so new content could be added and adjusted through authoring tools rather than scene-specific code."
+  "serious.impactTitle":"Value of my contribution",
+  "serious.impactSubtitle":"The project gave me the opportunity to build tools that make content production faster, clearer and easier to extend.",
+  "serious.impact1":"Authoring tools",
+  "serious.impact1Desc":"Custom tools move recurring tasks out of scene-specific code and into workflows that can be used directly while producing content.",
+  "serious.impact2":"Reusable systems",
+  "serious.impact2Desc":"Visual novel events, screens and quiz logic are structured so the same systems can support new content without rebuilding the project flow each time.",
+  "serious.impact3":"Data-driven workflow",
+  "serious.impact3Desc":"Using ScriptableObjects and editable configuration separates content from implementation, making iteration and maintenance more manageable.",
+  "serious.callTitle":"The project was an important step toward production-oriented Unity tooling.",
+  "serious.callDesc":"Beyond implementing gameplay, I worked on systems intended to help content creation itself: reusable tools, editable data and workflows designed to reduce repetitive work."
 });
 
 Object.assign(window.TRANSLATIONS.it, {
@@ -54,14 +54,14 @@ Object.assign(window.TRANSLATIONS.it, {
   "serious.s3d":"Tutti gli elementi visibili possono essere localizzati. Le schermate permettono anche crop del background, adattamento dei vertici, posizione dei bottoni e oggetti cliccabili aggiuntivi.",
   "serious.s4":"Sistema Quiz Adattivo",
   "serious.s4d":"Ogni domanda memorizza la risposta corretta, mentre un livello nascosto determina quale variante proporre e viene aggiornato dopo ogni coppia di risposte.",
-  "serious.logicTitle":"Logica adattiva del quiz",
-  "serious.logicSubtitle":"Due risposte vengono valutate insieme prima di modificare il livello di difficoltà nascosto.",
-  "serious.logicUp":"2 risposte corrette",
-  "serious.logicUpDesc":"Aumenta il livello di difficoltà",
-  "serious.logicStay":"1 corretta + 1 errata",
-  "serious.logicStayDesc":"Mantiene lo stesso livello",
-  "serious.logicDown":"2 risposte errate",
-  "serious.logicDownDesc":"Riduce il livello di difficoltà",
-  "serious.callTitle":"L’obiettivo principale era rendere i contenuti scalabili senza ricostruire ogni volta la scena.",
-  "serious.callDesc":"Eventi narrativi, logica dei quiz, localizzazione e composizione delle schermate sono stati separati in sistemi riutilizzabili, così nuovi contenuti possono essere aggiunti e modificati tramite tool di authoring invece di codice specifico per ogni scena."
+  "serious.impactTitle":"Valore del mio contributo",
+  "serious.impactSubtitle":"Il progetto mi ha permesso di creare tool pensati per rendere la produzione dei contenuti più rapida, chiara e facilmente estendibile.",
+  "serious.impact1":"Tool di authoring",
+  "serious.impact1Desc":"Le operazioni ricorrenti vengono spostate dal codice specifico delle scene a strumenti utilizzabili direttamente durante la produzione dei contenuti.",
+  "serious.impact2":"Sistemi riutilizzabili",
+  "serious.impact2Desc":"Eventi della visual novel, schermate e logica dei quiz sono strutturati per supportare nuovi contenuti senza ricostruire ogni volta il flusso del progetto.",
+  "serious.impact3":"Workflow data-driven",
+  "serious.impact3Desc":"ScriptableObject e configurazioni modificabili separano i contenuti dall’implementazione, rendendo più semplice iterare e mantenere il progetto.",
+  "serious.callTitle":"Il progetto è stato un passaggio importante verso la creazione di tool Unity orientati alla produzione.",
+  "serious.callDesc":"Oltre al gameplay, ho lavorato su sistemi pensati per facilitare la creazione dei contenuti: tool riutilizzabili, dati modificabili e workflow costruiti per ridurre il lavoro ripetitivo."
 });
