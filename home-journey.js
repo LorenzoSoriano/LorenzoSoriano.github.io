@@ -4,6 +4,7 @@
   const main = document.querySelector('main');
   const hero = document.querySelector('.home-hero');
   const grid = document.querySelector('.portal-grid');
+  const endBand = document.querySelector('.home-journey-end');
   const cards = [...document.querySelectorAll('.portal-grid .portal-card')];
   if (!main || !hero || !grid || !cards.length) return;
 
@@ -85,7 +86,9 @@
     const heroBottom = offsetWithin(hero, main, 'y') + hero.offsetHeight;
     const startY = Math.max(0, heroBottom - Math.min(100, hero.offsetHeight * 0.12));
     const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
-    const endY = Math.max(nodeYs[nodeYs.length - 1] + 120, height - 2);
+    const endY = endBand
+      ? offsetWithin(endBand, main, 'y') + Math.min(130, endBand.offsetHeight * 0.34)
+      : Math.max(nodeYs[nodeYs.length - 1] + 120, height - 2);
 
     const anchors = addIntermediateAnchors([startY, ...nodeYs, endY]);
     const mobile = window.matchMedia('(max-width:980px)').matches;
@@ -127,6 +130,7 @@
     const observer = new ResizeObserver(scheduleRedraw);
     observer.observe(main);
     observer.observe(grid);
+    if (endBand) observer.observe(endBand);
     cards.forEach(card => observer.observe(card));
   }
 
