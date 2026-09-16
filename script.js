@@ -25,8 +25,15 @@ document.head.appendChild(sectionThemeStyles);
 
 const bubbleResponsiveStyles = document.createElement('link');
 bubbleResponsiveStyles.rel = 'stylesheet';
-bubbleResponsiveStyles.href = 'bubble-responsive.css?v=1';
+bubbleResponsiveStyles.href = 'bubble-responsive.css?v=2';
+bubbleResponsiveStyles.dataset.bubbleResponsive = 'true';
 document.head.appendChild(bubbleResponsiveStyles);
+
+const uiAudioStyles = document.createElement('link');
+uiAudioStyles.rel = 'stylesheet';
+uiAudioStyles.href = 'ui-audio.css?v=1';
+uiAudioStyles.dataset.uiAudio = 'true';
+document.head.appendChild(uiAudioStyles);
 
 const page = document.body.dataset.page || 'home';
 
@@ -284,3 +291,8 @@ const transitionController = document.createElement('script');
 transitionController.src = 'page-transitions.js?v=3';
 transitionController.async = false;
 document.head.appendChild(transitionController);
+
+const uiAudioController = document.createElement('script');
+uiAudioController.src = 'ui-audio.js?v=1';
+uiAudioController.async = false;
+document.head.appendChild(uiAudioController);
