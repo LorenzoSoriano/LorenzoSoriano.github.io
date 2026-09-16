@@ -4,7 +4,7 @@
   if (!document.querySelector('link[data-home-thread-styles]')) {
     const threadStyles = document.createElement('link');
     threadStyles.rel = 'stylesheet';
-    threadStyles.href = 'home-thread.css?v=2';
+    threadStyles.href = 'home-thread.css?v=3';
     threadStyles.dataset.homeThreadStyles = 'true';
     document.head.appendChild(threadStyles);
   }
@@ -14,6 +14,20 @@
   const grid = document.querySelector('.portal-grid');
   const cards = [...document.querySelectorAll('.portal-grid .portal-card')];
   if (!main || !hero || !grid || !cards.length) return;
+
+  const makeDivider = modifier => {
+    const divider = document.createElement('div');
+    divider.className = `home-journey-divider home-journey-divider--${modifier}`;
+    divider.setAttribute('aria-hidden', 'true');
+    const node = document.createElement('span');
+    node.className = 'home-journey-divider-node';
+    divider.appendChild(node);
+    main.appendChild(divider);
+    return { divider, node };
+  };
+
+  const startDivider = makeDivider('start');
+  const endDivider = makeDivider('end');
 
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
@@ -74,9 +88,7 @@
       const target = points[i];
       const gap = target - previous;
       const pieces = Math.ceil(gap / maxGap);
-      for (let p = 1; p < pieces; p += 1) {
-        result.push(previous + gap * (p / pieces));
-      }
+      for (let p = 1; p < pieces; p += 1) result.push(previous + gap * (p / pieces));
       result.push(target);
     }
     return result;
@@ -91,18 +103,22 @@
 
     const axisX = routeAxisX();
     const heroBottom = offsetWithin(hero, main, 'y') + hero.offsetHeight;
-    const startY = Math.max(0, heroBottom - Math.min(100, hero.offsetHeight * 0.12));
-    const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
+    const dividerHeight = window.matchMedia('(max-width:620px)').matches ? 14 : 18;
 
-    // The route continues to the physical end of the Home.
-    // Its endpoint sits behind the divider immediately above the footer.
-    const endY = Math.max(height - 1, nodeYs[nodeYs.length - 1] + 220);
+    // The upper boundary now hugs the hero instead of floating far below it.
+    const startY = Math.min(height - 1, heroBottom + dividerHeight * 0.5 + 8);
+    const endY = Math.max(startY + 1, height - dividerHeight * 0.5);
+    const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
     const anchors = addIntermediateAnchors([startY, ...nodeYs, endY]);
     const mobile = window.matchMedia('(max-width:980px)').matches;
     const amplitude = mobile ? 18 : 38;
 
-    let d = `M ${axisX.toFixed(2)} ${anchors[0].toFixed(2)}`;
+    startDivider.divider.style.top = `${(startY - dividerHeight / 2).toFixed(2)}px`;
+    endDivider.divider.style.top = `${(endY - dividerHeight / 2).toFixed(2)}px`;
+    startDivider.node.style.left = `${axisX.toFixed(2)}px`;
+    endDivider.node.style.left = `${axisX.toFixed(2)}px`;
 
+    let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)}`;
     for (let i = 0; i < anchors.length - 1; i += 1) {
       const y0 = anchors[i];
       const y1 = anchors[i + 1];
@@ -136,6 +152,7 @@
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(scheduleRedraw);
     observer.observe(main);
+    observer.observe(hero);
     observer.observe(grid);
     cards.forEach(card => observer.observe(card));
   }
