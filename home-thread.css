@@ -2,7 +2,14 @@
 
 body[data-page="home"] .home-journey-end{display:none!important}
 
-/* Disable the old pseudo dividers: JS now places real dividers using the same X coordinate as the SVG route. */
+/* Keep the Home route/dividers above the footer boundary so the closing bar is never clipped. */
+body[data-page="home"] main{
+  position:relative;
+  z-index:2;
+  overflow:visible!important;
+}
+
+/* Disable the old pseudo dividers: JS places the real dividers on the SVG route axis. */
 body[data-page="home"] .areas-section::before,
 body[data-page="home"] .areas-section::after,
 body[data-page="home"] .areas-section + .section-shell.section-block::before,
@@ -17,10 +24,11 @@ body[data-page="home"] .areas-section + .section-shell.section-block{
 
 body[data-page="home"] .home-journey-divider{
   position:absolute;
-  z-index:8;
+  z-index:40;
   left:0;
   right:0;
   height:18px;
+  overflow:visible;
   pointer-events:none;
   background:linear-gradient(90deg,#796cf0 0%,#667fe9 48%,#5ea0f0 100%);
 }
@@ -35,7 +43,7 @@ body[data-page="home"] .home-journey-divider--end{
 
 body[data-page="home"] .home-journey-divider-node{
   position:absolute;
-  z-index:2;
+  z-index:41;
   top:50%;
   width:28px;
   height:28px;
@@ -45,12 +53,13 @@ body[data-page="home"] .home-journey-divider-node{
   border-radius:50%;
   background:#1e2440;
   box-shadow:0 0 0 7px rgba(121,108,240,.12);
+  pointer-events:none;
 }
 
-/* Footer starts immediately after the final divider. */
+/* Footer sits below the closing divider instead of painting over it. */
 body[data-page="home"] .footer{
   position:relative;
-  z-index:10;
+  z-index:1;
   margin-top:0!important;
   border-top:0!important;
 }
