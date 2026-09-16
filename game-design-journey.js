@@ -10,7 +10,10 @@
 
   pageMain.style.position = 'relative';
   pageMain.style.isolation = 'isolate';
-  pageMain.style.overflow = 'visible';
+  // The journey must never render outside page-main. This keeps the correctly
+  // positioned closing portal visible while clipping any decorative overflow
+  // before the footer.
+  pageMain.style.overflow = CSS.supports('overflow', 'clip') ? 'clip' : 'hidden';
   flowSections.forEach(item => {
     item.style.position = 'relative';
     item.style.zIndex = '1';
@@ -55,6 +58,7 @@
   svg.style.width = '100%';
   svg.style.zIndex = '0';
   svg.style.pointerEvents = 'none';
+  svg.style.overflow = 'hidden';
 
   const defs = document.createElementNS(NS, 'defs');
   const gradient = document.createElementNS(NS, 'linearGradient');
