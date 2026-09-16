@@ -1,3 +1,5 @@
+@import url('section-backgrounds.css?v=1');
+
 /* Global decorative hero artwork must stay behind real page content. */
 .page-intro{
   isolation:isolate;
