@@ -6,12 +6,26 @@
   const cards = [...document.querySelectorAll('.design-journey-card')];
   if (!section || !grid || !cards.length) return;
 
+  // Keep the journey boundaries above the neighbouring sections so the
+  // closing divider and its node cannot be painted over.
+  section.style.position = 'relative';
+  section.style.zIndex = '2';
+  section.style.overflow = 'visible';
+  const nextSection = section.nextElementSibling;
+  if (nextSection) {
+    nextSection.style.position = 'relative';
+    nextSection.style.zIndex = '1';
+  }
+
   const makeDivider = modifier => {
     const divider = document.createElement('div');
     divider.className = `design-journey-divider design-journey-divider--${modifier}`;
     divider.setAttribute('aria-hidden', 'true');
+    divider.style.zIndex = '40';
+    divider.style.overflow = 'visible';
     const node = document.createElement('span');
     node.className = 'design-journey-divider-node';
+    node.style.zIndex = '41';
     divider.appendChild(node);
     section.appendChild(divider);
     return { divider, node };
@@ -81,11 +95,12 @@
 
     const axisX = routeAxisX();
     const dividerHeight = window.matchMedia('(max-width:620px)').matches ? 14 : 18;
-    const startY = dividerHeight / 2;
-    const endY = Math.max(startY + 1, height - dividerHeight / 2);
-    const nodeYs = cards.map(card => offsetWithin(card, section, 'y') + card.offsetHeight / 2);
-    const anchors = [startY, ...nodeYs, endY];
     const mobile = window.matchMedia('(max-width:980px)').matches;
+    const stem = mobile ? 34 : 48;
+    const startY = dividerHeight / 2;
+    const endY = Math.max(startY + stem * 2 + 1, height - dividerHeight / 2);
+    const nodeYs = cards.map(card => offsetWithin(card, section, 'y') + card.offsetHeight / 2);
+    const anchors = [startY + stem, ...nodeYs, endY - stem];
     const amplitude = mobile ? 18 : 38;
 
     const sectionRect = section.getBoundingClientRect();
@@ -95,7 +110,10 @@
     startDivider.node.style.left = `${(routeViewportX - startDividerRect.left).toFixed(2)}px`;
     endDivider.node.style.left = `${(routeViewportX - endDividerRect.left).toFixed(2)}px`;
 
-    let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)}`;
+    // Straight stems ensure the spline passes through the exact centre of
+    // both divider nodes before it begins to curve.
+    let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)} L ${axisX.toFixed(2)} ${(startY + stem).toFixed(2)}`;
+
     for (let i = 0; i < anchors.length - 1; i += 1) {
       const y0 = anchors[i];
       const y1 = anchors[i + 1];
@@ -105,6 +123,8 @@
       const cx = axisX + side * curve;
       d += ` C ${cx.toFixed(2)} ${(y0 + dy * .32).toFixed(2)}, ${cx.toFixed(2)} ${(y0 + dy * .68).toFixed(2)}, ${axisX.toFixed(2)} ${y1.toFixed(2)}`;
     }
+
+    d += ` L ${axisX.toFixed(2)} ${endY.toFixed(2)}`;
 
     path.setAttribute('d', d);
     gradient.setAttribute('gradientUnits', 'userSpaceOnUse');
