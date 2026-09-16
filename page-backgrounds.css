@@ -1,0 +1,113 @@
+/* Themed full-page backgrounds for the main portfolio sections. */
+body[data-page="home"] .page-main{--page-theme-image:url('assets/images/page-backgrounds/home-background.png')}
+body[data-page="game-dev"] .page-main{--page-theme-image:url('assets/images/page-backgrounds/game-development-background.png')}
+body[data-page="3d-art"] .page-main{--page-theme-image:url('assets/images/page-backgrounds/3d-art-background.png')}
+body[data-page="game-design"] .page-main{--page-theme-image:url('assets/images/page-backgrounds/game-design-background.png')}
+body[data-page="narrative"] .page-main{--page-theme-image:url('assets/images/page-backgrounds/narrative-design-background.png')}
+body[data-page="production"] .page-main{--page-theme-image:url('assets/images/page-backgrounds/game-production-background.png')}
+body[data-page="thesis"] .page-main{--page-theme-image:url('assets/images/page-backgrounds/thesis-background.png')}
+body[data-page="about"] .page-main{--page-theme-image:url('assets/images/page-backgrounds/about-background.png')}
+body[data-page="contact"] .page-main{--page-theme-image:url('assets/images/page-backgrounds/contact-background.png')}
+
+body[data-page="home"] .page-main,
+body[data-page="game-dev"] .page-main,
+body[data-page="3d-art"] .page-main,
+body[data-page="game-design"] .page-main,
+body[data-page="narrative"] .page-main,
+body[data-page="production"] .page-main,
+body[data-page="thesis"] .page-main,
+body[data-page="about"] .page-main,
+body[data-page="contact"] .page-main{
+  position:relative;
+  isolation:isolate;
+  background:transparent!important;
+}
+
+body[data-page="home"] .page-main::before,
+body[data-page="game-dev"] .page-main::before,
+body[data-page="3d-art"] .page-main::before,
+body[data-page="game-design"] .page-main::before,
+body[data-page="narrative"] .page-main::before,
+body[data-page="production"] .page-main::before,
+body[data-page="thesis"] .page-main::before,
+body[data-page="about"] .page-main::before,
+body[data-page="contact"] .page-main::before{
+  content:"";
+  position:fixed;
+  inset:96px 0 0;
+  z-index:0;
+  pointer-events:none;
+  background-image:
+    linear-gradient(180deg,rgba(251,250,246,.78),rgba(251,250,246,.87)),
+    var(--page-theme-image);
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+body[data-page="home"] .page-main>* ,
+body[data-page="game-dev"] .page-main>* ,
+body[data-page="3d-art"] .page-main>* ,
+body[data-page="game-design"] .page-main>* ,
+body[data-page="narrative"] .page-main>* ,
+body[data-page="production"] .page-main>* ,
+body[data-page="thesis"] .page-main>* ,
+body[data-page="about"] .page-main>* ,
+body[data-page="contact"] .page-main>*{
+  position:relative;
+  z-index:1;
+}
+
+/* The thematic background replaces the older isolated corner decoration on these pages. */
+body[data-page="home"] .home-hero::before,
+body[data-page="game-dev"] .page-intro::after,
+body[data-page="3d-art"] .page-intro::after,
+body[data-page="game-design"] .page-intro::after,
+body[data-page="narrative"] .page-intro::after,
+body[data-page="production"] .page-intro::after,
+body[data-page="thesis"] .page-intro::after,
+body[data-page="about"] .page-intro::after,
+body[data-page="contact"] .page-intro::after{
+  display:none!important;
+}
+
+/* Slightly larger portfolio mark in the footer. */
+.footer::before{
+  width:480px!important;
+  height:118px!important;
+}
+
+@media(max-width:980px){
+  body[data-page="home"] .page-main::before,
+  body[data-page="game-dev"] .page-main::before,
+  body[data-page="3d-art"] .page-main::before,
+  body[data-page="game-design"] .page-main::before,
+  body[data-page="narrative"] .page-main::before,
+  body[data-page="production"] .page-main::before,
+  body[data-page="thesis"] .page-main::before,
+  body[data-page="about"] .page-main::before,
+  body[data-page="contact"] .page-main::before{
+    inset:84px 0 0;
+    background-position:62% center;
+  }
+  .footer::before{width:360px!important;height:90px!important}
+}
+
+@media(max-width:620px){
+  body[data-page="home"] .page-main::before,
+  body[data-page="game-dev"] .page-main::before,
+  body[data-page="3d-art"] .page-main::before,
+  body[data-page="game-design"] .page-main::before,
+  body[data-page="narrative"] .page-main::before,
+  body[data-page="production"] .page-main::before,
+  body[data-page="thesis"] .page-main::before,
+  body[data-page="about"] .page-main::before,
+  body[data-page="contact"] .page-main::before{
+    inset:78px 0 0;
+    background-position:68% center;
+    background-image:
+      linear-gradient(180deg,rgba(251,250,246,.82),rgba(251,250,246,.9)),
+      var(--page-theme-image);
+  }
+  .footer::before{width:300px!important;height:76px!important}
+}
