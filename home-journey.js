@@ -4,7 +4,7 @@
   if (!document.querySelector('link[data-home-thread-styles]')) {
     const threadStyles = document.createElement('link');
     threadStyles.rel = 'stylesheet';
-    threadStyles.href = 'home-thread.css?v=6';
+    threadStyles.href = 'home-thread.css?v=7';
     threadStyles.dataset.homeThreadStyles = 'true';
     document.head.appendChild(threadStyles);
   }
@@ -95,8 +95,6 @@
     return result;
   }
 
-  // Visual centre of the transformed ring. offsetTop is not enough because
-  // translate(-50%, -50%) changes the rendered centre without changing offsetTop.
   function visualNodeCenter(dividerData) {
     const dividerRect = dividerData.divider.getBoundingClientRect();
     const nodeRect = dividerData.node.getBoundingClientRect();
@@ -108,36 +106,27 @@
     dividerData.divider.style.top = `${(targetY - localCenter).toFixed(2)}px`;
   }
 
-  function layoutBottom() {
-    const last = realSections[realSections.length - 1];
-    return offsetWithin(last, main, 'y') + last.offsetHeight;
-  }
-
   function redrawJourney() {
     const width = main.clientWidth;
-    const contentBottom = layoutBottom();
-    if (!width || !contentBottom) return;
-
-    // Never use scrollHeight here: absolutely positioned journey elements are
-    // intentionally allowed to overflow and must not feed back into page height.
-    svg.style.height = `${contentBottom}px`;
-    svg.setAttribute('viewBox', `0 0 ${width} ${contentBottom}`);
+    if (!width) return;
 
     const axisX = routeAxisX();
     const heroBottom = offsetWithin(hero, main, 'y') + hero.offsetHeight;
     const mobile = window.matchMedia('(max-width:980px)').matches;
     const stem = mobile ? 34 : 50;
 
-    const startY = Math.min(contentBottom - 120, heroBottom + 4);
+    // The end divider is part of normal flow and is therefore guaranteed to sit
+    // immediately before the footer. Its centre is the real endpoint of the route.
+    const contentBottom = offsetWithin(endDivider.divider, main, 'y') + endDivider.divider.offsetHeight;
+    const endY = offsetWithin(endDivider.divider, main, 'y') + visualNodeCenter(endDivider);
+    const startY = Math.min(endY - 120, heroBottom + 4);
+    if (!contentBottom || endY <= startY) return;
 
-    // Anchor the closing portal completely inside the real document flow.
-    const endDividerHeight = endDivider.divider.offsetHeight || 96;
-    endDivider.divider.style.top = `${Math.max(startY + 120, contentBottom - endDividerHeight)}px`;
-    const endY = (parseFloat(endDivider.divider.style.top) || 0) + visualNodeCenter(endDivider);
+    svg.style.height = `${contentBottom}px`;
+    svg.setAttribute('viewBox', `0 0 ${width} ${contentBottom}`);
 
     const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
-    const curveEnd = Math.max(nodeYs[nodeYs.length - 1] + stem, endY - stem);
-    const anchors = addIntermediateAnchors([startY + stem, ...nodeYs, curveEnd]);
+    const anchors = addIntermediateAnchors([startY + stem, ...nodeYs, endY - stem]);
     const amplitude = mobile ? 18 : 38;
 
     positionDividerNodeAt(startDivider, startY);
@@ -181,8 +170,6 @@
 
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(scheduleRedraw);
-    // Observe only real flow content. Observing main would create a feedback
-    // loop because the absolutely positioned portal intentionally overflows it.
     realSections.forEach(section => observer.observe(section));
     observer.observe(grid);
     cards.forEach(card => observer.observe(card));
