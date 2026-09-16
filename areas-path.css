@@ -81,7 +81,6 @@ body[data-page="home"] .portal-card:nth-child(3){grid-column:1!important;grid-ro
 body[data-page="home"] .portal-card:nth-child(4){grid-column:3!important;grid-row:4!important}
 body[data-page="home"] .portal-card:nth-child(5){grid-column:1!important;grid-row:5!important}
 
-/* Horizontal connector: its end and the sphere share exactly the same route axis. */
 body[data-page="home"] .portal-card::before{
   content:"";
   position:absolute;
@@ -93,7 +92,6 @@ body[data-page="home"] .portal-card::before{
   background:linear-gradient(90deg,rgba(121,108,240,.20),rgba(94,160,240,.72));
 }
 
-/* Route sphere */
 body[data-page="home"] .portal-card::after{
   content:"";
   position:absolute;
@@ -114,7 +112,6 @@ body[data-page="home"] .portal-card:nth-child(even)::after{background:var(--blue
 body[data-page="home"] .portal-card:nth-child(4)::after{background:var(--gold)}
 body[data-page="home"] .portal-card:nth-child(5)::after{background:var(--purple)}
 
-/* Desktop centre column is 104px: node centres therefore sit exactly 52px from a card edge. */
 body[data-page="home"] .portal-card:nth-child(odd)::before{right:-52px}
 body[data-page="home"] .portal-card:nth-child(odd)::after{right:-60px}
 body[data-page="home"] .portal-card:nth-child(even)::before{left:-52px;transform:translateY(-50%) rotate(180deg)}
@@ -151,6 +148,11 @@ body[data-page="home"] .portal-card:hover .arrow{
     padding-bottom:90px!important;
   }
 
+  /* Align the title with the card column instead of the route gutter. */
+  body[data-page="home"] .areas-label{
+    margin-left:48px!important;
+  }
+
   body[data-page="home"] .portal-grid{
     grid-template-columns:48px minmax(0,1fr)!important;
     gap:22px 0!important;
@@ -168,7 +170,6 @@ body[data-page="home"] .portal-card:hover .arrow{
     transform:translateY(-50%)!important;
   }
 
-  /* Card begins at x=48px, therefore this puts the sphere centre at x=18px. */
   body[data-page="home"] .portal-card::after{
     left:-38px!important;
     right:auto!important;
@@ -181,7 +182,10 @@ body[data-page="home"] .portal-card:hover .arrow{
     padding-bottom:72px!important;
   }
 
-  body[data-page="home"] .areas-label{margin-bottom:30px!important}
+  body[data-page="home"] .areas-label{
+    margin-left:36px!important;
+    margin-bottom:30px!important;
+  }
 
   body[data-page="home"] .portal-grid{
     grid-template-columns:36px minmax(0,1fr)!important;
@@ -198,7 +202,6 @@ body[data-page="home"] .portal-card:hover .arrow{
     width:24px!important;
   }
 
-  /* Card begins at x=36px, therefore this puts the sphere centre at x=12px. */
   body[data-page="home"] .portal-card::after{
     left:-32px!important;
   }
