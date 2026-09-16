@@ -1,10 +1,20 @@
 window.TRANSLATIONS = window.TRANSLATIONS || { en:{}, it:{} };
 
 Object.assign(window.TRANSLATIONS.en, {
-  "design.studiesLabel":"LEARNING PATH",
-  "design.studiesTitle":"Design Studies",
-  "design.studiesDesc":"Early exercises and first design projects that show how my approach evolved before the main case studies.",
-  "design.studiesLink":"Explore the learning path ↗",
+  "design.journeyLabel":"GAME DESIGN PATH",
+  "design.journeyTitle":"From early exercises to more connected and intentional design systems.",
+  "design.journeyArcanaStage":"FIRST DESIGN PROJECT",
+  "design.journeyArcanaDesc":"An early group project exploring classes, progression, game modes, equipment, accessibility and monetisation. It marks the starting point of my structured game-design work.",
+  "design.journeyLegendStage":"SECOND DESIGN PROJECT",
+  "design.journeyLegendDesc":"A more structured tactical RPG concept where combat, team progression and an explorable western hub are designed to support each other.",
+  "design.journeyTomStage":"ONE-HOUR EXERCISE",
+  "design.journeyTomDesc":"A fast asymmetric multiplayer exercise built around opposing roles, stamina, capture, QTEs and traps, developed under a strict time limit.",
+  "design.journeyMomentumStage":"PITCH / CORE MECHANIC",
+  "design.journeyMomentumDesc":"A project focused on communicating a strong central mechanic clearly and building target, visual direction, story and gameplay pillars around it.",
+  "design.journeyBeyondStage":"NARRATIVE + SYSTEMS",
+  "design.journeyBeyondDesc":"A branching narrative exercise where anxiety affects dialogue, perception, interaction and progression, bringing narrative state and gameplay state together.",
+  "design.journeyDissonantStage":"DESIGN + PRODUCTION",
+  "design.journeyDissonantDesc":"A broader project connecting dimension shifting, traversal and puzzle design with scope, platform, budget and production planning.",
 
   "momentum.canvasLabel":"PROJECT MATERIAL",
   "momentum.canvasTitle":"Game Design Canvas",
@@ -33,10 +43,20 @@ Object.assign(window.TRANSLATIONS.en, {
 });
 
 Object.assign(window.TRANSLATIONS.it, {
-  "design.studiesLabel":"PERCORSO",
-  "design.studiesTitle":"Design Studies",
-  "design.studiesDesc":"Prime esercitazioni e primi progetti di game design che mostrano l'evoluzione del mio approccio prima dei case study principali.",
-  "design.studiesLink":"Esplora il percorso ↗",
+  "design.journeyLabel":"PERCORSO DI GAME DESIGN",
+  "design.journeyTitle":"Dalle prime esercitazioni a sistemi di design più collegati e consapevoli.",
+  "design.journeyArcanaStage":"PRIMO PROGETTO DI DESIGN",
+  "design.journeyArcanaDesc":"Primo progetto di gruppo in cui ho esplorato classi, progressione, modalità di gioco, equipaggiamento, accessibilità e monetizzazione. Rappresenta il punto di partenza del mio lavoro strutturato sul game design.",
+  "design.journeyLegendStage":"SECONDO PROGETTO DI DESIGN",
+  "design.journeyLegendDesc":"Un concept di GDR tattico più strutturato, in cui combattimento, progressione del team e lobby western esplorabile vengono progettati per sostenersi a vicenda.",
+  "design.journeyTomStage":"ESERCITAZIONE DI UN'ORA",
+  "design.journeyTomDesc":"Esercitazione rapida su un multiplayer asimmetrico con ruoli opposti, stamina, cattura, QTE e trappole, sviluppata entro un limite di tempo molto stretto.",
+  "design.journeyMomentumStage":"PITCH / MECCANICA CENTRALE",
+  "design.journeyMomentumDesc":"Un progetto focalizzato sul comunicare con chiarezza una meccanica centrale forte e costruire attorno a essa target, direzione visiva, storia e gameplay pillars.",
+  "design.journeyBeyondStage":"NARRAZIONE + SISTEMI",
+  "design.journeyBeyondDesc":"Un'esercitazione narrativa ramificata in cui ansia, dialoghi, percezione, interazione e progressione lavorano insieme collegando stato narrativo e stato di gameplay.",
+  "design.journeyDissonantStage":"DESIGN + PRODUZIONE",
+  "design.journeyDissonantDesc":"Un progetto più ampio che collega cambio dimensionale, traversal e puzzle design con scope, piattaforme, budget e pianificazione della produzione.",
 
   "momentum.canvasLabel":"MATERIALE DI PROGETTO",
   "momentum.canvasTitle":"Game Design Canvas",
