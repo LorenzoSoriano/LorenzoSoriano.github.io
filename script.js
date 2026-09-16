@@ -23,6 +23,11 @@ sectionThemeStyles.rel = 'stylesheet';
 sectionThemeStyles.href = 'section-themes.css?v=1';
 document.head.appendChild(sectionThemeStyles);
 
+const bubbleResponsiveStyles = document.createElement('link');
+bubbleResponsiveStyles.rel = 'stylesheet';
+bubbleResponsiveStyles.href = 'bubble-responsive.css?v=1';
+document.head.appendChild(bubbleResponsiveStyles);
+
 const page = document.body.dataset.page || 'home';
 
 if (window.TRANSLATIONS) {
