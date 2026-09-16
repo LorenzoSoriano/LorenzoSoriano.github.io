@@ -1,84 +1,53 @@
-/* Home journey — clear start/end boundaries.
-   The route starts from a divider below the hero and is absorbed by the divider above the footer. */
+/* Home journey — exact start/end boundaries aligned to the real route axis. */
 
-/* Remove the temporary coloured CTA section completely. */
-body[data-page="home"] .home-journey-end{
-  display:none!important;
+body[data-page="home"] .home-journey-end{display:none!important}
+
+/* Disable the old pseudo dividers: JS now places real dividers using the same X coordinate as the SVG route. */
+body[data-page="home"] .areas-section::before,
+body[data-page="home"] .areas-section::after,
+body[data-page="home"] .areas-section + .section-shell.section-block::before,
+body[data-page="home"] .areas-section + .section-shell.section-block::after{
+  content:none!important;
 }
 
-/* START DIVIDER — closes the hero and gives the journey a real origin. */
-body[data-page="home"] .areas-section{
-  position:relative!important;
-}
-
-body[data-page="home"] .areas-section::before{
-  content:"";
-  position:absolute;
-  z-index:8;
-  left:50%;
-  top:0;
-  width:100vw;
-  height:18px;
-  transform:translateX(-50%);
-  pointer-events:none;
-  background:linear-gradient(90deg,#796cf0 0%,#667fe9 48%,#5ea0f0 100%);
-  box-shadow:0 10px 30px rgba(72,82,143,.08);
-}
-
-body[data-page="home"] .areas-section::after{
-  content:"";
-  position:absolute;
-  z-index:9;
-  left:50%;
-  top:2px;
-  width:28px;
-  height:28px;
-  transform:translate(-50%,-50%);
-  border:5px solid #fff;
-  border-radius:50%;
-  background:#1e2440;
-  box-shadow:0 0 0 7px rgba(121,108,240,.12);
-  pointer-events:none;
-}
-
-/* Selected Work becomes the final visible section of <main>. */
 body[data-page="home"] .areas-section + .section-shell.section-block{
   position:relative!important;
   padding-bottom:128px!important;
 }
 
-/* END DIVIDER — the journey line runs behind this and its endpoint is never visible. */
-body[data-page="home"] .areas-section + .section-shell.section-block::after{
-  content:"";
+body[data-page="home"] .home-journey-divider{
   position:absolute;
   z-index:8;
-  left:50%;
-  bottom:0;
-  width:100vw;
+  left:0;
+  right:0;
   height:18px;
-  transform:translateX(-50%);
   pointer-events:none;
   background:linear-gradient(90deg,#796cf0 0%,#667fe9 48%,#5ea0f0 100%);
+}
+
+body[data-page="home"] .home-journey-divider--start{
+  box-shadow:0 10px 30px rgba(72,82,143,.08);
+}
+
+body[data-page="home"] .home-journey-divider--end{
   box-shadow:0 -10px 30px rgba(72,82,143,.10);
 }
 
-body[data-page="home"] .areas-section + .section-shell.section-block::before{
-  content:"";
+body[data-page="home"] .home-journey-divider-node{
   position:absolute;
-  z-index:9;
-  left:50%;
-  bottom:2px;
+  z-index:2;
+  top:50%;
   width:28px;
   height:28px;
-  transform:translate(-50%,50%);
+  box-sizing:border-box;
+  transform:translate(-50%,-50%);
   border:5px solid #fff;
   border-radius:50%;
   background:#1e2440;
   box-shadow:0 0 0 7px rgba(121,108,240,.12);
-  pointer-events:none;
 }
 
-/* Footer begins immediately after the closing divider. */
+/* Footer starts immediately after the final divider. */
 body[data-page="home"] .footer{
   position:relative;
   z-index:10;
@@ -87,42 +56,19 @@ body[data-page="home"] .footer{
 }
 
 @media(max-width:980px){
-  body[data-page="home"] .areas-section::after{
-    left:18px;
-  }
-
   body[data-page="home"] .areas-section + .section-shell.section-block{
     padding-bottom:108px!important;
-  }
-
-  body[data-page="home"] .areas-section + .section-shell.section-block::before{
-    left:18px;
   }
 }
 
 @media(max-width:620px){
-  body[data-page="home"] .areas-section::before,
-  body[data-page="home"] .areas-section + .section-shell.section-block::after{
-    height:14px;
-  }
-
-  body[data-page="home"] .areas-section::after{
-    left:12px;
-    top:1px;
+  body[data-page="home"] .home-journey-divider{height:14px}
+  body[data-page="home"] .home-journey-divider-node{
     width:22px;
     height:22px;
     border-width:4px;
   }
-
   body[data-page="home"] .areas-section + .section-shell.section-block{
     padding-bottom:88px!important;
-  }
-
-  body[data-page="home"] .areas-section + .section-shell.section-block::before{
-    left:12px;
-    bottom:1px;
-    width:22px;
-    height:22px;
-    border-width:4px;
   }
 }
