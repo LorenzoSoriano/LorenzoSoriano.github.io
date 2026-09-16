@@ -15,7 +15,7 @@ document.head.appendChild(typographyStyles);
 
 const backgroundLayerStyles = document.createElement('link');
 backgroundLayerStyles.rel = 'stylesheet';
-backgroundLayerStyles.href = 'background-layer.css?v=1';
+backgroundLayerStyles.href = 'background-layer.css?v=2';
 document.head.appendChild(backgroundLayerStyles);
 
 const page = document.body.dataset.page || 'home';
