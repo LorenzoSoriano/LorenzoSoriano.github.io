@@ -1,0 +1,103 @@
+/* Home journey — dedicated continuation and footer closure.
+   Kept separate so the visual experiment is easy to revert. */
+
+body[data-page="home"] .home-journey-end{
+  position:relative!important;
+  margin-bottom:0!important;
+  padding-bottom:74px;
+  overflow:hidden!important;
+}
+
+body[data-page="home"] .home-journey-end-thread{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  overflow:visible;
+  pointer-events:none;
+}
+
+body[data-page="home"] .home-journey-end-line{
+  fill:none;
+  stroke:rgba(255,255,255,.62);
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 0 9px rgba(255,255,255,.16));
+}
+
+body[data-page="home"] .home-journey-end-inner{
+  position:relative!important;
+  z-index:2!important;
+  padding-bottom:116px!important;
+}
+
+/* Dark closing cap: the thread keeps travelling behind it, so no endpoint is visible. */
+body[data-page="home"] .home-journey-cut{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-1px;
+  height:92px;
+  z-index:3;
+  pointer-events:none;
+  background:#1e2440;
+  clip-path:polygon(
+    0 58%,
+    39% 58%,
+    46% 31%,
+    50% 0,
+    54% 31%,
+    61% 58%,
+    100% 58%,
+    100% 100%,
+    0 100%
+  );
+}
+
+body[data-page="home"] .footer{
+  position:relative;
+  z-index:6;
+  margin-top:0!important;
+  border-top:0!important;
+}
+
+@media(max-width:980px){
+  body[data-page="home"] .home-journey-end{
+    padding-bottom:62px;
+  }
+
+  body[data-page="home"] .home-journey-end-inner{
+    padding-bottom:98px!important;
+  }
+
+  body[data-page="home"] .home-journey-cut{
+    height:76px;
+    clip-path:polygon(
+      0 62%,
+      26% 62%,
+      36px 16%,
+      44px 0,
+      52px 16%,
+      72px 62%,
+      100% 62%,
+      100% 100%,
+      0 100%
+    );
+  }
+}
+
+@media(max-width:620px){
+  body[data-page="home"] .home-journey-end{
+    padding-bottom:52px;
+  }
+
+  body[data-page="home"] .home-journey-end-inner{
+    padding-bottom:82px!important;
+  }
+
+  body[data-page="home"] .home-journey-cut{
+    height:64px;
+  }
+}
