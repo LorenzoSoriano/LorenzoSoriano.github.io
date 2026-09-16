@@ -88,8 +88,12 @@
     const mobile = window.matchMedia('(max-width:980px)').matches;
     const amplitude = mobile ? 18 : 38;
 
-    startDivider.node.style.left = `${axisX.toFixed(2)}px`;
-    endDivider.node.style.left = `${axisX.toFixed(2)}px`;
+    const sectionRect = section.getBoundingClientRect();
+    const startDividerRect = startDivider.divider.getBoundingClientRect();
+    const endDividerRect = endDivider.divider.getBoundingClientRect();
+    const routeViewportX = sectionRect.left + axisX;
+    startDivider.node.style.left = `${(routeViewportX - startDividerRect.left).toFixed(2)}px`;
+    endDivider.node.style.left = `${(routeViewportX - endDividerRect.left).toFixed(2)}px`;
 
     let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)}`;
     for (let i = 0; i < anchors.length - 1; i += 1) {
