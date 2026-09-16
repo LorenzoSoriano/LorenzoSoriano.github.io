@@ -1,8 +1,8 @@
 /* Game Design — chronological journey */
 body[data-page="game-design"] .design-journey-section{
   position:relative;
-  padding-top:112px!important;
-  padding-bottom:118px!important;
+  padding-top:124px!important;
+  padding-bottom:130px!important;
   overflow:visible;
 }
 
@@ -56,38 +56,70 @@ body[data-page="game-design"] .design-journey-line{
   filter:drop-shadow(0 0 8px rgba(94,160,240,.14));
 }
 
+/* Curved boundaries echo the Home journey instead of reading as UI bars. */
 body[data-page="game-design"] .design-journey-divider{
+  --portal-node-y:74px;
   position:absolute;
-  z-index:8;
+  z-index:40;
   left:50%;
   width:100vw;
-  height:18px;
+  height:96px;
   transform:translateX(-50%);
+  overflow:visible;
   pointer-events:none;
-  background:linear-gradient(90deg,#796cf0 0%,#667fe9 48%,#5ea0f0 100%);
+  background:none;
 }
 
-body[data-page="game-design"] .design-journey-divider--start{
+body[data-page="game-design"] .design-journey-divider::before{
+  content:"";
+  position:absolute;
+  left:-6vw;
+  width:112vw;
+  height:76px;
+  pointer-events:none;
+}
+
+body[data-page="game-design"] .design-journey-divider--start::before{
   top:0;
-  box-shadow:0 10px 30px rgba(72,82,143,.08);
+  background:linear-gradient(180deg,rgba(121,108,240,.115),rgba(94,160,240,.06) 54%,rgba(238,242,157,.025));
+  border-bottom:2px solid rgba(105,126,237,.30);
+  border-radius:0 0 50% 50% / 0 0 88% 88%;
+  box-shadow:0 20px 34px rgba(72,82,143,.055);
 }
 
 body[data-page="game-design"] .design-journey-divider--end{
+  --portal-node-y:22px;
+}
+
+body[data-page="game-design"] .design-journey-divider--end::before{
   bottom:0;
-  box-shadow:0 -10px 30px rgba(72,82,143,.08);
+  background:linear-gradient(0deg,rgba(121,108,240,.10),rgba(94,160,240,.06) 54%,rgba(244,215,92,.025));
+  border-top:2px solid rgba(105,126,237,.30);
+  border-radius:50% 50% 0 0 / 88% 88% 0 0;
+  box-shadow:0 -20px 34px rgba(72,82,143,.055);
 }
 
 body[data-page="game-design"] .design-journey-divider-node{
   position:absolute;
-  top:50%;
-  width:28px;
-  height:28px;
+  z-index:42;
+  top:var(--portal-node-y);
+  width:24px;
+  height:24px;
   box-sizing:border-box;
   transform:translate(-50%,-50%);
-  border:5px solid #fff;
+  border:3px solid #fff;
   border-radius:50%;
-  background:#1e2440;
-  box-shadow:0 0 0 7px rgba(121,108,240,.12);
+  background:rgba(251,250,246,.76);
+  box-shadow:0 0 0 2px rgba(121,108,240,.92),0 0 0 8px rgba(121,108,240,.10),0 10px 28px rgba(48,59,110,.15);
+}
+
+body[data-page="game-design"] .design-journey-divider-node::after{
+  content:"";
+  position:absolute;
+  inset:6px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  opacity:.68;
 }
 
 body[data-page="game-design"] .design-journey-grid{
@@ -102,6 +134,7 @@ body[data-page="game-design"] .design-journey-grid{
 body[data-page="game-design"] .design-journey-card{
   position:relative;
   z-index:2;
+  min-width:0;
   min-height:210px;
   padding:30px 34px;
   border:1px solid rgba(121,108,240,.15);
@@ -173,6 +206,7 @@ body[data-page="game-design"] .design-journey-card h3{
   font-size:clamp(23px,2vw,30px);
   line-height:1.08;
   letter-spacing:-.035em;
+  overflow-wrap:anywhere;
 }
 
 body[data-page="game-design"] .design-journey-card p:last-of-type{
@@ -212,19 +246,23 @@ body[data-page="game-design"] .design-journey-card.is-study{
     gap:22px 0;
   }
   body[data-page="game-design"] .design-journey-card:nth-child(n){grid-column:2;grid-row:auto}
-  body[data-page="game-design"] .design-journey-card::before{
-    left:-30px!important;right:auto!important;width:30px!important;transform:translateY(-50%)!important;
-  }
+  body[data-page="game-design"] .design-journey-card::before{left:-30px!important;right:auto!important;width:30px!important;transform:translateY(-50%)!important}
   body[data-page="game-design"] .design-journey-card::after{left:-38px!important;right:auto!important}
 }
 
 @media(max-width:620px){
   body[data-page="game-design"] .design-journey-section{
-    padding-top:86px!important;
-    padding-bottom:86px!important;
+    padding-top:102px!important;
+    padding-bottom:102px!important;
   }
-  body[data-page="game-design"] .design-journey-divider{height:14px}
-  body[data-page="game-design"] .design-journey-divider-node{width:22px;height:22px;border-width:4px}
+  body[data-page="game-design"] .design-journey-divider{
+    --portal-node-y:60px;
+    height:78px;
+  }
+  body[data-page="game-design"] .design-journey-divider::before{height:62px}
+  body[data-page="game-design"] .design-journey-divider--end{--portal-node-y:18px}
+  body[data-page="game-design"] .design-journey-divider-node{width:20px;height:20px}
+  body[data-page="game-design"] .design-journey-divider-node::after{inset:5px}
   body[data-page="game-design"] .design-journey-heading{margin-bottom:30px}
   body[data-page="game-design"] .design-journey-heading h2{margin-left:14px;font-size:16px!important}
   body[data-page="game-design"] .design-journey-grid{grid-template-columns:36px minmax(0,1fr)}
