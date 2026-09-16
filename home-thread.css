@@ -4,7 +4,7 @@ body[data-page="home"] .home-journey-end{display:none!important}
 
 body[data-page="home"] main{
   position:relative;
-  z-index:2;
+  z-index:1;
   overflow:visible!important;
 }
 
@@ -17,10 +17,10 @@ body[data-page="home"] .areas-section + .section-shell.section-block::after{
 
 body[data-page="home"] .areas-section + .section-shell.section-block{
   position:relative!important;
-  padding-bottom:128px!important;
+  padding-bottom:64px!important;
 }
 
-/* The divider is now a soft portal/surface instead of a rigid horizontal bar. */
+/* Soft portal/surface used to open and close the Home route. */
 body[data-page="home"] .home-journey-divider{
   --portal-node-y:74px;
   position:absolute;
@@ -50,8 +50,15 @@ body[data-page="home"] .home-journey-divider--start::before{
   box-shadow:0 20px 34px rgba(72,82,143,.055);
 }
 
+/* The closing portal is a real flow element. This guarantees that the footer
+   always follows it and prevents the route from visually leaking below it. */
 body[data-page="home"] .home-journey-divider--end{
   --portal-node-y:22px;
+  position:relative;
+  left:0;
+  right:auto;
+  width:100%;
+  margin:0;
 }
 
 body[data-page="home"] .home-journey-divider--end::before{
@@ -62,7 +69,7 @@ body[data-page="home"] .home-journey-divider--end::before{
   box-shadow:0 -20px 34px rgba(72,82,143,.055);
 }
 
-/* Empty ring: the thread passes through it instead of ending on a dark button-like dot. */
+/* Empty ring: the thread passes through it instead of ending on a button-like dot. */
 body[data-page="home"] .home-journey-divider-node{
   position:absolute;
   z-index:42;
@@ -90,16 +97,22 @@ body[data-page="home"] .home-journey-divider-node::after{
   opacity:.68;
 }
 
+/* Home-only footer safeguard. The fixed thematic background lives inside main,
+   so the footer must sit in a higher stacking context. */
 body[data-page="home"] .footer{
-  position:relative;
-  z-index:1;
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:100!important;
+  isolation:isolate;
   margin-top:0!important;
   border-top:0!important;
 }
 
 @media(max-width:980px){
   body[data-page="home"] .areas-section + .section-shell.section-block{
-    padding-bottom:108px!important;
+    padding-bottom:54px!important;
   }
 }
 
@@ -120,6 +133,6 @@ body[data-page="home"] .footer{
   }
   body[data-page="home"] .home-journey-divider-node::after{inset:5px}
   body[data-page="home"] .areas-section + .section-shell.section-block{
-    padding-bottom:88px!important;
+    padding-bottom:42px!important;
   }
 }
