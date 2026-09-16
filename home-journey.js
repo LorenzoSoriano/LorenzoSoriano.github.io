@@ -4,7 +4,7 @@
   if (!document.querySelector('link[data-home-thread-styles]')) {
     const threadStyles = document.createElement('link');
     threadStyles.rel = 'stylesheet';
-    threadStyles.href = 'home-thread.css?v=4';
+    threadStyles.href = 'home-thread.css?v=5';
     threadStyles.dataset.homeThreadStyles = 'true';
     document.head.appendChild(threadStyles);
   }
@@ -94,6 +94,14 @@
     return result;
   }
 
+  function nodeCenterWithin(dividerData) {
+    return dividerData.node.offsetTop + dividerData.node.offsetHeight / 2;
+  }
+
+  function positionDividerAt(dividerData, targetY) {
+    dividerData.divider.style.top = `${(targetY - nodeCenterWithin(dividerData)).toFixed(2)}px`;
+  }
+
   function redrawJourney() {
     const width = main.clientWidth;
     const height = main.scrollHeight;
@@ -103,23 +111,21 @@
 
     const axisX = routeAxisX();
     const heroBottom = offsetWithin(hero, main, 'y') + hero.offsetHeight;
-    const dividerHeight = window.matchMedia('(max-width:620px)').matches ? 14 : 18;
     const mobile = window.matchMedia('(max-width:980px)').matches;
-    const stem = mobile ? 34 : 48;
+    const stem = mobile ? 34 : 50;
 
-    const startY = Math.min(height - 1, heroBottom + dividerHeight * 0.5 + 8);
-    const endY = Math.max(startY + stem * 2 + 1, height - dividerHeight * 0.5);
+    // The portal overlaps the hero edge; the route originates exactly from its ring.
+    const startY = Math.min(height - 1, heroBottom + 4);
+    const endY = Math.max(startY + stem * 2 + 1, height - 8);
     const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
     const anchors = addIntermediateAnchors([startY + stem, ...nodeYs, endY - stem]);
     const amplitude = mobile ? 18 : 38;
 
-    startDivider.divider.style.top = `${(startY - dividerHeight / 2).toFixed(2)}px`;
-    endDivider.divider.style.top = `${(endY - dividerHeight / 2).toFixed(2)}px`;
+    positionDividerAt(startDivider, startY);
+    positionDividerAt(endDivider, endY);
     startDivider.node.style.left = `${axisX.toFixed(2)}px`;
     endDivider.node.style.left = `${axisX.toFixed(2)}px`;
 
-    // A straight stem enters/leaves each node before the route starts curving.
-    // This keeps the line optically and geometrically centred on the divider nodes.
     let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)} L ${axisX.toFixed(2)} ${(startY + stem).toFixed(2)}`;
 
     for (let i = 0; i < anchors.length - 1; i += 1) {
