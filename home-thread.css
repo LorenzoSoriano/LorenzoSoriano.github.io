@@ -1,103 +1,81 @@
-/* Home journey — dedicated continuation and footer closure.
-   Kept separate so the visual experiment is easy to revert. */
+/* Home journey — simple closure at the footer boundary.
+   The extra CTA section is intentionally hidden: Selected Work now closes directly into the footer. */
 
+/* Remove the temporary coloured section completely. */
 body[data-page="home"] .home-journey-end{
+  display:none!important;
+}
+
+/* Selected Work becomes the final visible section of <main>. */
+body[data-page="home"] .areas-section + .section-shell.section-block{
   position:relative!important;
-  margin-bottom:0!important;
-  padding-bottom:74px;
-  overflow:hidden!important;
+  padding-bottom:128px!important;
 }
 
-body[data-page="home"] .home-journey-end-thread{
+/* Full-width divider: the journey line runs behind this and its endpoint is never visible. */
+body[data-page="home"] .areas-section + .section-shell.section-block::after{
+  content:"";
   position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  z-index:1;
-  overflow:visible;
+  z-index:8;
+  left:50%;
+  bottom:0;
+  width:100vw;
+  height:18px;
+  transform:translateX(-50%);
   pointer-events:none;
+  background:linear-gradient(90deg,#796cf0 0%,#667fe9 48%,#5ea0f0 100%);
+  box-shadow:0 -10px 30px rgba(72,82,143,.10);
 }
 
-body[data-page="home"] .home-journey-end-line{
-  fill:none;
-  stroke:rgba(255,255,255,.62);
-  stroke-width:4;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  filter:drop-shadow(0 0 9px rgba(255,255,255,.16));
-}
-
-body[data-page="home"] .home-journey-end-inner{
-  position:relative!important;
-  z-index:2!important;
-  padding-bottom:116px!important;
-}
-
-/* Dark closing cap: the thread keeps travelling behind it, so no endpoint is visible. */
-body[data-page="home"] .home-journey-cut{
+/* Small cap at the meeting point between the route and the divider. */
+body[data-page="home"] .areas-section + .section-shell.section-block::before{
+  content:"";
   position:absolute;
-  left:0;
-  right:0;
-  bottom:-1px;
-  height:92px;
-  z-index:3;
-  pointer-events:none;
+  z-index:9;
+  left:50%;
+  bottom:2px;
+  width:28px;
+  height:28px;
+  transform:translate(-50%,50%);
+  border:5px solid #fff;
+  border-radius:50%;
   background:#1e2440;
-  clip-path:polygon(
-    0 58%,
-    39% 58%,
-    46% 31%,
-    50% 0,
-    54% 31%,
-    61% 58%,
-    100% 58%,
-    100% 100%,
-    0 100%
-  );
+  box-shadow:0 0 0 7px rgba(121,108,240,.12);
+  pointer-events:none;
 }
 
+/* Footer begins immediately after the divider. */
 body[data-page="home"] .footer{
   position:relative;
-  z-index:6;
+  z-index:10;
   margin-top:0!important;
   border-top:0!important;
 }
 
 @media(max-width:980px){
-  body[data-page="home"] .home-journey-end{
-    padding-bottom:62px;
+  body[data-page="home"] .areas-section + .section-shell.section-block{
+    padding-bottom:108px!important;
   }
 
-  body[data-page="home"] .home-journey-end-inner{
-    padding-bottom:98px!important;
-  }
-
-  body[data-page="home"] .home-journey-cut{
-    height:76px;
-    clip-path:polygon(
-      0 62%,
-      26% 62%,
-      36px 16%,
-      44px 0,
-      52px 16%,
-      72px 62%,
-      100% 62%,
-      100% 100%,
-      0 100%
-    );
+  body[data-page="home"] .areas-section + .section-shell.section-block::before{
+    left:18px;
   }
 }
 
 @media(max-width:620px){
-  body[data-page="home"] .home-journey-end{
-    padding-bottom:52px;
+  body[data-page="home"] .areas-section + .section-shell.section-block{
+    padding-bottom:88px!important;
   }
 
-  body[data-page="home"] .home-journey-end-inner{
-    padding-bottom:82px!important;
+  body[data-page="home"] .areas-section + .section-shell.section-block::after{
+    height:14px;
   }
 
-  body[data-page="home"] .home-journey-cut{
-    height:64px;
+  body[data-page="home"] .areas-section + .section-shell.section-block::before{
+    left:12px;
+    bottom:1px;
+    width:22px;
+    height:22px;
+    border-width:4px;
   }
 }
