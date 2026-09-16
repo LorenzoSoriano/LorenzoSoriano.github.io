@@ -1,6 +1,7 @@
-const directContactForm = document.getElementById('direct-contact-form');
+(() => {
+  const directContactForm = document.getElementById('direct-contact-form');
+  if (!directContactForm) return;
 
-if (directContactForm) {
   const submitButton = directContactForm.querySelector('button[type="submit"]');
   const status = directContactForm.querySelector('.contact-status');
 
@@ -13,7 +14,7 @@ if (directContactForm) {
     const message = document.getElementById('contact-message')?.value.trim() || '';
     const lang = document.documentElement.lang === 'it' ? 'it' : 'en';
 
-    if (!recipient || !name || !email || !message) return;
+    if (!recipient || !name || !email || !message || !submitButton || !status) return;
 
     submitButton.disabled = true;
     status.className = 'contact-status';
@@ -51,4 +52,4 @@ if (directContactForm) {
       submitButton.disabled = false;
     }
   });
-}
+})();
