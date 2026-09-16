@@ -4,7 +4,7 @@
   if (!document.querySelector('link[data-home-thread-styles]')) {
     const threadStyles = document.createElement('link');
     threadStyles.rel = 'stylesheet';
-    threadStyles.href = 'home-thread.css?v=1';
+    threadStyles.href = 'home-thread.css?v=2';
     threadStyles.dataset.homeThreadStyles = 'true';
     document.head.appendChild(threadStyles);
   }
@@ -12,19 +12,10 @@
   const main = document.querySelector('main');
   const hero = document.querySelector('.home-hero');
   const grid = document.querySelector('.portal-grid');
-  const endBand = document.querySelector('.home-journey-end');
   const cards = [...document.querySelectorAll('.portal-grid .portal-card')];
   if (!main || !hero || !grid || !cards.length) return;
 
-  if (endBand && !endBand.querySelector('.home-journey-cut')) {
-    const cut = document.createElement('div');
-    cut.className = 'home-journey-cut';
-    cut.setAttribute('aria-hidden', 'true');
-    endBand.appendChild(cut);
-  }
-
   const NS = 'http://www.w3.org/2000/svg';
-
   const svg = document.createElementNS(NS, 'svg');
   svg.classList.add('home-journey-svg');
   svg.setAttribute('aria-hidden', 'true');
@@ -42,7 +33,7 @@
     ['0%', '#796cf0'],
     ['48%', '#5ea0f0'],
     ['78%', '#796cf0'],
-    ['100%', '#f4d75c']
+    ['100%', '#5ea0f0']
   ].forEach(([offset, color]) => {
     const stop = document.createElementNS(NS, 'stop');
     stop.setAttribute('offset', offset);
@@ -57,21 +48,6 @@
   path.classList.add('home-journey-line');
   svg.appendChild(path);
   main.prepend(svg);
-
-  let endSvg = null;
-  let endPath = null;
-
-  if (endBand) {
-    endSvg = document.createElementNS(NS, 'svg');
-    endSvg.classList.add('home-journey-end-thread');
-    endSvg.setAttribute('aria-hidden', 'true');
-    endSvg.setAttribute('preserveAspectRatio', 'none');
-
-    endPath = document.createElementNS(NS, 'path');
-    endPath.classList.add('home-journey-end-line');
-    endSvg.appendChild(endPath);
-    endBand.prepend(endSvg);
-  }
 
   function offsetWithin(element, ancestor, axis) {
     let value = 0;
@@ -118,9 +94,9 @@
     const startY = Math.max(0, heroBottom - Math.min(100, hero.offsetHeight * 0.12));
     const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
 
-    // The route never exposes a visible endpoint: it always reaches the
-    // physical bottom of <main>, where the closing cap/footer hides it.
-    const endY = Math.max(height - 1, nodeYs[nodeYs.length - 1] + 260);
+    // The route continues to the physical end of the Home.
+    // Its endpoint sits behind the divider immediately above the footer.
+    const endY = Math.max(height - 1, nodeYs[nodeYs.length - 1] + 220);
     const anchors = addIntermediateAnchors([startY, ...nodeYs, endY]);
     const mobile = window.matchMedia('(max-width:980px)').matches;
     const amplitude = mobile ? 18 : 38;
@@ -145,25 +121,6 @@
     gradient.setAttribute('y1', startY.toFixed(2));
     gradient.setAttribute('x2', '0');
     gradient.setAttribute('y2', endY.toFixed(2));
-
-    if (endBand && endSvg && endPath) {
-      const bandWidth = endBand.clientWidth;
-      const bandHeight = endBand.offsetHeight;
-      if (bandWidth && bandHeight) {
-        const bandX = offsetWithin(endBand, main, 'x');
-        const localX = Math.max(18, Math.min(bandWidth - 18, axisX - bandX));
-        const sway = mobile ? 16 : 34;
-        const h = bandHeight;
-
-        endSvg.setAttribute('viewBox', `0 0 ${bandWidth} ${bandHeight}`);
-        endPath.setAttribute(
-          'd',
-          `M ${localX.toFixed(2)} -8 ` +
-          `C ${(localX + sway).toFixed(2)} ${(h * .20).toFixed(2)}, ${(localX - sway).toFixed(2)} ${(h * .36).toFixed(2)}, ${localX.toFixed(2)} ${(h * .53).toFixed(2)} ` +
-          `C ${(localX + sway * .76).toFixed(2)} ${(h * .69).toFixed(2)}, ${(localX - sway * .58).toFixed(2)} ${(h * .84).toFixed(2)}, ${localX.toFixed(2)} ${(h + 10).toFixed(2)}`
-        );
-      }
-    }
   }
 
   let frame = 0;
@@ -180,7 +137,6 @@
     const observer = new ResizeObserver(scheduleRedraw);
     observer.observe(main);
     observer.observe(grid);
-    if (endBand) observer.observe(endBand);
     cards.forEach(card => observer.observe(card));
   }
 
