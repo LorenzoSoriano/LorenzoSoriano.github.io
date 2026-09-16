@@ -24,6 +24,7 @@
     last:0,
     width:0,
     height:0,
+    ceiling:0,
     dpr:1,
     paddle:null,
     balls:[],
@@ -199,6 +200,13 @@
     if(power)power.textContent=activePowerText();
   }
 
+  function updateCeiling(){
+    const header=document.querySelector('.site-header');
+    const rect=header?.getBoundingClientRect();
+    state.ceiling=clamp(Math.ceil(rect?.bottom||0),0,Math.max(0,state.height-140));
+    state.root?.style.setProperty('--brick-ceiling',`${state.ceiling}px`);
+  }
+
   function resizeCanvas(){
     if(!state.canvas)return;
     const previousW=state.width||innerWidth;
@@ -211,6 +219,7 @@
     state.canvas.style.width=`${state.width}px`;
     state.canvas.style.height=`${state.height}px`;
     state.ctx.setTransform(state.dpr,0,0,state.dpr,0,0);
+    updateCeiling();
 
     if(state.paddle){
       const ratio=state.width/previousW;
@@ -224,7 +233,7 @@
     if(state.balls.length){
       state.balls.forEach(ball=>{
         ball.x=clamp(ball.x*(state.width/previousW),ball.r,state.width-ball.r);
-        ball.y=clamp(ball.y*(state.height/previousH),ball.r,state.height-ball.r-50);
+        ball.y=clamp(ball.y*(state.height/previousH),state.ceiling+ball.r,state.height-ball.r-50);
       });
     }
     if(state.running&&state.phase==='interface')collectTargets();
@@ -284,7 +293,7 @@
       document.querySelectorAll(selector).forEach(el=>{
         if(seen.has(el)||el.classList.contains('brick-egg-hidden'))return;
         const r=el.getBoundingClientRect();
-        const visible=r.bottom>20&&r.top<state.height-60&&r.right>0&&r.left<state.width;
+        const visible=r.bottom>state.ceiling+4&&r.top<state.height-60&&r.right>0&&r.left<state.width;
         if(!visible||r.width<50||r.height<24)return;
         seen.add(el);
         candidates.push(el);
@@ -316,7 +325,7 @@
     const rows=compact?6:mobile?6:7;
     const gap=mobile?6:8;
     const margin=compact?12:mobile?16:34;
-    const top=mobile?78:92;
+    const top=state.ceiling+(mobile?18:24);
     const available=Math.max(150,state.paddle.y-top-110);
     const h=clamp((available-gap*(rows-1))/rows,mobile?20:24,mobile?27:32);
     const w=(state.width-margin*2-gap*(cols-1))/cols;
@@ -359,6 +368,7 @@
       if(target.alive){target.alive=false;shatterElement(target.el)}
     });
     state.targets=[];
+    document.body.classList.add('brick-egg-phase2');
     state.combo=0;
     state.powerups=[];
     state.brickPhaseStartScore=state.score;
@@ -527,7 +537,7 @@
 
     if(ball.x-ball.r<=0){ball.x=ball.r;ball.vx=Math.abs(ball.vx);playBounce()}
     if(ball.x+ball.r>=state.width){ball.x=state.width-ball.r;ball.vx=-Math.abs(ball.vx);playBounce()}
-    if(ball.y-ball.r<=0){ball.y=ball.r;ball.vy=Math.abs(ball.vy);playBounce()}
+    if(ball.y-ball.r<=state.ceiling){ball.y=state.ceiling+ball.r;ball.vy=Math.abs(ball.vy);playBounce()}
 
     const p=state.paddle;
     if(ball.vy>0&&circleRectCollision(ball,p)){
@@ -715,6 +725,7 @@
 
   function restartGame(){
     if(!state.running)return;
+    document.body.classList.remove('brick-egg-phase2');
     resetInterface();
     state.root?.querySelectorAll('.brick-egg-fragment').forEach(el=>el.remove());
     hideResult();
@@ -844,6 +855,7 @@
     state.wideUntil=0;
     state.slowUntil=0;
 
+    document.body.classList.remove('brick-egg-phase2');
     document.documentElement.classList.add('brick-egg-running');
     document.body.classList.add('brick-egg-running');
     createUi();
@@ -876,6 +888,7 @@
       window.removeEventListener('resize',state.resizeHandler);
       window.visualViewport?.removeEventListener('resize',state.resizeHandler);
     }
+    document.body.classList.remove('brick-egg-phase2');
     resetInterface();
     state.root?.remove();
     state.root=null;
