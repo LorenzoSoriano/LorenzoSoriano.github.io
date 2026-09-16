@@ -10,9 +10,6 @@
 
   pageMain.style.position = 'relative';
   pageMain.style.isolation = 'isolate';
-  // The journey must never render outside page-main. This keeps the correctly
-  // positioned closing portal visible while clipping any decorative overflow
-  // before the footer.
   pageMain.style.overflow = CSS.supports('overflow', 'clip') ? 'clip' : 'hidden';
   flowSections.forEach(item => {
     item.style.position = 'relative';
@@ -26,25 +23,30 @@
     const node = document.createElement('span');
     node.className = 'design-journey-divider-node';
     divider.appendChild(node);
-    pageMain.appendChild(divider);
     return { divider, node };
   };
 
   const startDivider = makeDivider('start');
   const endDivider = makeDivider('end');
 
-  // The closing boundary is deliberately part of normal flow. This makes it
-  // impossible for it to render after the footer when zoom or viewport changes.
-  Object.assign(endDivider.divider.style, {
-    position: 'relative',
-    left: '0',
-    right: 'auto',
-    width: '100%',
-    transform: 'none',
-    margin: '0'
+  // Both portals are now real flow elements. The opening portal sits between
+  // the page intro and the journey, while the closing portal sits immediately
+  // before the footer. This keeps both visible even with page clipping enabled.
+  pageMain.insertBefore(startDivider.divider, section);
+  pageMain.appendChild(endDivider.divider);
+
+  [startDivider, endDivider].forEach(({ divider }) => {
+    Object.assign(divider.style, {
+      position: 'relative',
+      left: '0',
+      right: 'auto',
+      width: '100%',
+      transform: 'none',
+      margin: '0'
+    });
   });
 
-  // Keep the skills section reasonably close to the final boundary.
+  // Keep the skills section close to the final boundary.
   const lastContentSection = flowSections[flowSections.length - 1];
   lastContentSection.style.paddingBottom = '52px';
 
@@ -112,11 +114,6 @@
     return nodeRect.top + nodeRect.height / 2 - dividerRect.top;
   }
 
-  function positionDividerNodeAt(dividerData, targetY) {
-    const localCenter = visualNodeCenter(dividerData);
-    dividerData.divider.style.top = `${(targetY - localCenter).toFixed(2)}px`;
-  }
-
   function addIntermediateAnchors(points, maxGap = 300) {
     const result = [points[0]];
     for (let i = 1; i < points.length; i += 1) {
@@ -138,18 +135,15 @@
     const mobile = window.matchMedia('(max-width:980px)').matches;
     const stem = mobile ? 34 : 50;
 
-    const sectionTop = offsetWithin(section, pageMain, 'y');
-    const startY = sectionTop + 8;
-
-    // The end point is the centre of the in-flow boundary, immediately before footer.
+    // Start/end are measured from the actual in-flow portal nodes, so the path
+    // visibly grows out of the opening ring and terminates in the closing ring.
+    const startY = offsetWithin(startDivider.divider, pageMain, 'y') + visualNodeCenter(startDivider);
     const contentBottom = offsetWithin(endDivider.divider, pageMain, 'y') + endDivider.divider.offsetHeight;
     const endY = offsetWithin(endDivider.divider, pageMain, 'y') + visualNodeCenter(endDivider);
     if (!contentBottom || endY <= startY) return;
 
     svg.style.height = `${contentBottom}px`;
     svg.setAttribute('viewBox', `0 0 ${width} ${contentBottom}`);
-
-    positionDividerNodeAt(startDivider, startY);
 
     const pageRect = pageMain.getBoundingClientRect();
     const routeViewportX = pageRect.left + axisX;
@@ -198,6 +192,8 @@
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(schedule);
     flowSections.forEach(item => observer.observe(item));
+    observer.observe(startDivider.divider);
+    observer.observe(endDivider.divider);
     observer.observe(grid);
     cards.forEach(card => observer.observe(card));
   }
