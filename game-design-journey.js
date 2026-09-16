@@ -1,19 +1,20 @@
 (() => {
   if (document.body.dataset.page !== 'game-design') return;
 
+  const pageMain = document.querySelector('.page-main');
   const section = document.querySelector('.design-journey-section');
   const grid = document.querySelector('.design-journey-grid');
   const cards = [...document.querySelectorAll('.design-journey-card')];
-  if (!section || !grid || !cards.length) return;
+  const flowSections = [...pageMain?.querySelectorAll(':scope > section') || []];
+  if (!pageMain || !section || !grid || !cards.length || !flowSections.length) return;
 
-  section.style.position = 'relative';
-  section.style.zIndex = '2';
-  section.style.overflow = 'visible';
-  const nextSection = section.nextElementSibling;
-  if (nextSection) {
-    nextSection.style.position = 'relative';
-    nextSection.style.zIndex = '1';
-  }
+  pageMain.style.position = 'relative';
+  pageMain.style.isolation = 'isolate';
+  pageMain.style.overflow = 'visible';
+  flowSections.forEach(item => {
+    item.style.position = 'relative';
+    item.style.zIndex = '1';
+  });
 
   const makeDivider = modifier => {
     const divider = document.createElement('div');
@@ -22,7 +23,7 @@
     const node = document.createElement('span');
     node.className = 'design-journey-divider-node';
     divider.appendChild(node);
-    section.appendChild(divider);
+    pageMain.appendChild(divider);
     return { divider, node };
   };
 
@@ -34,6 +35,11 @@
   svg.classList.add('design-journey-svg');
   svg.setAttribute('aria-hidden', 'true');
   svg.setAttribute('preserveAspectRatio', 'none');
+  svg.style.position = 'absolute';
+  svg.style.inset = '0 auto auto 0';
+  svg.style.width = '100%';
+  svg.style.zIndex = '0';
+  svg.style.pointerEvents = 'none';
 
   const defs = document.createElementNS(NS, 'defs');
   const gradient = document.createElementNS(NS, 'linearGradient');
@@ -61,7 +67,7 @@
   const path = document.createElementNS(NS, 'path');
   path.classList.add('design-journey-line');
   svg.appendChild(path);
-  section.prepend(svg);
+  pageMain.prepend(svg);
 
   function offsetWithin(element, ancestor, axis) {
     let value = 0;
@@ -75,45 +81,75 @@
   }
 
   function routeAxisX() {
-    const gridLeft = offsetWithin(grid, section, 'x');
+    const gridLeft = offsetWithin(grid, pageMain, 'x');
     if (window.matchMedia('(max-width:620px)').matches) return gridLeft + 12;
     if (window.matchMedia('(max-width:980px)').matches) return gridLeft + 18;
     return gridLeft + grid.offsetWidth / 2;
   }
 
-  function nodeCenterWithin(dividerData) {
-    return dividerData.node.offsetTop + dividerData.node.offsetHeight / 2;
+  function visualNodeCenter(dividerData) {
+    const dividerRect = dividerData.divider.getBoundingClientRect();
+    const nodeRect = dividerData.node.getBoundingClientRect();
+    return nodeRect.top + nodeRect.height / 2 - dividerRect.top;
   }
 
-  function positionDividerAt(dividerData, targetY) {
-    dividerData.divider.style.top = `${(targetY - nodeCenterWithin(dividerData)).toFixed(2)}px`;
+  function positionDividerNodeAt(dividerData, targetY) {
+    const localCenter = visualNodeCenter(dividerData);
+    dividerData.divider.style.top = `${(targetY - localCenter).toFixed(2)}px`;
+  }
+
+  function addIntermediateAnchors(points, maxGap = 300) {
+    const result = [points[0]];
+    for (let i = 1; i < points.length; i += 1) {
+      const previous = result[result.length - 1];
+      const target = points[i];
+      const gap = target - previous;
+      const pieces = Math.max(1, Math.ceil(Math.abs(gap) / maxGap));
+      for (let p = 1; p < pieces; p += 1) result.push(previous + gap * (p / pieces));
+      result.push(target);
+    }
+    return result;
+  }
+
+  function layoutBottom() {
+    const last = flowSections[flowSections.length - 1];
+    return offsetWithin(last, pageMain, 'y') + last.offsetHeight;
   }
 
   function redraw() {
-    const width = section.clientWidth;
-    const height = section.scrollHeight;
-    if (!width || !height) return;
+    const width = pageMain.clientWidth;
+    const contentBottom = layoutBottom();
+    if (!width || !contentBottom) return;
 
-    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.style.height = `${contentBottom}px`;
+    svg.setAttribute('viewBox', `0 0 ${width} ${contentBottom}`);
 
     const axisX = routeAxisX();
     const mobile = window.matchMedia('(max-width:980px)').matches;
     const stem = mobile ? 34 : 50;
-    const startY = 8;
-    const endY = Math.max(startY + stem * 2 + 1, height - 8);
-    const nodeYs = cards.map(card => offsetWithin(card, section, 'y') + card.offsetHeight / 2);
-    const anchors = [startY + stem, ...nodeYs, endY - stem];
+
+    const sectionTop = offsetWithin(section, pageMain, 'y');
+    const startY = sectionTop + 8;
+
+    // The journey no longer stops at the end of the project cards. The closing
+    // portal is anchored to the bottom of page-main, immediately before footer.
+    const endDividerHeight = endDivider.divider.offsetHeight || 96;
+    endDivider.divider.style.top = `${Math.max(startY + 160, contentBottom - endDividerHeight)}px`;
+    const endY = (parseFloat(endDivider.divider.style.top) || 0) + visualNodeCenter(endDivider);
+
+    positionDividerNodeAt(startDivider, startY);
+
+    const pageRect = pageMain.getBoundingClientRect();
+    const routeViewportX = pageRect.left + axisX;
+    const startRect = startDivider.divider.getBoundingClientRect();
+    const endRect = endDivider.divider.getBoundingClientRect();
+    startDivider.node.style.left = `${(routeViewportX - startRect.left).toFixed(2)}px`;
+    endDivider.node.style.left = `${(routeViewportX - endRect.left).toFixed(2)}px`;
+
+    const nodeYs = cards.map(card => offsetWithin(card, pageMain, 'y') + card.offsetHeight / 2);
+    const continuationStart = nodeYs[nodeYs.length - 1] + stem;
+    const anchors = addIntermediateAnchors([startY + stem, ...nodeYs, continuationStart, endY - stem]);
     const amplitude = mobile ? 18 : 38;
-
-    positionDividerAt(startDivider, startY);
-    positionDividerAt(endDivider, endY);
-
-    const sectionRect = section.getBoundingClientRect();
-    const startDividerRect = startDivider.divider.getBoundingClientRect();
-    const endDividerRect = endDivider.divider.getBoundingClientRect();
-    const routeViewportX = sectionRect.left + axisX;
-    startDivider.node.style.left = `${(routeViewportX - startDividerRect.left).toFixed(2)}px`;
-    endDivider.node.style.left = `${(routeViewportX - endDividerRect.left).toFixed(2)}px`;
 
     let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)} L ${axisX.toFixed(2)} ${(startY + stem).toFixed(2)}`;
 
@@ -122,7 +158,7 @@
       const y1 = anchors[i + 1];
       const dy = y1 - y0;
       const side = i % 2 === 0 ? 1 : -1;
-      const curve = Math.min(amplitude, Math.max(12, dy * .22));
+      const curve = Math.min(amplitude, Math.max(10, Math.abs(dy) * .18));
       const cx = axisX + side * curve;
       d += ` C ${cx.toFixed(2)} ${(y0 + dy * .32).toFixed(2)}, ${cx.toFixed(2)} ${(y0 + dy * .68).toFixed(2)}, ${axisX.toFixed(2)} ${y1.toFixed(2)}`;
     }
@@ -144,12 +180,15 @@
   };
 
   window.addEventListener('resize', schedule, { passive:true });
+  window.addEventListener('orientationchange', schedule, { passive:true });
   window.addEventListener('load', schedule, { once:true });
   document.fonts?.ready?.then(schedule);
 
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(schedule);
-    observer.observe(section);
+    // Observe only real-flow sections/cards. The generated overlay is excluded
+    // so zoom cannot recursively increase the page height.
+    flowSections.forEach(item => observer.observe(item));
     observer.observe(grid);
     cards.forEach(card => observer.observe(card));
   }
