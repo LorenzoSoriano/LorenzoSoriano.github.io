@@ -4,7 +4,7 @@
   if (!document.querySelector('link[data-home-thread-styles]')) {
     const threadStyles = document.createElement('link');
     threadStyles.rel = 'stylesheet';
-    threadStyles.href = 'home-thread.css?v=3';
+    threadStyles.href = 'home-thread.css?v=4';
     threadStyles.dataset.homeThreadStyles = 'true';
     document.head.appendChild(threadStyles);
   }
@@ -104,13 +104,13 @@
     const axisX = routeAxisX();
     const heroBottom = offsetWithin(hero, main, 'y') + hero.offsetHeight;
     const dividerHeight = window.matchMedia('(max-width:620px)').matches ? 14 : 18;
-
-    // The upper boundary now hugs the hero instead of floating far below it.
-    const startY = Math.min(height - 1, heroBottom + dividerHeight * 0.5 + 8);
-    const endY = Math.max(startY + 1, height - dividerHeight * 0.5);
-    const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
-    const anchors = addIntermediateAnchors([startY, ...nodeYs, endY]);
     const mobile = window.matchMedia('(max-width:980px)').matches;
+    const stem = mobile ? 34 : 48;
+
+    const startY = Math.min(height - 1, heroBottom + dividerHeight * 0.5 + 8);
+    const endY = Math.max(startY + stem * 2 + 1, height - dividerHeight * 0.5);
+    const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
+    const anchors = addIntermediateAnchors([startY + stem, ...nodeYs, endY - stem]);
     const amplitude = mobile ? 18 : 38;
 
     startDivider.divider.style.top = `${(startY - dividerHeight / 2).toFixed(2)}px`;
@@ -118,7 +118,10 @@
     startDivider.node.style.left = `${axisX.toFixed(2)}px`;
     endDivider.node.style.left = `${axisX.toFixed(2)}px`;
 
-    let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)}`;
+    // A straight stem enters/leaves each node before the route starts curving.
+    // This keeps the line optically and geometrically centred on the divider nodes.
+    let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)} L ${axisX.toFixed(2)} ${(startY + stem).toFixed(2)}`;
+
     for (let i = 0; i < anchors.length - 1; i += 1) {
       const y0 = anchors[i];
       const y1 = anchors[i + 1];
@@ -130,6 +133,8 @@
       const cp2y = y0 + dy * 0.68;
       d += ` C ${cx.toFixed(2)} ${cp1y.toFixed(2)}, ${cx.toFixed(2)} ${cp2y.toFixed(2)}, ${axisX.toFixed(2)} ${y1.toFixed(2)}`;
     }
+
+    d += ` L ${axisX.toFixed(2)} ${endY.toFixed(2)}`;
 
     path.setAttribute('d', d);
     gradient.setAttribute('gradientUnits', 'userSpaceOnUse');
