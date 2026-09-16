@@ -169,7 +169,7 @@ function buildPrimaryNav() {
     }
   });
 
-  if (['game-dev','3d-art','game-design','narrative','production','vitis','remember','serious','nolight','momentum','legend','beyond','dissonant'].includes(page)) {
+  if (['game-dev','3d-art','game-design','design-studies','narrative','production','vitis','remember','serious','nolight','momentum','legend','beyond','dissonant'].includes(page)) {
     toggle?.classList.add('active');
   }
 }
