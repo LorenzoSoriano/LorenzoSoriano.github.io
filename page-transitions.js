@@ -1,4 +1,12 @@
 (() => {
+  if (!document.querySelector('link[data-zoom-resilience]')) {
+    const zoomStyles = document.createElement('link');
+    zoomStyles.rel = 'stylesheet';
+    zoomStyles.href = 'zoom-resilience.css?v=1';
+    zoomStyles.dataset.zoomResilience = 'true';
+    document.head.appendChild(zoomStyles);
+  }
+
   const style = document.createElement('style');
   style.textContent = `
     body{
