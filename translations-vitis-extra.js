@@ -18,8 +18,12 @@ Object.assign(window.TRANSLATIONS.en, {
   "vitis.approachLabel":"Approach",
   "vitis.approachTitle":"A focused authoring workflow.",
   "vitis.approachDesc":"The World Editor is designed to quickly add and modify terrain, rivers, props, nature and climate from a unified workflow. Its purpose is to accelerate world building and iteration, rather than become a separate level-planning tool.",
-  "vitis.progressTitle":"Work in progress",
-  "vitis.progressDesc":"Vitis is still evolving. The tools and visual systems are refined while the world itself is being built, so production needs continuously influence how each system develops."
+  "vitis.progressKicker":"VITIS / WORK IN PROGRESS",
+  "vitis.progressTitle":"A project that grows together with its tools.",
+  "vitis.progressDesc":"Vitis is still in active development. World building, rendering, water, climate and authoring tools are refined alongside the world itself, so real production needs continuously guide what gets improved next.",
+  "vitis.progressPanelLabel":"CURRENT FOCUS",
+  "vitis.progressPanelTitle":"Building the world while improving the pipeline.",
+  "vitis.progressPanelDesc":"World Editor · Water System · Climate · Pixel Art Rendering · Environment Authoring"
 });
 
 Object.assign(window.TRANSLATIONS.it, {
@@ -40,6 +44,10 @@ Object.assign(window.TRANSLATIONS.it, {
   "vitis.approachLabel":"Approccio",
   "vitis.approachTitle":"Un workflow di authoring mirato.",
   "vitis.approachDesc":"Il World Editor è progettato per aggiungere e modificare rapidamente terreno, fiumi, prop, natura e clima da un workflow unificato. Il suo scopo è accelerare il world building e l’iterazione, non diventare uno strumento separato di pianificazione del level design.",
-  "vitis.progressTitle":"Work in progress",
-  "vitis.progressDesc":"Vitis è ancora in evoluzione. Tool e sistemi visivi vengono raffinati mentre il mondo viene costruito, quindi le necessità reali della produzione continuano a influenzare lo sviluppo di ogni sistema."
+  "vitis.progressKicker":"VITIS / WORK IN PROGRESS",
+  "vitis.progressTitle":"Un progetto che cresce insieme ai suoi strumenti.",
+  "vitis.progressDesc":"Vitis è ancora in sviluppo attivo. World building, rendering, acqua, clima e strumenti di authoring vengono raffinati insieme al mondo di gioco, così le esigenze reali della produzione guidano continuamente cosa migliorare e sviluppare dopo.",
+  "vitis.progressPanelLabel":"FOCUS ATTUALE",
+  "vitis.progressPanelTitle":"Costruire il mondo mentre migliora anche la pipeline.",
+  "vitis.progressPanelDesc":"World Editor · Sistema Acqua · Clima · Pixel Art Rendering · Environment Authoring"
 });
