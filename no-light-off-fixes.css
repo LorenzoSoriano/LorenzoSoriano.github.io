@@ -4,9 +4,9 @@ body[data-page="nolight"] .nolight-hero-image{
 }
 
 body[data-page="nolight"] .nolight-hero-image img{
-  transform:scale(1.12);
+  transform:scale(1.18);
   transform-origin:center;
-  object-position:45% 50%;
+  object-position:44% 50%;
 }
 
 body[data-page="nolight"] .nolight-gallery-wrap{
@@ -37,9 +37,18 @@ body[data-page="nolight"] .nolight-gallery-slide img{
   image-rendering:auto;
 }
 
+body[data-page="nolight"] .nolight-related-section{
+  padding-top:20px!important;
+  padding-bottom:44px!important;
+}
+
+body[data-page="nolight"] .nolight-related-section .related-links{
+  margin-top:0;
+}
+
 @media(max-width:980px){
   body[data-page="nolight"] .nolight-hero-image img{
-    transform:scale(1.08);
+    transform:scale(1.13);
     object-position:44% 50%;
   }
 }
@@ -48,7 +57,11 @@ body[data-page="nolight"] .nolight-gallery-slide img{
   body[data-page="nolight"] .nolight-gallery-wrap{margin-top:58px}
   body[data-page="nolight"] .nolight-gallery-heading p{margin-left:14px}
   body[data-page="nolight"] .nolight-hero-image img{
-    transform:scale(1.04);
-    object-position:42% 50%;
+    transform:scale(1.08);
+    object-position:43% 50%;
+  }
+  body[data-page="nolight"] .nolight-related-section{
+    padding-top:12px!important;
+    padding-bottom:34px!important;
   }
 }
