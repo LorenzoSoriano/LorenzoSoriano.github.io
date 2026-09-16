@@ -1,0 +1,33 @@
+/* No Light Off — PNG asset layout + gallery hierarchy */
+body[data-page="nolight"] .nolight-gallery-wrap{
+  margin-top:72px;
+}
+
+body[data-page="nolight"] .nolight-gallery-heading{
+  margin-bottom:24px;
+}
+
+body[data-page="nolight"] .nolight-gallery-heading h3{
+  margin:0;
+  font-size:var(--type-section,clamp(27px,2.2vw,34px));
+  line-height:1.05;
+  letter-spacing:-.04em;
+  font-weight:700;
+}
+
+body[data-page="nolight"] .nolight-gallery-heading p{
+  margin:10px 0 0 30px;
+  max-width:680px;
+  color:var(--muted);
+  font-size:var(--type-subtitle,16px);
+  line-height:1.55;
+}
+
+body[data-page="nolight"] .nolight-gallery-slide img{
+  image-rendering:auto;
+}
+
+@media(max-width:620px){
+  body[data-page="nolight"] .nolight-gallery-wrap{margin-top:54px}
+  body[data-page="nolight"] .nolight-gallery-heading p{margin-left:14px}
+}
