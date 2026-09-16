@@ -1,12 +1,27 @@
 (() => {
   if (document.body.dataset.page !== 'home') return;
 
+  if (!document.querySelector('link[data-home-thread-styles]')) {
+    const threadStyles = document.createElement('link');
+    threadStyles.rel = 'stylesheet';
+    threadStyles.href = 'home-thread.css?v=1';
+    threadStyles.dataset.homeThreadStyles = 'true';
+    document.head.appendChild(threadStyles);
+  }
+
   const main = document.querySelector('main');
   const hero = document.querySelector('.home-hero');
   const grid = document.querySelector('.portal-grid');
   const endBand = document.querySelector('.home-journey-end');
   const cards = [...document.querySelectorAll('.portal-grid .portal-card')];
   if (!main || !hero || !grid || !cards.length) return;
+
+  if (endBand && !endBand.querySelector('.home-journey-cut')) {
+    const cut = document.createElement('div');
+    cut.className = 'home-journey-cut';
+    cut.setAttribute('aria-hidden', 'true');
+    endBand.appendChild(cut);
+  }
 
   const NS = 'http://www.w3.org/2000/svg';
 
@@ -103,8 +118,8 @@
     const startY = Math.max(0, heroBottom - Math.min(100, hero.offsetHeight * 0.12));
     const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
 
-    // Never terminate the route in open white space. It always continues to the
-    // physical bottom of <main>, where the closing section/footer hides its end.
+    // The route never exposes a visible endpoint: it always reaches the
+    // physical bottom of <main>, where the closing cap/footer hides it.
     const endY = Math.max(height - 1, nodeYs[nodeYs.length - 1] + 260);
     const anchors = addIntermediateAnchors([startY, ...nodeYs, endY]);
     const mobile = window.matchMedia('(max-width:980px)').matches;
@@ -131,9 +146,6 @@
     gradient.setAttribute('x2', '0');
     gradient.setAttribute('y2', endY.toFixed(2));
 
-    // The coloured closing section has its own visible continuation of the same
-    // route. This lets the line run all the way into the footer instead of being
-    // hidden abruptly by the section background.
     if (endBand && endSvg && endPath) {
       const bandWidth = endBand.clientWidth;
       const bandHeight = endBand.offsetHeight;
