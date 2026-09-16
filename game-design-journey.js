@@ -1,10 +1,24 @@
 (() => {
   if (document.body.dataset.page !== 'game-design') return;
 
-  const wrap = document.querySelector('.design-journey-wrap');
+  const section = document.querySelector('.design-journey-section');
   const grid = document.querySelector('.design-journey-grid');
   const cards = [...document.querySelectorAll('.design-journey-card')];
-  if (!wrap || !grid || !cards.length) return;
+  if (!section || !grid || !cards.length) return;
+
+  const makeDivider = modifier => {
+    const divider = document.createElement('div');
+    divider.className = `design-journey-divider design-journey-divider--${modifier}`;
+    divider.setAttribute('aria-hidden', 'true');
+    const node = document.createElement('span');
+    node.className = 'design-journey-divider-node';
+    divider.appendChild(node);
+    section.appendChild(divider);
+    return { divider, node };
+  };
+
+  const startDivider = makeDivider('start');
+  const endDivider = makeDivider('end');
 
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
@@ -38,7 +52,7 @@
   const path = document.createElementNS(NS, 'path');
   path.classList.add('design-journey-line');
   svg.appendChild(path);
-  wrap.prepend(svg);
+  section.prepend(svg);
 
   function offsetWithin(element, ancestor, axis) {
     let value = 0;
@@ -52,27 +66,32 @@
   }
 
   function routeAxisX() {
-    const gridLeft = offsetWithin(grid, wrap, 'x');
+    const gridLeft = offsetWithin(grid, section, 'x');
     if (window.matchMedia('(max-width:620px)').matches) return gridLeft + 12;
     if (window.matchMedia('(max-width:980px)').matches) return gridLeft + 18;
     return gridLeft + grid.offsetWidth / 2;
   }
 
   function redraw() {
-    const width = wrap.clientWidth;
-    const height = wrap.scrollHeight;
+    const width = section.clientWidth;
+    const height = section.scrollHeight;
     if (!width || !height) return;
 
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
     const axisX = routeAxisX();
-    const nodeYs = cards.map(card => offsetWithin(card, wrap, 'y') + card.offsetHeight / 2);
-    const startY = Math.max(0, nodeYs[0] - 90);
-    const endY = Math.min(height, nodeYs[nodeYs.length - 1] + 90);
+    const dividerHeight = window.matchMedia('(max-width:620px)').matches ? 14 : 18;
+    const startY = dividerHeight / 2;
+    const endY = Math.max(startY + 1, height - dividerHeight / 2);
+    const nodeYs = cards.map(card => offsetWithin(card, section, 'y') + card.offsetHeight / 2);
     const anchors = [startY, ...nodeYs, endY];
     const mobile = window.matchMedia('(max-width:980px)').matches;
     const amplitude = mobile ? 18 : 38;
 
-    let d = `M ${axisX.toFixed(2)} ${anchors[0].toFixed(2)}`;
+    startDivider.node.style.left = `${axisX.toFixed(2)}px`;
+    endDivider.node.style.left = `${axisX.toFixed(2)}px`;
+
+    let d = `M ${axisX.toFixed(2)} ${startY.toFixed(2)}`;
     for (let i = 0; i < anchors.length - 1; i += 1) {
       const y0 = anchors[i];
       const y1 = anchors[i + 1];
@@ -85,7 +104,9 @@
 
     path.setAttribute('d', d);
     gradient.setAttribute('gradientUnits', 'userSpaceOnUse');
+    gradient.setAttribute('x1', '0');
     gradient.setAttribute('y1', startY.toFixed(2));
+    gradient.setAttribute('x2', '0');
     gradient.setAttribute('y2', endY.toFixed(2));
   }
 
@@ -101,7 +122,7 @@
 
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(schedule);
-    observer.observe(wrap);
+    observer.observe(section);
     observer.observe(grid);
     cards.forEach(card => observer.observe(card));
   }
