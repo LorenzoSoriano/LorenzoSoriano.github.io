@@ -29,8 +29,13 @@ Object.assign(window.TRANSLATIONS.en, {
   "remember.awardTitle":"Rome Game Dev Jam 2025",
   "remember.awardDesc":"The project received the award for Best Sound Effects and Soundtrack.",
   "remember.openGame":"Open game page ↗",
-  "remember.nextTitle":"A small project with a clear idea at its center.",
-  "remember.nextDesc":"The case study will grow with screenshots, development notes and a more detailed breakdown of the game jam process.",
+  "remember.raccoonKicker":"RACCOON INTERACTIVE / GAME JAM TEAM",
+  "remember.raccoonTitle":"A 48-hour project built as Raccoon Interactive.",
+  "remember.raccoonDesc":"Remember to Wait was created by Raccoon Interactive during the Rome Game Dev Jam 2025. The game is available on the team's itch.io page.",
+  "remember.playGame":"Play Remember to Wait ↗",
+  "remember.visitRaccoon":"Raccoon Interactive on itch.io ↗",
+  "remember.raccoonPanelLabel":"TEAM PROJECT",
+  "remember.raccoonPanelDesc":"The name behind Remember to Wait and the team page where the project can be discovered and downloaded.",
   "remember.back":"Back to Game Development"
 });
 
@@ -63,8 +68,13 @@ Object.assign(window.TRANSLATIONS.it, {
   "remember.awardTitle":"Rome Game Dev Jam 2025",
   "remember.awardDesc":"Il progetto ha ricevuto il premio “Migliori Effetti Sonori e Colonna Sonora”.",
   "remember.openGame":"Apri la pagina del gioco ↗",
-  "remember.nextTitle":"Un piccolo progetto costruito attorno a un'idea chiara.",
-  "remember.nextDesc":"Il case study verrà ampliato con screenshot, note di sviluppo e un breakdown più dettagliato del processo della game jam.",
+  "remember.raccoonKicker":"RACCOON INTERACTIVE / TEAM GAME JAM",
+  "remember.raccoonTitle":"Un progetto costruito in 48 ore come Raccoon Interactive.",
+  "remember.raccoonDesc":"Remember to Wait è stato realizzato da Raccoon Interactive durante la Rome Game Dev Jam 2025. Il gioco è disponibile sulla pagina itch.io del team.",
+  "remember.playGame":"Gioca a Remember to Wait ↗",
+  "remember.visitRaccoon":"Raccoon Interactive su itch.io ↗",
+  "remember.raccoonPanelLabel":"PROGETTO DI TEAM",
+  "remember.raccoonPanelDesc":"Il nome dietro Remember to Wait e la pagina del team da cui è possibile scoprire e scaricare il progetto.",
   "remember.back":"Torna a Game Development"
 });
 
