@@ -1,0 +1,13 @@
+/* Global decorative hero artwork must stay behind real page content. */
+.page-intro{
+  isolation:isolate;
+}
+
+.page-intro::after{
+  z-index:-1!important;
+}
+
+.page-intro > *{
+  position:relative;
+  z-index:1;
+}
