@@ -9,6 +9,7 @@
   if (!main || !hero || !grid || !cards.length) return;
 
   const NS = 'http://www.w3.org/2000/svg';
+
   const svg = document.createElementNS(NS, 'svg');
   svg.classList.add('home-journey-svg');
   svg.setAttribute('aria-hidden', 'true');
@@ -41,6 +42,21 @@
   path.classList.add('home-journey-line');
   svg.appendChild(path);
   main.prepend(svg);
+
+  let endSvg = null;
+  let endPath = null;
+
+  if (endBand) {
+    endSvg = document.createElementNS(NS, 'svg');
+    endSvg.classList.add('home-journey-end-thread');
+    endSvg.setAttribute('aria-hidden', 'true');
+    endSvg.setAttribute('preserveAspectRatio', 'none');
+
+    endPath = document.createElementNS(NS, 'path');
+    endPath.classList.add('home-journey-end-line');
+    endSvg.appendChild(endPath);
+    endBand.prepend(endSvg);
+  }
 
   function offsetWithin(element, ancestor, axis) {
     let value = 0;
@@ -86,10 +102,10 @@
     const heroBottom = offsetWithin(hero, main, 'y') + hero.offsetHeight;
     const startY = Math.max(0, heroBottom - Math.min(100, hero.offsetHeight * 0.12));
     const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
-    const endY = endBand
-      ? offsetWithin(endBand, main, 'y') + Math.min(130, endBand.offsetHeight * 0.34)
-      : Math.max(nodeYs[nodeYs.length - 1] + 120, height - 2);
 
+    // Never terminate the route in open white space. It always continues to the
+    // physical bottom of <main>, where the closing section/footer hides its end.
+    const endY = Math.max(height - 1, nodeYs[nodeYs.length - 1] + 260);
     const anchors = addIntermediateAnchors([startY, ...nodeYs, endY]);
     const mobile = window.matchMedia('(max-width:980px)').matches;
     const amplitude = mobile ? 18 : 38;
@@ -114,6 +130,28 @@
     gradient.setAttribute('y1', startY.toFixed(2));
     gradient.setAttribute('x2', '0');
     gradient.setAttribute('y2', endY.toFixed(2));
+
+    // The coloured closing section has its own visible continuation of the same
+    // route. This lets the line run all the way into the footer instead of being
+    // hidden abruptly by the section background.
+    if (endBand && endSvg && endPath) {
+      const bandWidth = endBand.clientWidth;
+      const bandHeight = endBand.offsetHeight;
+      if (bandWidth && bandHeight) {
+        const bandX = offsetWithin(endBand, main, 'x');
+        const localX = Math.max(18, Math.min(bandWidth - 18, axisX - bandX));
+        const sway = mobile ? 16 : 34;
+        const h = bandHeight;
+
+        endSvg.setAttribute('viewBox', `0 0 ${bandWidth} ${bandHeight}`);
+        endPath.setAttribute(
+          'd',
+          `M ${localX.toFixed(2)} -8 ` +
+          `C ${(localX + sway).toFixed(2)} ${(h * .20).toFixed(2)}, ${(localX - sway).toFixed(2)} ${(h * .36).toFixed(2)}, ${localX.toFixed(2)} ${(h * .53).toFixed(2)} ` +
+          `C ${(localX + sway * .76).toFixed(2)} ${(h * .69).toFixed(2)}, ${(localX - sway * .58).toFixed(2)} ${(h * .84).toFixed(2)}, ${localX.toFixed(2)} ${(h + 10).toFixed(2)}`
+        );
+      }
+    }
   }
 
   let frame = 0;
