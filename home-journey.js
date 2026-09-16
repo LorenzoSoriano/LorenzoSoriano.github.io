@@ -4,7 +4,7 @@
   if (!document.querySelector('link[data-home-thread-styles]')) {
     const threadStyles = document.createElement('link');
     threadStyles.rel = 'stylesheet';
-    threadStyles.href = 'home-thread.css?v=5';
+    threadStyles.href = 'home-thread.css?v=6';
     threadStyles.dataset.homeThreadStyles = 'true';
     document.head.appendChild(threadStyles);
   }
@@ -13,7 +13,8 @@
   const hero = document.querySelector('.home-hero');
   const grid = document.querySelector('.portal-grid');
   const cards = [...document.querySelectorAll('.portal-grid .portal-card')];
-  if (!main || !hero || !grid || !cards.length) return;
+  const realSections = [...main?.querySelectorAll(':scope > section') || []];
+  if (!main || !hero || !grid || !cards.length || !realSections.length) return;
 
   const makeDivider = modifier => {
     const divider = document.createElement('div');
@@ -87,42 +88,59 @@
       const previous = result[result.length - 1];
       const target = points[i];
       const gap = target - previous;
-      const pieces = Math.ceil(gap / maxGap);
+      const pieces = Math.max(1, Math.ceil(Math.abs(gap) / maxGap));
       for (let p = 1; p < pieces; p += 1) result.push(previous + gap * (p / pieces));
       result.push(target);
     }
     return result;
   }
 
-  function nodeCenterWithin(dividerData) {
-    return dividerData.node.offsetTop + dividerData.node.offsetHeight / 2;
+  // Visual centre of the transformed ring. offsetTop is not enough because
+  // translate(-50%, -50%) changes the rendered centre without changing offsetTop.
+  function visualNodeCenter(dividerData) {
+    const dividerRect = dividerData.divider.getBoundingClientRect();
+    const nodeRect = dividerData.node.getBoundingClientRect();
+    return nodeRect.top + nodeRect.height / 2 - dividerRect.top;
   }
 
-  function positionDividerAt(dividerData, targetY) {
-    dividerData.divider.style.top = `${(targetY - nodeCenterWithin(dividerData)).toFixed(2)}px`;
+  function positionDividerNodeAt(dividerData, targetY) {
+    const localCenter = visualNodeCenter(dividerData);
+    dividerData.divider.style.top = `${(targetY - localCenter).toFixed(2)}px`;
+  }
+
+  function layoutBottom() {
+    const last = realSections[realSections.length - 1];
+    return offsetWithin(last, main, 'y') + last.offsetHeight;
   }
 
   function redrawJourney() {
     const width = main.clientWidth;
-    const height = main.scrollHeight;
-    if (!width || !height) return;
+    const contentBottom = layoutBottom();
+    if (!width || !contentBottom) return;
 
-    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    // Never use scrollHeight here: absolutely positioned journey elements are
+    // intentionally allowed to overflow and must not feed back into page height.
+    svg.style.height = `${contentBottom}px`;
+    svg.setAttribute('viewBox', `0 0 ${width} ${contentBottom}`);
 
     const axisX = routeAxisX();
     const heroBottom = offsetWithin(hero, main, 'y') + hero.offsetHeight;
     const mobile = window.matchMedia('(max-width:980px)').matches;
     const stem = mobile ? 34 : 50;
 
-    // The portal overlaps the hero edge; the route originates exactly from its ring.
-    const startY = Math.min(height - 1, heroBottom + 4);
-    const endY = Math.max(startY + stem * 2 + 1, height - 8);
+    const startY = Math.min(contentBottom - 120, heroBottom + 4);
+
+    // Anchor the closing portal completely inside the real document flow.
+    const endDividerHeight = endDivider.divider.offsetHeight || 96;
+    endDivider.divider.style.top = `${Math.max(startY + 120, contentBottom - endDividerHeight)}px`;
+    const endY = (parseFloat(endDivider.divider.style.top) || 0) + visualNodeCenter(endDivider);
+
     const nodeYs = cards.map(card => offsetWithin(card, main, 'y') + card.offsetHeight / 2);
-    const anchors = addIntermediateAnchors([startY + stem, ...nodeYs, endY - stem]);
+    const curveEnd = Math.max(nodeYs[nodeYs.length - 1] + stem, endY - stem);
+    const anchors = addIntermediateAnchors([startY + stem, ...nodeYs, curveEnd]);
     const amplitude = mobile ? 18 : 38;
 
-    positionDividerAt(startDivider, startY);
-    positionDividerAt(endDivider, endY);
+    positionDividerNodeAt(startDivider, startY);
     startDivider.node.style.left = `${axisX.toFixed(2)}px`;
     endDivider.node.style.left = `${axisX.toFixed(2)}px`;
 
@@ -133,7 +151,7 @@
       const y1 = anchors[i + 1];
       const dy = y1 - y0;
       const side = i % 2 === 0 ? 1 : -1;
-      const curve = Math.min(amplitude, Math.max(12, dy * 0.22));
+      const curve = Math.min(amplitude, Math.max(12, Math.abs(dy) * 0.22));
       const cx = axisX + side * curve;
       const cp1y = y0 + dy * 0.32;
       const cp2y = y0 + dy * 0.68;
@@ -157,13 +175,15 @@
   };
 
   window.addEventListener('resize', scheduleRedraw, { passive: true });
+  window.addEventListener('orientationchange', scheduleRedraw, { passive: true });
   window.addEventListener('load', scheduleRedraw, { once: true });
   document.fonts?.ready?.then(scheduleRedraw);
 
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(scheduleRedraw);
-    observer.observe(main);
-    observer.observe(hero);
+    // Observe only real flow content. Observing main would create a feedback
+    // loop because the absolutely positioned portal intentionally overflows it.
+    realSections.forEach(section => observer.observe(section));
     observer.observe(grid);
     cards.forEach(card => observer.observe(card));
   }
