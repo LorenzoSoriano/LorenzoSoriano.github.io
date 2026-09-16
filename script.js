@@ -13,6 +13,11 @@ typographyStyles.rel = 'stylesheet';
 typographyStyles.href = 'typography.css?v=3';
 document.head.appendChild(typographyStyles);
 
+const backgroundLayerStyles = document.createElement('link');
+backgroundLayerStyles.rel = 'stylesheet';
+backgroundLayerStyles.href = 'background-layer.css?v=1';
+document.head.appendChild(backgroundLayerStyles);
+
 const page = document.body.dataset.page || 'home';
 
 if (window.TRANSLATIONS) {
