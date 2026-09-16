@@ -1,0 +1,277 @@
+/* Legend of the West: Tactical Duel — dedicated case-study layer */
+body[data-page="legend"] .legend-hero{
+  position:relative;
+  width:100%;
+  max-width:none;
+  min-height:min(78vh,820px);
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  display:flex;
+  align-items:flex-end;
+  background:
+    linear-gradient(180deg,rgba(17,21,48,.04) 0%,rgba(17,21,48,.10) 58%,rgba(17,21,48,.62) 100%),
+    url('assets/images/legend-of-the-west/legend-of-the-west-hero.png') center/cover no-repeat,
+    linear-gradient(160deg,#e69754,#a95839 45%,#2f2f48);
+}
+body[data-page="legend"] .legend-hero::after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0;
+  height:140px;
+  background:linear-gradient(transparent,var(--bg));
+  pointer-events:none;
+}
+body[data-page="legend"] .legend-hero-ui{
+  position:relative;
+  z-index:2;
+  width:min(calc(100% - 64px),var(--max));
+  margin:0 auto;
+  padding:0 0 72px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:30px;
+}
+body[data-page="legend"] .legend-hero-kicker{
+  margin:0;
+  padding:9px 12px;
+  border:1px solid rgba(255,255,255,.30);
+  border-radius:999px;
+  background:rgba(23,25,49,.34);
+  backdrop-filter:blur(10px);
+  color:#fff;
+  font:600 11px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+body[data-page="legend"] .legend-hero-meta{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:8px;
+}
+body[data-page="legend"] .legend-hero-meta span{
+  padding:8px 11px;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:999px;
+  background:rgba(23,25,49,.30);
+  backdrop-filter:blur(10px);
+  color:rgba(255,255,255,.90);
+  font-size:12px;
+}
+body[data-page="legend"] .legend-loop{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:12px;
+  margin-top:34px;
+}
+body[data-page="legend"] .legend-loop-step{
+  position:relative;
+  min-height:154px;
+  padding:22px 18px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:22px;
+  background:linear-gradient(150deg,rgba(255,255,255,.98),rgba(255,248,231,.84));
+  box-shadow:0 16px 42px rgba(46,57,96,.08);
+}
+body[data-page="legend"] .legend-loop-step:not(:last-child)::after{
+  content:"→";
+  position:absolute;
+  right:-12px;
+  top:50%;
+  z-index:3;
+  width:24px;
+  height:24px;
+  display:grid;
+  place-items:center;
+  transform:translateY(-50%);
+  border-radius:50%;
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--purple);
+  font-weight:800;
+}
+body[data-page="legend"] .legend-loop-index{
+  font:600 10px/1 "IBM Plex Mono",monospace;
+  color:var(--purple);
+  letter-spacing:.08em;
+}
+body[data-page="legend"] .legend-loop-step h3{
+  margin:34px 0 8px;
+  font-size:18px;
+  letter-spacing:-.025em;
+}
+body[data-page="legend"] .legend-loop-step p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+}
+body[data-page="legend"] .legend-hub-note{
+  margin-top:16px;
+  padding:16px 18px;
+  border-left:3px solid var(--gold);
+  border-radius:0 16px 16px 0;
+  background:rgba(244,215,92,.11);
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.65;
+}
+body[data-page="legend"] .legend-combat-layout{
+  display:grid;
+  grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  gap:48px;
+  align-items:start;
+}
+body[data-page="legend"] .legend-combat-intro h2,
+body[data-page="legend"] .legend-progression-intro h2{
+  margin:10px 0 14px;
+  font-size:clamp(34px,3.6vw,52px);
+  line-height:1.02;
+  letter-spacing:-.045em;
+}
+body[data-page="legend"] .legend-combat-intro p,
+body[data-page="legend"] .legend-progression-intro p{
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.75;
+}
+body[data-page="legend"] .legend-decision-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+body[data-page="legend"] .legend-decision-card{
+  min-height:205px;
+  padding:24px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:22px;
+  background:rgba(255,255,255,.90);
+  box-shadow:0 16px 42px rgba(46,57,96,.075);
+}
+body[data-page="legend"] .legend-decision-card strong{
+  display:block;
+  margin-bottom:12px;
+  color:var(--purple);
+  font:600 10px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+body[data-page="legend"] .legend-decision-card h3{
+  margin:0 0 9px;
+  font-size:21px;
+  letter-spacing:-.03em;
+}
+body[data-page="legend"] .legend-decision-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.65;
+}
+body[data-page="legend"] .legend-micro-row{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:16px;
+}
+body[data-page="legend"] .legend-micro{
+  padding:18px;
+  border-radius:18px;
+  background:linear-gradient(150deg,rgba(121,108,240,.07),rgba(94,160,240,.05));
+}
+body[data-page="legend"] .legend-micro h4{margin:0 0 6px;font-size:15px}
+body[data-page="legend"] .legend-micro p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+body[data-page="legend"] .legend-progression-layout{
+  display:grid;
+  grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);
+  gap:50px;
+  align-items:start;
+}
+body[data-page="legend"] .legend-progression-flow{
+  display:grid;
+  gap:12px;
+}
+body[data-page="legend"] .legend-progression-node{
+  padding:22px 24px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 14px 38px rgba(46,57,96,.07);
+}
+body[data-page="legend"] .legend-progression-node h3{margin:0 0 8px;font-size:20px}
+body[data-page="legend"] .legend-progression-node p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+body[data-page="legend"] .legend-branches{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:14px;
+}
+body[data-page="legend"] .legend-branch{
+  padding:18px;
+  border-radius:18px;
+  border:1px solid rgba(121,108,240,.12);
+  background:linear-gradient(150deg,#fff,rgba(238,242,157,.12));
+}
+body[data-page="legend"] .legend-branch h4{margin:0 0 6px;font-size:15px}
+body[data-page="legend"] .legend-branch p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+body[data-page="legend"] .legend-example-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+body[data-page="legend"] .legend-example{
+  padding:18px;
+  border-radius:18px;
+  background:rgba(244,215,92,.12);
+}
+body[data-page="legend"] .legend-example strong{display:block;margin-bottom:5px}
+body[data-page="legend"] .legend-example span{color:var(--muted);font-size:13px;line-height:1.5}
+body[data-page="legend"] .legend-lesson{
+  padding:46px 50px;
+  border:1px solid rgba(121,108,240,.15);
+  border-radius:30px;
+  background:linear-gradient(125deg,rgba(255,247,224,.92),rgba(255,255,255,.97) 46%,rgba(121,108,240,.08));
+  box-shadow:var(--shadow);
+}
+body[data-page="legend"] .legend-lesson h2{
+  margin:0 0 18px;
+  max-width:920px;
+  font-size:clamp(32px,3.4vw,48px);
+  line-height:1.06;
+  letter-spacing:-.045em;
+}
+body[data-page="legend"] .legend-lesson p{
+  margin:0;
+  max-width:920px;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.75;
+}
+@media(max-width:1120px){
+  body[data-page="legend"] .legend-loop{grid-template-columns:repeat(3,minmax(0,1fr))}
+  body[data-page="legend"] .legend-loop-step:nth-child(3)::after{content:none}
+}
+@media(max-width:980px){
+  body[data-page="legend"] .legend-hero{min-height:66vh}
+  body[data-page="legend"] .legend-hero-ui{width:min(calc(100% - 36px),var(--max));padding-bottom:54px;align-items:flex-start;flex-direction:column}
+  body[data-page="legend"] .legend-hero-meta{justify-content:flex-start}
+  body[data-page="legend"] .legend-combat-layout,
+  body[data-page="legend"] .legend-progression-layout{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  body[data-page="legend"] .legend-loop{grid-template-columns:1fr}
+  body[data-page="legend"] .legend-loop-step::after{content:"↓"!important;right:50%;top:auto;bottom:-13px;transform:translateX(50%)}
+  body[data-page="legend"] .legend-loop-step:last-child::after{content:none!important}
+  body[data-page="legend"] .legend-decision-grid,
+  body[data-page="legend"] .legend-micro-row,
+  body[data-page="legend"] .legend-branches,
+  body[data-page="legend"] .legend-example-row{grid-template-columns:1fr}
+  body[data-page="legend"] .legend-lesson{padding:30px 26px}
+}
+@media(max-width:620px){
+  body[data-page="legend"] .legend-hero{min-height:58vh;background-position:center}
+  body[data-page="legend"] .legend-hero-ui{width:calc(100% - 26px);padding-bottom:42px}
+  body[data-page="legend"] .legend-hero-meta span{font-size:11px}
+}
