@@ -64,6 +64,12 @@ body[data-page="home"] .home-hero::before{
   background-position:center!important;
 }
 
+/* Larger footer identity across the site. */
+.footer::before{
+  width:480px!important;
+  height:122px!important;
+}
+
 @media(max-width:980px){
   body[data-page="game-dev"] .page-intro::before,
   body[data-page="3d-art"] .page-intro::before,
@@ -79,6 +85,11 @@ body[data-page="home"] .home-hero::before{
       var(--section-hero-bg);
     background-position:center top;
   }
+
+  .footer::before{
+    width:380px!important;
+    height:98px!important;
+  }
 }
 
 @media(max-width:620px){
@@ -92,5 +103,10 @@ body[data-page="home"] .home-hero::before{
   body[data-page="contact"] .page-intro::before{
     inset:8px -4px -8px;
     border-radius:24px;
+  }
+
+  .footer::before{
+    width:310px!important;
+    height:80px!important;
   }
 }
