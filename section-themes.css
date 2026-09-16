@@ -1,6 +1,7 @@
 /* Reversible thematic layer for the main portfolio areas.
    This file intentionally sits on top of the existing design system without replacing it. */
 
+body[data-page="home"]{--theme-primary:#796cf0;--theme-secondary:#5ea0f0;--theme-soft:rgba(121,108,240,.10);--theme-border:rgba(121,108,240,.20)}
 body[data-page="game-dev"]{--theme-primary:#5ea0f0;--theme-secondary:#796cf0;--theme-soft:rgba(94,160,240,.12);--theme-border:rgba(94,160,240,.22)}
 body[data-page="3d-art"]{--theme-primary:#796cf0;--theme-secondary:#5ea0f0;--theme-soft:rgba(121,108,240,.11);--theme-border:rgba(121,108,240,.22)}
 body[data-page="game-design"]{--theme-primary:#796cf0;--theme-secondary:#5ea0f0;--theme-soft:rgba(121,108,240,.11);--theme-border:rgba(121,108,240,.24)}
@@ -11,6 +12,7 @@ body[data-page="about"]{--theme-primary:#796cf0;--theme-secondary:#eef29d;--them
 body[data-page="contact"]{--theme-primary:#5ea0f0;--theme-secondary:#796cf0;--theme-soft:rgba(94,160,240,.10);--theme-border:rgba(94,160,240,.20)}
 
 /* Subtle page-wide motif. Existing page-background images remain visible underneath. */
+body[data-page="home"] main::after,
 body[data-page="game-dev"] .page-main::after,
 body[data-page="3d-art"] .page-main::after,
 body[data-page="game-design"] .page-main::after,
@@ -26,6 +28,29 @@ body[data-page="contact"] .page-main::after{
   pointer-events:none;
   opacity:.72;
   background-repeat:no-repeat;
+}
+
+/* HOME — map / connections: visible from the hero and carried through the page. */
+body[data-page="home"] main::after{
+  opacity:.88;
+  background-image:
+    radial-gradient(circle at 8% 19%,rgba(121,108,240,.24) 0 5px,rgba(255,255,255,.92) 6px 9px,transparent 10px),
+    radial-gradient(circle at 91% 23%,rgba(94,160,240,.24) 0 5px,rgba(255,255,255,.92) 6px 9px,transparent 10px),
+    radial-gradient(circle at 12% 63%,rgba(244,215,92,.26) 0 5px,rgba(255,255,255,.92) 6px 9px,transparent 10px),
+    radial-gradient(circle at 88% 74%,rgba(121,108,240,.21) 0 5px,rgba(255,255,255,.92) 6px 9px,transparent 10px),
+    radial-gradient(ellipse at 7% 19%,transparent 0 92px,rgba(121,108,240,.09) 94px 96px,transparent 98px),
+    radial-gradient(ellipse at 91% 23%,transparent 0 116px,rgba(94,160,240,.08) 118px 120px,transparent 122px),
+    linear-gradient(18deg,transparent 0 27.6%,rgba(121,108,240,.075) 27.8% 28.05%,transparent 28.25% 100%),
+    linear-gradient(160deg,transparent 0 35.5%,rgba(94,160,240,.07) 35.7% 35.95%,transparent 36.15% 100%),
+    linear-gradient(24deg,transparent 0 68.1%,rgba(244,215,92,.065) 68.3% 68.55%,transparent 68.75% 100%);
+}
+
+body[data-page="home"] :is(.areas-label .kicker,.section-heading .kicker){
+  color:var(--theme-primary)!important;
+}
+
+body[data-page="home"] :is(.portal-card,.project-card){
+  border-color:rgba(121,108,240,.18)!important;
 }
 
 /* GAME DEVELOPMENT — editor grid, nodes and system connections */
@@ -243,6 +268,7 @@ body[data-page="home"] .home-journey-end-actions a:hover{
 }
 
 @media(max-width:980px){
+  body[data-page="home"] main::after,
   body[data-page="game-dev"] .page-main::after,
   body[data-page="3d-art"] .page-main::after,
   body[data-page="game-design"] .page-main::after,
@@ -255,6 +281,8 @@ body[data-page="home"] .home-journey-end-actions a:hover{
     opacity:.56;
   }
 
+  body[data-page="home"] main::after{opacity:.68}
+
   body[data-page="home"] .home-journey-end-inner{
     grid-template-columns:1fr;
     gap:26px;
@@ -266,6 +294,7 @@ body[data-page="home"] .home-journey-end-actions a:hover{
 }
 
 @media(max-width:620px){
+  body[data-page="home"] main::after,
   body[data-page="game-dev"] .page-main::after,
   body[data-page="3d-art"] .page-main::after,
   body[data-page="game-design"] .page-main::after,
@@ -278,6 +307,7 @@ body[data-page="home"] .home-journey-end-actions a:hover{
     opacity:.40;
   }
 
+  body[data-page="home"] main::after{opacity:.52}
   body[data-page="home"] .home-journey-end{margin-top:30px}
   body[data-page="home"] .home-journey-end-inner{padding-top:48px;padding-bottom:48px}
   body[data-page="home"] .home-journey-end h2{font-size:31px!important}
