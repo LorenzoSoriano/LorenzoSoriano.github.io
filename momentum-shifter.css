@@ -5632,3 +5632,68 @@ body.ms-game-active > footer{
     right:56px;
   }
 }
+
+
+/* v31 — footer easter-egg hint matches Contact page */
+body[data-page="momentum"] .footer{
+  position:relative!important;
+}
+
+body[data-page="momentum"] .ms-footer-easter{
+  display:none!important;
+}
+
+body[data-page="momentum"] .ms-easter-hint{
+  position:absolute;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:7px 11px;
+  border:1px solid rgba(121,108,240,.10);
+  border-radius:999px;
+  background:rgba(121,108,240,.035);
+  opacity:.48;
+  color:rgba(30,36,64,.72);
+  font:500 9px/1.1 "IBM Plex Mono",monospace;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  transition:opacity .2s ease,background .2s ease,border-color .2s ease;
+}
+
+body[data-page="momentum"] .ms-easter-hint:hover{
+  opacity:.82;
+  background:rgba(121,108,240,.055);
+  border-color:rgba(121,108,240,.16);
+}
+
+.ms-easter-hint__label{
+  color:var(--purple);
+  font-weight:700;
+}
+
+.ms-easter-hint__it{
+  display:none;
+}
+
+html[lang="it"] .ms-easter-hint__it{
+  display:inline;
+}
+
+html[lang="it"] .ms-easter-hint__en{
+  display:none;
+}
+
+@media(max-width:700px){
+  body[data-page="momentum"] .ms-easter-hint{
+    position:static;
+    transform:none;
+    order:3;
+    max-width:100%;
+    white-space:normal;
+    text-align:left;
+  }
+}
