@@ -100,8 +100,10 @@
   }
 
   function playPress() {
-    tone(205, 132, 0.075, 0.034, 'triangle');
-    noise(0.024, 0.013, 1550);
+    // Short, tactile UI click: a crisp transient followed by a soft mechanical body.
+    noise(0.012, 0.0065, 2400);
+    tone(720, 410, 0.026, 0.014, 'sine');
+    tone(185, 138, 0.052, 0.020, 'triangle', 0.003);
   }
 
   function playMenuOpen() {
