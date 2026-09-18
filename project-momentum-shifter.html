@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=11">
+  <link rel="stylesheet" href="momentum-shifter.css?v=12">
 <link rel="stylesheet" href="project-facts.css?v=4"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -102,36 +102,22 @@
       <svg class="ms-infinity-track" viewBox="0 0 1000 360" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
         <defs>
           <linearGradient id="msInfinityGradient" x1="0%" y1="50%" x2="100%" y2="50%">
-            <stop offset="0%" stop-color="#796cf0" stop-opacity=".46"/>
-            <stop offset="48%" stop-color="#5ea0f0" stop-opacity=".38"/>
-            <stop offset="100%" stop-color="#f4d75c" stop-opacity=".46"/>
+            <stop offset="0%" stop-color="#796cf0" stop-opacity=".58"/>
+            <stop offset="48%" stop-color="#5ea0f0" stop-opacity=".50"/>
+            <stop offset="100%" stop-color="#f4d75c" stop-opacity=".58"/>
           </linearGradient>
         </defs>
-        <path class="ms-infinity-track__line"
-          d="M 105 180
-             C 205 54, 360 54, 500 180
-             C 640 306, 795 306, 895 180
-             C 795 54, 640 54, 500 180
-             C 360 306, 205 306, 105 180"/>
-        <g class="ms-infinity-track__arrow ms-infinity-track__arrow--one">
-          <path d="M -12 -8 L 6 0 L -12 8" />
-          <animateMotion
-            dur="10s"
-            begin="-4.6s"
-            repeatCount="indefinite"
-            rotate="auto"
-            calcMode="paced"
-            path="M 500 180 C 390 40, 105 40, 105 180 C 105 320, 390 320, 500 180 C 610 40, 895 40, 895 180 C 895 320, 610 320, 500 180"/>
+        <path id="msInfinityPath" class="ms-infinity-track__line"
+          d="M 500 180
+             C 390 40, 105 40, 105 180
+             C 105 320, 390 320, 500 180
+             C 610 40, 895 40, 895 180
+             C 895 320, 610 320, 500 180"/>
+        <g class="ms-infinity-track__arrow ms-infinity-track__arrow--one" data-phase=".46">
+          <path d="M -13 -8 L 6 0 L -13 8"/>
         </g>
-        <g class="ms-infinity-track__arrow ms-infinity-track__arrow--two">
-          <path d="M -12 -8 L 6 0 L -12 8" />
-          <animateMotion
-            dur="10s"
-            begin="-7.5s"
-            repeatCount="indefinite"
-            rotate="auto"
-            calcMode="paced"
-            path="M 500 180 C 390 40, 105 40, 105 180 C 105 320, 390 320, 500 180 C 610 40, 895 40, 895 180 C 895 320, 610 320, 500 180"/>
+        <g class="ms-infinity-track__arrow ms-infinity-track__arrow--two" data-phase=".75">
+          <path d="M -13 -8 L 6 0 L -13 8"/>
         </g>
       </svg>
       <article class="ms-time-state ms-time-state--slow">
@@ -338,6 +324,6 @@
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
 <script src="translations-momentum.js?v=3"></script>
-<script src="translations-project-facts.js?v=1"></script><script src="script.js?v=5"></script>
+<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="script.js?v=5"></script>
 </body>
 </html>
