@@ -1721,3 +1721,50 @@ body[data-page="legend"] .legend-progression-system--sheet{
     padding:0!important;
   }
 }
+
+
+/* v10 — progression headings use the same full section width and column rhythm as the sections above */
+@media(min-width:981px){
+  body[data-page="legend"] .legend-editorial-heading--progress{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;
+    column-gap:64px!important;
+  }
+
+  body[data-page="legend"] .legend-progression-system--sheet{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+
+  body[data-page="legend"] .legend-progression-system--sheet .legend-stat-system__heading{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;
+    column-gap:64px!important;
+  }
+
+  /* Keep the illustrated character sheet at the established visual width;
+     only the explanatory text rows span the full section shell. */
+  body[data-page="legend"] .legend-progression-system--sheet .legend-stat-stage{
+    width:100%!important;
+    max-width:1080px!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  body[data-page="legend"] .legend-editorial-heading--progress h2,
+  body[data-page="legend"] .legend-progress-heading__intro,
+  body[data-page="legend"] .legend-stat-system__heading > div,
+  body[data-page="legend"] .legend-stat-system__heading > p{
+    max-width:none!important;
+  }
+}
