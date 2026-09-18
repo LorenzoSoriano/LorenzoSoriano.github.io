@@ -1768,3 +1768,92 @@ body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state ul{
     transform:translateY(-50%);
   }
 }
+
+
+/* v15 — simplify traversal and combat to the mechanics that actually define the pitch */
+.ms-focus-card{
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr);
+  gap:18px;
+  align-items:start;
+  width:100%;
+  padding:26px 28px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:24px;
+  background:linear-gradient(155deg,#fff,#fafbff);
+  box-shadow:0 18px 46px rgba(46,57,96,.065);
+}
+
+.ms-focus-card .ms-icon{
+  display:grid;
+  place-items:center;
+  width:46px;
+  height:46px;
+  margin:0;
+  border-radius:15px;
+  background:rgba(121,108,240,.08);
+  color:var(--purple);
+  font-size:18px;
+  font-weight:800;
+}
+
+.ms-focus-card h3{
+  margin:0 0 8px;
+  font-size:22px;
+  letter-spacing:-.03em;
+}
+
+.ms-focus-card p{
+  margin:0;
+  max-width:920px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.68;
+}
+
+.ms-focus-card--traversal{
+  max-width:980px;
+}
+
+.ms-core-resource-grid{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:18px;
+  max-width:1120px;
+}
+
+.ms-focus-card--bullet{
+  background:
+    radial-gradient(circle at 100% 0,rgba(94,160,240,.10),transparent 38%),
+    linear-gradient(155deg,#fff,#fafbff);
+}
+
+.ms-focus-card--core{
+  background:
+    radial-gradient(circle at 100% 0,rgba(244,215,92,.14),transparent 38%),
+    linear-gradient(155deg,#fff,#fffdf5);
+}
+
+@media(max-width:900px){
+  .ms-core-resource-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:620px){
+  .ms-focus-card{
+    grid-template-columns:42px minmax(0,1fr);
+    gap:14px;
+    padding:20px;
+  }
+
+  .ms-focus-card .ms-icon{
+    width:40px;
+    height:40px;
+    border-radius:13px;
+  }
+
+  .ms-focus-card h3{
+    font-size:19px;
+  }
+}
