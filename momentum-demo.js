@@ -431,6 +431,7 @@
       state.ammo=6;
       state.cores=3;
       resetDoor();
+      resetCombatZones();
     }
 
     resetPlayer();
