@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=6">
+  <link rel="stylesheet" href="momentum-shifter.css?v=7">
 <link rel="stylesheet" href="project-facts.css?v=4"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -99,6 +99,40 @@
     </div>
 
     <div class="ms-time-system reveal">
+      <svg class="ms-infinity-track" viewBox="0 0 1000 360" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <linearGradient id="msInfinityGradient" x1="0%" y1="50%" x2="100%" y2="50%">
+            <stop offset="0%" stop-color="#796cf0" stop-opacity=".46"/>
+            <stop offset="48%" stop-color="#5ea0f0" stop-opacity=".38"/>
+            <stop offset="100%" stop-color="#f4d75c" stop-opacity=".46"/>
+          </linearGradient>
+        </defs>
+        <path class="ms-infinity-track__line"
+          d="M 105 180
+             C 205 54, 360 54, 500 180
+             C 640 306, 795 306, 895 180
+             C 795 54, 640 54, 500 180
+             C 360 306, 205 306, 105 180"/>
+        <circle class="ms-infinity-track__dot ms-infinity-track__dot--one" r="7">
+          <animateMotion
+            dur="9s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keyTimes="0;1"
+            keySplines=".42 0 .58 1"
+            path="M 105 180 C 205 54, 360 54, 500 180 C 640 306, 795 306, 895 180 C 795 54, 640 54, 500 180 C 360 306, 205 306, 105 180"/>
+        </circle>
+        <circle class="ms-infinity-track__dot ms-infinity-track__dot--two" r="7">
+          <animateMotion
+            dur="9s"
+            begin="-4.5s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keyTimes="0;1"
+            keySplines=".42 0 .58 1"
+            path="M 105 180 C 205 54, 360 54, 500 180 C 640 306, 795 306, 895 180 C 795 54, 640 54, 500 180 C 360 306, 205 306, 105 180"/>
+        </circle>
+      </svg>
       <article class="ms-time-state ms-time-state--slow">
         <p class="page-label" data-i18n="momentum.slowLabel"></p>
         <h3 data-i18n="momentum.slowTitle"></h3>
