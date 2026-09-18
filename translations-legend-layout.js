@@ -100,10 +100,10 @@ if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-tur
         </defs>
         <path class="legend-turn-loop__ring" d="M500 62 C720 62 875 116 875 210 C875 304 720 358 500 358 C280 358 125 304 125 210 C125 116 280 62 500 62"/>
         <g class="legend-turn-loop__arrows">
-          <path d="M-7 -7 L7 0 L-7 7" transform="translate(765 105) rotate(21.6)"/>
-          <path d="M-7 -7 L7 0 L-7 7" transform="translate(765 315) rotate(158.4)"/>
-          <path d="M-7 -7 L7 0 L-7 7" transform="translate(235 315) rotate(201.6)"/>
-          <path d="M-7 -7 L7 0 L-7 7" transform="translate(235 105) rotate(338.4)"/>
+          <path d="M-7 -7 L7 0 L-7 7" transform="translate(770 101) rotate(20.9)"/>
+          <path d="M-7 -7 L7 0 L-7 7" transform="translate(770 319) rotate(159.1)"/>
+          <path d="M-7 -7 L7 0 L-7 7" transform="translate(230 319) rotate(200.9)"/>
+          <path d="M-7 -7 L7 0 L-7 7" transform="translate(230 101) rotate(339.1)"/>
         </g>
       </svg>
       <div class="legend-turn-loop__core">
