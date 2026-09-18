@@ -43,30 +43,38 @@
   const staticSolids = [
     { x:0, y:floorY, w:W, h:WORLD_H-floorY, kind:'floor', gravity:true, faces:['top'], zone:0 },
 
-    // Entry / tutorial climb.
-    { x:130, y:1930, w:270, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
+    // Entry / tutorial climb: broad landings and one clear magnetic lesson.
+    { x:125, y:1930, w:285, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
     { x:430, y:1710, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:1 },
-    { x:500, y:1760, w:235, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
+    { x:500, y:1760, w:245, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
+    { x:600, y:1665, w:120, h:16, kind:'platform', gravity:true, faces:['top'], zone:1 },
 
-    // Enemy Deck A — first wide arena.
-    { x:730, y:1580, w:450, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
-    { x:675, y:1370, w:24, h:210, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
+    // Enemy Deck A: wide floor with two elevated dodge / aiming ledges.
+    { x:720, y:1580, w:470, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
+    { x:830, y:1492, w:120, h:16, kind:'platform', gravity:true, faces:['top'], zone:2 },
+    { x:1010, y:1450, w:125, h:16, kind:'platform', gravity:true, faces:['top'], zone:2 },
+    { x:675, y:1360, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
     { x:430, y:1420, w:225, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
 
-    // Cross-shaft into Enemy Deck B.
-    { x:390, y:1190, w:24, h:230, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
-    { x:95, y:1230, w:285, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
-    { x:500, y:990, w:24, h:240, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
-    { x:565, y:1040, w:245, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    // Cross-shaft / Enemy Deck B: open center lane plus a magnetic escape ledge.
+    { x:390, y:1180, w:24, h:240, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
+    { x:90, y:1230, w:300, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    { x:175, y:1145, w:125, h:16, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    { x:455, y:1115, w:110, h:16, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    { x:500, y:980, w:24, h:250, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
+    { x:565, y:1040, w:250, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
 
-    // Enemy Deck C — upper combat deck.
-    { x:790, y:870, w:400, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
-    { x:735, y:650, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
-    { x:520, y:700, w:195, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
+    // Enemy Deck C: longest arena with optional upper route.
+    { x:780, y:870, w:420, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
+    { x:875, y:785, w:115, h:16, kind:'platform', gravity:true, faces:['top'], zone:4 },
+    { x:1050, y:750, w:105, h:16, kind:'platform', gravity:true, faces:['top'], zone:4 },
+    { x:735, y:640, w:24, h:230, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
+    { x:515, y:700, w:205, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
 
-    // Final magnetic shaft and gate.
-    { x:475, y:460, w:24, h:240, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
-    { x:545, y:520, w:135, h:18, kind:'platform', gravity:true, faces:['top'], zone:5 },
+    // Final magnetic shaft and gate: shorter hops before the final combat deck.
+    { x:475, y:455, w:24, h:245, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
+    { x:545, y:520, w:140, h:18, kind:'platform', gravity:true, faces:['top'], zone:5 },
+    { x:610, y:455, w:88, h:16, kind:'platform', gravity:true, faces:['top'], zone:5 },
     { x:660, y:400, w:24, h:120, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
     doorPlatform
   ];
@@ -112,42 +120,48 @@
       label:'ENEMY ZONE A',
       triggerY:1620,
       platformY:1580,
-      minX:730,
-      maxX:1180,
-      spawnX:1125,
-      zoneX:710,
-      zoneY:1488,
-      zoneW:490,
-      zoneH:112,
-      wave:['drone','webcaster','rumbler']
+      minX:720,
+      maxX:1190,
+      spawnX:1140,
+      spawnPoints:[760,1145],
+      maxAlive:2,
+      zoneX:700,
+      zoneY:1480,
+      zoneW:510,
+      zoneH:120,
+      wave:['drone','webcaster','rumbler','drone']
     },
     {
       id:'B',
       label:'ENEMY ZONE B',
       triggerY:1270,
       platformY:1230,
-      minX:95,
-      maxX:380,
-      spawnX:338,
-      zoneX:75,
-      zoneY:1138,
-      zoneW:325,
-      zoneH:112,
-      wave:['rumbler','drone','webcaster']
+      minX:90,
+      maxX:390,
+      spawnX:345,
+      spawnPoints:[125,350],
+      maxAlive:2,
+      zoneX:70,
+      zoneY:1136,
+      zoneW:340,
+      zoneH:114,
+      wave:['rumbler','drone','webcaster','drone']
     },
     {
       id:'C',
       label:'ENEMY ZONE C',
       triggerY:910,
       platformY:870,
-      minX:790,
-      maxX:1190,
-      spawnX:1140,
-      zoneX:770,
-      zoneY:778,
-      zoneW:440,
-      zoneH:112,
-      wave:['drone','webcaster','drone','summoner']
+      minX:780,
+      maxX:1200,
+      spawnX:1150,
+      spawnPoints:[820,985,1160],
+      maxAlive:3,
+      zoneX:760,
+      zoneY:775,
+      zoneW:460,
+      zoneH:115,
+      wave:['drone','webcaster','drone','summoner','rumbler']
     }
   ];
 
@@ -196,6 +210,8 @@
       minX:doorPlatform.x+8,
       maxX:doorPlatform.x+doorPlatform.w-8,
       spawnX:1070,
+      spawnPoints:[745,930,1110],
+      maxAlive:3,
       total:wave.length,
       remaining:wave.length,
       spawned:0,
