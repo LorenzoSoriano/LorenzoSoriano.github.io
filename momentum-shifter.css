@@ -6452,3 +6452,82 @@ html[lang="it"] .ms-easter-hint__en{
     min-height:48px;
   }
 }
+
+
+/* v38 — both action buttons on the LEFT, aim alone on the RIGHT */
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(238px,1.25fr) minmax(122px,.75fr);
+    gap:24px;
+  }
+
+  .ms-game-left-controls{
+    display:flex;
+    justify-content:flex-start;
+    align-items:flex-end;
+    gap:10px;
+  }
+
+  .ms-game-left-actions{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    gap:8px;
+    padding-bottom:2px;
+    pointer-events:auto;
+  }
+
+  .ms-game-left-actions .ms-game-action-button{
+    margin:0!important;
+    opacity:1;
+  }
+
+  .ms-game-left-actions .is-fire{
+    width:56px;
+    height:56px;
+    min-width:56px;
+    min-height:56px;
+  }
+
+  .ms-game-left-actions .is-jump{
+    width:62px;
+    height:62px;
+    min-width:62px;
+    min-height:62px;
+  }
+
+  .ms-game-right-controls{
+    display:flex;
+    justify-content:flex-end;
+    align-items:flex-end;
+  }
+
+  .ms-game-right-controls .ms-game-stick-wrap--aim{
+    margin:0;
+  }
+}
+
+@media (pointer:coarse) and (orientation:landscape){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(250px,1.3fr) minmax(112px,.7fr);
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(190px,1.25fr) 96px;
+    gap:8px;
+  }
+
+  .ms-game-left-actions{
+    gap:5px;
+  }
+
+  .ms-game-left-actions .is-fire,
+  .ms-game-left-actions .is-jump{
+    width:48px;
+    height:48px;
+    min-width:48px;
+    min-height:48px;
+  }
+}
