@@ -294,8 +294,27 @@
 
   const jump = () => {
     if(!state.active || state.won || state.gravityJump || !state.player.grounded) return;
-    state.player.vy=-410;
-    state.player.grounded=false;
+
+    const p=state.player;
+
+    if(p.surface==='left' || p.surface==='right'){
+      const outward=p.surface==='left' ? -1 : 1;
+      p.x+=outward*9;
+      p.vx=outward*220;
+      p.vy=-300;
+      p.grounded=false;
+      p.surface='air';
+      p.attachedSolid=null;
+      p.attachedFace=null;
+      state.actionPulse=.22;
+      return;
+    }
+
+    p.vy=-410;
+    p.grounded=false;
+    p.surface='air';
+    p.attachedSolid=null;
+    p.attachedFace=null;
     state.actionPulse=.18;
   };
 
@@ -459,51 +478,8 @@
     };
   };
 
-  const updatePlayer = dt => {
+  const checkPlayerProgress = () => {
     const p=state.player;
-    p.invuln=Math.max(0,p.invuln-dt);
-
-    if(state.gravityJump){
-      const g=state.gravityJump;
-      g.t=Math.min(1,g.t+dt/g.duration);
-
-      p.x=lerp(g.fromX,g.toX,g.t);
-      p.y=lerp(g.fromY,g.toY,g.t);
-
-      if(g.t>=1){
-        p.x=g.toX;
-        p.y=g.toY;
-        p.vx=0;
-        p.vy=0;
-        p.grounded=true;
-        state.gravityJump=null;
-      }
-      return;
-    }
-
-    const axis=(input.right?1:0)-(input.left?1:0);
-    p.vx=axis*225;
-
-    if(axis!==0){
-      p.facing=axis;
-      state.actionPulse=.10;
-    }
-
-    resolvePlayerX(p.vx*dt);
-
-    p.vy+=920*dt;
-    p.vy=Math.min(p.vy,640);
-    resolvePlayerY(p.vy*dt);
-
-    p.x=clamp(p.x,4,W-p.w-4);
-
-    if(p.y>H+80) playerHit();
-
-    if(!state.door.active && p.x>W-48){
-      state.won=true;
-      state.message='SECTOR CLEAR';
-      state.messageTimer=999;
-    }
 
     for(let i=state.pickups.length-1;i>=0;i--){
       const pickup=state.pickups[i];
@@ -523,6 +499,88 @@
         }
       }
     }
+
+    if(!state.door.active && rectHit(p,goal)){
+      state.won=true;
+      state.message='SECTOR COMPLETE';
+      state.messageTimer=999;
+    }
+  };
+
+  const updatePlayer = dt => {
+    const p=state.player;
+    p.invuln=Math.max(0,p.invuln-dt);
+
+    if(state.gravityJump){
+      const g=state.gravityJump;
+      g.t=Math.min(1,g.t+dt/g.duration);
+
+      p.x=lerp(g.fromX,g.toX,g.t);
+      p.y=lerp(g.fromY,g.toY,g.t);
+
+      if(g.t>=1){
+        p.x=g.toX;
+        p.y=g.toY;
+        p.vx=0;
+        p.vy=0;
+        p.grounded=true;
+        p.surface=g.target.face==='top' ? 'floor' : g.target.face;
+        p.attachedSolid=g.target.solid;
+        p.attachedFace=g.target.face;
+        state.gravityJump=null;
+        checkPlayerProgress();
+      }
+      return;
+    }
+
+    if((p.surface==='left' || p.surface==='right') && p.attachedSolid){
+      const solid=p.attachedSolid;
+      const verticalAxis=(input.down?1:0)-(input.up?1:0);
+      const horizontalAxis=(input.right?1:0)-(input.left?1:0);
+      const tangent=Math.abs(verticalAxis)>0 ? verticalAxis : -horizontalAxis;
+
+      p.vx=0;
+      p.vy=0;
+      p.grounded=true;
+      p.x=p.surface==='left' ? solid.x-p.w : solid.x+solid.w;
+
+      if(tangent!==0){
+        p.y+=tangent*190*dt;
+        state.actionPulse=.10;
+      }
+
+      p.y=clamp(p.y,solid.y,solid.y+solid.h-p.h);
+      checkPlayerProgress();
+      return;
+    }
+
+    const axis=(input.right?1:0)-(input.left?1:0);
+    p.vx=axis*225;
+
+    if(axis!==0){
+      p.facing=axis;
+      state.actionPulse=.10;
+    }
+
+    resolvePlayerX(p.vx*dt);
+
+    p.vy+=920*dt;
+    p.vy=Math.min(p.vy,640);
+    resolvePlayerY(p.vy*dt);
+
+    p.x=clamp(p.x,4,W-p.w-4);
+
+    if(p.grounded){
+      p.surface='floor';
+      p.attachedSolid=null;
+      p.attachedFace=null;
+    }else{
+      p.surface='air';
+    }
+
+    if(p.y>H+80) playerHit();
+
+    checkPlayerProgress();
   };
 
   const stopBullet = b => {
@@ -1128,7 +1186,7 @@
     state.flash=Math.max(0,state.flash-dt);
     state.messageTimer=Math.max(0,state.messageTimer-dt);
 
-    const moving=input.left||input.right||!state.player.grounded||state.actionPulse>0||!!state.gravityJump;
+    const moving=input.left||input.right||input.up||input.down||!state.player.grounded||state.actionPulse>0||!!state.gravityJump;
     const scale=state.won?0:(moving?1:.22);
 
     if(!state.won){
@@ -1180,6 +1238,8 @@
     state.paused=!!value;
     input.left=false;
     input.right=false;
+    input.up=false;
+    input.down=false;
     if(pausePanel) pausePanel.hidden=!state.paused;
     stage.classList.toggle('is-paused',state.paused);
   };
@@ -1192,6 +1252,8 @@
     document.body.classList.add('ms-game-active');
     input.left=false;
     input.right=false;
+    input.up=false;
+    input.down=false;
     resetGame();
 
     await enterMobileLandscape();
@@ -1209,6 +1271,8 @@
     cancelAnimationFrame(state.raf);
     input.left=false;
     input.right=false;
+    input.up=false;
+    input.down=false;
     stage.hidden=true;
     pausePanel && (pausePanel.hidden=true);
     document.body.classList.remove('ms-game-active');
@@ -1244,6 +1308,8 @@
 
     if(event.key==='a'||event.key==='A'||event.key==='ArrowLeft') input.left=true;
     if(event.key==='d'||event.key==='D'||event.key==='ArrowRight') input.right=true;
+    if(event.key==='w'||event.key==='W'||event.key==='ArrowUp') input.up=true;
+    if(event.key==='s'||event.key==='S'||event.key==='ArrowDown') input.down=true;
 
     if((event.key===' '||event.key==='Spacebar'||event.key==='ArrowUp'||event.key==='w'||event.key==='W')&&!event.repeat){
       jump();
@@ -1257,6 +1323,8 @@
   const onKeyUp = event => {
     if(event.key==='a'||event.key==='A'||event.key==='ArrowLeft') input.left=false;
     if(event.key==='d'||event.key==='D'||event.key==='ArrowRight') input.right=false;
+    if(event.key==='w'||event.key==='W'||event.key==='ArrowUp') input.up=false;
+    if(event.key==='s'||event.key==='S'||event.key==='ArrowDown') input.down=false;
   };
 
   canvas.addEventListener('pointermove',event=>{
@@ -1414,13 +1482,17 @@
   setupStick(
     moveStick,
     moveKnob,
-    x=>{
+    (x,y)=>{
       input.left=x<-.22;
       input.right=x>.22;
+      input.up=y<-.22;
+      input.down=y>.22;
     },
     ()=>{
       input.left=false;
       input.right=false;
+      input.up=false;
+      input.down=false;
     }
   );
 
