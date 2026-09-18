@@ -1159,3 +1159,50 @@ body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
     display:none;
   }
 }
+
+
+/* v8 — larger, more visible infinity loop */
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+  min-height:390px;
+  padding:48px 10px;
+}
+
+body[data-page="momentum"] .ms-infinity-track{
+  inset:-34px -8%;
+  width:116%;
+  height:calc(100% + 68px);
+}
+
+body[data-page="momentum"] .ms-infinity-track__line{
+  stroke-width:3.2;
+  opacity:.92;
+  filter:drop-shadow(0 7px 16px rgba(83,91,170,.11));
+}
+
+body[data-page="momentum"] .ms-infinity-track__dot{
+  stroke-width:2.4;
+  filter:drop-shadow(0 5px 11px rgba(69,76,140,.22));
+}
+
+body[data-page="momentum"] .ms-infinity-track__dot--one,
+body[data-page="momentum"] .ms-infinity-track__dot--two{
+  r:8.5;
+}
+
+@media(max-width:760px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    min-height:0;
+    padding:34px 0;
+  }
+
+  body[data-page="momentum"] .ms-infinity-track{
+    inset:-18px -18%;
+    width:136%;
+    height:calc(100% + 36px);
+    opacity:.64;
+  }
+
+  body[data-page="momentum"] .ms-infinity-track__line{
+    stroke-width:2.35;
+  }
+}
