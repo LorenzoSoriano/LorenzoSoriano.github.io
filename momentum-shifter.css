@@ -5208,3 +5208,184 @@ body.ms-demo-open{
     margin-left:0;
   }
 }
+
+
+/* v29 — six-step easter-egg unlock + full-page playable level */
+.ms-demo-sequence{
+  align-items:flex-end;
+}
+
+.ms-demo-sequence button{
+  appearance:none;
+  display:block;
+  width:13px;
+  height:31px;
+  padding:0;
+  border:1px solid rgba(121,108,240,.28);
+  border-radius:999px 999px 6px 6px;
+  background:linear-gradient(180deg,rgba(121,108,240,.90),rgba(94,160,240,.72));
+  box-shadow:0 6px 15px rgba(94,160,240,.12);
+  cursor:pointer;
+  transition:transform .16s ease,opacity .16s ease,background .16s ease,box-shadow .16s ease;
+}
+
+.ms-demo-sequence button:hover:not(:disabled){
+  transform:translateY(-3px);
+  box-shadow:0 9px 18px rgba(94,160,240,.22);
+}
+
+.ms-demo-sequence button:focus-visible{
+  outline:2px solid rgba(121,108,240,.45);
+  outline-offset:4px;
+}
+
+.ms-demo-sequence button.is-pressed,
+.ms-demo-sequence button:disabled{
+  transform:translateY(7px);
+  opacity:.28;
+  background:linear-gradient(180deg,rgba(55,62,87,.42),rgba(55,62,87,.20));
+  border-color:rgba(55,62,87,.20);
+  box-shadow:inset 0 2px 5px rgba(21,25,40,.18);
+  cursor:default;
+}
+
+.ms-demo-sequence.is-complete button{
+  opacity:.12;
+}
+
+.ms-footer-easter{
+  margin-left:auto;
+  color:rgba(64,72,100,.50);
+  font:600 9px/1.4 "IBM Plex Mono",monospace;
+  letter-spacing:.035em;
+}
+
+body.ms-game-active{
+  overflow:hidden!important;
+  background:#08101f!important;
+}
+
+body.ms-game-active > .site-header,
+body.ms-game-active > main,
+body.ms-game-active > footer{
+  display:none!important;
+}
+
+.ms-game-stage[hidden]{
+  display:none!important;
+}
+
+.ms-game-stage{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  overflow:hidden;
+  background:#08101f;
+  cursor:crosshair;
+  user-select:none;
+  touch-action:none;
+}
+
+.ms-game-canvas{
+  display:block;
+  width:100vw;
+  height:100vh;
+  background:#08101f;
+  image-rendering:pixelated;
+}
+
+.ms-game-hud{
+  position:absolute;
+  left:18px;
+  right:18px;
+  top:16px;
+  display:grid;
+  grid-template-columns:minmax(140px,1.3fr) repeat(5,minmax(78px,.55fr));
+  gap:7px;
+  pointer-events:none;
+}
+
+.ms-game-brand,
+.ms-game-stat{
+  min-height:48px;
+  padding:9px 11px;
+  border:1px solid rgba(114,213,233,.14);
+  border-radius:12px;
+  background:rgba(7,13,27,.70);
+  backdrop-filter:blur(7px);
+  box-shadow:0 8px 22px rgba(0,0,0,.14);
+}
+
+.ms-game-brand{
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  color:#fff;
+  letter-spacing:-.02em;
+}
+
+.ms-game-brand span{
+  color:rgba(255,255,255,.56);
+  font:600 10px/1 "IBM Plex Mono",monospace;
+}
+
+.ms-game-brand strong{
+  font-size:17px;
+}
+
+.ms-game-stat small{
+  display:block;
+  margin-bottom:5px;
+  color:rgba(255,255,255,.42);
+  font:700 7px/1.1 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+}
+
+.ms-game-stat strong{
+  color:#fff;
+  font:700 15px/1 "IBM Plex Mono",monospace;
+}
+
+.ms-game-help{
+  position:absolute;
+  left:18px;
+  bottom:16px;
+  max-width:min(680px,72vw);
+  padding:9px 12px;
+  border:1px solid rgba(114,213,233,.11);
+  border-radius:11px;
+  background:rgba(7,13,27,.68);
+  color:rgba(255,255,255,.66);
+  pointer-events:none;
+}
+
+.ms-game-help p,
+.ms-game-help small{
+  margin:0;
+  font:600 9px/1.45 "IBM Plex Mono",monospace;
+}
+
+.ms-game-help small{
+  display:block;
+  margin-top:3px;
+  color:rgba(244,215,92,.68);
+}
+
+@media(max-width:760px){
+  .ms-game-hud{
+    grid-template-columns:1fr repeat(2,minmax(70px,.5fr));
+  }
+
+  .ms-game-brand{
+    grid-column:1/-1;
+  }
+
+  .ms-game-stat{
+    min-height:42px;
+  }
+
+  .ms-footer-easter{
+    width:100%;
+    margin:8px 0 0;
+  }
+}
