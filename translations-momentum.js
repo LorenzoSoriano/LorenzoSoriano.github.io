@@ -129,7 +129,7 @@ Object.assign(window.TRANSLATIONS.en,{
   "momentum.summonerDesc":"Moves and jumps across platforms, attacks at range and can periodically summon Screamer Drones.",
   "momentum.summonerMeta":"1 hit · ranged / summoning",
 
-  "momentum.storyLabel":"WORLD & CHARACTER",
+  "momentum.storyLabel":"WORLD & CHARACTER","momentum.settingLabel":"SETTING","momentum.settingTitle":"Corporate Tower","momentum.settingDesc":"The game is structured as a vertical climb through sections of a mega-skyscraper. Entry doors, platforms, checkpoints, enemy spawn doors and exits turn the fiction of infiltration into a readable level framework.",
   "momentum.storyTitle":"The fiction gives the climb a clear direction without becoming the focus of the case study.",
   "momentum.storyDesc":"In a collapsing futuristic city, private detective Vincent Kane infiltrates the headquarters of a powerful corporation after stealing its time-manipulation technology. The tower climb provides a simple spatial objective: reach the top and expose or stop the corporation.",
   "momentum.characterTitle":"Vincent Kane",
@@ -289,7 +289,7 @@ Object.assign(window.TRANSLATIONS.it,{
   "momentum.summonerDesc":"Si muove e salta tra le piattaforme, attacca a distanza e può evocare periodicamente Screamer Drone.",
   "momentum.summonerMeta":"1 colpo · distanza / evocazione",
 
-  "momentum.storyLabel":"MONDO & PERSONAGGIO",
+  "momentum.storyLabel":"MONDO & PERSONAGGIO","momentum.settingLabel":"AMBIENTAZIONE","momentum.settingTitle":"Torre corporativa","momentum.settingDesc":"Il gioco è strutturato come una scalata verticale attraverso le sezioni di un mega-grattacielo. Porte d'ingresso, piattaforme, checkpoint, porte di spawn e uscite trasformano la fiction dell'infiltrazione in una struttura di livello leggibile.",
   "momentum.storyTitle":"La fiction dà una direzione chiara alla scalata senza diventare il centro del case study.",
   "momentum.storyDesc":"In una città futuristica consumata dal caos, il detective privato Vincent Kane si infiltra nel quartier generale di una potente corporazione dopo averne rubato la tecnologia temporale. La torre fornisce un obiettivo spaziale semplice: raggiungere la cima e fermare la corporazione.",
   "momentum.characterTitle":"Vincent Kane",
