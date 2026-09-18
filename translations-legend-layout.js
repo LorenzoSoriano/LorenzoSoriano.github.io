@@ -26,7 +26,7 @@ Object.assign(window.TRANSLATIONS.en,{
   "legend2.turnStep6":"End the turn",
   "legend2.turnStep6d":"Reload counters and the timeline advance, then control passes to the next actor.",
   "legend2.turnReturn":"The next character reads the new battlefield state.",
-  "legend2.statCardLabel":"COMBAT CARD",
+  "legend2.statCardLabel":"CHARACTER SHEET",
   "legend2.statCardIntro":"A compact visual example of how combat values can be read at a glance without turning the interface into a text panel.",
   "legend2.statDamage":"Damage",
   "legend2.statDamageD":"Defines the immediate offensive pressure of the equipped weapon and its impact on the target.",
@@ -66,7 +66,7 @@ Object.assign(window.TRANSLATIONS.it,{
   "legend2.turnStep6":"Chiudi il turno",
   "legend2.turnStep6d":"Ricarica e timeline avanzano, poi il controllo passa al personaggio successivo.",
   "legend2.turnReturn":"Il personaggio successivo legge il nuovo stato del campo.",
-  "legend2.statCardLabel":"CARTA DI COMBATTIMENTO",
+  "legend2.statCardLabel":"SCHEDA PERSONAGGIO",
   "legend2.statCardIntro":"Un esempio visivo compatto di come leggere i valori di combattimento a colpo d'occhio, senza trasformare l'interfaccia in un pannello di testo.",
   "legend2.statDamage":"Danno",
   "legend2.statDamageD":"Definisce la pressione offensiva immediata dell'arma equipaggiata e il suo impatto sul bersaglio.",
@@ -87,7 +87,7 @@ if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-tur
     loop.className='legend-turn-loop reveal';
     loop.innerHTML=`
       <p class="legend-turn-loop__label" data-i18n="legend2.turnLoopLabel">COME SI SVOLGE UN TURNO</p>
-      <svg class="legend-turn-loop__path" viewBox="0 0 1000 420" aria-hidden="true" preserveAspectRatio="none">
+      <svg class="legend-turn-loop__path" viewBox="0 0 1000 420" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="legendTurnGradient" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#796cf0"/>
@@ -99,12 +99,7 @@ if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-tur
           </marker>
         </defs>
         <path class="legend-turn-loop__ring" d="M500 62 C720 62 875 116 875 210 C875 304 720 358 500 358 C280 358 125 304 125 210 C125 116 280 62 500 62"/>
-        <g class="legend-turn-loop__arrows">
-          <path d="M-7 -7 L7 0 L-7 7" transform="translate(770 101) rotate(20.9)"/>
-          <path d="M-7 -7 L7 0 L-7 7" transform="translate(770 319) rotate(159.1)"/>
-          <path d="M-7 -7 L7 0 L-7 7" transform="translate(230 319) rotate(200.9)"/>
-          <path d="M-7 -7 L7 0 L-7 7" transform="translate(230 101) rotate(339.1)"/>
-        </g>
+        <g class="legend-turn-loop__arrows"></g>
       </svg>
       <div class="legend-turn-loop__core">
         <span data-i18n="legend2.turnFlow">FLUSSO DEL TURNO</span>
@@ -123,3 +118,86 @@ if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-tur
     combatStory.before(loop);
   }
 }
+
+
+/* Keep loop arrows and character-sheet callouts geometrically aligned. */
+(function(){
+  const svgNS='http://www.w3.org/2000/svg';
+
+  function syncTurnLoopArrows(){
+    const ring=document.querySelector('.legend-turn-loop__ring');
+    const group=document.querySelector('.legend-turn-loop__arrows');
+    if(!ring||!group||typeof ring.getTotalLength!=='function')return;
+    const total=ring.getTotalLength();
+    group.replaceChildren();
+    [0.125,0.375,0.625,0.875].forEach(fraction=>{
+      const at=total*fraction;
+      const p=ring.getPointAtLength(at);
+      const a=ring.getPointAtLength(Math.max(0,at-4));
+      const b=ring.getPointAtLength(Math.min(total,at+4));
+      const angle=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
+      const arrow=document.createElementNS(svgNS,'path');
+      arrow.setAttribute('d','M -8 -7 L 1 0 L -8 7');
+      arrow.setAttribute('transform',`translate(${p.x} ${p.y}) rotate(${angle})`);
+      group.appendChild(arrow);
+    });
+  }
+
+  function connectorPoint(stageRect,element,edge){
+    const r=element.getBoundingClientRect();
+    const cx=r.left+r.width/2-stageRect.left;
+    const cy=r.top+r.height/2-stageRect.top;
+    if(edge==='left')return {x:r.left-stageRect.left,y:cy};
+    if(edge==='right')return {x:r.right-stageRect.left,y:cy};
+    if(edge==='top')return {x:cx,y:r.top-stageRect.top};
+    if(edge==='bottom')return {x:cx,y:r.bottom-stageRect.top};
+    return {x:cx,y:cy};
+  }
+
+  function syncStatConnectors(){
+    const stage=document.querySelector('.legend-stat-stage');
+    if(!stage)return;
+    let svg=stage.querySelector('.legend-stat-connectors');
+    if(!svg){
+      svg=document.createElementNS(svgNS,'svg');
+      svg.setAttribute('class','legend-stat-connectors');
+      svg.setAttribute('aria-hidden','true');
+      stage.prepend(svg);
+    }
+    const stageRect=stage.getBoundingClientRect();
+    svg.setAttribute('viewBox',`0 0 ${Math.max(1,stageRect.width)} ${Math.max(1,stageRect.height)}`);
+    svg.replaceChildren();
+
+    const links=[
+      ['.legend-stat-callout--cooldown','.legend-stat-card__cooldown','right','center'],
+      ['.legend-stat-callout--ability','.legend-stat-card__ability-icon','left','center'],
+      ['.legend-stat-callout--damage','.legend-stat-card__stat--damage','right','center'],
+      ['.legend-stat-callout--accuracy','.legend-stat-card__stat--accuracy','top','center'],
+      ['.legend-stat-callout--health','.legend-stat-card__stat--health','left','center']
+    ];
+
+    links.forEach(([fromSel,toSel,fromEdge])=>{
+      const from=stage.querySelector(fromSel);
+      const to=stage.querySelector(toSel);
+      if(!from||!to)return;
+      const p1=connectorPoint(stageRect,from,fromEdge);
+      const p2=connectorPoint(stageRect,to,'center');
+      const line=document.createElementNS(svgNS,'line');
+      line.setAttribute('x1',p1.x);line.setAttribute('y1',p1.y);
+      line.setAttribute('x2',p2.x);line.setAttribute('y2',p2.y);
+      svg.appendChild(line);
+      const dot=document.createElementNS(svgNS,'circle');
+      dot.setAttribute('cx',p2.x);dot.setAttribute('cy',p2.y);dot.setAttribute('r','3.2');
+      svg.appendChild(dot);
+    });
+  }
+
+  function syncLegendGraphics(){
+    syncTurnLoopArrows();
+    syncStatConnectors();
+  }
+
+  requestAnimationFrame(()=>requestAnimationFrame(syncLegendGraphics));
+  window.addEventListener('resize',syncLegendGraphics,{passive:true});
+  window.addEventListener('load',syncLegendGraphics,{once:true});
+})();
