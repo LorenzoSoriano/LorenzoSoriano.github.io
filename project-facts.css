@@ -157,3 +157,74 @@ body[data-page] .section-shell > .ms-section-heading > *,
 body[data-page] .section-shell > .ms-progress-heading > *{
   min-width:0;
 }
+
+
+/* v5 — editorial hierarchy rule: label → title → explanatory text.
+   Section introductions never split title and copy into opposing columns. */
+body[data-page] .section-shell > .case-overview,
+body[data-page] .section-shell > .wait-overview,
+body[data-page] .section-shell > .section-heading,
+body[data-page] .section-shell > .thesis-issues,
+body[data-page] .section-shell > .legend-editorial-heading,
+body[data-page] .section-shell .legend-cover-heading,
+body[data-page] .section-shell .legend-stat-system__heading,
+body[data-page] .section-shell > .ms-section-heading,
+body[data-page] .section-shell > .ms-progress-heading,
+body[data-page] .section-shell .ms-reference-heading{
+  display:block!important;
+  grid-template-columns:none!important;
+  gap:0!important;
+  align-items:start!important;
+}
+
+body[data-page] .section-shell > .case-overview > .case-copy,
+body[data-page] .section-shell > .wait-overview > .wait-overview-copy,
+body[data-page] .section-shell > .thesis-issues > p,
+body[data-page] .section-shell > .legend-editorial-heading > p:last-child,
+body[data-page] .section-shell .legend-cover-heading > p,
+body[data-page] .section-shell .legend-stat-system__heading > p,
+body[data-page] .section-shell > .ms-section-heading > p,
+body[data-page] .section-shell > .ms-progress-heading > p{
+  width:100%!important;
+  max-width:900px!important;
+  margin:18px 0 0!important;
+}
+
+body[data-page] .section-shell > .case-overview h2,
+body[data-page] .section-shell > .wait-overview h2,
+body[data-page] .section-shell > .section-heading h2,
+body[data-page] .section-shell > .thesis-issues h2,
+body[data-page] .section-shell > .legend-editorial-heading h2,
+body[data-page] .section-shell .legend-cover-heading h3,
+body[data-page] .section-shell .legend-stat-system__heading h3,
+body[data-page] .section-shell > .ms-section-heading h2,
+body[data-page] .section-shell > .ms-progress-heading h2,
+body[data-page] .section-shell .ms-reference-heading h3{
+  max-width:900px!important;
+}
+
+body[data-page] .section-shell > .section-heading > h2{
+  margin-top:10px!important;
+}
+
+body[data-page] .section-shell .legend-cover-heading > p,
+body[data-page] .section-shell .legend-stat-system__heading > p{
+  margin-top:14px!important;
+}
+
+body[data-page] .section-shell .ms-reference-heading > h3{
+  margin-top:8px!important;
+}
+
+@media(max-width:760px){
+  body[data-page] .section-shell > .case-overview > .case-copy,
+  body[data-page] .section-shell > .wait-overview > .wait-overview-copy,
+  body[data-page] .section-shell > .thesis-issues > p,
+  body[data-page] .section-shell > .legend-editorial-heading > p:last-child,
+  body[data-page] .section-shell .legend-cover-heading > p,
+  body[data-page] .section-shell .legend-stat-system__heading > p,
+  body[data-page] .section-shell > .ms-section-heading > p,
+  body[data-page] .section-shell > .ms-progress-heading > p{
+    margin-top:14px!important;
+  }
+}
