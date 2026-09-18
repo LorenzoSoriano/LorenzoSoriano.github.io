@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=22">
+  <link rel="stylesheet" href="momentum-shifter.css?v=23">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -214,6 +214,39 @@
       <div class="ms-warp-overflow">
         <span data-i18n="momentum.warpOverflowLabel"></span>
         <strong data-i18n="momentum.warpOverflow"></strong>
+      </div>
+    </div>
+
+    <div class="ms-powerups reveal">
+      <div class="ms-powerups__head">
+        <div>
+          <span class="page-label" data-i18n="momentum.powerupLabel"></span>
+          <h3 data-i18n="momentum.powerupTitle"></h3>
+        </div>
+        <p data-i18n="momentum.powerupIntro"></p>
+      </div>
+
+      <div class="ms-powerup-grid">
+        <article class="ms-powerup-card">
+          <span class="ms-powerup-rarity" data-i18n="momentum.powerupCommon"></span>
+          <h4 data-i18n="momentum.powerup1"></h4>
+          <p data-i18n="momentum.powerup1d"></p>
+        </article>
+        <article class="ms-powerup-card">
+          <span class="ms-powerup-rarity" data-i18n="momentum.powerupUncommon"></span>
+          <h4 data-i18n="momentum.powerup2"></h4>
+          <p data-i18n="momentum.powerup2d"></p>
+        </article>
+        <article class="ms-powerup-card">
+          <span class="ms-powerup-rarity" data-i18n="momentum.powerupRare"></span>
+          <h4 data-i18n="momentum.powerup3"></h4>
+          <p data-i18n="momentum.powerup3d"></p>
+        </article>
+      </div>
+
+      <div class="ms-powerups__rule">
+        <span data-i18n="momentum.powerupRuleLabel"></span>
+        <strong data-i18n="momentum.powerupRule"></strong>
       </div>
     </div>
   </section>
@@ -463,31 +496,87 @@
       <p data-i18n="momentum.enemyIntro"></p>
     </div>
 
-    <div class="ms-enemy-role-grid">
-      <article class="ms-enemy-role reveal">
-        <span class="enemy-role" data-i18n="momentum.rumblerRole"></span>
-        <h3 data-i18n="momentum.rumblerTitle"></h3>
-        <p data-i18n="momentum.rumblerDesc"></p>
-        <strong data-i18n="momentum.rumblerTest"></strong>
-      </article>
-      <article class="ms-enemy-role reveal">
-        <span class="enemy-role" data-i18n="momentum.screamerRole"></span>
-        <h3 data-i18n="momentum.screamerTitle"></h3>
-        <p data-i18n="momentum.screamerDesc"></p>
-        <strong data-i18n="momentum.screamerTest"></strong>
-      </article>
-      <article class="ms-enemy-role reveal">
-        <span class="enemy-role" data-i18n="momentum.webcasterRole"></span>
-        <h3 data-i18n="momentum.webcasterTitle"></h3>
-        <p data-i18n="momentum.webcasterDesc"></p>
-        <strong data-i18n="momentum.webcasterTest"></strong>
-      </article>
-      <article class="ms-enemy-role reveal">
-        <span class="enemy-role" data-i18n="momentum.summonerRole"></span>
-        <h3 data-i18n="momentum.summonerTitle"></h3>
-        <p data-i18n="momentum.summonerDesc"></p>
-        <strong data-i18n="momentum.summonerTest"></strong>
-      </article>
+    <div class="ms-enemy-carousel reveal" data-enemy-carousel>
+      <div class="ms-enemy-carousel__viewport">
+        <article class="ms-enemy-slide is-active" data-enemy-slide>
+          <div class="ms-enemy-slide__visual">
+            <img src="assets/images/momentum-shifter/enemies/rumbler.png" alt="Rumbler enemy concept art" loading="lazy">
+          </div>
+          <div class="ms-enemy-slide__info">
+            <span class="enemy-role" data-i18n="momentum.rumblerRole"></span>
+            <h3 data-i18n="momentum.rumblerTitle"></h3>
+            <p data-i18n="momentum.rumblerDesc"></p>
+            <div class="ms-enemy-facts">
+              <span><small data-i18n="momentum.enemyMovementLabel"></small><strong data-i18n="momentum.rumblerMove"></strong></span>
+              <span><small data-i18n="momentum.enemyHitsLabel"></small><strong data-i18n="momentum.rumblerHits"></strong></span>
+              <span><small data-i18n="momentum.enemyAttackLabel"></small><strong data-i18n="momentum.rumblerAttack"></strong></span>
+            </div>
+            <div class="ms-enemy-test"><span data-i18n="momentum.enemyDesignTestLabel"></span><strong data-i18n="momentum.rumblerTest"></strong></div>
+          </div>
+        </article>
+
+        <article class="ms-enemy-slide" data-enemy-slide hidden>
+          <div class="ms-enemy-slide__visual">
+            <img src="assets/images/momentum-shifter/enemies/screamer-drone.png" alt="Screamer Drone enemy concept art" loading="lazy">
+          </div>
+          <div class="ms-enemy-slide__info">
+            <span class="enemy-role" data-i18n="momentum.screamerRole"></span>
+            <h3 data-i18n="momentum.screamerTitle"></h3>
+            <p data-i18n="momentum.screamerDesc"></p>
+            <div class="ms-enemy-facts">
+              <span><small data-i18n="momentum.enemyMovementLabel"></small><strong data-i18n="momentum.screamerMove"></strong></span>
+              <span><small data-i18n="momentum.enemyHitsLabel"></small><strong data-i18n="momentum.screamerHits"></strong></span>
+              <span><small data-i18n="momentum.enemyAttackLabel"></small><strong data-i18n="momentum.screamerAttack"></strong></span>
+            </div>
+            <div class="ms-enemy-test"><span data-i18n="momentum.enemyDesignTestLabel"></span><strong data-i18n="momentum.screamerTest"></strong></div>
+          </div>
+        </article>
+
+        <article class="ms-enemy-slide" data-enemy-slide hidden>
+          <div class="ms-enemy-slide__visual">
+            <img src="assets/images/momentum-shifter/enemies/webcaster.png" alt="Webcaster enemy concept art" loading="lazy">
+          </div>
+          <div class="ms-enemy-slide__info">
+            <span class="enemy-role" data-i18n="momentum.webcasterRole"></span>
+            <h3 data-i18n="momentum.webcasterTitle"></h3>
+            <p data-i18n="momentum.webcasterDesc"></p>
+            <div class="ms-enemy-facts">
+              <span><small data-i18n="momentum.enemyMovementLabel"></small><strong data-i18n="momentum.webcasterMove"></strong></span>
+              <span><small data-i18n="momentum.enemyHitsLabel"></small><strong data-i18n="momentum.webcasterHits"></strong></span>
+              <span><small data-i18n="momentum.enemyAttackLabel"></small><strong data-i18n="momentum.webcasterAttack"></strong></span>
+            </div>
+            <div class="ms-enemy-test"><span data-i18n="momentum.enemyDesignTestLabel"></span><strong data-i18n="momentum.webcasterTest"></strong></div>
+          </div>
+        </article>
+
+        <article class="ms-enemy-slide" data-enemy-slide hidden>
+          <div class="ms-enemy-slide__visual">
+            <img src="assets/images/momentum-shifter/enemies/summoner-unit.png" alt="Summoner Unit enemy concept art" loading="lazy">
+          </div>
+          <div class="ms-enemy-slide__info">
+            <span class="enemy-role" data-i18n="momentum.summonerRole"></span>
+            <h3 data-i18n="momentum.summonerTitle"></h3>
+            <p data-i18n="momentum.summonerDesc"></p>
+            <div class="ms-enemy-facts">
+              <span><small data-i18n="momentum.enemyMovementLabel"></small><strong data-i18n="momentum.summonerMove"></strong></span>
+              <span><small data-i18n="momentum.enemyHitsLabel"></small><strong data-i18n="momentum.summonerHits"></strong></span>
+              <span><small data-i18n="momentum.enemyAttackLabel"></small><strong data-i18n="momentum.summonerAttack"></strong></span>
+            </div>
+            <div class="ms-enemy-test"><span data-i18n="momentum.enemyDesignTestLabel"></span><strong data-i18n="momentum.summonerTest"></strong></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="ms-enemy-carousel__controls">
+        <button type="button" class="ms-enemy-arrow" data-enemy-prev aria-label="Previous enemy">←</button>
+        <div class="ms-enemy-dots" aria-label="Enemy carousel navigation">
+          <button class="is-active" type="button" data-enemy-dot="0" aria-label="Rumbler"></button>
+          <button type="button" data-enemy-dot="1" aria-label="Screamer Drone"></button>
+          <button type="button" data-enemy-dot="2" aria-label="Webcaster"></button>
+          <button type="button" data-enemy-dot="3" aria-label="Summoner Unit"></button>
+        </div>
+        <button type="button" class="ms-enemy-arrow" data-enemy-next aria-label="Next enemy">→</button>
+      </div>
     </div>
   </section>
 
@@ -511,7 +600,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=13"></script>
-<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="script.js?v=5"></script>
+<script src="translations-momentum.js?v=14"></script>
+<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="script.js?v=5"></script>
 </body>
 </html>
