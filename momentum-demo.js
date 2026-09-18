@@ -29,7 +29,7 @@
   const floorY = 1790;
 
   const input = { left:false, right:false, up:false, down:false };
-  const aim = { x:850, y:floorY-180, active:false, dx:1, dy:0 };
+  const aim = { x:850, y:floorY-180, active:false, dx:1, dy:0, source:'mouse' };
 
   const doorPlatform = { x:900, y:260, w:350, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 };
   const staticSolids = [
@@ -521,7 +521,12 @@
     }
 
     const alpha=1-Math.exp(-dt*5.2);
+    const previousY=state.camera.y;
     state.camera.y=lerp(state.camera.y,state.camera.targetY,alpha);
+
+    if(aim.source==='mouse'){
+      aim.y+=state.camera.y-previousY;
+    }
   };
 
   const checkPlayerProgress = () => {
@@ -1523,6 +1528,7 @@
     aim.x=p.x;
     aim.y=p.y;
     aim.active=true;
+    aim.source='mouse';
 
     const pcx=state.player.x+state.player.w*.5;
     const pcy=state.player.y+state.player.h*.5;
@@ -1700,6 +1706,7 @@
       aim.x=pcx+aim.dx*430;
       aim.y=pcy+aim.dy*430;
       aim.active=true;
+      aim.source='stick';
     },
     ()=>{}
   );
