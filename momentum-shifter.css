@@ -6072,3 +6072,133 @@ html[lang="it"] .ms-easter-hint__en{
     min-height:50px;
   }
 }
+
+
+/* v34 — FIRE beside movement, JUMP beside aim */
+.ms-game-action-button{
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:62px;
+  height:62px;
+  min-width:62px;
+  min-height:62px;
+  padding:0;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:50%;
+  background:rgba(7,13,27,.70);
+  color:#fff;
+  box-shadow:0 8px 22px rgba(0,0,0,.18);
+  backdrop-filter:blur(5px);
+  touch-action:none;
+  pointer-events:auto;
+}
+
+.ms-game-action-button svg{
+  width:27px;
+  height:27px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  pointer-events:none;
+}
+
+.ms-game-action-button.is-fire{
+  border-color:rgba(244,215,92,.30);
+  color:#ffe875;
+  background:rgba(56,47,19,.72);
+}
+
+.ms-game-action-button.is-jump{
+  border-color:rgba(114,213,233,.28);
+  color:#8fe8f7;
+  background:rgba(17,44,62,.72);
+}
+
+.ms-game-action-button:active{
+  transform:translateY(2px) scale(.98);
+}
+
+.ms-game-action-button.is-charging .ms-game-charge-ring{
+  opacity:.35;
+  animation:msGravityCharge .32s linear forwards;
+}
+
+.ms-game-action-button.is-ready{
+  box-shadow:0 0 0 4px rgba(114,213,233,.10),0 0 22px rgba(114,213,233,.18);
+}
+
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(190px,1fr) minmax(190px,1fr);
+    justify-content:space-between;
+    align-items:end;
+    gap:28px;
+  }
+
+  .ms-game-left-controls,
+  .ms-game-right-controls{
+    display:flex;
+    align-items:flex-end;
+    min-width:0;
+    pointer-events:auto;
+  }
+
+  .ms-game-left-controls{
+    justify-content:flex-start;
+    gap:10px;
+  }
+
+  .ms-game-right-controls{
+    justify-content:flex-end;
+    gap:10px;
+  }
+
+  .ms-game-right-controls .is-jump{
+    order:1;
+    margin-bottom:4px;
+  }
+
+  .ms-game-right-controls .ms-game-stick-wrap--aim{
+    order:2;
+  }
+
+  .ms-game-left-controls .is-fire{
+    margin-bottom:4px;
+  }
+}
+
+@media (pointer:coarse) and (orientation:landscape){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(180px,1fr) minmax(180px,1fr);
+    gap:24px;
+  }
+
+  .ms-game-action-button{
+    width:58px;
+    height:58px;
+    min-width:58px;
+    min-height:58px;
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(150px,1fr) minmax(150px,1fr);
+    gap:10px;
+  }
+
+  .ms-game-action-button{
+    width:50px;
+    height:50px;
+    min-width:50px;
+    min-height:50px;
+  }
+
+  .ms-game-action-button svg{
+    width:23px;
+    height:23px;
+  }
+}
