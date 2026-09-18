@@ -272,21 +272,31 @@
     return { w:36,h:50,hp:1,speed:22,color:'#704b39',accent:'#f4d75c' };
   };
 
-  const spawnEnemy = (type, waveEnemy=true) => {
+  const spawnEnemy = (type, waveEnemy=true, source=null) => {
     const spec=enemySpec(type);
     const flying=type==='drone';
+    const encounter=source || state.door;
+    const homeY=encounter.platformY ?? doorPlatform.y;
+    const minX=encounter.minX ?? doorPlatform.x+8;
+    const maxX=encounter.maxX ?? doorPlatform.x+doorPlatform.w-8;
+    const spawnX=encounter.spawnX ?? state.door.x-48;
+
     const enemy={
       id:++state.enemyId,
       type,
       waveEnemy,
-      x:state.door.x-48,
-      y:flying ? doorPlatform.y-95 : doorPlatform.y-spec.h,
+      encounterId:waveEnemy ? encounter.id : null,
+      x:spawnX,
+      y:flying ? homeY-95 : homeY-spec.h,
       w:spec.w,h:spec.h,
       hp:spec.hp,maxHp:spec.hp,
       speed:spec.speed,
       color:spec.color,
       accent:spec.accent,
       flying,
+      homeY,
+      minX,
+      maxX,
       phase:state.enemyId*.8,
       attack:1.2 + (state.enemyId%3)*.28,
       summon:3.4
@@ -303,26 +313,44 @@
     if(idx>=0) state.enemies.splice(idx,1);
     state.score+=enemy.waveEnemy?120:55;
 
-    if(enemy.waveEnemy){
-      state.door.remaining=Math.max(0,state.door.remaining-1);
-      if(state.door.remaining===0){
-        state.door.active=false;
-        state.score+=500;
-        state.message='DOOR CLEARED · REACH EXIT';
-        state.messageTimer=2.2;
+    if(enemy.waveEnemy && enemy.encounterId){
+      if(enemy.encounterId==='final'){
+        state.door.remaining=Math.max(0,state.door.remaining-1);
 
-        if(!state.door.coreDropped){
-          state.door.coreDropped=true;
-          state.pickups.push({
-            type:'core',
-            x:state.door.x-46,
-            y:doorPlatform.y-28,
-            w:20,h:20,
-            phase:0
-          });
+        if(state.door.remaining===0){
+          state.door.active=false;
+          state.score+=500;
+          state.message=state.combatZones.every(zone=>zone.cleared)
+            ? 'DOOR CLEARED · REACH END'
+            : 'DOOR CLEARED · ENEMY ZONES REMAIN';
+          state.messageTimer=2.2;
+
+          if(!state.door.coreDropped){
+            state.door.coreDropped=true;
+            state.pickups.push({
+              type:'core',
+              x:state.door.x-46,
+              y:doorPlatform.y-28,
+              w:20,h:20,
+              phase:0
+            });
+          }
+        }
+      }else{
+        const zone=state.combatZones.find(item=>item.id===enemy.encounterId);
+        if(zone){
+          zone.remaining=Math.max(0,zone.remaining-1);
+
+          if(zone.remaining===0){
+            zone.cleared=true;
+            state.score+=250;
+            state.message=zone.label+' CLEARED';
+            state.messageTimer=1.5;
+          }
         }
       }
     }
+
     return true;
   };
 
