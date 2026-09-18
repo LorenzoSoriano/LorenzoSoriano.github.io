@@ -4170,3 +4170,342 @@ body[data-page="momentum"] .momentum-hero{
     min-height:260px;
   }
 }
+
+
+/* v23 — power-up examples + synchronized enemy carousel */
+.ms-powerups{
+  max-width:1120px;
+  margin-top:18px;
+  padding:24px;
+  border:1px solid rgba(121,108,240,.12);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 100% 0,rgba(244,215,92,.11),transparent 30%),
+    linear-gradient(145deg,#fff,#fafbff);
+}
+
+.ms-powerups__head{
+  display:grid;
+  grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:28px;
+  align-items:end;
+}
+
+.ms-powerups__head h3{
+  margin:7px 0 0;
+  font-size:24px;
+  line-height:1.1;
+  letter-spacing:-.03em;
+}
+
+.ms-powerups__head>p{
+  margin:0;
+  color:var(--muted);
+  font-size:12.5px;
+  line-height:1.62;
+}
+
+.ms-powerup-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+.ms-powerup-card{
+  min-height:170px;
+  padding:18px;
+  border:1px solid rgba(121,108,240,.10);
+  border-radius:18px;
+  background:#fff;
+}
+
+.ms-powerup-rarity{
+  display:inline-flex;
+  margin-bottom:24px;
+  padding:6px 8px;
+  border-radius:999px;
+  background:rgba(121,108,240,.07);
+  color:var(--purple);
+  font:700 8px/1.1 "IBM Plex Mono",monospace;
+  letter-spacing:.07em;
+}
+
+.ms-powerup-card:nth-child(2) .ms-powerup-rarity{
+  background:rgba(94,160,240,.09);
+  color:#3179bd;
+}
+
+.ms-powerup-card:nth-child(3) .ms-powerup-rarity{
+  background:rgba(244,215,92,.17);
+  color:#846d17;
+}
+
+.ms-powerup-card h4{
+  margin:0 0 7px;
+  font-size:15px;
+}
+
+.ms-powerup-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:11.5px;
+  line-height:1.55;
+}
+
+.ms-powerups__rule{
+  display:flex;
+  justify-content:space-between;
+  gap:22px;
+  align-items:center;
+  margin-top:12px;
+  padding:13px 15px;
+  border-radius:16px;
+  background:rgba(121,108,240,.045);
+}
+
+.ms-powerups__rule span{
+  color:var(--purple);
+  font:700 8px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+}
+
+.ms-powerups__rule strong{
+  font-size:11px;
+  line-height:1.45;
+  text-align:right;
+}
+
+.ms-enemy-carousel{
+  max-width:1120px;
+}
+
+.ms-enemy-carousel__viewport{
+  min-height:430px;
+  overflow:hidden;
+  border:1px solid rgba(121,108,240,.12);
+  border-radius:26px;
+  background:linear-gradient(145deg,#fff,#fafbff);
+  box-shadow:0 18px 46px rgba(46,57,96,.055);
+}
+
+.ms-enemy-slide{
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(330px,.92fr);
+  min-height:430px;
+  animation:msEnemyIn .28s ease both;
+}
+
+.ms-enemy-slide[hidden]{
+  display:none!important;
+}
+
+@keyframes msEnemyIn{
+  from{opacity:0;transform:translateX(8px)}
+  to{opacity:1;transform:none}
+}
+
+.ms-enemy-slide__visual{
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 55%,rgba(94,160,240,.13),transparent 38%),
+    linear-gradient(180deg,#151e35,#0c1324);
+}
+
+.ms-enemy-slide__visual::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent 64%,rgba(7,12,23,.24));
+}
+
+.ms-enemy-slide__visual img{
+  display:block;
+  width:100%;
+  height:100%;
+  min-height:430px;
+  object-fit:cover;
+  object-position:center;
+}
+
+.ms-enemy-slide__info{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-width:0;
+  padding:34px;
+}
+
+.ms-enemy-slide__info .enemy-role{
+  align-self:flex-start;
+  display:inline-flex;
+  margin-bottom:20px;
+  padding:7px 9px;
+  border-radius:999px;
+  background:rgba(121,108,240,.07);
+  color:var(--purple);
+  font:700 8px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.06em;
+}
+
+.ms-enemy-slide__info h3{
+  margin:0 0 10px;
+  font-size:31px;
+  line-height:1.05;
+  letter-spacing:-.035em;
+}
+
+.ms-enemy-slide__info>p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.65;
+}
+
+.ms-enemy-facts{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:24px;
+}
+
+.ms-enemy-facts>span{
+  min-width:0;
+  padding:11px;
+  border:1px solid rgba(121,108,240,.09);
+  border-radius:14px;
+  background:#fff;
+}
+
+.ms-enemy-facts small{
+  display:block;
+  margin-bottom:5px;
+  color:var(--muted);
+  font:700 7px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+}
+
+.ms-enemy-facts strong{
+  display:block;
+  font-size:10.5px;
+  line-height:1.4;
+}
+
+.ms-enemy-test{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid rgba(121,108,240,.09);
+}
+
+.ms-enemy-test span{
+  display:block;
+  margin-bottom:5px;
+  color:var(--purple);
+  font:700 7.5px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+}
+
+.ms-enemy-test strong{
+  font-size:11.5px;
+}
+
+.ms-enemy-carousel__controls{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:14px;
+  align-items:center;
+  margin-top:12px;
+}
+
+.ms-enemy-arrow{
+  display:grid;
+  place-items:center;
+  width:38px;
+  height:38px;
+  border:1px solid rgba(121,108,240,.13);
+  border-radius:50%;
+  background:#fff;
+  color:var(--text);
+  cursor:pointer;
+  transition:transform .18s ease,border-color .18s ease;
+}
+
+.ms-enemy-arrow:hover{
+  transform:translateY(-1px);
+  border-color:rgba(121,108,240,.30);
+}
+
+.ms-enemy-dots{
+  display:flex;
+  justify-content:center;
+  gap:7px;
+}
+
+.ms-enemy-dots button{
+  width:34px;
+  height:5px;
+  border:0;
+  border-radius:999px;
+  background:rgba(121,108,240,.14);
+  cursor:pointer;
+}
+
+.ms-enemy-dots button.is-active{
+  background:var(--purple);
+}
+
+@media(max-width:900px){
+  .ms-powerups__head{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  .ms-powerup-grid{
+    grid-template-columns:1fr;
+  }
+
+  .ms-powerup-card{
+    min-height:0;
+  }
+
+  .ms-enemy-slide{
+    grid-template-columns:1fr;
+  }
+
+  .ms-enemy-slide__visual,
+  .ms-enemy-slide__visual img{
+    min-height:360px;
+  }
+}
+
+@media(max-width:620px){
+  .ms-powerups{
+    padding:19px;
+  }
+
+  .ms-powerups__rule{
+    display:block;
+  }
+
+  .ms-powerups__rule strong{
+    display:block;
+    margin-top:6px;
+    text-align:left;
+  }
+
+  .ms-enemy-slide__visual,
+  .ms-enemy-slide__visual img{
+    min-height:300px;
+  }
+
+  .ms-enemy-slide__info{
+    padding:24px 20px;
+  }
+
+  .ms-enemy-facts{
+    grid-template-columns:1fr;
+  }
+}
