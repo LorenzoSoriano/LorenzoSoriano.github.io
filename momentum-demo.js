@@ -211,7 +211,7 @@
       if(state.door.remaining===0){
         state.door.active=false;
         state.score+=500;
-        state.message='DOOR CLEARED';
+        state.message='DOOR CLEARED · REACH EXIT';
         state.messageTimer=2.2;
 
         if(!state.door.coreDropped){
@@ -835,23 +835,97 @@
   const drawSolids = () => {
     for(const solid of staticSolids){
       const raised=solid===doorPlatform;
+      const wall=solid.kind==='wall';
 
-      ctx.fillStyle=solid.kind==='floor'?'#161f35':raised?'#29334c':'#222d48';
+      const g=ctx.createLinearGradient(solid.x,solid.y,solid.x,solid.y+Math.max(solid.h,24));
+      g.addColorStop(0,raised?'#303b57':wall?'#2a334b':'#27324b');
+      g.addColorStop(1,solid.kind==='floor'?'#111a2d':'#172139');
+      ctx.fillStyle=g;
       ctx.fillRect(solid.x,solid.y,solid.w,solid.h);
 
-      ctx.fillStyle=solid.kind==='wall'?'#f4d75c':raised?'#ff8758':'#5ea0f0';
-      ctx.globalAlpha=.72;
+      ctx.save();
+      ctx.globalAlpha=.86;
+      ctx.fillStyle=raised?'#ff8758':'#72d5e9';
 
-      if(solid.kind==='wall') ctx.fillRect(solid.x,solid.y,2,solid.h);
-      else ctx.fillRect(solid.x,solid.y,solid.w,2);
+      if(wall){
+        ctx.fillRect(solid.x,solid.y,2,solid.h);
+        ctx.fillRect(solid.x+solid.w-2,solid.y,2,solid.h);
 
-      ctx.globalAlpha=1;
+        for(let y=solid.y+12;y<solid.y+solid.h-8;y+=24){
+          ctx.fillStyle='rgba(114,213,233,.20)';
+          ctx.fillRect(solid.x+5,y,solid.w-10,3);
+        }
+      }else{
+        ctx.fillRect(solid.x,solid.y,solid.w,2);
+
+        for(let x=solid.x+14;x<solid.x+solid.w-10;x+=30){
+          ctx.fillStyle=raised?'rgba(255,135,88,.18)':'rgba(114,213,233,.14)';
+          ctx.fillRect(x,solid.y+6,14,3);
+        }
+      }
+      ctx.restore();
     }
 
-    // Support struts under the enemy platform.
-    ctx.fillStyle='#172037';
-    ctx.fillRect(1035,doorPlatform.y+doorPlatform.h,18,floorY-doorPlatform.y-doorPlatform.h);
-    ctx.fillRect(1180,doorPlatform.y+doorPlatform.h,18,floorY-doorPlatform.y-doorPlatform.h);
+    // Architectural supports make the route read as one vertical tower section.
+    ctx.fillStyle='#141d33';
+    ctx.fillRect(935,doorPlatform.y+doorPlatform.h,16,floorY-doorPlatform.y-doorPlatform.h);
+    ctx.fillRect(1210,doorPlatform.y+doorPlatform.h,16,floorY-doorPlatform.y-doorPlatform.h);
+
+    ctx.fillStyle='rgba(114,213,233,.07)';
+    ctx.fillRect(382,560,30,4);
+    ctx.fillRect(652,493,30,4);
+    ctx.fillRect(847,405,30,4);
+  };
+
+  const drawGoal = () => {
+    const active=!state.door.active;
+    const cx=goal.x+goal.w*.5;
+    const base=goal.y+goal.h;
+
+    ctx.save();
+
+    ctx.fillStyle=active?'rgba(114,213,233,.10)':'rgba(255,123,88,.06)';
+    ctx.fillRect(goal.x,goal.y,goal.w,goal.h);
+
+    ctx.strokeStyle=active?'rgba(114,213,233,.72)':'rgba(255,123,88,.32)';
+    ctx.lineWidth=2;
+    ctx.strokeRect(goal.x+.5,goal.y+.5,goal.w-1,goal.h-1);
+
+    ctx.beginPath();
+    ctx.arc(cx,goal.y+18,active?11:8,0,Math.PI*2);
+    ctx.strokeStyle=active?'#72d5e9':'rgba(255,123,88,.55)';
+    ctx.stroke();
+
+    if(active){
+      const pulse=8+Math.sin(performance.now()*.006)*3;
+      ctx.beginPath();
+      ctx.arc(cx,goal.y+18,16+pulse,0,Math.PI*2);
+      ctx.strokeStyle='rgba(114,213,233,.16)';
+      ctx.stroke();
+
+      ctx.fillStyle='#72d5e9';
+      ctx.font='700 9px monospace';
+      ctx.textAlign='center';
+      ctx.fillText('EXIT',cx,goal.y-9);
+
+      ctx.beginPath();
+      ctx.moveTo(cx-8,goal.y-22);
+      ctx.lineTo(cx,goal.y-14);
+      ctx.lineTo(cx+8,goal.y-22);
+      ctx.strokeStyle='rgba(114,213,233,.65)';
+      ctx.stroke();
+    }else{
+      ctx.fillStyle='rgba(255,154,114,.58)';
+      ctx.font='700 8px monospace';
+      ctx.textAlign='center';
+      ctx.fillText('LOCKED',cx,goal.y-9);
+    }
+
+    ctx.fillStyle=active?'rgba(114,213,233,.30)':'rgba(255,123,88,.16)';
+    ctx.fillRect(goal.x-8,base-3,goal.w+16,3);
+
+    ctx.textAlign='left';
+    ctx.restore();
   };
 
   const drawDoorIcon = (type,cx,cy) => {
@@ -946,7 +1020,7 @@
 
     ctx.save();
     ctx.setLineDash([8,7]);
-    ctx.strokeStyle=state.gravityJump?'rgba(114,213,233,.88)':'rgba(114,213,233,.42)';
+    ctx.strokeStyle=state.gravityJump?'rgba(114,213,233,.90)':'rgba(114,213,233,.46)';
     ctx.lineWidth=2;
     ctx.beginPath();
     ctx.moveTo(sx,sy);
@@ -955,32 +1029,54 @@
     ctx.setLineDash([]);
 
     ctx.beginPath();
-    ctx.arc(target.cx,target.cy,10,0,Math.PI*2);
-    ctx.strokeStyle='rgba(114,213,233,.86)';
+    ctx.arc(target.cx,target.cy,11,0,Math.PI*2);
+    ctx.strokeStyle='rgba(114,213,233,.90)';
     ctx.stroke();
 
     ctx.beginPath();
     ctx.arc(target.cx,target.cy,4,0,Math.PI*2);
     ctx.fillStyle='#72d5e9';
     ctx.fill();
+
+    if(target.face==='left' || target.face==='right'){
+      ctx.beginPath();
+      ctx.moveTo(target.cx,target.cy-13);
+      ctx.lineTo(target.cx,target.cy+13);
+      ctx.strokeStyle='rgba(114,213,233,.42)';
+      ctx.stroke();
+    }
+
     ctx.restore();
   };
 
   const drawPlayer = () => {
     const p=state.player;
-    ctx.save();
+    const cx=p.x+p.w*.5;
+    const cy=p.y+p.h*.5;
+    const angle=p.surface==='left' ? -Math.PI*.5 : p.surface==='right' ? Math.PI*.5 : 0;
 
+    ctx.save();
     if(p.invuln>0 && Math.floor(p.invuln*12)%2===0) ctx.globalAlpha=.35;
 
-    ctx.fillStyle='#e9edf5';
-    ctx.fillRect(p.x,p.y,p.w,p.h);
-    ctx.fillStyle='#111827';
-    ctx.fillRect(p.x+4,p.y+8,p.w-8,9);
-    ctx.fillStyle='#5ea0f0';
-    ctx.fillRect(p.x+5,p.y+p.h-5,p.w-10,3);
+    ctx.translate(cx,cy);
+    ctx.rotate(angle);
 
-    const cx=p.x+p.w*.55;
-    const cy=p.y+p.h*.38;
+    ctx.fillStyle='#e9edf5';
+    ctx.fillRect(-p.w*.5,-p.h*.5,p.w,p.h);
+
+    ctx.fillStyle='#111827';
+    ctx.fillRect(-p.w*.5+4,-p.h*.5+8,p.w-8,9);
+
+    ctx.fillStyle='#5ea0f0';
+    ctx.fillRect(-p.w*.5+5,p.h*.5-5,p.w-10,3);
+
+    if(p.surface==='left' || p.surface==='right'){
+      ctx.fillStyle='rgba(114,213,233,.72)';
+      ctx.fillRect(-p.w*.5+4,p.h*.5-2,p.w-8,2);
+    }
+
+    ctx.restore();
+
     const dx=aim.x-cx;
     const dy=aim.y-cy;
     const len=Math.hypot(dx,dy)||1;
@@ -990,11 +1086,9 @@
     ctx.strokeStyle='#f4d75c';
     ctx.lineWidth=4;
     ctx.beginPath();
-    ctx.moveTo(cx,cy);
-    ctx.lineTo(cx+ax*15,cy+ay*15);
+    ctx.moveTo(cx,cy-3);
+    ctx.lineTo(cx+ax*16,cy-3+ay*16);
     ctx.stroke();
-
-    ctx.restore();
   };
 
   const drawEnemies = () => {
@@ -1160,6 +1254,7 @@
     drawBackground();
     drawSolids();
     drawDoor();
+    drawGoal();
     drawPickups();
     drawEnemies();
     drawEnemyShots();
