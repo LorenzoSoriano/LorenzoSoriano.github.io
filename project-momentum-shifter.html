@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=19">
+  <link rel="stylesheet" href="momentum-shifter.css?v=20">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -237,76 +237,134 @@
         <article><span>01</span><div><h3 data-i18n="momentum.level1"></h3><p data-i18n="momentum.level1d"></p></div></article>
       </div>
 
-      <aside class="ms-level-grammar reveal">
-        <p class="page-label" data-i18n="momentum.levelGrammarLabel"></p>
-        <h3 data-i18n="momentum.levelGrammarTitle"></h3>
-        <p class="ms-level-grammar__intro" data-i18n="momentum.levelGrammarIntro"></p>
-
-        <div class="ms-level-rule ms-level-rule--moving">
-          <span class="ms-level-rule__icon" aria-hidden="true">↕</span>
+      <div class="ms-level-browser reveal" data-level-browser>
+        <div class="ms-level-browser__head">
           <div>
-            <strong data-i18n="momentum.levelRule1"></strong>
-            <p data-i18n="momentum.levelRule1d"></p>
+            <p class="page-label" data-i18n="momentum.levelElementsLabel"></p>
+            <h3 data-i18n="momentum.levelElementsTitle"></h3>
           </div>
-          <em data-i18n="momentum.levelRule1effect"></em>
+          <p data-i18n="momentum.levelElementsIntro"></p>
         </div>
 
-        <div class="ms-level-rule ms-level-rule--magnetic">
-          <span class="ms-level-rule__icon" aria-hidden="true">⊕</span>
-          <div>
-            <strong data-i18n="momentum.levelRule2"></strong>
-            <p data-i18n="momentum.levelRule2d"></p>
-          </div>
-          <em data-i18n="momentum.levelRule2effect"></em>
+        <div class="ms-level-tabs" role="tablist" aria-label="Level elements">
+          <button class="is-active" type="button" role="tab" aria-selected="true" data-level-tab="platforms" data-i18n="momentum.levelTabPlatforms"></button>
+          <button type="button" role="tab" aria-selected="false" data-level-tab="doors" data-i18n="momentum.levelTabDoors"></button>
+          <button type="button" role="tab" aria-selected="false" data-level-tab="checkpoint" data-i18n="momentum.levelTabCheckpoint"></button>
+          <button type="button" role="tab" aria-selected="false" data-level-tab="events" data-i18n="momentum.levelTabEvents"></button>
+          <button type="button" role="tab" aria-selected="false" data-level-tab="gates" data-i18n="momentum.levelTabGates"></button>
         </div>
 
-        <div class="ms-level-rule ms-level-rule--electric">
-          <span class="ms-level-rule__icon" aria-hidden="true">ϟ</span>
-          <div>
-            <strong data-i18n="momentum.levelRule3"></strong>
-            <p data-i18n="momentum.levelRule3d"></p>
-          </div>
-          <em data-i18n="momentum.levelRule3effect"></em>
-        </div>
-      </aside>
-    </div>
+        <div class="ms-level-panels">
+          <section class="ms-level-panel is-active" role="tabpanel" data-level-panel="platforms">
+            <div class="ms-level-panel__intro">
+              <span class="ms-level-panel__number">01</span>
+              <div>
+                <h4 data-i18n="momentum.platformSectionTitle"></h4>
+                <p data-i18n="momentum.platformSectionDesc"></p>
+              </div>
+            </div>
 
-    <div class="ms-door-system reveal">
-      <div class="ms-door-system__copy">
-        <span class="page-label" data-i18n="momentum.spawnLabel"></span>
-        <h3 data-i18n="momentum.spawnTitle"></h3>
-        <p data-i18n="momentum.spawnDesc"></p>
+            <div class="ms-platform-switch">
+              <span aria-hidden="true"></span>
+              <div>
+                <small data-i18n="momentum.platformButtonsLabel"></small>
+                <strong data-i18n="momentum.platformButtonsDesc"></strong>
+              </div>
+            </div>
 
-        <div class="ms-door-principle">
-          <span data-i18n="momentum.spawnPrincipleLabel"></span>
-          <strong data-i18n="momentum.spawnPrinciple"></strong>
-        </div>
-      </div>
+            <div class="ms-platform-catalog">
+              <article><span>01</span><div><strong data-i18n="momentum.platformStatic"></strong><p data-i18n="momentum.platformStaticD"></p></div></article>
+              <article><span>02</span><div><strong data-i18n="momentum.platformMoving"></strong><p data-i18n="momentum.platformMovingD"></p></div></article>
+              <article><span>03</span><div><strong data-i18n="momentum.platformWall"></strong><p data-i18n="momentum.platformWallD"></p></div></article>
+              <article><span>04</span><div><strong data-i18n="momentum.platformMagnetic"></strong><p data-i18n="momentum.platformMagneticD"></p></div></article>
+              <article><span>05</span><div><strong data-i18n="momentum.platformElectric"></strong><p data-i18n="momentum.platformElectricD"></p></div></article>
+              <article><span>06</span><div><strong data-i18n="momentum.platformTeleport"></strong><p data-i18n="momentum.platformTeleportD"></p></div></article>
+            </div>
+          </section>
 
-      <div class="ms-door-system__visual" aria-label="Enemy spawn door information example">
-        <div class="ms-door-hud">
-          <span data-i18n="momentum.spawnExampleLabel"></span>
-          <div>
-            <small data-i18n="momentum.spawnNextLabel"></small>
-            <strong>Screamer Drone</strong>
-          </div>
-          <div>
-            <small data-i18n="momentum.spawnCountLabel"></small>
-            <strong class="ms-door-count">03</strong>
-          </div>
-        </div>
+          <section class="ms-level-panel" role="tabpanel" data-level-panel="doors" hidden>
+            <div class="ms-level-panel__intro">
+              <span class="ms-level-panel__number">02</span>
+              <div>
+                <h4 data-i18n="momentum.spawnTitle"></h4>
+                <p data-i18n="momentum.spawnDesc"></p>
+              </div>
+            </div>
 
-        <div class="ms-door-frame">
-          <span class="ms-door-frame__light"></span>
-          <span class="ms-door-frame__panel"></span>
-          <span class="ms-door-frame__panel"></span>
-          <span class="ms-door-frame__panel"></span>
-        </div>
+            <div class="ms-door-compact">
+              <div class="ms-door-compact__hud">
+                <div><small data-i18n="momentum.spawnNextLabel"></small><strong>Screamer Drone</strong></div>
+                <div><small data-i18n="momentum.spawnCountLabel"></small><strong>03</strong></div>
+              </div>
+              <div class="ms-door-compact__frame" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div class="ms-door-compact__reward"><span>0</span><b>→</b><strong data-i18n="momentum.spawnReward"></strong></div>
+            </div>
 
-        <div class="ms-door-reward">
-          <span>0</span>
-          <i aria-hidden="true">→</i>
-          <strong data-i18n="momentum.spawnReward"></strong>
+            <p class="ms-level-panel__note" data-i18n="momentum.spawnPrinciple"></p>
+          </section>
+
+          <section class="ms-level-panel" role="tabpanel" data-level-panel="checkpoint" hidden>
+            <div class="ms-level-panel__intro">
+              <span class="ms-level-panel__number">03</span>
+              <div>
+                <h4 data-i18n="momentum.checkpointTitle"></h4>
+                <p data-i18n="momentum.checkpointDesc"></p>
+              </div>
+            </div>
+
+            <div class="ms-checkpoint-flow">
+              <span data-i18n="momentum.checkpointStep1"></span>
+              <i aria-hidden="true">→</i>
+              <span data-i18n="momentum.checkpointStep2"></span>
+              <i aria-hidden="true">→</i>
+              <strong data-i18n="momentum.checkpointStep3"></strong>
+            </div>
+          </section>
+
+          <section class="ms-level-panel" role="tabpanel" data-level-panel="events" hidden>
+            <div class="ms-level-panel__intro">
+              <span class="ms-level-panel__number">04</span>
+              <div>
+                <h4 data-i18n="momentum.eventTitle"></h4>
+                <p data-i18n="momentum.eventDesc"></p>
+              </div>
+            </div>
+
+            <div class="ms-event-types">
+              <article><span>01</span><strong data-i18n="momentum.eventCarry"></strong></article>
+              <article><span>02</span><strong data-i18n="momentum.eventHold"></strong></article>
+              <article><span>03</span><strong data-i18n="momentum.eventWave"></strong></article>
+            </div>
+
+            <div class="ms-event-reward">
+              <span data-i18n="momentum.eventRewardLabel"></span>
+              <strong data-i18n="momentum.eventReward"></strong>
+            </div>
+          </section>
+
+          <section class="ms-level-panel" role="tabpanel" data-level-panel="gates" hidden>
+            <div class="ms-level-panel__intro">
+              <span class="ms-level-panel__number">05</span>
+              <div>
+                <h4 data-i18n="momentum.gatesTitle"></h4>
+                <p data-i18n="momentum.gatesDesc"></p>
+              </div>
+            </div>
+
+            <div class="ms-gate-pair">
+              <article>
+                <span data-i18n="momentum.gateEntryLabel"></span>
+                <strong data-i18n="momentum.level1"></strong>
+                <p data-i18n="momentum.level1d"></p>
+              </article>
+              <i aria-hidden="true">↑</i>
+              <article>
+                <span data-i18n="momentum.gateExitLabel"></span>
+                <strong data-i18n="momentum.level5"></strong>
+                <p data-i18n="momentum.level5d"></p>
+              </article>
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -370,7 +428,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=10"></script>
-<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="script.js?v=5"></script>
+<script src="translations-momentum.js?v=11"></script>
+<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="script.js?v=5"></script>
 </body>
 </html>
