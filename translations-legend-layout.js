@@ -25,7 +25,19 @@ Object.assign(window.TRANSLATIONS.en,{
   "legend2.turnStep5d":"Accuracy, damage, cover HP and ability effects immediately update the battlefield.",
   "legend2.turnStep6":"End the turn",
   "legend2.turnStep6d":"Reload counters and the timeline advance, then control passes to the next actor.",
-  "legend2.turnReturn":"The next character reads the new battlefield state."
+  "legend2.turnReturn":"The next character reads the new battlefield state.",
+  "legend2.statCardLabel":"COMBAT CARD",
+  "legend2.statCardIntro":"A compact visual example of how combat values can be read at a glance without turning the interface into a text panel.",
+  "legend2.statDamage":"Damage",
+  "legend2.statDamageD":"Defines the immediate offensive pressure of the equipped weapon and its impact on the target.",
+  "legend2.statHealth":"Health",
+  "legend2.statHealthD":"Shows how much punishment the character can absorb before being taken out of the fight.",
+  "legend2.statAccuracy":"Accuracy",
+  "legend2.statAccuracyD":"Summarises how reliable an attack is, especially when the target is protected by cover.",
+  "legend2.statAbility":"Ability",
+  "legend2.statAbilityD":"A role-defining tactical effect that can change positioning, cover or the rhythm of a turn.",
+  "legend2.statCooldown":"Turn cooldown",
+  "legend2.statCooldownD":"The dots under the ability show how many turns must pass before it becomes available again."
 });
 Object.assign(window.TRANSLATIONS.it,{
   "legend2.turnFlow":"FLUSSO DEL TURNO",
@@ -53,7 +65,19 @@ Object.assign(window.TRANSLATIONS.it,{
   "legend2.turnStep5d":"Accuratezza, danni, HP delle coperture ed effetti delle abilità aggiornano subito il campo.",
   "legend2.turnStep6":"Chiudi il turno",
   "legend2.turnStep6d":"Ricarica e timeline avanzano, poi il controllo passa al personaggio successivo.",
-  "legend2.turnReturn":"Il personaggio successivo legge il nuovo stato del campo."
+  "legend2.turnReturn":"Il personaggio successivo legge il nuovo stato del campo.",
+  "legend2.statCardLabel":"CARTA DI COMBATTIMENTO",
+  "legend2.statCardIntro":"Un esempio visivo compatto di come leggere i valori di combattimento a colpo d'occhio, senza trasformare l'interfaccia in un pannello di testo.",
+  "legend2.statDamage":"Danno",
+  "legend2.statDamageD":"Definisce la pressione offensiva immediata dell'arma equipaggiata e il suo impatto sul bersaglio.",
+  "legend2.statHealth":"Vita",
+  "legend2.statHealthD":"Indica quanto danno il personaggio può assorbire prima di essere messo fuori combattimento.",
+  "legend2.statAccuracy":"Accuratezza",
+  "legend2.statAccuracyD":"Riassume l'affidabilità del colpo, soprattutto quando il bersaglio è protetto da una copertura.",
+  "legend2.statAbility":"Abilità",
+  "legend2.statAbilityD":"Un effetto tattico legato al ruolo del personaggio che può cambiare posizione, coperture o ritmo del turno.",
+  "legend2.statCooldown":"Ricarica a turni",
+  "legend2.statCooldownD":"I pallini sotto l'abilità mostrano quanti turni devono passare prima che torni disponibile."
 });
 
 if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-turn-loop')){
@@ -76,10 +100,10 @@ if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-tur
         </defs>
         <path class="legend-turn-loop__ring" d="M500 62 C720 62 875 116 875 210 C875 304 720 358 500 358 C280 358 125 304 125 210 C125 116 280 62 500 62"/>
         <g class="legend-turn-loop__arrows">
-          <path d="M790 292 L765 315" marker-end="url(#legendTurnArrow)"/>
-          <path d="M260 335 L235 315" marker-end="url(#legendTurnArrow)"/>
-          <path d="M210 128 L235 105" marker-end="url(#legendTurnArrow)"/>
-          <path d="M740 82 L765 105" marker-end="url(#legendTurnArrow)"/>
+          <path d="M-7 -7 L7 0 L-7 7" transform="translate(765 105) rotate(21.6)"/>
+          <path d="M-7 -7 L7 0 L-7 7" transform="translate(765 315) rotate(158.4)"/>
+          <path d="M-7 -7 L7 0 L-7 7" transform="translate(235 315) rotate(201.6)"/>
+          <path d="M-7 -7 L7 0 L-7 7" transform="translate(235 105) rotate(338.4)"/>
         </g>
       </svg>
       <div class="legend-turn-loop__core">
