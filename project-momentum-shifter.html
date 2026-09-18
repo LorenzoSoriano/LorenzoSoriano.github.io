@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=8">
+  <link rel="stylesheet" href="momentum-shifter.css?v=9">
 <link rel="stylesheet" href="project-facts.css?v=4"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -113,25 +113,29 @@
              C 640 306, 795 306, 895 180
              C 795 54, 640 54, 500 180
              C 360 306, 205 306, 105 180"/>
-        <circle class="ms-infinity-track__dot ms-infinity-track__dot--one" r="7">
+        <g class="ms-infinity-track__arrow ms-infinity-track__arrow--one">
+          <path d="M -8 -5 L 3 0 L -8 5" />
           <animateMotion
             dur="9s"
             repeatCount="indefinite"
+            rotate="auto"
             calcMode="spline"
             keyTimes="0;1"
             keySplines=".42 0 .58 1"
             path="M 105 180 C 205 54, 360 54, 500 180 C 640 306, 795 306, 895 180 C 795 54, 640 54, 500 180 C 360 306, 205 306, 105 180"/>
-        </circle>
-        <circle class="ms-infinity-track__dot ms-infinity-track__dot--two" r="7">
+        </g>
+        <g class="ms-infinity-track__arrow ms-infinity-track__arrow--two">
+          <path d="M -8 -5 L 3 0 L -8 5" />
           <animateMotion
             dur="9s"
             begin="-4.5s"
             repeatCount="indefinite"
+            rotate="auto"
             calcMode="spline"
             keyTimes="0;1"
             keySplines=".42 0 .58 1"
             path="M 105 180 C 205 54, 360 54, 500 180 C 640 306, 795 306, 895 180 C 795 54, 640 54, 500 180 C 360 306, 205 306, 105 180"/>
-        </circle>
+        </g>
       </svg>
       <article class="ms-time-state ms-time-state--slow">
         <p class="page-label" data-i18n="momentum.slowLabel"></p>
@@ -139,7 +143,7 @@
         <p data-i18n="momentum.slowDesc"></p>
         <ul><li data-i18n="momentum.slowA"></li><li data-i18n="momentum.slowB"></li></ul>
       </article>
-      <div class="ms-time-arrow" aria-hidden="true">↔</div>
+      
       <article class="ms-time-state ms-time-state--flow">
         <p class="page-label" data-i18n="momentum.flowLabel"></p>
         <h3 data-i18n="momentum.flowTitle"></h3>
