@@ -1677,3 +1677,47 @@ body[data-page="legend"] .legend-progression-system--sheet{
     margin-bottom:36px;
   }
 }
+
+
+/* v9 — keep progression copy on the same horizontal rhythm as the other section headers */
+@media(min-width:981px){
+  body[data-page="legend"] .legend-editorial-heading--progress,
+  body[data-page="legend"] .legend-progression-system--sheet .legend-stat-system__heading{
+    display:grid!important;
+    grid-template-columns:minmax(300px,.82fr) minmax(0,1.18fr)!important;
+    column-gap:72px!important;
+    row-gap:0!important;
+    align-items:start!important;
+    width:100%!important;
+    max-width:1080px!important;
+  }
+
+  body[data-page="legend"] .legend-editorial-heading--progress .legend-progress-heading__main{
+    grid-column:1!important;
+    grid-row:1!important;
+    align-self:start!important;
+  }
+  body[data-page="legend"] .legend-editorial-heading--progress .legend-progress-heading__intro{
+    grid-column:2!important;
+    grid-row:1!important;
+    align-self:start!important;
+    justify-self:start!important;
+    max-width:590px!important;
+    margin:20px 0 0!important;
+  }
+
+  body[data-page="legend"] .legend-progression-system--sheet .legend-stat-system__heading > div{
+    grid-column:1!important;
+    grid-row:1!important;
+    align-self:start!important;
+  }
+  body[data-page="legend"] .legend-progression-system--sheet .legend-stat-system__heading > p{
+    grid-column:2!important;
+    grid-row:1!important;
+    align-self:start!important;
+    justify-self:start!important;
+    max-width:580px!important;
+    margin:20px 0 0!important;
+    padding:0!important;
+  }
+}
