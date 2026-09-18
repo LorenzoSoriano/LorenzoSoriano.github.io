@@ -4740,3 +4740,60 @@ body[data-page="momentum"] .ms-enemy-subsection .ms-progress-heading{
     padding-top:58px!important;
   }
 }
+
+
+/* v27 — event objective cards use their full width */
+.ms-event-zone-copy .ms-event-types{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+}
+
+.ms-event-zone-copy .ms-event-types article{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:118px;
+  padding:16px;
+}
+
+.ms-event-zone-copy .ms-event-types article>div{
+  display:block;
+  width:100%!important;
+  min-width:0!important;
+}
+
+.ms-event-zone-copy .ms-event-types strong,
+.ms-event-zone-copy .ms-event-types p{
+  display:block;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  white-space:normal!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  hyphens:none;
+}
+
+.ms-event-zone-copy .ms-event-types strong{
+  margin:0 0 7px;
+  font-size:12px;
+  line-height:1.4;
+}
+
+.ms-event-zone-copy .ms-event-types p{
+  margin:0;
+  font-size:10.75px;
+  line-height:1.52;
+}
+
+@media(max-width:900px){
+  .ms-event-zone-copy .ms-event-types{
+    grid-template-columns:1fr;
+  }
+
+  .ms-event-zone-copy .ms-event-types article{
+    min-height:0;
+  }
+}
