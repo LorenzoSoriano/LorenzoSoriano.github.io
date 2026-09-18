@@ -70,11 +70,17 @@ if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-tur
             <stop offset="58%" stop-color="#5ea0f0"/>
             <stop offset="100%" stop-color="#f4d75c"/>
           </linearGradient>
-          <marker id="legendTurnArrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="strokeWidth">
-            <path d="M1,1 L10,6 L1,11" fill="none" stroke="#796cf0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <marker id="legendTurnArrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M1,1 L9,5.5 L1,10" fill="none" stroke="#796cf0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </marker>
         </defs>
-        <path d="M500 62 C720 62 875 116 875 210 C875 304 720 358 500 358 C280 358 125 304 125 210 C125 116 280 62 500 62" marker-end="url(#legendTurnArrow)"/>
+        <path class="legend-turn-loop__ring" d="M500 62 C720 62 875 116 875 210 C875 304 720 358 500 358 C280 358 125 304 125 210 C125 116 280 62 500 62"/>
+        <g class="legend-turn-loop__arrows">
+          <path d="M790 292 L765 315" marker-end="url(#legendTurnArrow)"/>
+          <path d="M260 335 L235 315" marker-end="url(#legendTurnArrow)"/>
+          <path d="M210 128 L235 105" marker-end="url(#legendTurnArrow)"/>
+          <path d="M740 82 L765 105" marker-end="url(#legendTurnArrow)"/>
+        </g>
       </svg>
       <div class="legend-turn-loop__core">
         <span data-i18n="legend2.turnFlow">FLUSSO DEL TURNO</span>
