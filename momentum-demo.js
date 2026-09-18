@@ -187,6 +187,8 @@
     state.messageTimer=0;
     state.gravityTarget=null;
     state.gravityJump=null;
+    state.camera.y=Math.max(0,floorY-H+70);
+    state.camera.targetY=state.camera.y;
     resetDoor();
     resetPlayer();
     updateHud(.22);
@@ -498,8 +500,28 @@
     const rect=canvas.getBoundingClientRect();
     return {
       x:(event.clientX-rect.left)/rect.width*W,
-      y:(event.clientY-rect.top)/rect.height*H
+      y:(event.clientY-rect.top)/rect.height*H + state.camera.y
     };
+  };
+
+  const updateCamera = (dt, snap=false) => {
+    const p=state.player;
+    const lookAhead=state.gravityJump ? -70 : (p.vy<0 ? -45 : 0);
+    const desired=clamp(
+      p.y+p.h*.5-H*.60+lookAhead,
+      0,
+      Math.max(0,WORLD_H-H)
+    );
+
+    state.camera.targetY=desired;
+
+    if(snap){
+      state.camera.y=desired;
+      return;
+    }
+
+    const alpha=1-Math.exp(-dt*5.2);
+    state.camera.y=lerp(state.camera.y,state.camera.targetY,alpha);
   };
 
   const checkPlayerProgress = () => {
@@ -602,7 +624,7 @@
       p.surface='air';
     }
 
-    if(p.y>H+80) playerHit();
+    if(p.y>WORLD_H+80) playerHit();
 
     checkPlayerProgress();
   };
@@ -650,9 +672,9 @@
         }
       }
 
-      if(hitSurface || nx<b.r || nx>W-b.r || ny<b.r || ny>H-b.r){
+      if(hitSurface || nx<b.r || nx>W-b.r || ny<b.r || ny>WORLD_H-b.r){
         b.x=clamp(nx,b.r,W-b.r);
-        b.y=clamp(ny,b.r,H-b.r);
+        b.y=clamp(ny,b.r,WORLD_H-b.r);
         stopBullet(b);
         return;
       }
@@ -722,6 +744,7 @@
   const updateDoor = (dt,scale) => {
     const d=state.door;
     if(!d.active || d.spawned>=d.total) return;
+    if(state.player.y>760) return;
 
     d.timer-=dt*scale;
     const aliveWave=state.enemies.filter(e=>e.waveEnemy).length;
@@ -792,7 +815,7 @@
       shot.x+=shot.dx*move;
       shot.y+=shot.dy*move;
 
-      let remove=shot.x<0||shot.x>W||shot.y<0||shot.y>H;
+      let remove=shot.x<0||shot.x>W||shot.y<0||shot.y>WORLD_H;
 
       if(!remove){
         for(const solid of staticSolids){
@@ -813,29 +836,44 @@
   };
 
   const drawBackground = () => {
+    const cam=state.camera.y;
+    const climb=1-clamp(cam/Math.max(1,WORLD_H-H),0,1);
+
     const g=ctx.createLinearGradient(0,0,0,H);
-    g.addColorStop(0,'#111a30');
+    g.addColorStop(0,climb>.68?'#101b32':'#111a30');
     g.addColorStop(.58,'#0c1427');
     g.addColorStop(1,'#070e1b');
     ctx.fillStyle=g;
     ctx.fillRect(0,0,W,H);
 
-    const glow=ctx.createRadialGradient(1090,110,10,1090,110,430);
+    const glowY=110+climb*80;
+    const glow=ctx.createRadialGradient(1080,glowY,10,1080,glowY,470);
     glow.addColorStop(0,'rgba(241,132,70,.18)');
     glow.addColorStop(1,'rgba(241,132,70,0)');
     ctx.fillStyle=glow;
-    ctx.fillRect(650,0,630,480);
+    ctx.fillRect(620,0,660,520);
 
+    const farOffset=(cam*.10)%210;
     for(let i=0;i<18;i++){
       const x=i*82-30;
-      const h=170+(i%5)*48;
+      const towerH=210+(i%5)*56;
+      const base=H+70-farOffset;
       ctx.fillStyle=i%2?'#10182a':'#0c1424';
-      ctx.fillRect(x,220-h*.6,62,h+290);
-      ctx.fillStyle='rgba(244,151,77,.10)';
+      ctx.fillRect(x,base-towerH,62,towerH+80);
 
-      for(let y=165;y<520;y+=38){
-        if((i+y)%4!==0) ctx.fillRect(x+13,y,5,15);
+      ctx.fillStyle='rgba(244,151,77,.09)';
+      for(let y=base-towerH+26;y<base-24;y+=38){
+        if((i+Math.round(y))%4!==0) ctx.fillRect(x+13,y,5,14);
       }
+    }
+
+    // Interior shaft silhouettes move more slowly than gameplay geometry.
+    const shaftOffset=(cam*.22)%260;
+    ctx.fillStyle='rgba(28,39,65,.52)';
+    for(let y=-260+shaftOffset;y<H+260;y+=260){
+      ctx.fillRect(78,y,16,170);
+      ctx.fillRect(W-98,y+68,16,170);
+      ctx.fillRect(95,y+28,W-190,6);
     }
 
     ctx.strokeStyle='rgba(114,213,233,.055)';
@@ -848,7 +886,8 @@
       ctx.stroke();
     }
 
-    for(let y=0;y<H;y+=40){
+    const gridOffset=-(cam*.18)%40;
+    for(let y=gridOffset-40;y<H+40;y+=40){
       ctx.beginPath();
       ctx.moveTo(0,y);
       ctx.lineTo(W,y);
@@ -890,15 +929,39 @@
       ctx.restore();
     }
 
-    // Architectural supports make the route read as one vertical tower section.
-    ctx.fillStyle='#141d33';
-    ctx.fillRect(935,doorPlatform.y+doorPlatform.h,16,floorY-doorPlatform.y-doorPlatform.h);
-    ctx.fillRect(1210,doorPlatform.y+doorPlatform.h,16,floorY-doorPlatform.y-doorPlatform.h);
+    // Decorative structural ribs divide the vertical climb into readable floors.
+    ctx.save();
+    ctx.fillStyle='rgba(20,29,51,.88)';
+    for(const section of levelSections){
+      const y=section.y+58;
+      ctx.fillRect(24,y,W-48,4);
+      ctx.fillRect(48,y-54,8,58);
+      ctx.fillRect(W-56,y-54,8,58);
+    }
+    ctx.restore();
+  };
 
-    ctx.fillStyle='rgba(114,213,233,.07)';
-    ctx.fillRect(382,560,30,4);
-    ctx.fillRect(652,493,30,4);
-    ctx.fillRect(847,405,30,4);
+  const drawLevelSections = () => {
+    ctx.save();
+    for(const section of levelSections){
+      ctx.fillStyle='rgba(114,213,233,.12)';
+      ctx.fillRect(32,section.y-22,150,34);
+
+      ctx.fillStyle='rgba(114,213,233,.82)';
+      ctx.font='700 10px monospace';
+      ctx.fillText('SECTION '+section.number,44,section.y-7);
+
+      ctx.fillStyle='rgba(255,255,255,.28)';
+      ctx.font='700 9px monospace';
+      ctx.fillText(section.title,44,section.y+7);
+
+      ctx.strokeStyle='rgba(114,213,233,.12)';
+      ctx.beginPath();
+      ctx.moveTo(190,section.y-5);
+      ctx.lineTo(W-34,section.y-5);
+      ctx.stroke();
+    }
+    ctx.restore();
   };
 
   const drawGoal = () => {
@@ -1276,6 +1339,10 @@
 
   const render = scale => {
     drawBackground();
+
+    ctx.save();
+    ctx.translate(0,-state.camera.y);
+    drawLevelSections();
     drawSolids();
     drawDoor();
     drawGoal();
@@ -1286,6 +1353,8 @@
     drawGravityPreview();
     drawPlayer();
     drawCrosshair();
+    ctx.restore();
+
     drawOverlay(scale);
   };
 
@@ -1315,6 +1384,7 @@
       updateBullets(dt,scale);
     }
 
+    updateCamera(dt);
     updateHud(scale);
     render(scale);
     state.raf=requestAnimationFrame(frame);
