@@ -4509,3 +4509,129 @@ body[data-page="momentum"] .momentum-hero{
     grid-template-columns:1fr;
   }
 }
+
+
+/* v24 — event zone layout rebuilt as a readable full-width module */
+.ms-level-browser{
+  container-type:inline-size;
+}
+
+.ms-event-zone-card{
+  display:block;
+  width:100%;
+  min-width:0;
+}
+
+.ms-event-zone-visual{
+  width:100%;
+  min-height:190px;
+  height:190px;
+  margin-bottom:18px;
+  border-radius:18px;
+}
+
+.ms-event-zone-grid{
+  transform:perspective(520px) rotateX(62deg) scale(1.18);
+}
+
+.ms-event-zone-ring{
+  top:50%;
+  width:210px;
+  height:92px;
+}
+
+.ms-event-zone-copy{
+  width:100%;
+  min-width:0;
+}
+
+.ms-event-zone-copy>.page-label{
+  display:block;
+  margin:0 0 10px;
+}
+
+.ms-event-zone-copy .ms-event-types{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+  margin:0;
+}
+
+.ms-event-zone-copy .ms-event-types article{
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr);
+  gap:12px;
+  align-items:start;
+  width:100%;
+  min-width:0;
+  min-height:112px;
+  padding:14px 15px;
+}
+
+.ms-event-zone-copy .ms-event-types article>div{
+  width:100%;
+  min-width:0;
+}
+
+.ms-event-zone-copy .ms-event-types strong,
+.ms-event-zone-copy .ms-event-types p{
+  width:100%;
+  max-width:none;
+  word-break:normal;
+  overflow-wrap:break-word;
+  white-space:normal;
+}
+
+.ms-event-zone-copy .ms-event-types strong{
+  margin:0 0 5px;
+  font-size:12px;
+  line-height:1.35;
+}
+
+.ms-event-zone-copy .ms-event-types p{
+  font-size:10.75px;
+  line-height:1.5;
+}
+
+.ms-event-zone-copy .ms-event-reward{
+  width:100%;
+  margin-top:12px;
+  padding:13px 15px;
+}
+
+@container (max-width:720px){
+  .ms-event-zone-copy .ms-event-types{
+    grid-template-columns:1fr;
+  }
+
+  .ms-event-zone-copy .ms-event-types article{
+    min-height:0;
+  }
+
+  .ms-event-zone-visual{
+    min-height:170px;
+    height:170px;
+  }
+
+  .ms-event-zone-ring{
+    width:170px;
+    height:78px;
+  }
+}
+
+@container (max-width:480px){
+  .ms-event-zone-copy .ms-event-types article{
+    grid-template-columns:34px minmax(0,1fr);
+    padding:13px;
+  }
+
+  .ms-event-zone-copy .ms-event-reward{
+    display:block;
+  }
+
+  .ms-event-zone-copy .ms-event-reward strong{
+    display:block;
+    margin-top:5px;
+  }
+}
