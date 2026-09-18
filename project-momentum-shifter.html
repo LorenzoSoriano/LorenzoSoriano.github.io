@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css?v=3">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=31">
+  <link rel="stylesheet" href="momentum-shifter.css?v=32">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -635,30 +635,60 @@
     </div>
   </div>
 
-  <button class="ms-game-exit" type="button" data-game-exit aria-label="Exit Momentum Shifter demo">×</button>
+  <button class="ms-game-pause" type="button" data-game-pause aria-label="Pause">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>
+  </button>
 
   <div class="ms-game-help">
     <p data-i18n="momentum.demoControlsMouse"></p>
     <small data-i18n="momentum.demoExit"></small>
   </div>
 
+  <div class="ms-game-pause-panel" data-game-pause-panel hidden>
+    <button type="button" data-game-resume aria-label="Resume">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+    </button>
+    <button type="button" data-game-exit aria-label="Exit">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5"></path><path d="M13 8l4 4-4 4"></path><path d="M8 12h9"></path></svg>
+    </button>
+  </div>
+
   <div class="ms-game-mobile-controls" data-game-mobile-controls>
     <div class="ms-game-stick-wrap">
-      <span data-i18n="momentum.demoMoveLabel"></span>
-      <div class="ms-game-stick" data-game-move-stick>
+      <div class="ms-game-stick" data-game-move-stick aria-label="Movement stick">
+        <svg class="ms-game-stick__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3v18M3 12h18"></path>
+          <path d="M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"></path>
+        </svg>
         <i data-game-move-knob></i>
       </div>
     </div>
 
     <div class="ms-game-mobile-actions">
-      <button type="button" data-game-jump data-i18n="momentum.demoJumpButton"></button>
-      <button type="button" class="is-gravity" data-game-gravity data-i18n="momentum.demoGravityButton"></button>
-      <button type="button" class="is-fire" data-game-fire data-i18n="momentum.demoFireButton"></button>
+      <button type="button" class="is-jump" data-game-jump aria-label="Jump">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 20V6"></path>
+          <path d="M7 11l5-5 5 5"></path>
+          <path d="M5 21h14"></path>
+        </svg>
+        <span class="ms-game-charge-ring" aria-hidden="true"></span>
+      </button>
+
+      <button type="button" class="is-fire" data-game-fire aria-label="Attack">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 14h9l4-4h3v7h-3l-4-2H8l-2 4H4z"></path>
+          <circle cx="19" cy="8" r="2"></circle>
+        </svg>
+      </button>
     </div>
 
     <div class="ms-game-stick-wrap ms-game-stick-wrap--aim">
-      <span data-i18n="momentum.demoAimLabel"></span>
-      <div class="ms-game-stick ms-game-stick--aim" data-game-aim-stick>
+      <div class="ms-game-stick ms-game-stick--aim" data-game-aim-stick aria-label="Aim stick">
+        <svg class="ms-game-stick__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="7"></circle>
+          <circle cx="12" cy="12" r="2"></circle>
+          <path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path>
+        </svg>
         <i data-game-aim-knob></i>
       </div>
     </div>
@@ -676,7 +706,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=18"></script>
-<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=3"></script><script src="script.js?v=5"></script>
+<script src="translations-momentum.js?v=19"></script>
+<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=4"></script><script src="script.js?v=5"></script>
 </body>
 </html>
