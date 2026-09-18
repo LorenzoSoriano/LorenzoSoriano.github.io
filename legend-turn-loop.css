@@ -1795,3 +1795,35 @@ body[data-page="legend"] .legend-progression-system--sheet{
     padding-right:7px!important;
   }
 }
+
+
+/* v12 — make the upper character panel and Accuracy stat visibly wider */
+@media(min-width:761px){
+  body[data-page="legend"] .legend-stat-card{
+    width:304px!important;
+    height:350px!important;
+  }
+
+  body[data-page="legend"] .legend-stat-card__portrait{
+    left:0!important;
+    right:0!important;
+  }
+
+  body[data-page="legend"] .legend-stat-card__stat--accuracy{
+    width:102px!important;
+    min-width:102px!important;
+    padding:0 10px!important;
+  }
+}
+
+@media(max-width:760px){
+  body[data-page="legend"] .legend-stat-card{
+    width:min(292px,90vw)!important;
+  }
+
+  body[data-page="legend"] .legend-stat-card__stat--accuracy{
+    width:98px!important;
+    min-width:98px!important;
+    padding:0 9px!important;
+  }
+}
