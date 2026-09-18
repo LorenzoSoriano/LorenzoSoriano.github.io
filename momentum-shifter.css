@@ -1584,3 +1584,127 @@ body[data-page="momentum"] .ms-infinity-track__arrow{
     opacity:.90;
   }
 }
+
+
+/* v13 — perfectly centred arrowheads + wider, flatter state panels */
+body[data-page="momentum"] .ms-infinity-track__arrow{
+  stroke:#fff;
+  stroke-width:1.45;
+  stroke-linejoin:round;
+  filter:
+    drop-shadow(0 0 2px rgba(255,255,255,.95))
+    drop-shadow(0 4px 10px rgba(69,76,140,.30));
+}
+
+body[data-page="momentum"] .ms-infinity-track__arrow--one{
+  fill:#6e61f0;
+}
+
+body[data-page="momentum"] .ms-infinity-track__arrow--two{
+  fill:#caa515;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+  width:100%;
+  max-width:none;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+  min-height:0!important;
+  padding:15px 21px 14px!important;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state h3{
+  margin:0 0 5px;
+  font-size:20px;
+  line-height:1.16;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state > p{
+  font-size:12.5px;
+  line-height:1.48;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state ul{
+  margin-top:10px;
+}
+
+@media(min-width:1051px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    grid-template-columns:minmax(0,1fr) 320px minmax(0,1fr);
+    min-height:380px;
+    padding:42px 0;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+    width:min(445px,100%);
+    max-width:445px;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow{
+    justify-self:start;
+    transform:none;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+    justify-self:end;
+    transform:none;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track{
+    inset:-78px -12%;
+    width:124%;
+    height:calc(100% + 156px);
+  }
+}
+
+@media(min-width:761px) and (max-width:1050px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    grid-template-columns:minmax(0,1fr) 210px minmax(0,1fr);
+    min-height:350px;
+    padding:38px 0;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+    width:min(365px,100%);
+    max-width:365px;
+    padding:14px 18px 13px!important;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow,
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+    transform:none;
+  }
+}
+
+@media(max-width:760px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    gap:104px;
+    padding:48px 0 54px;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state,
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow,
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+    width:96%;
+    max-width:460px;
+    padding:14px 18px 13px!important;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track{
+    inset:-20px -38%;
+    width:176%;
+    height:calc(100% + 40px);
+    opacity:.94;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track__line{
+    stroke-width:3.8;
+    opacity:1;
+  }
+
+  body[data-page="momentum"] .ms-infinity-track__arrow{
+    stroke-width:1.5;
+    opacity:1;
+  }
+}
