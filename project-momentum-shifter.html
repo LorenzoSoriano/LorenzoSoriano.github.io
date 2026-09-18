@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=21">
+  <link rel="stylesheet" href="momentum-shifter.css?v=22">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -290,22 +290,29 @@
             </div>
 
             <div class="ms-enemy-door-card">
-              <div class="ms-enemy-door-card__visual">
-                <div class="ms-enemy-door-card__status">
-                  <span class="is-online" data-i18n="momentum.spawnStatus"></span>
-                  <div>
-                    <small data-i18n="momentum.spawnNextLabel"></small>
-                    <strong>Screamer Drone</strong>
+              <div class="ms-enemy-door-unit" aria-label="Enemy spawn door with display showing next enemy and remaining count">
+                <div class="ms-enemy-door-screen">
+                  <div class="ms-enemy-door-screen__enemy">
+                    <span class="ms-enemy-door-icon" aria-hidden="true"><i></i><b></b></span>
+                    <div>
+                      <small data-i18n="momentum.spawnNextLabel"></small>
+                      <strong>Screamer Drone</strong>
+                    </div>
                   </div>
-                  <div class="ms-enemy-door-card__count">
+                  <div class="ms-enemy-door-screen__count">
                     <small data-i18n="momentum.spawnCountLabel"></small>
                     <strong>03</strong>
                   </div>
                 </div>
 
-                <div class="ms-enemy-door-card__door" aria-hidden="true">
-                  <span class="ms-enemy-door-card__light"></span>
+                <div class="ms-enemy-door-frame" aria-hidden="true">
+                  <span class="ms-enemy-door-frame__bar"></span>
                   <i></i><i></i><i></i>
+                </div>
+
+                <div class="ms-enemy-door-state">
+                  <span></span>
+                  <strong data-i18n="momentum.spawnStatus"></strong>
                 </div>
               </div>
 
@@ -341,12 +348,34 @@
               </div>
             </div>
 
-            <div class="ms-checkpoint-flow">
-              <span data-i18n="momentum.checkpointStep1"></span>
-              <i aria-hidden="true">→</i>
-              <span data-i18n="momentum.checkpointStep2"></span>
-              <i aria-hidden="true">→</i>
-              <strong data-i18n="momentum.checkpointStep3"></strong>
+            <div class="ms-checkpoint-card">
+              <div class="ms-checkpoint-visual" aria-label="Vertical checkpoint progression with the highest unlocked checkpoint highlighted">
+                <div class="ms-checkpoint-rail"></div>
+                <div class="ms-checkpoint-node ms-checkpoint-node--future">
+                  <span></span>
+                  <div><small>CP 03</small><strong data-i18n="momentum.checkpointLocked"></strong></div>
+                </div>
+                <div class="ms-checkpoint-node ms-checkpoint-node--active">
+                  <span></span>
+                  <div><small>CP 02</small><strong data-i18n="momentum.checkpointHighest"></strong></div>
+                </div>
+                <div class="ms-checkpoint-node ms-checkpoint-node--passed">
+                  <span></span>
+                  <div><small>CP 01</small><strong data-i18n="momentum.checkpointUnlocked"></strong></div>
+                </div>
+              </div>
+
+              <div class="ms-checkpoint-behaviour">
+                <span class="page-label" data-i18n="momentum.checkpointRuleLabel"></span>
+                <h5 data-i18n="momentum.checkpointRuleTitle"></h5>
+                <div class="ms-checkpoint-flow">
+                  <span data-i18n="momentum.checkpointStep1"></span>
+                  <i aria-hidden="true">→</i>
+                  <span data-i18n="momentum.checkpointStep2"></span>
+                  <i aria-hidden="true">→</i>
+                  <strong data-i18n="momentum.checkpointStep3"></strong>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -358,15 +387,42 @@
               </div>
             </div>
 
-            <div class="ms-event-types">
-              <article><strong data-i18n="momentum.eventCarry"></strong></article>
-              <article><strong data-i18n="momentum.eventHold"></strong></article>
-              <article><strong data-i18n="momentum.eventWave"></strong></article>
-            </div>
+            <div class="ms-event-zone-card">
+              <div class="ms-event-zone-visual" aria-label="Optional event area inside the level">
+                <div class="ms-event-zone-grid"></div>
+                <div class="ms-event-zone-ring">
+                  <span class="ms-event-zone-player"></span>
+                  <span class="ms-event-zone-marker ms-event-zone-marker--a"></span>
+                  <span class="ms-event-zone-marker ms-event-zone-marker--b"></span>
+                </div>
+                <div class="ms-event-zone-status">
+                  <span></span>
+                  <strong data-i18n="momentum.eventZoneStatus"></strong>
+                </div>
+              </div>
 
-            <div class="ms-event-reward">
-              <span data-i18n="momentum.eventRewardLabel"></span>
-              <strong data-i18n="momentum.eventReward"></strong>
+              <div class="ms-event-zone-copy">
+                <span class="page-label" data-i18n="momentum.eventObjectivesLabel"></span>
+                <div class="ms-event-types">
+                  <article>
+                    <span class="ms-event-icon ms-event-icon--carry" aria-hidden="true"></span>
+                    <div><strong data-i18n="momentum.eventCarry"></strong><p data-i18n="momentum.eventCarryDesc"></p></div>
+                  </article>
+                  <article>
+                    <span class="ms-event-icon ms-event-icon--hold" aria-hidden="true"></span>
+                    <div><strong data-i18n="momentum.eventHold"></strong><p data-i18n="momentum.eventHoldDesc"></p></div>
+                  </article>
+                  <article>
+                    <span class="ms-event-icon ms-event-icon--wave" aria-hidden="true"></span>
+                    <div><strong data-i18n="momentum.eventWave"></strong><p data-i18n="momentum.eventWaveDesc"></p></div>
+                  </article>
+                </div>
+
+                <div class="ms-event-reward">
+                  <span data-i18n="momentum.eventRewardLabel"></span>
+                  <strong data-i18n="momentum.eventReward"></strong>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -455,7 +511,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=12"></script>
+<script src="translations-momentum.js?v=13"></script>
 <script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="script.js?v=5"></script>
 </body>
 </html>
