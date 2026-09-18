@@ -944,3 +944,55 @@ body[data-page="momentum"] .ms-overview-section + .project-facts-section{
   padding-top:0;
   padding-bottom:24px;
 }
+
+
+/* v4 — project facts first, then a stacked game-concept explanation */
+body[data-page="momentum"] .ms-overview-section{
+  padding-top:64px!important;
+  padding-bottom:72px!important;
+}
+
+body[data-page="momentum"] .ms-design-thesis--stacked{
+  display:block!important;
+  max-width:1040px;
+  margin:0 auto;
+}
+
+body[data-page="momentum"] .ms-design-thesis--stacked > div:first-child{
+  max-width:900px;
+}
+
+body[data-page="momentum"] .ms-design-thesis--stacked h2{
+  max-width:900px;
+  margin-top:10px;
+}
+
+body[data-page="momentum"] .ms-design-thesis--stacked .ms-design-thesis__copy{
+  max-width:920px;
+  margin-top:28px;
+  padding-top:24px;
+  border-top:1px solid rgba(121,108,240,.10);
+}
+
+body[data-page="momentum"] .ms-design-thesis--stacked .ms-design-thesis__copy p{
+  max-width:880px;
+}
+
+body[data-page="momentum"] .project-facts-section + .ms-overview-section{
+  padding-top:56px!important;
+}
+
+body[data-page="momentum"] .ms-overview-section + .ms-path-section{
+  padding-top:56px!important;
+}
+
+@media(max-width:760px){
+  body[data-page="momentum"] .ms-overview-section{
+    padding-top:48px!important;
+    padding-bottom:58px!important;
+  }
+  body[data-page="momentum"] .ms-design-thesis--stacked .ms-design-thesis__copy{
+    margin-top:22px;
+    padding-top:20px;
+  }
+}
