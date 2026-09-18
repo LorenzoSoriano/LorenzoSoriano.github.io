@@ -972,3 +972,78 @@ body[data-page="legend"] .legend-ability-band{
   }
   body[data-page="legend"] .legend-stat-card__portrait{inset:0 0 66px}
 }
+/* v5 — full-width character sheet + exact connectors */
+body[data-page="legend"] .legend-progression-system--sheet{
+  display:block;
+  max-width:1180px;
+  margin:0 auto;
+  padding-top:8px;
+}
+body[data-page="legend"] .legend-progression-system--sheet .legend-stat-system{
+  width:100%;
+}
+body[data-page="legend"] .legend-progression-system--sheet .legend-stat-system__heading{
+  grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr);
+  max-width:980px;
+  margin:0 auto 22px;
+}
+body[data-page="legend"] .legend-progression-system--sheet .legend-stat-stage{
+  width:100%;
+  min-height:560px;
+}
+
+/* DOM-calculated connector overlay: each annotation reaches the true centre of its UI target. */
+body[data-page="legend"] .legend-stat-connectors{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  width:100%;
+  height:100%;
+  overflow:visible;
+  pointer-events:none;
+}
+body[data-page="legend"] .legend-stat-connectors line{
+  stroke:rgba(121,108,240,.42);
+  stroke-width:1.15;
+  vector-effect:non-scaling-stroke;
+}
+body[data-page="legend"] .legend-stat-connectors circle{
+  fill:#796cf0;
+  stroke:rgba(255,255,255,.94);
+  stroke-width:2;
+  vector-effect:non-scaling-stroke;
+}
+body[data-page="legend"] .legend-stat-callout::before,
+body[data-page="legend"] .legend-stat-callout::after{
+  display:none!important;
+}
+
+/* With the left-hand subsection removed, give the annotations more balanced positions. */
+body[data-page="legend"] .legend-stat-callout--cooldown{left:34px;top:68px}
+body[data-page="legend"] .legend-stat-callout--ability{right:34px;top:64px}
+body[data-page="legend"] .legend-stat-callout--damage{left:34px;bottom:68px}
+body[data-page="legend"] .legend-stat-callout--health{right:34px;bottom:68px}
+body[data-page="legend"] .legend-stat-callout--accuracy{
+  left:50%;
+  bottom:18px;
+  width:220px;
+  transform:translateX(-50%);
+}
+
+@media(max-width:900px){
+  body[data-page="legend"] .legend-progression-system--sheet .legend-stat-system__heading{
+    grid-template-columns:1fr;
+    gap:10px;
+    max-width:760px;
+  }
+  body[data-page="legend"] .legend-progression-system--sheet .legend-stat-stage{
+    min-height:540px;
+  }
+}
+
+@media(max-width:760px){
+  body[data-page="legend"] .legend-stat-connectors{display:none}
+  body[data-page="legend"] .legend-progression-system--sheet .legend-stat-stage{
+    min-height:0;
+  }
+}
