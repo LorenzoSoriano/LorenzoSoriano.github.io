@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=14">
+  <link rel="stylesheet" href="momentum-shifter.css?v=15">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -149,10 +149,12 @@
       <p data-i18n="momentum.traversalIntro"></p>
     </div>
 
-    <div class="ms-mechanic-grid">
-      <article class="ms-mechanic-card reveal"><span class="ms-icon">↗</span><h3 data-i18n="momentum.bootsTitle"></h3><p data-i18n="momentum.bootsDesc"></p></article>
-      <article class="ms-mechanic-card reveal"><span class="ms-icon">◎</span><h3 data-i18n="momentum.controlsTitle"></h3><p data-i18n="momentum.controlsDesc"></p></article>
-      <article class="ms-mechanic-card reveal"><span class="ms-icon">◇</span><h3 data-i18n="momentum.readabilityTitle"></h3><p data-i18n="momentum.readabilityDesc"></p></article>
+    <div class="ms-focus-card ms-focus-card--traversal reveal">
+      <span class="ms-icon">↗</span>
+      <div>
+        <h3 data-i18n="momentum.bootsTitle"></h3>
+        <p data-i18n="momentum.bootsDesc"></p>
+      </div>
     </div>
   </section>
 
@@ -166,32 +168,21 @@
       <p data-i18n="momentum.resourceIntro"></p>
     </div>
 
-    <div class="ms-mechanic-grid">
-      <article class="ms-mechanic-card reveal"><span class="ms-icon">•</span><h3 data-i18n="momentum.bulletTitle"></h3><p data-i18n="momentum.bulletDesc"></p></article>
-      <article class="ms-mechanic-card reveal"><span class="ms-icon">3</span><h3 data-i18n="momentum.coreTitle"></h3><p data-i18n="momentum.coreDesc"></p></article>
-      <article class="ms-mechanic-card reveal"><span class="ms-icon">+</span><h3 data-i18n="momentum.overflowTitle"></h3><p data-i18n="momentum.overflowDesc"></p></article>
-    </div>
-
-    <div class="ms-resource-flow reveal">
-      <article class="ms-flow-node"><span>01</span><h3 data-i18n="momentum.flow1"></h3><p data-i18n="momentum.flow1d"></p></article>
-      <article class="ms-flow-node"><span>02</span><h3 data-i18n="momentum.flow2"></h3><p data-i18n="momentum.flow2d"></p></article>
-      <article class="ms-flow-node"><span>03</span><h3 data-i18n="momentum.flow3"></h3><p data-i18n="momentum.flow3d"></p></article>
-      <article class="ms-flow-node"><span>04</span><h3 data-i18n="momentum.flow4"></h3><p data-i18n="momentum.flow4d"></p></article>
-    </div>
-
-    <div class="ms-ability-band reveal">
-      <div>
-        <span data-i18n="momentum.abilityLabel"></span>
-        <p data-i18n="momentum.abilityIntro"></p>
-      </div>
-      <article><span>III</span><h3 data-i18n="momentum.rareTitle"></h3><p data-i18n="momentum.rareDesc"></p></article>
-      <article><span>II</span><h3 data-i18n="momentum.uncommonTitle"></h3><p data-i18n="momentum.uncommonDesc"></p></article>
-      <article><span>I</span><h3 data-i18n="momentum.commonTitle"></h3><p data-i18n="momentum.commonDesc"></p></article>
-    </div>
-
-    <div class="case-callout reveal ms-last-chance">
-      <h3 data-i18n="momentum.lastTitle"></h3>
-      <p data-i18n="momentum.lastDesc"></p>
+    <div class="ms-core-resource-grid">
+      <article class="ms-focus-card ms-focus-card--bullet reveal">
+        <span class="ms-icon">↻</span>
+        <div>
+          <h3 data-i18n="momentum.bulletTitle"></h3>
+          <p data-i18n="momentum.bulletDesc"></p>
+        </div>
+      </article>
+      <article class="ms-focus-card ms-focus-card--core reveal">
+        <span class="ms-icon">3</span>
+        <div>
+          <h3 data-i18n="momentum.coreTitle"></h3>
+          <p data-i18n="momentum.coreDesc"></p>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -323,7 +314,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=3"></script>
+<script src="translations-momentum.js?v=4"></script>
 <script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="script.js?v=5"></script>
 </body>
 </html>
