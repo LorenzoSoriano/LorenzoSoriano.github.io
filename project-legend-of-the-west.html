@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
   <link rel="stylesheet" href="legend-of-the-west.css?v=4">
-  <link rel="stylesheet" href="legend-turn-loop.css?v=6">
+  <link rel="stylesheet" href="legend-turn-loop.css?v=7">
   <link rel="stylesheet" href="zoom-resilience.css?v=1">
 </head>
 <body data-page="legend">
@@ -75,8 +75,7 @@
         <p data-i18n="legend2.combatIntro"></p>
       </div>
 
-      <div class="legend-combat-story reveal">
-        <div class="legend-combat-track" aria-hidden="true"></div>
+      <div class="legend-combat-story legend-combat-story--core reveal">
         <article class="legend-combat-beat">
           <h3 data-i18n="legend2.c1"></h3>
           <p data-i18n="legend2.c1d"></p>
@@ -85,16 +84,48 @@
           <h3 data-i18n="legend2.c2"></h3>
           <p data-i18n="legend2.c2d"></p>
         </article>
-        <article class="legend-combat-beat">
-          <h3 data-i18n="legend2.c3"></h3>
-          <p data-i18n="legend2.c3d"></p>
-        </article>
       </div>
 
-      <div class="legend-combat-support reveal">
-        <article><h4 data-i18n="legend2.micro1"></h4><p data-i18n="legend2.micro1d"></p></article>
-        <article><h4 data-i18n="legend2.micro2"></h4><p data-i18n="legend2.micro2d"></p></article>
-        <article><h4 data-i18n="legend2.micro3"></h4><p data-i18n="legend2.micro3d"></p></article>
+      <div class="legend-cover-system reveal">
+        <div class="legend-cover-heading">
+          <div>
+            <span class="legend-cover-eyebrow" data-i18n="legend2.coverLabel">SCHEDA COPERTURA</span>
+            <h3 data-i18n="legend2.coverTitle"></h3>
+          </div>
+          <p data-i18n="legend2.coverIntro"></p>
+        </div>
+
+        <div class="legend-cover-stage">
+          <aside class="legend-cover-callout legend-cover-callout--hp">
+            <strong data-i18n="legend2.coverHp"></strong>
+            <p data-i18n="legend2.coverHpD"></p>
+          </aside>
+          <aside class="legend-cover-callout legend-cover-callout--protect">
+            <strong data-i18n="legend2.coverProtect"></strong>
+            <p data-i18n="legend2.coverProtectD"></p>
+          </aside>
+          <aside class="legend-cover-callout legend-cover-callout--break">
+            <strong data-i18n="legend2.coverBreak"></strong>
+            <p data-i18n="legend2.coverBreakD"></p>
+          </aside>
+          <aside class="legend-cover-callout legend-cover-callout--field">
+            <strong data-i18n="legend2.coverField"></strong>
+            <p data-i18n="legend2.coverFieldD"></p>
+          </aside>
+
+          <div class="legend-cover-card" aria-label="Example destructible cover sheet">
+            <div class="legend-cover-card__scene" aria-hidden="true">
+              <span class="legend-cover-card__ground"></span>
+              <span class="legend-cover-card__cover"></span>
+              <span class="legend-cover-card__character"></span>
+              <span class="legend-cover-card__shield">◆</span>
+            </div>
+            <div class="legend-cover-card__durability" aria-hidden="true">
+              <span class="legend-cover-card__durability-icon">HP</span>
+              <span class="legend-cover-card__durability-bar"><i></i><i></i><i></i><i></i></span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -186,7 +217,7 @@
   <script src="translations.js"></script>
   <script src="translations-expanded.js?v=1"></script>
   <script src="translations-legend.js?v=2"></script>
-  <script src="translations-legend-layout.js?v=6"></script>
+  <script src="translations-legend-layout.js?v=7"></script>
   <script src="script.js?v=4"></script>
 </body>
 </html>
