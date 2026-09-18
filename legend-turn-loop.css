@@ -1850,3 +1850,21 @@ body[data-page="legend"] .legend-progression-system--sheet{
     bottom:auto!important;
   }
 }
+
+
+/* v14 — widen the lower Accuracy explanation in the character sheet */
+@media(min-width:901px){
+  body[data-page="legend"] .legend-stat-callout--accuracy{
+    width:360px!important;
+    max-width:360px!important;
+    bottom:12px!important;
+  }
+}
+
+@media(min-width:761px) and (max-width:900px){
+  body[data-page="legend"] .legend-stat-callout--accuracy{
+    width:320px!important;
+    max-width:320px!important;
+    bottom:10px!important;
+  }
+}
