@@ -12,8 +12,10 @@
   const scoreEl = stage.querySelector('[data-game-score]');
 
   const exitButton = stage.querySelector('[data-game-exit]');
+  const pauseButton = stage.querySelector('[data-game-pause]');
+  const pausePanel = stage.querySelector('[data-game-pause-panel]');
+  const resumeButton = stage.querySelector('[data-game-resume]');
   const jumpButton = stage.querySelector('[data-game-jump]');
-  const gravityButton = stage.querySelector('[data-game-gravity]');
   const fireButton = stage.querySelector('[data-game-fire]');
 
   const moveStick = stage.querySelector('[data-game-move-stick]');
@@ -52,6 +54,7 @@
 
   const state = {
     active:false,
+    paused:false,
     raf:0,
     last:0,
     ammo:6,
@@ -143,6 +146,7 @@
     state.pickups.length=0;
     state.enemyId=0;
     state.won=false;
+    state.paused=false;
     state.message='';
     state.messageTimer=0;
     state.gravityTarget=null;
@@ -1068,6 +1072,12 @@
     const dt=Math.min(.033,(now-state.last)/1000 || .016);
     state.last=now;
 
+    if(state.paused){
+      render(.22);
+      state.raf=requestAnimationFrame(frame);
+      return;
+    }
+
     state.actionPulse=Math.max(0,state.actionPulse-dt);
     state.flash=Math.max(0,state.flash-dt);
     state.messageTimer=Math.max(0,state.messageTimer-dt);
@@ -1087,7 +1097,48 @@
     state.raf=requestAnimationFrame(frame);
   };
 
-  const startGame = () => {
+  const isTouchDevice = () =>
+    window.matchMedia('(pointer: coarse)').matches ||
+    navigator.maxTouchPoints > 0;
+
+  const enterMobileLandscape = async () => {
+    if(!isTouchDevice()) return;
+
+    try{
+      if(!document.fullscreenElement && stage.requestFullscreen){
+        await stage.requestFullscreen({ navigationUI:'hide' });
+      }
+    }catch(_){}
+
+    try{
+      if(screen.orientation?.lock){
+        await screen.orientation.lock('landscape');
+      }
+    }catch(_){}
+
+    stage.classList.toggle('is-mobile-game',true);
+  };
+
+  const leaveMobileLandscape = async () => {
+    try{ screen.orientation?.unlock?.(); }catch(_){}
+    try{
+      if(document.fullscreenElement && document.exitFullscreen){
+        await document.exitFullscreen();
+      }
+    }catch(_){}
+    stage.classList.remove('is-mobile-game');
+  };
+
+  const setPaused = value => {
+    if(!state.active) return;
+    state.paused=!!value;
+    input.left=false;
+    input.right=false;
+    if(pausePanel) pausePanel.hidden=!state.paused;
+    stage.classList.toggle('is-paused',state.paused);
+  };
+
+  const startGame = async () => {
     if(state.active) return;
 
     state.active=true;
@@ -1097,24 +1148,34 @@
     input.right=false;
     resetGame();
 
+    await enterMobileLandscape();
+
     state.last=performance.now();
     cancelAnimationFrame(state.raf);
     state.raf=requestAnimationFrame(frame);
   };
 
-  const stopGame = () => {
+  const stopGame = async () => {
     if(!state.active) return;
 
     state.active=false;
+    state.paused=false;
     cancelAnimationFrame(state.raf);
     input.left=false;
     input.right=false;
     stage.hidden=true;
+    pausePanel && (pausePanel.hidden=true);
     document.body.classList.remove('ms-game-active');
+    await leaveMobileLandscape();
   };
 
   const onKeyDown = event => {
     if(!state.active) return;
+
+    if(state.paused && event.key!=='Escape'){
+      if((event.key==='p'||event.key==='P')&&!event.repeat) setPaused(false);
+      return;
+    }
 
     if(['ArrowLeft','ArrowRight','ArrowUp',' ','Spacebar'].includes(event.key)){
       event.preventDefault();
@@ -1122,6 +1183,11 @@
 
     if(event.key==='Escape'){
       stopGame();
+      return;
+    }
+
+    if((event.key==='p'||event.key==='P')&&!event.repeat){
+      setPaused(!state.paused);
       return;
     }
 
@@ -1148,7 +1214,7 @@
   };
 
   canvas.addEventListener('pointermove',event=>{
-    if(!state.active || event.pointerType==='touch') return;
+    if(!state.active || state.paused || event.pointerType==='touch') return;
 
     const p=pointerToWorld(event);
     aim.x=p.x;
@@ -1165,7 +1231,7 @@
   });
 
   canvas.addEventListener('pointerdown',event=>{
-    if(!state.active) return;
+    if(!state.active || state.paused) return;
 
     if(event.pointerType==='touch') return;
 
@@ -1191,17 +1257,63 @@
     stopGame();
   });
 
-  jumpButton?.addEventListener('pointerdown',event=>{
+  pauseButton?.addEventListener('pointerdown',event=>{
     event.preventDefault();
-    jump();
+    setPaused(!state.paused);
   });
 
-  gravityButton?.addEventListener('pointerdown',event=>{
+  resumeButton?.addEventListener('pointerdown',event=>{
     event.preventDefault();
-    gravityJump();
+    setPaused(false);
+  });
+
+  let jumpHoldTimer=0;
+  let jumpHeldAt=0;
+  let jumpHoldPointer=null;
+
+  const clearJumpHold = () => {
+    window.clearTimeout(jumpHoldTimer);
+    jumpHoldTimer=0;
+    jumpButton?.classList.remove('is-charging');
+  };
+
+  jumpButton?.addEventListener('pointerdown',event=>{
+    if(!state.active || state.paused) return;
+    event.preventDefault();
+
+    jumpHoldPointer=event.pointerId;
+    jumpHeldAt=performance.now();
+    jumpButton.setPointerCapture?.(event.pointerId);
+    jumpButton.classList.add('is-charging');
+
+    jumpHoldTimer=window.setTimeout(()=>{
+      jumpButton.classList.add('is-ready');
+    },320);
+  });
+
+  const releaseJump = event => {
+    if(jumpHoldPointer!==event.pointerId) return;
+    event.preventDefault();
+
+    const held=performance.now()-jumpHeldAt;
+    jumpHoldPointer=null;
+    clearJumpHold();
+    jumpButton?.classList.remove('is-ready');
+
+    if(held>=320) gravityJump();
+    else jump();
+  };
+
+  jumpButton?.addEventListener('pointerup',releaseJump);
+  jumpButton?.addEventListener('pointercancel',event=>{
+    if(jumpHoldPointer!==event.pointerId) return;
+    jumpHoldPointer=null;
+    clearJumpHold();
+    jumpButton?.classList.remove('is-ready');
   });
 
   fireButton?.addEventListener('pointerdown',event=>{
+    if(state.paused) return;
     event.preventDefault();
     fireToward(aim.x,aim.y);
   });
@@ -1298,7 +1410,7 @@
 
       if(pressed===seals.length){
         document.querySelector('[data-demo-sequence]')?.classList.add('is-complete');
-        window.setTimeout(startGame,280);
+        startGame();
       }
     });
   });
