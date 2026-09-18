@@ -6202,3 +6202,24 @@ html[lang="it"] .ms-easter-hint__en{
     height:23px;
   }
 }
+
+
+/* v35 — JUMP with movement, FIRE with aim */
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-left-controls .is-jump{
+    margin-bottom:4px;
+  }
+
+  .ms-game-right-controls .is-fire{
+    margin-bottom:4px;
+  }
+
+  .ms-game-charge-ring{
+    opacity:0!important;
+  }
+
+  .ms-game-action-button.is-jump.is-charging .ms-game-charge-ring,
+  .ms-game-action-button.is-jump.is-ready .ms-game-charge-ring{
+    opacity:.9!important;
+  }
+}
