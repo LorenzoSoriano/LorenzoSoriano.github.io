@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=27">
+  <link rel="stylesheet" href="momentum-shifter.css?v=28">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -153,9 +153,9 @@
           <span class="page-label" data-i18n="momentum.bulletAmmoLabel"></span>
           <strong data-i18n="momentum.bulletAmmoValue"></strong>
         </div>
-        <div class="ms-bullet-pips" aria-hidden="true">
+        <button class="ms-bullet-pips ms-demo-trigger" type="button" data-momentum-demo-open aria-label="Open the hidden Momentum Shifter demo">
           <i></i><i></i><i></i><i></i><i></i><i></i>
-        </div>
+        </button>
       </div>
 
       <div class="ms-bullet-loop">
@@ -215,50 +215,64 @@
       <p data-i18n="momentum.resourceCoreIntro"></p>
     </div>
 
-    <div class="ms-warp-strip reveal">
-      <div class="ms-warp-strip__lives" aria-hidden="true"><i></i><i></i><i></i></div>
-      <div>
-        <span class="page-label" data-i18n="momentum.warpLabel"></span>
+    <div class="ms-resource-economy reveal">
+      <article class="ms-resource-core-card">
+        <div class="ms-resource-core-card__top">
+          <div class="ms-warp-strip__lives" aria-hidden="true"><i></i><i></i><i></i></div>
+          <span class="page-label" data-i18n="momentum.warpLabel"></span>
+        </div>
+
         <h3 data-i18n="momentum.warpTitle"></h3>
         <p data-i18n="momentum.warpDesc"></p>
-      </div>
-      <div class="ms-warp-overflow">
-        <span data-i18n="momentum.warpOverflowLabel"></span>
-        <strong data-i18n="momentum.warpOverflow"></strong>
-      </div>
-    </div>
 
-    <div class="ms-powerups reveal">
-      <div class="ms-powerups__head">
-        <div>
-          <span class="page-label" data-i18n="momentum.powerupLabel"></span>
-          <h3 data-i18n="momentum.powerupTitle"></h3>
+        <div class="ms-resource-rule">
+          <span data-i18n="momentum.resourceDamageLabel"></span>
+          <i aria-hidden="true">→</i>
+          <strong data-i18n="momentum.resourceDamageRule"></strong>
         </div>
-        <p data-i18n="momentum.powerupIntro"></p>
-      </div>
+      </article>
 
-      <div class="ms-powerup-grid">
-        <article class="ms-powerup-card">
-          <span class="ms-powerup-rarity" data-i18n="momentum.powerupCommon"></span>
-          <h4 data-i18n="momentum.powerup1"></h4>
-          <p data-i18n="momentum.powerup1d"></p>
-        </article>
-        <article class="ms-powerup-card">
-          <span class="ms-powerup-rarity" data-i18n="momentum.powerupUncommon"></span>
-          <h4 data-i18n="momentum.powerup2"></h4>
-          <p data-i18n="momentum.powerup2d"></p>
-        </article>
-        <article class="ms-powerup-card">
-          <span class="ms-powerup-rarity" data-i18n="momentum.powerupRare"></span>
-          <h4 data-i18n="momentum.powerup3"></h4>
-          <p data-i18n="momentum.powerup3d"></p>
-        </article>
-      </div>
+      <article class="ms-resource-power-card">
+        <div class="ms-resource-power-card__head">
+          <div>
+            <span class="page-label" data-i18n="momentum.powerupLabel"></span>
+            <h3 data-i18n="momentum.resourcePowerTitle"></h3>
+          </div>
+          <p data-i18n="momentum.resourcePowerIntro"></p>
+        </div>
 
-      <div class="ms-powerups__rule">
-        <span data-i18n="momentum.powerupRuleLabel"></span>
-        <strong data-i18n="momentum.powerupRule"></strong>
-      </div>
+        <div class="ms-resource-sources">
+          <div>
+            <span data-i18n="momentum.resourceSourceOverflowLabel"></span>
+            <strong data-i18n="momentum.resourceSourceOverflow"></strong>
+          </div>
+          <i aria-hidden="true">+</i>
+          <div>
+            <span data-i18n="momentum.resourceSourceCrateLabel"></span>
+            <strong data-i18n="momentum.resourceSourceCrate"></strong>
+          </div>
+        </div>
+
+        <div class="ms-resource-powerups">
+          <article>
+            <span class="ms-powerup-rarity" data-i18n="momentum.powerupCommon"></span>
+            <div><h4 data-i18n="momentum.powerup1"></h4><p data-i18n="momentum.powerup1d"></p></div>
+          </article>
+          <article>
+            <span class="ms-powerup-rarity" data-i18n="momentum.powerupUncommon"></span>
+            <div><h4 data-i18n="momentum.powerup2"></h4><p data-i18n="momentum.powerup2d"></p></div>
+          </article>
+          <article>
+            <span class="ms-powerup-rarity" data-i18n="momentum.powerupRare"></span>
+            <div><h4 data-i18n="momentum.powerup3"></h4><p data-i18n="momentum.powerup3d"></p></div>
+          </article>
+        </div>
+
+        <div class="ms-powerups__rule">
+          <span data-i18n="momentum.powerupRuleLabel"></span>
+          <strong data-i18n="momentum.powerupRule"></strong>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -591,7 +605,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=15"></script>
-<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="script.js?v=5"></script>
+<script src="translations-momentum.js?v=16"></script>
+<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=1"></script><script src="script.js?v=5"></script>
 </body>
 </html>
