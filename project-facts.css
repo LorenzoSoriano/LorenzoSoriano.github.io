@@ -129,3 +129,31 @@
   margin-left:0!important;
   margin-right:0!important;
 }
+
+
+/* v4 — all major case-study section headers share one horizontal grid */
+body[data-page] .section-shell > .case-overview,
+body[data-page] .section-shell > .section-heading,
+body[data-page] .section-shell > .category-projects-heading,
+body[data-page] .section-shell > .legend-editorial-heading,
+body[data-page] .section-shell > .legend-cover-heading,
+body[data-page] .section-shell > .legend-stat-system__heading,
+body[data-page] .section-shell > .ms-design-thesis,
+body[data-page] .section-shell > .ms-section-heading,
+body[data-page] .section-shell > .ms-progress-heading,
+body[data-page] .section-shell > .ms-reference-heading{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
+body[data-page] .section-shell > .case-overview > *,
+body[data-page] .section-shell > .section-heading > *,
+body[data-page] .section-shell > .category-projects-heading > *,
+body[data-page] .section-shell > .legend-editorial-heading > *,
+body[data-page] .section-shell > .ms-design-thesis > *,
+body[data-page] .section-shell > .ms-section-heading > *,
+body[data-page] .section-shell > .ms-progress-heading > *{
+  min-width:0;
+}
