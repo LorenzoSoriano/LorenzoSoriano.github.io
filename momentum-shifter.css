@@ -930,3 +930,17 @@ body[data-page="momentum"] .ms-progress-section:nth-of-type(odd) .ms-step-kicker
     padding:15px;
   }
 }
+
+
+/* v3 — concept immediately follows the hero */
+body[data-page="momentum"] .momentum-hero{
+  padding-bottom:34px;
+}
+body[data-page="momentum"] .ms-overview-section{
+  padding-top:34px!important;
+  padding-bottom:58px!important;
+}
+body[data-page="momentum"] .ms-overview-section + .project-facts-section{
+  padding-top:0;
+  padding-bottom:24px;
+}
