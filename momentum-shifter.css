@@ -5984,3 +5984,91 @@ html[lang="it"] .ms-easter-hint__en{
     min-height:56px;
   }
 }
+
+
+/* v33 — ergonomic mobile layout: move + fire + jump clustered together */
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(220px,1fr) 118px;
+    justify-content:space-between;
+    align-items:end;
+    gap:24px;
+  }
+
+  .ms-game-left-controls{
+    display:flex;
+    align-items:flex-end;
+    gap:12px;
+    min-width:0;
+    pointer-events:auto;
+  }
+
+  .ms-game-left-controls .ms-game-stick-wrap{
+    flex:0 0 auto;
+  }
+
+  .ms-game-left-controls .ms-game-mobile-actions{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:center;
+    gap:8px;
+    padding:0 0 2px;
+  }
+
+  .ms-game-left-controls .ms-game-mobile-actions .is-fire{
+    order:2;
+  }
+
+  .ms-game-left-controls .ms-game-mobile-actions .is-jump{
+    order:1;
+  }
+
+  .ms-game-stick-wrap--aim{
+    justify-self:end;
+  }
+}
+
+@media (pointer:coarse) and (orientation:landscape){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(210px,1fr) 112px;
+    gap:20px;
+  }
+
+  .ms-game-left-controls{
+    gap:10px;
+  }
+
+  .ms-game-left-controls .ms-game-mobile-actions{
+    gap:7px;
+  }
+
+  .ms-game-left-controls .ms-game-mobile-actions button{
+    width:58px;
+    height:58px;
+    min-width:58px;
+    min-height:58px;
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(190px,1fr) 94px;
+    gap:8px;
+  }
+
+  .ms-game-left-controls{
+    gap:8px;
+  }
+
+  .ms-game-left-controls .ms-game-mobile-actions{
+    gap:5px;
+  }
+
+  .ms-game-left-controls .ms-game-mobile-actions button{
+    width:50px;
+    height:50px;
+    min-width:50px;
+    min-height:50px;
+  }
+}
