@@ -157,6 +157,16 @@
       surface:'floor', attachedSolid:null, attachedFace:null
     });
     state.gravityJump=null;
+
+    if(state.camera){
+      state.camera.y=Math.max(0,floorY-H+70);
+      state.camera.targetY=state.camera.y;
+    }
+
+    aim.x=300;
+    aim.y=floorY-110;
+    aim.dx=1;
+    aim.dy=0;
   };
 
   const resetDoor = () => {
