@@ -25,21 +25,44 @@
 
   const W = canvas.width;
   const H = canvas.height;
-  const floorY = 650;
+  const WORLD_H = 1900;
+  const floorY = 1790;
 
   const input = { left:false, right:false, up:false, down:false };
-  const aim = { x:850, y:360, active:false, dx:1, dy:0 };
+  const aim = { x:850, y:floorY-180, active:false, dx:1, dy:0 };
 
-  const doorPlatform = { x:900, y:260, w:350, h:18, kind:'platform', gravity:true, faces:['top'] };
+  const doorPlatform = { x:900, y:260, w:350, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 };
   const staticSolids = [
-    { x:0, y:floorY, w:W, h:H-floorY, kind:'floor', gravity:true, faces:['top'] },
-    { x:135, y:560, w:215, h:18, kind:'platform', gravity:true, faces:['top'] },
-    { x:385, y:405, w:24, h:155, kind:'wall', gravity:true, faces:['left','right'] },
-    { x:470, y:475, w:155, h:18, kind:'platform', gravity:true, faces:['top'] },
-    { x:655, y:305, w:24, h:188, kind:'wall', gravity:true, faces:['left','right'] },
-    { x:735, y:405, w:145, h:18, kind:'platform', gravity:true, faces:['top'] },
-    { x:850, y:260, w:24, h:145, kind:'wall', gravity:true, faces:['left','right'] },
+    { x:0, y:floorY, w:W, h:WORLD_H-floorY, kind:'floor', gravity:true, faces:['top'], zone:0 },
+
+    { x:120, y:1650, w:235, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
+    { x:390, y:1450, w:24, h:200, kind:'wall', gravity:true, faces:['left','right'], zone:1 },
+    { x:470, y:1510, w:190, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
+
+    { x:690, y:1290, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
+    { x:760, y:1360, w:180, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
+    { x:930, y:1190, w:255, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
+    { x:870, y:1010, w:24, h:180, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
+
+    { x:650, y:1070, w:210, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    { x:600, y:825, w:24, h:245, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
+    { x:355, y:900, w:220, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    { x:330, y:675, w:24, h:225, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
+    { x:430, y:740, w:220, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
+
+    { x:680, y:590, w:220, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
+    { x:930, y:425, w:24, h:165, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
+    { x:790, y:455, w:155, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
+    { x:780, y:260, w:24, h:195, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
     doorPlatform
+  ];
+
+  const levelSections = [
+    { y:1710, number:'01', title:'ENTRY DECK' },
+    { y:1370, number:'02', title:'MAGNETIC SHAFT' },
+    { y:1000, number:'03', title:'RELAY DECK' },
+    { y:620, number:'04', title:'SECURITY SPINE' },
+    { y:235, number:'05', title:'ENEMY GATE' }
   ];
 
   const goal = {
@@ -80,6 +103,7 @@
     messageTimer:0,
     gravityTarget:null,
     gravityJump:null,
+    camera:{ y:Math.max(0,floorY-H+70), targetY:Math.max(0,floorY-H+70) },
     player:{
       x:74, y:floorY-38, w:26, h:38,
       vx:0, vy:0, grounded:true,
