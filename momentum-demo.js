@@ -316,38 +316,69 @@
     return true;
   };
 
+  const magneticFacesFor = solid => solid.faces || (solid.kind==='wall' ? ['left','right'] : ['top']);
+
+  const getMagneticCandidate = (solid,face,tx,ty,p) => {
+    if(face==='top'){
+      const cx=clamp(tx,solid.x+p.w*.5,solid.x+solid.w-p.w*.5);
+      return {
+        solid,face,
+        x:cx-p.w*.5,
+        y:solid.y-p.h,
+        cx,
+        cy:solid.y-p.h*.5
+      };
+    }
+
+    const cy=clamp(ty,solid.y+p.h*.5,solid.y+solid.h-p.h*.5);
+
+    if(face==='left'){
+      return {
+        solid,face,
+        x:solid.x-p.w,
+        y:cy-p.h*.5,
+        cx:solid.x-p.w*.5,
+        cy
+      };
+    }
+
+    return {
+      solid,face,
+      x:solid.x+solid.w,
+      y:cy-p.h*.5,
+      cx:solid.x+solid.w+p.w*.5,
+      cy
+    };
+  };
+
   const findGravityTarget = (tx,ty) => {
     const p=state.player;
     const sx=p.x+p.w*.5;
     const sy=p.y+p.h*.5;
-    const maxRange=440;
+    const maxRange=500;
     let best=null;
 
     for(const solid of staticSolids){
-      if(!solid.gravity || solid.kind==='floor') continue;
+      if(!solid.gravity) continue;
 
-      const targetX=clamp(tx,solid.x+p.w*.5,solid.x+solid.w-p.w*.5);
-      const targetY=solid.y-p.h*.5;
-      const dx=targetX-sx;
-      const dy=targetY-sy;
-      const dist=Math.hypot(dx,dy);
+      for(const face of magneticFacesFor(solid)){
+        if(solid.kind==='floor' && face==='top' && p.surface==='floor') continue;
 
-      if(dist<55 || dist>maxRange) continue;
-      if(!lineClear(sx,sy,targetX,targetY,solid)) continue;
+        const candidate=getMagneticCandidate(solid,face,tx,ty,p);
+        const dx=candidate.cx-sx;
+        const dy=candidate.cy-sy;
+        const dist=Math.hypot(dx,dy);
 
-      const pointerDistance=Math.hypot(tx-targetX,ty-targetY);
-      const score=pointerDistance + dist*.10;
+        if(dist<48 || dist>maxRange) continue;
+        if(!lineClear(sx,sy,candidate.cx,candidate.cy,solid)) continue;
 
-      if(!best || score<best.score){
-        best={
-          solid,
-          x:targetX-p.w*.5,
-          y:solid.y-p.h,
-          cx:targetX,
-          cy:targetY,
-          dist,
-          score
-        };
+        const pointerDistance=Math.hypot(tx-candidate.cx,ty-candidate.cy);
+        const sameSurface=p.attachedSolid===solid && p.attachedFace===face;
+        const score=pointerDistance + dist*.08 + (sameSurface?55:0);
+
+        if(!best || score<best.score){
+          best={...candidate,dist,score};
+        }
       }
     }
 
@@ -359,7 +390,7 @@
 
     const target=findGravityTarget(aim.x,aim.y);
     if(!target){
-      state.message='NO GRAVITY TARGET';
+      state.message='NO MAGNETIC TARGET';
       state.messageTimer=.8;
       return;
     }
@@ -373,13 +404,16 @@
       toX:target.x,
       toY:target.y,
       t:0,
-      duration:clamp(distance/760,.24,.58),
+      duration:clamp(distance/800,.22,.62),
       target
     };
 
     p.vx=0;
     p.vy=0;
     p.grounded=false;
+    p.surface='air';
+    p.attachedSolid=null;
+    p.attachedFace=null;
     state.actionPulse=.45;
   };
 
