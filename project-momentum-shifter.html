@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=28">
+  <link rel="stylesheet" href="momentum-shifter.css?v=29">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -153,9 +153,14 @@
           <span class="page-label" data-i18n="momentum.bulletAmmoLabel"></span>
           <strong data-i18n="momentum.bulletAmmoValue"></strong>
         </div>
-        <button class="ms-bullet-pips ms-demo-trigger" type="button" data-momentum-demo-open aria-label="Open the hidden Momentum Shifter demo">
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-        </button>
+        <div class="ms-bullet-pips ms-demo-sequence" data-demo-sequence aria-label="Temporal bullets">
+          <button type="button" data-demo-seal aria-label="Temporal bullet 1"></button>
+          <button type="button" data-demo-seal aria-label="Temporal bullet 2"></button>
+          <button type="button" data-demo-seal aria-label="Temporal bullet 3"></button>
+          <button type="button" data-demo-seal aria-label="Temporal bullet 4"></button>
+          <button type="button" data-demo-seal aria-label="Temporal bullet 5"></button>
+          <button type="button" data-demo-seal aria-label="Temporal bullet 6"></button>
+        </div>
       </div>
 
       <div class="ms-bullet-loop">
@@ -599,48 +604,51 @@
   </section>
 </main>
 
-<div class="ms-demo-modal" data-momentum-demo hidden>
-  <div class="ms-demo-modal__backdrop" data-momentum-demo-close></div>
-  <section class="ms-demo-shell" role="dialog" aria-modal="true" aria-labelledby="momentum-demo-title">
-    <button class="ms-demo-close" type="button" data-momentum-demo-close aria-label="Close demo">×</button>
+<section class="ms-game-stage" data-momentum-game hidden aria-label="Momentum Shifter playable easter egg">
+  <canvas class="ms-game-canvas" data-momentum-game-canvas width="1280" height="720"></canvas>
 
-    <div class="ms-demo-head">
-      <div>
-        <span class="page-label" data-i18n="momentum.demoLabel"></span>
-        <h2 id="momentum-demo-title" data-i18n="momentum.demoTitle"></h2>
-      </div>
-      <p data-i18n="momentum.demoIntro"></p>
+  <div class="ms-game-hud">
+    <div class="ms-game-brand">
+      <span>MOMENTUM</span>
+      <strong>SHIFTER</strong>
     </div>
 
-    <div class="ms-demo-hud">
-      <span><small data-i18n="momentum.demoAmmo"></small><strong data-demo-ammo>6</strong></span>
-      <span><small data-i18n="momentum.demoCores"></small><strong data-demo-cores>3</strong></span>
-      <span><small data-i18n="momentum.demoTime"></small><strong data-demo-time>SLOW</strong></span>
-      <span><small data-i18n="momentum.demoScore"></small><strong data-demo-score>0</strong></span>
+    <div class="ms-game-stat">
+      <small data-i18n="momentum.demoAmmo"></small>
+      <strong data-game-ammo>6</strong>
     </div>
-
-    <canvas class="ms-demo-canvas" data-momentum-demo-canvas width="720" height="400"></canvas>
-
-    <div class="ms-demo-footer">
-      <p data-i18n="momentum.demoControls"></p>
-      <div class="ms-demo-touch" aria-label="Demo controls">
-        <button type="button" data-demo-left>←</button>
-        <button type="button" data-demo-right>→</button>
-        <button type="button" data-demo-jump>↑</button>
-        <button type="button" data-demo-shoot data-i18n="momentum.demoShoot"></button>
-      </div>
-      <small data-i18n="momentum.demoNote"></small>
+    <div class="ms-game-stat">
+      <small data-i18n="momentum.demoCores"></small>
+      <strong data-game-cores>3</strong>
     </div>
-  </section>
-</div>
+    <div class="ms-game-stat">
+      <small data-i18n="momentum.demoTime"></small>
+      <strong data-game-time>SLOW</strong>
+    </div>
+    <div class="ms-game-stat">
+      <small data-i18n="momentum.demoDoor"></small>
+      <strong data-game-door>8</strong>
+    </div>
+    <div class="ms-game-stat">
+      <small data-i18n="momentum.demoScore"></small>
+      <strong data-game-score>0</strong>
+    </div>
+  </div>
+
+  <div class="ms-game-help">
+    <p data-i18n="momentum.demoControlsMouse"></p>
+    <small data-i18n="momentum.demoExit"></small>
+  </div>
+</section>
 
 <footer class="footer section-shell">
   <span>© <span id="year"></span> Lorenzo Soriano</span>
+  <span class="ms-footer-easter" data-i18n="momentum.demoFooterHint"></span>
 </footer>
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=16"></script>
-<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=1"></script><script src="script.js?v=5"></script>
+<script src="translations-momentum.js?v=17"></script>
+<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=2"></script><script src="script.js?v=5"></script>
 </body>
 </html>
