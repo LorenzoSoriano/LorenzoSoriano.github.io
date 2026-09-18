@@ -6223,3 +6223,132 @@ html[lang="it"] .ms-easter-hint__en{
     opacity:.9!important;
   }
 }
+
+
+/* v36 — mobile twin-stick usability pass */
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-mobile-controls{
+    padding-left:max(12px,env(safe-area-inset-left));
+    padding-right:max(12px,env(safe-area-inset-right));
+    padding-bottom:max(10px,env(safe-area-inset-bottom));
+    gap:34px;
+  }
+
+  .ms-game-left-controls,
+  .ms-game-right-controls{
+    gap:10px;
+    align-items:flex-end;
+  }
+
+  .ms-game-stick{
+    width:116px;
+    height:116px;
+    border-width:1.5px;
+    background:
+      radial-gradient(circle at center,rgba(114,213,233,.055) 0 34%,transparent 35%),
+      rgba(7,13,27,.56);
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.025),
+      0 10px 28px rgba(0,0,0,.16);
+    touch-action:none;
+  }
+
+  .ms-game-stick i{
+    width:44px;
+    height:44px;
+    margin:-22px 0 0 -22px;
+  }
+
+  .ms-game-stick--aim{
+    background:
+      radial-gradient(circle at center,rgba(244,215,92,.06) 0 34%,transparent 35%),
+      rgba(7,13,27,.56);
+    transition:border-color .12s ease,box-shadow .12s ease,background .12s ease;
+  }
+
+  .ms-game-stick--aim.is-armed{
+    border-color:rgba(244,215,92,.48);
+    background:
+      radial-gradient(circle at center,rgba(244,215,92,.11) 0 34%,transparent 35%),
+      rgba(18,17,25,.70);
+    box-shadow:
+      0 0 0 4px rgba(244,215,92,.06),
+      0 0 26px rgba(244,215,92,.11);
+  }
+
+  .ms-game-stick--aim.is-armed i{
+    border-color:rgba(244,215,92,.48);
+    background:rgba(244,215,92,.22);
+  }
+
+  /* Jump stays with movement; quick-fire becomes a secondary button.
+     The primary fire gesture is now aim-stick drag + release. */
+  .ms-game-left-controls .is-jump{
+    width:60px;
+    height:60px;
+    min-width:60px;
+    min-height:60px;
+    margin-bottom:42px;
+  }
+
+  .ms-game-right-controls .is-fire{
+    width:48px;
+    height:48px;
+    min-width:48px;
+    min-height:48px;
+    margin-bottom:54px;
+    opacity:.82;
+  }
+
+  .ms-game-right-controls .is-fire svg{
+    width:22px;
+    height:22px;
+  }
+
+  .ms-game-action-button{
+    -webkit-tap-highlight-color:transparent;
+  }
+}
+
+@media (pointer:coarse) and (orientation:landscape){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(210px,1fr) minmax(210px,1fr);
+  }
+
+  .ms-game-left-controls{
+    justify-content:flex-start;
+  }
+
+  .ms-game-right-controls{
+    justify-content:flex-end;
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-stick{
+    width:96px;
+    height:96px;
+  }
+
+  .ms-game-stick i{
+    width:38px;
+    height:38px;
+    margin:-19px 0 0 -19px;
+  }
+
+  .ms-game-left-controls .is-jump{
+    width:52px;
+    height:52px;
+    min-width:52px;
+    min-height:52px;
+    margin-bottom:32px;
+  }
+
+  .ms-game-right-controls .is-fire{
+    width:44px;
+    height:44px;
+    min-width:44px;
+    min-height:44px;
+    margin-bottom:40px;
+  }
+}
