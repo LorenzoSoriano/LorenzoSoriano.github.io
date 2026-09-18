@@ -293,6 +293,6 @@ transitionController.async = false;
 document.head.appendChild(transitionController);
 
 const uiAudioController = document.createElement('script');
-uiAudioController.src = 'ui-audio.js?v=1';
+uiAudioController.src = 'ui-audio.js?v=2';
 uiAudioController.async = false;
 document.head.appendChild(uiAudioController);
