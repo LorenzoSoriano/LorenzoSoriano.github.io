@@ -1708,3 +1708,63 @@ body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state ul{
     opacity:1;
   }
 }
+
+
+/* v14 — align the infinity outer tips through the centre of both state cards */
+@media(min-width:1051px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    grid-template-columns:minmax(0,1fr) 300px minmax(0,1fr);
+    min-height:380px;
+    padding:40px 0;
+    align-items:center;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+    width:min(445px,100%);
+    max-width:445px;
+    align-self:center;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow{
+    justify-self:start;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+    justify-self:end;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track{
+    left:8.5%;
+    right:auto;
+    top:50%;
+    bottom:auto;
+    width:83%;
+    height:430px;
+    transform:translateY(-50%);
+  }
+}
+
+@media(min-width:761px) and (max-width:1050px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    grid-template-columns:minmax(0,1fr) 190px minmax(0,1fr);
+    min-height:350px;
+    padding:36px 0;
+    align-items:center;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+    width:min(365px,100%);
+    max-width:365px;
+    align-self:center;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track{
+    left:7%;
+    right:auto;
+    top:50%;
+    bottom:auto;
+    width:86%;
+    height:390px;
+    transform:translateY(-50%);
+  }
+}
