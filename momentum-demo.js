@@ -1406,7 +1406,7 @@
     if(event.key==='w'||event.key==='W'||event.key==='ArrowUp') input.up=true;
     if(event.key==='s'||event.key==='S'||event.key==='ArrowDown') input.down=true;
 
-    if((event.key===' '||event.key==='Spacebar'||event.key==='ArrowUp'||event.key==='w'||event.key==='W')&&!event.repeat){
+    if((event.key===' '||event.key==='Spacebar')&&!event.repeat){
       jump();
     }
 
