@@ -1249,6 +1249,74 @@
     ctx.restore();
   };
 
+  const drawEnemySpawners = () => {
+    ctx.save();
+
+    const drawPad = (x,y,status,label) => {
+      const active=status==='active';
+      const cleared=status==='cleared';
+      const locked=status==='locked';
+
+      ctx.fillStyle='#101827';
+      ctx.fillRect(x-14,y-31,28,31);
+
+      ctx.fillStyle=cleared
+        ? 'rgba(114,213,233,.72)'
+        : active
+          ? 'rgba(255,123,88,.88)'
+          : locked
+            ? 'rgba(255,255,255,.10)'
+            : 'rgba(255,123,88,.30)';
+      ctx.fillRect(x-10,y-27,20,3);
+
+      ctx.strokeStyle=cleared
+        ? 'rgba(114,213,233,.40)'
+        : active
+          ? 'rgba(255,123,88,.52)'
+          : 'rgba(255,255,255,.12)';
+      ctx.strokeRect(x-13.5,y-30.5,27,30);
+
+      ctx.fillStyle='rgba(255,255,255,.18)';
+      ctx.fillRect(x-6,y-21,12,13);
+
+      if(active){
+        const pulse=5+Math.sin(performance.now()*.009+x)*2;
+        ctx.beginPath();
+        ctx.arc(x,y-27,pulse,0,Math.PI*2);
+        ctx.strokeStyle='rgba(255,123,88,.25)';
+        ctx.stroke();
+      }
+
+      if(label){
+        ctx.fillStyle=cleared?'rgba(114,213,233,.45)':'rgba(255,255,255,.24)';
+        ctx.font='700 6px monospace';
+        ctx.textAlign='center';
+        ctx.fillText(label,x,y-36);
+        ctx.textAlign='left';
+      }
+    };
+
+    for(const zone of state.combatZones){
+      const status=zone.cleared ? 'cleared' : zone.triggered ? 'active' : 'idle';
+      zone.spawnPoints?.forEach((x,index)=>{
+        drawPad(x,zone.platformY,status,'S'+(index+1));
+      });
+    }
+
+    const finalUnlocked=state.combatZones.every(zone=>zone.cleared);
+    const finalStatus=!finalUnlocked
+      ? 'locked'
+      : state.door.active
+        ? 'active'
+        : 'cleared';
+
+    state.door.spawnPoints?.forEach((x,index)=>{
+      drawPad(x,state.door.platformY,finalStatus,'G'+(index+1));
+    });
+
+    ctx.restore();
+  };
+
   const drawGoal = () => {
     const active=allEnemyZonesCleared();
     const cx=goal.x+goal.w*.5;
@@ -1628,6 +1696,7 @@
     drawSolids();
     drawStartZone();
     drawCombatZones();
+    drawEnemySpawners();
     drawDoor();
     drawGoal();
     drawPickups();
