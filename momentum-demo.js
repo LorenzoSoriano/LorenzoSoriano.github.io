@@ -65,11 +65,18 @@
     { y:235, number:'05', title:'ENEMY GATE' }
   ];
 
+  const startZone = {
+    x:36,
+    y:floorY-72,
+    w:150,
+    h:72
+  };
+
   const goal = {
-    x:1202,
-    y:doorPlatform.y-62,
-    w:34,
-    h:62
+    x:1190,
+    y:doorPlatform.y-72,
+    w:50,
+    h:72
   };
 
   const wave = [
@@ -1111,8 +1118,81 @@
     ctx.restore();
   };
 
+  const drawStartZone = () => {
+    const cx=startZone.x+startZone.w*.5;
+
+    ctx.save();
+    ctx.fillStyle='rgba(114,213,233,.055)';
+    ctx.fillRect(startZone.x,startZone.y,startZone.w,startZone.h);
+
+    ctx.strokeStyle='rgba(114,213,233,.28)';
+    ctx.setLineDash([7,6]);
+    ctx.strokeRect(startZone.x+.5,startZone.y+.5,startZone.w-1,startZone.h-1);
+    ctx.setLineDash([]);
+
+    ctx.fillStyle='rgba(114,213,233,.82)';
+    ctx.font='700 10px monospace';
+    ctx.textAlign='center';
+    ctx.fillText('START',cx,startZone.y+18);
+
+    ctx.fillStyle='rgba(255,255,255,.28)';
+    ctx.font='700 8px monospace';
+    ctx.fillText('ENTRY POINT',cx,startZone.y+34);
+
+    ctx.beginPath();
+    ctx.moveTo(cx-9,startZone.y+52);
+    ctx.lineTo(cx,startZone.y+43);
+    ctx.lineTo(cx+9,startZone.y+52);
+    ctx.strokeStyle='rgba(114,213,233,.52)';
+    ctx.stroke();
+
+    ctx.textAlign='left';
+    ctx.restore();
+  };
+
+  const drawCombatZones = () => {
+    ctx.save();
+
+    for(const zone of state.combatZones){
+      const triggered=zone.triggered;
+      const cleared=zone.cleared;
+      const pulse=.12+Math.sin(performance.now()*.005+zone.id.charCodeAt(0))*.025;
+
+      ctx.fillStyle=cleared
+        ? 'rgba(114,213,233,.035)'
+        : triggered
+          ? 'rgba(255,123,88,'+Math.max(.045,pulse)+')'
+          : 'rgba(255,123,88,.018)';
+      ctx.fillRect(zone.zoneX,zone.zoneY,zone.zoneW,zone.zoneH);
+
+      ctx.strokeStyle=cleared
+        ? 'rgba(114,213,233,.28)'
+        : triggered
+          ? 'rgba(255,123,88,.52)'
+          : 'rgba(255,123,88,.18)';
+      ctx.setLineDash(cleared ? [5,7] : [9,7]);
+      ctx.strokeRect(zone.zoneX+.5,zone.zoneY+.5,zone.zoneW-1,zone.zoneH-1);
+      ctx.setLineDash([]);
+
+      ctx.fillStyle=cleared?'#72d5e9':'#ff9366';
+      ctx.font='700 9px monospace';
+      ctx.fillText(zone.label,zone.zoneX+10,zone.zoneY+16);
+
+      ctx.fillStyle='rgba(255,255,255,.34)';
+      ctx.font='700 8px monospace';
+      const status=cleared
+        ? 'CLEARED'
+        : triggered
+          ? String(zone.remaining).padStart(2,'0')+' HOSTILES'
+          : 'ARMED';
+      ctx.fillText(status,zone.zoneX+10,zone.zoneY+31);
+    }
+
+    ctx.restore();
+  };
+
   const drawGoal = () => {
-    const active=!state.door.active;
+    const active=allEnemyZonesCleared();
     const cx=goal.x+goal.w*.5;
     const base=goal.y+goal.h;
 
@@ -1126,33 +1206,30 @@
     ctx.strokeRect(goal.x+.5,goal.y+.5,goal.w-1,goal.h-1);
 
     ctx.beginPath();
-    ctx.arc(cx,goal.y+18,active?11:8,0,Math.PI*2);
+    ctx.arc(cx,goal.y+22,active?12:8,0,Math.PI*2);
     ctx.strokeStyle=active?'#72d5e9':'rgba(255,123,88,.55)';
     ctx.stroke();
 
     if(active){
       const pulse=8+Math.sin(performance.now()*.006)*3;
       ctx.beginPath();
-      ctx.arc(cx,goal.y+18,16+pulse,0,Math.PI*2);
+      ctx.arc(cx,goal.y+22,17+pulse,0,Math.PI*2);
       ctx.strokeStyle='rgba(114,213,233,.16)';
       ctx.stroke();
 
       ctx.fillStyle='#72d5e9';
-      ctx.font='700 9px monospace';
+      ctx.font='700 10px monospace';
       ctx.textAlign='center';
-      ctx.fillText('EXIT',cx,goal.y-9);
+      ctx.fillText('END',cx,goal.y-11);
 
-      ctx.beginPath();
-      ctx.moveTo(cx-8,goal.y-22);
-      ctx.lineTo(cx,goal.y-14);
-      ctx.lineTo(cx+8,goal.y-22);
-      ctx.strokeStyle='rgba(114,213,233,.65)';
-      ctx.stroke();
+      ctx.fillStyle='rgba(255,255,255,.35)';
+      ctx.font='700 8px monospace';
+      ctx.fillText('SECTOR EXIT',cx,goal.y+50);
     }else{
       ctx.fillStyle='rgba(255,154,114,.58)';
-      ctx.font='700 8px monospace';
+      ctx.font='700 9px monospace';
       ctx.textAlign='center';
-      ctx.fillText('LOCKED',cx,goal.y-9);
+      ctx.fillText('END LOCKED',cx,goal.y-11);
     }
 
     ctx.fillStyle=active?'rgba(114,213,233,.30)':'rgba(255,123,88,.16)';
@@ -1491,6 +1568,8 @@
     ctx.translate(0,-state.camera.y);
     drawLevelSections();
     drawSolids();
+    drawStartZone();
+    drawCombatZones();
     drawDoor();
     drawGoal();
     drawPickups();
