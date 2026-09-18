@@ -1306,3 +1306,75 @@ body[data-page="momentum"] .ms-time-arrow{
     display:none;
   }
 }
+
+
+/* v10 — two-body motion: synchronized arrows stay on separate lobes;
+   state cards sit on the outer ends of the infinity */
+@media(min-width:1051px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    grid-template-columns:minmax(0,.70fr) minmax(330px,.72fr) minmax(0,.70fr);
+    min-height:450px;
+    padding:58px 0;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+    max-width:335px;
+    min-height:184px;
+    padding:22px 24px;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow{
+    justify-self:start;
+    transform:translateX(-34px);
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+    justify-self:end;
+    transform:translateX(34px);
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track{
+    inset:-66px -14%;
+    width:128%;
+    height:calc(100% + 132px);
+  }
+}
+
+body[data-page="momentum"] .ms-infinity-track__arrow{
+  stroke-width:2.9;
+}
+
+@media(min-width:761px) and (max-width:1050px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    grid-template-columns:minmax(0,.78fr) minmax(220px,.52fr) minmax(0,.78fr);
+    min-height:405px;
+    padding:48px 0;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+    max-width:310px;
+    min-height:184px;
+    padding:21px 22px;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow{
+    transform:translateX(-14px);
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+    transform:translateX(14px);
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track{
+    inset:-48px -12%;
+    width:124%;
+    height:calc(100% + 96px);
+  }
+}
+
+@media(max-width:760px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow,
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+    transform:none;
+  }
+}
