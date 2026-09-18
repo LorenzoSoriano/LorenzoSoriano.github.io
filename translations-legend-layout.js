@@ -167,14 +167,14 @@ if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-tur
     });
   }
 
-  function connectorPoint(stageRect,element,edge){
+  function connectorPoint(stageRect,element,edge,offset=0){
     const r=element.getBoundingClientRect();
     const cx=r.left+r.width/2-stageRect.left;
     const cy=r.top+r.height/2-stageRect.top;
-    if(edge==='left')return {x:r.left-stageRect.left,y:cy};
-    if(edge==='right')return {x:r.right-stageRect.left,y:cy};
-    if(edge==='top')return {x:cx,y:r.top-stageRect.top};
-    if(edge==='bottom')return {x:cx,y:r.bottom-stageRect.top};
+    if(edge==='left')return {x:r.left-stageRect.left-offset,y:cy};
+    if(edge==='right')return {x:r.right-stageRect.left+offset,y:cy};
+    if(edge==='top')return {x:cx,y:r.top-stageRect.top-offset};
+    if(edge==='bottom')return {x:cx,y:r.bottom-stageRect.top+offset};
     return {x:cx,y:cy};
   }
 
@@ -193,25 +193,25 @@ if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-tur
     svg.replaceChildren();
 
     const links=[
-      ['.legend-stat-callout--cooldown','.legend-stat-card__cooldown','right','center'],
-      ['.legend-stat-callout--ability','.legend-stat-card__ability-icon','left','center'],
-      ['.legend-stat-callout--damage','.legend-stat-card__stat--damage','right','center'],
-      ['.legend-stat-callout--accuracy','.legend-stat-card__stat--accuracy','top','center'],
-      ['.legend-stat-callout--health','.legend-stat-card__stat--health','left','center']
+      ['.legend-stat-callout--cooldown','.legend-stat-card__cooldown','right','left'],
+      ['.legend-stat-callout--ability','.legend-stat-card__ability-icon','left','right'],
+      ['.legend-stat-callout--damage','.legend-stat-card__stat--damage','right','left'],
+      ['.legend-stat-callout--accuracy','.legend-stat-card__stat--accuracy','top','bottom'],
+      ['.legend-stat-callout--health','.legend-stat-card__stat--health','left','right']
     ];
 
-    links.forEach(([fromSel,toSel,fromEdge])=>{
+    links.forEach(([fromSel,toSel,fromEdge,toEdge])=>{
       const from=stage.querySelector(fromSel);
       const to=stage.querySelector(toSel);
       if(!from||!to)return;
       const p1=connectorPoint(stageRect,from,fromEdge);
-      const p2=connectorPoint(stageRect,to,'center');
+      const p2=connectorPoint(stageRect,to,toEdge,2.5);
       const line=document.createElementNS(svgNS,'line');
       line.setAttribute('x1',p1.x);line.setAttribute('y1',p1.y);
       line.setAttribute('x2',p2.x);line.setAttribute('y2',p2.y);
       svg.appendChild(line);
       const dot=document.createElementNS(svgNS,'circle');
-      dot.setAttribute('cx',p2.x);dot.setAttribute('cy',p2.y);dot.setAttribute('r','3.2');
+      dot.setAttribute('cx',p2.x);dot.setAttribute('cy',p2.y);dot.setAttribute('r','2.4');
       svg.appendChild(dot);
     });
   }
@@ -231,24 +231,24 @@ if(document.body?.dataset?.page==='legend'&&!document.querySelector('.legend-tur
     svg.replaceChildren();
 
     const links=[
-      ['.legend-cover-callout--hp','.legend-cover-card__durability','right'],
-      ['.legend-cover-callout--protect','.legend-cover-card__shield','left'],
-      ['.legend-cover-callout--break','.legend-cover-card__cover','right'],
-      ['.legend-cover-callout--field','.legend-cover-card__scene','left']
+      ['.legend-cover-callout--hp','.legend-cover-card__durability','right','left'],
+      ['.legend-cover-callout--protect','.legend-cover-card__shield','left','right'],
+      ['.legend-cover-callout--break','.legend-cover-card__cover','right','left'],
+      ['.legend-cover-callout--field','.legend-cover-card__scene','left','right']
     ];
 
-    links.forEach(([fromSel,toSel,fromEdge])=>{
+    links.forEach(([fromSel,toSel,fromEdge,toEdge])=>{
       const from=stage.querySelector(fromSel);
       const to=stage.querySelector(toSel);
       if(!from||!to)return;
       const p1=connectorPoint(stageRect,from,fromEdge);
-      const p2=connectorPoint(stageRect,to,'center');
+      const p2=connectorPoint(stageRect,to,toEdge,2.5);
       const line=document.createElementNS(svgNS,'line');
       line.setAttribute('x1',p1.x);line.setAttribute('y1',p1.y);
       line.setAttribute('x2',p2.x);line.setAttribute('y2',p2.y);
       svg.appendChild(line);
       const dot=document.createElementNS(svgNS,'circle');
-      dot.setAttribute('cx',p2.x);dot.setAttribute('cy',p2.y);dot.setAttribute('r','3.2');
+      dot.setAttribute('cx',p2.x);dot.setAttribute('cy',p2.y);dot.setAttribute('r','2.4');
       svg.appendChild(dot);
     });
   }
