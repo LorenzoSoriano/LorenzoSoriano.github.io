@@ -891,6 +891,7 @@
     const d=state.door;
     if(!d.active || d.spawned>=d.total) return;
     if(state.player.y>760) return;
+    if(state.combatZones.some(zone=>!zone.cleared)) return;
 
     d.timer-=dt*scale;
     const aliveWave=state.enemies.filter(enemy=>
