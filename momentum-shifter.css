@@ -1016,3 +1016,66 @@ body[data-page="momentum"] .ms-design-thesis--stacked .ms-design-thesis__copy p{
 body[data-page="momentum"] .ms-design-thesis--stacked .ms-design-thesis__copy{
   width:100%;
 }
+
+
+/* v6 — core mechanic identity: a subtle infinity loop behind the two time states */
+body[data-page="momentum"] .ms-core-mechanic-section{
+  overflow:hidden;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+  position:relative;
+  isolation:isolate;
+  padding:30px 26px;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system::before{
+  content:"∞";
+  position:absolute;
+  z-index:0;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-49%);
+  font-family:"Manrope",sans-serif;
+  font-size:clamp(250px,34vw,500px);
+  font-weight:300;
+  line-height:.7;
+  letter-spacing:-.10em;
+  color:transparent;
+  background:linear-gradient(90deg,rgba(121,108,240,.18),rgba(94,160,240,.14) 48%,rgba(244,215,92,.17));
+  -webkit-background-clip:text;
+  background-clip:text;
+  opacity:.72;
+  pointer-events:none;
+  user-select:none;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state,
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-arrow{
+  position:relative;
+  z-index:1;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+  background:linear-gradient(160deg,rgba(255,255,255,.94),rgba(250,251,255,.90));
+  backdrop-filter:blur(2px);
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow{
+  background:linear-gradient(145deg,rgba(247,245,255,.93),rgba(255,255,255,.92) 48%,rgba(238,247,255,.90));
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+  background:linear-gradient(145deg,rgba(255,250,225,.90),rgba(255,255,255,.92) 48%,rgba(240,247,255,.90));
+}
+
+@media(max-width:760px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    padding:18px 0;
+  }
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system::before{
+    font-size:310px;
+    opacity:.48;
+    transform:translate(-50%,-50%) rotate(90deg);
+  }
+}
