@@ -25,58 +25,74 @@
 
   const W = canvas.width;
   const H = canvas.height;
-  const WORLD_H = 1900;
-  const floorY = 1790;
+  const WORLD_H = 2200;
+  const floorY = 2080;
 
-  const input = { left:false, right:false, up:false, down:false };
+  const input = {
+    left:false,right:false,up:false,down:false,
+    moveX:0,moveY:0
+  };
   const aim = { x:850, y:floorY-180, active:false, dx:1, dy:0, source:'mouse' };
 
-  const doorPlatform = { x:900, y:260, w:350, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 };
+  // The climb now reads as a sequence of traversal shafts and wider combat decks.
+  const doorPlatform = {
+    x:700, y:400, w:540, h:18,
+    kind:'platform', gravity:true, faces:['top'], zone:6
+  };
+
   const staticSolids = [
     { x:0, y:floorY, w:W, h:WORLD_H-floorY, kind:'floor', gravity:true, faces:['top'], zone:0 },
 
-    { x:120, y:1650, w:235, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
-    { x:390, y:1450, w:24, h:200, kind:'wall', gravity:true, faces:['left','right'], zone:1 },
-    { x:470, y:1510, w:190, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
+    // Entry / tutorial climb.
+    { x:130, y:1930, w:270, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
+    { x:430, y:1710, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:1 },
+    { x:500, y:1760, w:235, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
 
-    { x:690, y:1290, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
-    { x:760, y:1360, w:180, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
-    { x:930, y:1190, w:255, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
-    { x:870, y:1010, w:24, h:180, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
+    // Enemy Deck A — first wide arena.
+    { x:730, y:1580, w:450, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
+    { x:675, y:1370, w:24, h:210, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
+    { x:430, y:1420, w:225, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
 
-    { x:650, y:1070, w:210, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
-    { x:600, y:825, w:24, h:245, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
-    { x:355, y:900, w:220, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
-    { x:330, y:675, w:24, h:225, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
-    { x:430, y:740, w:220, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    // Cross-shaft into Enemy Deck B.
+    { x:390, y:1190, w:24, h:230, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
+    { x:95, y:1230, w:285, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    { x:500, y:990, w:24, h:240, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
+    { x:565, y:1040, w:245, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
 
-    { x:680, y:590, w:220, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
-    { x:930, y:425, w:24, h:165, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
-    { x:790, y:455, w:155, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
-    { x:780, y:260, w:24, h:195, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
+    // Enemy Deck C — upper combat deck.
+    { x:790, y:870, w:400, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
+    { x:735, y:650, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
+    { x:520, y:700, w:195, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
+
+    // Final magnetic shaft and gate.
+    { x:475, y:460, w:24, h:240, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
+    { x:545, y:520, w:135, h:18, kind:'platform', gravity:true, faces:['top'], zone:5 },
+    { x:660, y:400, w:24, h:120, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
     doorPlatform
   ];
 
   const levelSections = [
-    { y:1710, number:'01', title:'ENTRY DECK' },
-    { y:1370, number:'02', title:'MAGNETIC SHAFT' },
-    { y:1000, number:'03', title:'RELAY DECK' },
-    { y:620, number:'04', title:'SECURITY SPINE' },
-    { y:235, number:'05', title:'ENEMY GATE' }
+    { y:2020, number:'01', title:'ENTRY DECK' },
+    { y:1780, number:'02', title:'MAGNETIC SHAFT' },
+    { y:1570, number:'03', title:'SECURITY DECK' },
+    { y:1220, number:'04', title:'SERVICE SPINE' },
+    { y:860, number:'05', title:'CONTAINMENT DECK' },
+    { y:610, number:'06', title:'CORE ACCESS' },
+    { y:390, number:'07', title:'ENEMY GATE' }
   ];
 
   const startZone = {
     x:36,
-    y:floorY-72,
-    w:150,
-    h:72
+    y:floorY-76,
+    w:172,
+    h:76
   };
 
   const goal = {
-    x:1190,
-    y:doorPlatform.y-72,
-    w:50,
-    h:72
+    x:1182,
+    y:doorPlatform.y-76,
+    w:52,
+    h:76
   };
 
   const wave = [
@@ -94,30 +110,44 @@
     {
       id:'A',
       label:'ENEMY ZONE A',
-      triggerY:1480,
-      platformY:1510,
-      minX:470,
-      maxX:660,
-      spawnX:620,
-      zoneX:450,
-      zoneY:1420,
-      zoneW:230,
-      zoneH:105,
+      triggerY:1620,
+      platformY:1580,
+      minX:730,
+      maxX:1180,
+      spawnX:1125,
+      zoneX:710,
+      zoneY:1488,
+      zoneW:490,
+      zoneH:112,
       wave:['drone','webcaster','rumbler']
     },
     {
       id:'B',
       label:'ENEMY ZONE B',
-      triggerY:940,
-      platformY:900,
-      minX:355,
-      maxX:575,
-      spawnX:535,
-      zoneX:335,
-      zoneY:810,
-      zoneW:260,
-      zoneH:110,
-      wave:['drone','drone','webcaster','summoner']
+      triggerY:1270,
+      platformY:1230,
+      minX:95,
+      maxX:380,
+      spawnX:338,
+      zoneX:75,
+      zoneY:1138,
+      zoneW:325,
+      zoneH:112,
+      wave:['rumbler','drone','webcaster']
+    },
+    {
+      id:'C',
+      label:'ENEMY ZONE C',
+      triggerY:910,
+      platformY:870,
+      minX:790,
+      maxX:1190,
+      spawnX:1140,
+      zoneX:770,
+      zoneY:778,
+      zoneW:440,
+      zoneH:112,
+      wave:['drone','webcaster','drone','summoner']
     }
   ];
 
@@ -161,11 +191,11 @@
     },
     door:{
       id:'final',
-      x:1106, y:145, w:72, h:115,
+      x:1082, y:285, w:74, h:115,
       platformY:doorPlatform.y,
       minX:doorPlatform.x+8,
       maxX:doorPlatform.x+doorPlatform.w-8,
-      spawnX:1100,
+      spawnX:1070,
       total:wave.length,
       remaining:wave.length,
       spawned:0,
@@ -890,7 +920,7 @@
   const updateDoor = (dt,scale) => {
     const d=state.door;
     if(!d.active || d.spawned>=d.total) return;
-    if(state.player.y>760) return;
+    if(state.player.y>650) return;
     if(state.combatZones.some(zone=>!zone.cleared)) return;
 
     d.timer-=dt*scale;
