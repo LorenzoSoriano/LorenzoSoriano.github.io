@@ -599,6 +599,41 @@
   </section>
 </main>
 
+<div class="ms-demo-modal" data-momentum-demo hidden>
+  <div class="ms-demo-modal__backdrop" data-momentum-demo-close></div>
+  <section class="ms-demo-shell" role="dialog" aria-modal="true" aria-labelledby="momentum-demo-title">
+    <button class="ms-demo-close" type="button" data-momentum-demo-close aria-label="Close demo">×</button>
+
+    <div class="ms-demo-head">
+      <div>
+        <span class="page-label" data-i18n="momentum.demoLabel"></span>
+        <h2 id="momentum-demo-title" data-i18n="momentum.demoTitle"></h2>
+      </div>
+      <p data-i18n="momentum.demoIntro"></p>
+    </div>
+
+    <div class="ms-demo-hud">
+      <span><small data-i18n="momentum.demoAmmo"></small><strong data-demo-ammo>6</strong></span>
+      <span><small data-i18n="momentum.demoCores"></small><strong data-demo-cores>3</strong></span>
+      <span><small data-i18n="momentum.demoTime"></small><strong data-demo-time>SLOW</strong></span>
+      <span><small data-i18n="momentum.demoScore"></small><strong data-demo-score>0</strong></span>
+    </div>
+
+    <canvas class="ms-demo-canvas" data-momentum-demo-canvas width="720" height="400"></canvas>
+
+    <div class="ms-demo-footer">
+      <p data-i18n="momentum.demoControls"></p>
+      <div class="ms-demo-touch" aria-label="Demo controls">
+        <button type="button" data-demo-left>←</button>
+        <button type="button" data-demo-right>→</button>
+        <button type="button" data-demo-jump>↑</button>
+        <button type="button" data-demo-shoot data-i18n="momentum.demoShoot"></button>
+      </div>
+      <small data-i18n="momentum.demoNote"></small>
+    </div>
+  </section>
+</div>
+
 <footer class="footer section-shell">
   <span>© <span id="year"></span> Lorenzo Soriano</span>
 </footer>
