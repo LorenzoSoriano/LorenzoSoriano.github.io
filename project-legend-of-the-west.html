@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
   <link rel="stylesheet" href="legend-of-the-west.css?v=4">
-  <link rel="stylesheet" href="legend-turn-loop.css?v=3">
+  <link rel="stylesheet" href="legend-turn-loop.css?v=4">
   <link rel="stylesheet" href="zoom-resilience.css?v=1">
 </head>
 <body data-page="legend">
@@ -105,28 +105,78 @@
         <p data-i18n="legend2.progressIntro"></p>
       </div>
 
-      <div class="legend-growth-chain reveal">
-        <article>
-          <h3 data-i18n="legend2.p1"></h3>
-          <p data-i18n="legend2.p1d"></p>
-        </article>
-        <span class="legend-growth-arrow" aria-hidden="true">→</span>
-        <article>
-          <h3 data-i18n="legend2.p2"></h3>
-          <p data-i18n="legend2.p2d"></p>
-        </article>
-        <span class="legend-growth-arrow" aria-hidden="true">→</span>
-        <article>
-          <h3 data-i18n="legend2.p3"></h3>
-          <p data-i18n="legend2.p3d"></p>
-        </article>
-      </div>
+      <div class="legend-progression-system reveal">
+        <div class="legend-progression-copy">
+          <article class="legend-progression-block legend-progression-block--team">
+            <span class="legend-progression-index">01</span>
+            <h3 data-i18n="legend2.p1"></h3>
+            <p data-i18n="legend2.p1d"></p>
+          </article>
 
-      <div class="legend-specialisation reveal">
-        <div class="legend-specialisation-label" data-i18n="legend2.specialisations">SPECIALISATIONS</div>
-        <article><h4 data-i18n="legend2.branch1"></h4><p data-i18n="legend2.branch1d"></p></article>
-        <article><h4 data-i18n="legend2.branch2"></h4><p data-i18n="legend2.branch2d"></p></article>
-        <article><h4 data-i18n="legend2.branch3"></h4><p data-i18n="legend2.branch3d"></p></article>
+          <article class="legend-progression-block legend-progression-block--talents">
+            <span class="legend-progression-index">02</span>
+            <h3 data-i18n="legend2.p3"></h3>
+            <p data-i18n="legend2.p3d"></p>
+          </article>
+
+          <div class="legend-specialisation legend-specialisation--compact">
+            <div class="legend-specialisation-label" data-i18n="legend2.specialisations">SPECIALISATIONS</div>
+            <article><h4 data-i18n="legend2.branch1"></h4><p data-i18n="legend2.branch1d"></p></article>
+            <article><h4 data-i18n="legend2.branch2"></h4><p data-i18n="legend2.branch2d"></p></article>
+            <article><h4 data-i18n="legend2.branch3"></h4><p data-i18n="legend2.branch3d"></p></article>
+          </div>
+        </div>
+
+        <div class="legend-stat-system">
+          <div class="legend-stat-system__heading">
+            <div>
+              <span class="legend-stat-system__eyebrow" data-i18n="legend2.statCardLabel">CARTA DI COMBATTIMENTO</span>
+              <h3 data-i18n="legend2.p2"></h3>
+            </div>
+            <p data-i18n="legend2.statCardIntro"></p>
+          </div>
+
+          <div class="legend-stat-stage">
+            <aside class="legend-stat-callout legend-stat-callout--cooldown">
+              <strong data-i18n="legend2.statCooldown"></strong>
+              <p data-i18n="legend2.statCooldownD"></p>
+            </aside>
+            <aside class="legend-stat-callout legend-stat-callout--ability">
+              <strong data-i18n="legend2.statAbility"></strong>
+              <p data-i18n="legend2.statAbilityD"></p>
+            </aside>
+            <aside class="legend-stat-callout legend-stat-callout--damage">
+              <strong data-i18n="legend2.statDamage"></strong>
+              <p data-i18n="legend2.statDamageD"></p>
+            </aside>
+            <aside class="legend-stat-callout legend-stat-callout--accuracy">
+              <strong data-i18n="legend2.statAccuracy"></strong>
+              <p data-i18n="legend2.statAccuracyD"></p>
+            </aside>
+            <aside class="legend-stat-callout legend-stat-callout--health">
+              <strong data-i18n="legend2.statHealth"></strong>
+              <p data-i18n="legend2.statHealthD"></p>
+            </aside>
+
+            <div class="legend-stat-card" aria-label="Example combat stat card">
+              <div class="legend-stat-card__portrait" aria-hidden="true">
+                <span class="legend-stat-card__sun"></span>
+                <span class="legend-stat-card__mesa legend-stat-card__mesa--one"></span>
+                <span class="legend-stat-card__mesa legend-stat-card__mesa--two"></span>
+                <span class="legend-stat-card__figure"></span>
+              </div>
+              <div class="legend-stat-card__ability" aria-hidden="true">
+                <span class="legend-stat-card__ability-icon">✦</span>
+                <span class="legend-stat-card__cooldown"><i></i><i></i><i></i></span>
+              </div>
+              <div class="legend-stat-card__stats" aria-hidden="true">
+                <span class="legend-stat-card__stat legend-stat-card__stat--damage"><b>18</b></span>
+                <span class="legend-stat-card__stat legend-stat-card__stat--accuracy"><b>72%</b></span>
+                <span class="legend-stat-card__stat legend-stat-card__stat--health"><b>24</b></span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="legend-ability-band reveal">
@@ -157,7 +207,7 @@
   <script src="translations.js"></script>
   <script src="translations-expanded.js?v=1"></script>
   <script src="translations-legend.js?v=2"></script>
-  <script src="translations-legend-layout.js?v=4"></script>
+  <script src="translations-legend-layout.js?v=5"></script>
   <script src="script.js?v=4"></script>
 </body>
 </html>
