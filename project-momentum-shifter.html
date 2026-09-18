@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=15">
+  <link rel="stylesheet" href="momentum-shifter.css?v=16">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -149,12 +149,26 @@
       <p data-i18n="momentum.traversalIntro"></p>
     </div>
 
-    <div class="ms-focus-card ms-focus-card--traversal reveal">
-      <span class="ms-icon">↗</span>
-      <div>
-        <h3 data-i18n="momentum.bootsTitle"></h3>
-        <p data-i18n="momentum.bootsDesc"></p>
-      </div>
+    <div class="ms-gravity-flow reveal">
+      <article class="ms-gravity-step">
+        <span>01</span>
+        <h3 data-i18n="momentum.gravity1"></h3>
+        <p data-i18n="momentum.gravity1d"></p>
+      </article>
+      <article class="ms-gravity-step">
+        <span>02</span>
+        <h3 data-i18n="momentum.gravity2"></h3>
+        <p data-i18n="momentum.gravity2d"></p>
+      </article>
+      <article class="ms-gravity-step">
+        <span>03</span>
+        <h3 data-i18n="momentum.gravity3"></h3>
+        <p data-i18n="momentum.gravity3d"></p>
+      </article>
+      <aside class="ms-gravity-exception">
+        <span data-i18n="momentum.gravityExceptionLabel"></span>
+        <strong data-i18n="momentum.gravityException"></strong>
+      </aside>
     </div>
   </section>
 
@@ -168,21 +182,41 @@
       <p data-i18n="momentum.resourceIntro"></p>
     </div>
 
-    <div class="ms-core-resource-grid">
-      <article class="ms-focus-card ms-focus-card--bullet reveal">
-        <span class="ms-icon">↻</span>
+    <div class="ms-bullet-system reveal">
+      <div class="ms-bullet-system__top">
         <div>
-          <h3 data-i18n="momentum.bulletTitle"></h3>
-          <p data-i18n="momentum.bulletDesc"></p>
+          <span class="page-label" data-i18n="momentum.bulletAmmoLabel"></span>
+          <strong data-i18n="momentum.bulletAmmoValue"></strong>
         </div>
-      </article>
-      <article class="ms-focus-card ms-focus-card--core reveal">
-        <span class="ms-icon">3</span>
-        <div>
-          <h3 data-i18n="momentum.coreTitle"></h3>
-          <p data-i18n="momentum.coreDesc"></p>
+        <div class="ms-bullet-pips" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
         </div>
-      </article>
+      </div>
+
+      <div class="ms-bullet-loop">
+        <article><span>01</span><h3 data-i18n="momentum.bulletStep1"></h3><p data-i18n="momentum.bulletStep1d"></p></article>
+        <article><span>02</span><h3 data-i18n="momentum.bulletStep2"></h3><p data-i18n="momentum.bulletStep2d"></p></article>
+        <article><span>03</span><h3 data-i18n="momentum.bulletStep3"></h3><p data-i18n="momentum.bulletStep3d"></p></article>
+        <article><span>04</span><h3 data-i18n="momentum.bulletStep4"></h3><p data-i18n="momentum.bulletStep4d"></p></article>
+      </div>
+
+      <div class="ms-bullet-rule">
+        <strong data-i18n="momentum.bulletRuleTitle"></strong>
+        <p data-i18n="momentum.bulletRuleDesc"></p>
+      </div>
+    </div>
+
+    <div class="ms-warp-strip reveal">
+      <div class="ms-warp-strip__lives" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div>
+        <span class="page-label" data-i18n="momentum.warpLabel"></span>
+        <h3 data-i18n="momentum.warpTitle"></h3>
+        <p data-i18n="momentum.warpDesc"></p>
+      </div>
+      <div class="ms-warp-overflow">
+        <span data-i18n="momentum.warpOverflowLabel"></span>
+        <strong data-i18n="momentum.warpOverflow"></strong>
+      </div>
     </div>
   </section>
 
@@ -196,25 +230,31 @@
       <p data-i18n="momentum.levelIntro"></p>
     </div>
 
-    <div class="ms-run-map reveal">
-      <article class="ms-run-step"><span>01</span><h3 data-i18n="momentum.level1"></h3><p data-i18n="momentum.level1d"></p></article>
-      <article class="ms-run-step"><span>02</span><h3 data-i18n="momentum.level2"></h3><p data-i18n="momentum.level2d"></p></article>
-      <article class="ms-run-step"><span>03</span><h3 data-i18n="momentum.level3"></h3><p data-i18n="momentum.level3d"></p></article>
-      <article class="ms-run-step"><span>04</span><h3 data-i18n="momentum.level4"></h3><p data-i18n="momentum.level4d"></p></article>
-      <article class="ms-run-step"><span>05</span><h3 data-i18n="momentum.level5"></h3><p data-i18n="momentum.level5d"></p></article>
+    <div class="ms-level-layout">
+      <div class="ms-tower-sequence reveal">
+        <article><span>05</span><div><h3 data-i18n="momentum.level5"></h3><p data-i18n="momentum.level5d"></p></div></article>
+        <article><span>04</span><div><h3 data-i18n="momentum.level4"></h3><p data-i18n="momentum.level4d"></p></div></article>
+        <article><span>03</span><div><h3 data-i18n="momentum.level3"></h3><p data-i18n="momentum.level3d"></p></div></article>
+        <article><span>02</span><div><h3 data-i18n="momentum.level2"></h3><p data-i18n="momentum.level2d"></p></div></article>
+        <article><span>01</span><div><h3 data-i18n="momentum.level1"></h3><p data-i18n="momentum.level1d"></p></div></article>
+      </div>
+
+      <aside class="ms-level-grammar reveal">
+        <p class="page-label" data-i18n="momentum.levelGrammarLabel"></p>
+        <h3 data-i18n="momentum.levelGrammarTitle"></h3>
+        <div class="ms-level-rule"><strong data-i18n="momentum.levelRule1"></strong><p data-i18n="momentum.levelRule1d"></p></div>
+        <div class="ms-level-rule"><strong data-i18n="momentum.levelRule2"></strong><p data-i18n="momentum.levelRule2d"></p></div>
+        <div class="ms-level-rule"><strong data-i18n="momentum.levelRule3"></strong><p data-i18n="momentum.levelRule3d"></p></div>
+      </aside>
     </div>
 
-    <div class="ms-platform-grid reveal">
-      <article><strong data-i18n="momentum.platformStatic"></strong><p data-i18n="momentum.platformStaticD"></p></article>
-      <article><strong data-i18n="momentum.platformMoving"></strong><p data-i18n="momentum.platformMovingD"></p></article>
-      <article><strong data-i18n="momentum.platformMagnetic"></strong><p data-i18n="momentum.platformMagneticD"></p></article>
-      <article><strong data-i18n="momentum.platformWall"></strong><p data-i18n="momentum.platformWallD"></p></article>
-      <article><strong data-i18n="momentum.platformElectric"></strong><p data-i18n="momentum.platformElectricD"></p></article>
-    </div>
-
-    <div class="case-callout reveal ms-event-callout">
-      <h3 data-i18n="momentum.eventTitle"></h3>
-      <p data-i18n="momentum.eventDesc"></p>
+    <div class="ms-spawn-door-band reveal">
+      <div>
+        <span class="page-label" data-i18n="momentum.spawnLabel"></span>
+        <h3 data-i18n="momentum.spawnTitle"></h3>
+      </div>
+      <p data-i18n="momentum.spawnDesc"></p>
+      <strong data-i18n="momentum.spawnReward"></strong>
     </div>
   </section>
 
@@ -228,30 +268,30 @@
       <p data-i18n="momentum.enemyIntro"></p>
     </div>
 
-    <div class="ms-enemy-grid">
-      <article class="ms-enemy-card reveal">
+    <div class="ms-enemy-role-grid">
+      <article class="ms-enemy-role reveal">
         <span class="enemy-role" data-i18n="momentum.rumblerRole"></span>
         <h3 data-i18n="momentum.rumblerTitle"></h3>
         <p data-i18n="momentum.rumblerDesc"></p>
-        <small data-i18n="momentum.rumblerMeta"></small>
+        <strong data-i18n="momentum.rumblerTest"></strong>
       </article>
-      <article class="ms-enemy-card reveal">
+      <article class="ms-enemy-role reveal">
         <span class="enemy-role" data-i18n="momentum.screamerRole"></span>
         <h3 data-i18n="momentum.screamerTitle"></h3>
         <p data-i18n="momentum.screamerDesc"></p>
-        <small data-i18n="momentum.screamerMeta"></small>
+        <strong data-i18n="momentum.screamerTest"></strong>
       </article>
-      <article class="ms-enemy-card reveal">
+      <article class="ms-enemy-role reveal">
         <span class="enemy-role" data-i18n="momentum.webcasterRole"></span>
         <h3 data-i18n="momentum.webcasterTitle"></h3>
         <p data-i18n="momentum.webcasterDesc"></p>
-        <small data-i18n="momentum.webcasterMeta"></small>
+        <strong data-i18n="momentum.webcasterTest"></strong>
       </article>
-      <article class="ms-enemy-card reveal">
+      <article class="ms-enemy-role reveal">
         <span class="enemy-role" data-i18n="momentum.summonerRole"></span>
         <h3 data-i18n="momentum.summonerTitle"></h3>
         <p data-i18n="momentum.summonerDesc"></p>
-        <small data-i18n="momentum.summonerMeta"></small>
+        <strong data-i18n="momentum.summonerTest"></strong>
       </article>
     </div>
   </section>
@@ -266,16 +306,21 @@
       <p data-i18n="momentum.storyDesc"></p>
     </div>
 
-    <div class="ms-story-strip">
-      <article class="ms-story-card reveal">
-        <p class="page-label" data-i18n="momentum.settingLabel"></p>
+    <div class="ms-context-compact reveal">
+      <article>
+        <span class="page-label" data-i18n="momentum.settingLabel"></span>
         <h3 data-i18n="momentum.settingTitle"></h3>
         <p data-i18n="momentum.settingDesc"></p>
       </article>
-      <article class="ms-character-card reveal">
-        <p class="page-label">PROTAGONIST</p>
+      <article>
+        <span class="page-label" data-i18n="momentum.characterLabel"></span>
         <h3 data-i18n="momentum.characterTitle"></h3>
         <p data-i18n="momentum.characterDesc"></p>
+      </article>
+      <article>
+        <span class="page-label" data-i18n="momentum.objectiveLabel"></span>
+        <h3 data-i18n="momentum.objectiveTitle"></h3>
+        <p data-i18n="momentum.objectiveDesc"></p>
       </article>
     </div>
 
@@ -284,12 +329,12 @@
         <p class="page-label" data-i18n="momentum.referenceLabel"></p>
         <h3 data-i18n="momentum.referenceTitle"></h3>
       </div>
-      <div class="ms-reference-grid">
+      <div class="ms-reference-grid ms-reference-grid--focused">
         <article><h3 data-i18n="momentum.refSuperhot"></h3><p data-i18n="momentum.refSuperhotD"></p></article>
         <article><h3 data-i18n="momentum.refCeleste"></h3><p data-i18n="momentum.refCelesteD"></p></article>
         <article><h3 data-i18n="momentum.refGetting"></h3><p data-i18n="momentum.refGettingD"></p></article>
         <article><h3 data-i18n="momentum.refMeat"></h3><p data-i18n="momentum.refMeatD"></p></article>
-        <article><h3 data-i18n="momentum.refJune"></h3><p data-i18n="momentum.refJuneD"></p></article>
+        <article class="ms-reference-visual"><h3 data-i18n="momentum.refJune"></h3><p data-i18n="momentum.refJuneD"></p></article>
       </div>
     </div>
   </section>
@@ -314,7 +359,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=4"></script>
+<script src="translations-momentum.js?v=5"></script>
 <script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="script.js?v=5"></script>
 </body>
 </html>
