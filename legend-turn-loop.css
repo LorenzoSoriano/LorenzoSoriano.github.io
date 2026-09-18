@@ -1768,3 +1768,30 @@ body[data-page="legend"] .legend-progression-system--sheet{
     max-width:none!important;
   }
 }
+
+
+/* v11 — character sheet proportions */
+@media(min-width:761px){
+  body[data-page="legend"] .legend-stat-card{
+    width:278px!important;
+    height:350px!important;
+  }
+
+  body[data-page="legend"] .legend-stat-card__stat--accuracy{
+    min-width:90px!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+}
+
+@media(max-width:760px){
+  body[data-page="legend"] .legend-stat-card{
+    width:min(268px,86vw)!important;
+  }
+
+  body[data-page="legend"] .legend-stat-card__stat--accuracy{
+    min-width:86px!important;
+    padding-left:7px!important;
+    padding-right:7px!important;
+  }
+}
