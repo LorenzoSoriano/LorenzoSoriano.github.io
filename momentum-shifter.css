@@ -2395,3 +2395,77 @@ body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state ul{
     grid-template-columns:1fr;
   }
 }
+
+
+/* v17 — final hero artwork + narrative-free closing */
+body[data-page="momentum"] .momentum-hero{
+  grid-template-columns:minmax(0,.88fr) minmax(520px,1.12fr);
+  gap:54px;
+  align-items:center;
+}
+
+.ms-hero-art{
+  position:relative;
+  min-height:470px;
+  margin:0;
+  overflow:hidden;
+  border:1px solid rgba(121,108,240,.16);
+  border-radius:32px;
+  background:#111827;
+  box-shadow:0 26px 68px rgba(46,57,96,.15);
+}
+
+.ms-hero-art::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(11,17,31,.10),transparent 28%,transparent 72%,rgba(11,17,31,.08)),
+    linear-gradient(180deg,transparent 68%,rgba(11,17,31,.12));
+}
+
+.ms-hero-art img{
+  display:block;
+  width:100%;
+  height:100%;
+  min-height:470px;
+  object-fit:cover;
+  object-position:center center;
+}
+
+.ms-reference-section .ms-progress-heading{
+  margin-bottom:30px;
+}
+
+.ms-reference-section .ms-reference-grid{
+  max-width:1120px;
+}
+
+@media(max-width:1050px){
+  body[data-page="momentum"] .momentum-hero{
+    grid-template-columns:1fr;
+    gap:34px;
+  }
+
+  .ms-hero-art{
+    min-height:0;
+    aspect-ratio:16/9;
+  }
+
+  .ms-hero-art img{
+    min-height:0;
+    aspect-ratio:16/9;
+  }
+}
+
+@media(max-width:620px){
+  .ms-hero-art{
+    border-radius:24px;
+    aspect-ratio:16/10;
+  }
+
+  .ms-hero-art img{
+    aspect-ratio:16/10;
+  }
+}
