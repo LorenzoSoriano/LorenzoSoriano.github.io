@@ -332,7 +332,13 @@
     const homeY=encounter.platformY ?? doorPlatform.y;
     const minX=encounter.minX ?? doorPlatform.x+8;
     const maxX=encounter.maxX ?? doorPlatform.x+doorPlatform.w-8;
-    const spawnX=encounter.spawnX ?? state.door.x-48;
+
+    const points=encounter.spawnPoints?.length
+      ? encounter.spawnPoints
+      : [encounter.spawnX ?? state.door.x-48];
+
+    const spawnIndex=(encounter.spawned ?? state.enemyId)%points.length;
+    const spawnX=points[spawnIndex];
 
     const enemy={
       id:++state.enemyId,
@@ -929,7 +935,7 @@
         enemy.waveEnemy && enemy.encounterId===zone.id
       ).length;
 
-      if(zone.timer<=0 && alive<2){
+      if(zone.timer<=0 && alive<(zone.maxAlive||2)){
         const type=zone.wave[zone.spawned];
         spawnEnemy(type,true,zone);
         zone.spawned++;
@@ -949,7 +955,7 @@
       enemy.waveEnemy && enemy.encounterId==='final'
     ).length;
 
-    if(d.timer<=0 && aliveWave<3){
+    if(d.timer<=0 && aliveWave<(d.maxAlive||3)){
       const type=wave[d.spawned];
       spawnEnemy(type,true,d);
       d.spawned++;
