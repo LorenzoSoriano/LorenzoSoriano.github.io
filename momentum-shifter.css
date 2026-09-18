@@ -1206,3 +1206,103 @@ body[data-page="momentum"] .ms-infinity-track__dot--two{
     stroke-width:2.35;
   }
 }
+
+
+/* v9 — expose the infinity loop: smaller side cards + animated arrows */
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+  grid-template-columns:minmax(0,.78fr) minmax(210px,.44fr) minmax(0,.78fr);
+  gap:0;
+  min-height:420px;
+  padding:54px 0;
+  align-items:center;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+  width:100%;
+  max-width:390px;
+  min-height:196px;
+  padding:24px 26px;
+  align-self:center;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow{
+  justify-self:start;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+  justify-self:end;
+  grid-column:3;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track{
+  inset:-54px -11%;
+  width:122%;
+  height:calc(100% + 108px);
+  opacity:1;
+}
+
+body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track__line{
+  stroke-width:3.5;
+  opacity:.96;
+}
+
+body[data-page="momentum"] .ms-infinity-track__arrow{
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-width:2.6;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 4px 8px rgba(69,76,140,.16));
+}
+
+body[data-page="momentum"] .ms-infinity-track__arrow--one{
+  stroke:#796cf0;
+}
+
+body[data-page="momentum"] .ms-infinity-track__arrow--two{
+  stroke:#d0ad22;
+}
+
+body[data-page="momentum"] .ms-time-arrow{
+  display:none!important;
+}
+
+@media(max-width:1050px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    grid-template-columns:minmax(0,.88fr) minmax(145px,.34fr) minmax(0,.88fr);
+    min-height:390px;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state{
+    max-width:340px;
+  }
+}
+
+@media(max-width:760px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-system{
+    grid-template-columns:1fr;
+    gap:18px;
+    min-height:0;
+    padding:30px 0;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state,
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--slow,
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-time-state--flow{
+    grid-column:auto;
+    width:100%;
+    max-width:none;
+    justify-self:stretch;
+  }
+
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track{
+    inset:-30px -20%;
+    width:140%;
+    height:calc(100% + 60px);
+    opacity:.56;
+  }
+
+  body[data-page="momentum"] .ms-infinity-track__arrow{
+    display:none;
+  }
+}
