@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css?v=3">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=33">
+  <link rel="stylesheet" href="momentum-shifter.css?v=34">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -665,33 +665,33 @@
         </div>
       </div>
 
-      <div class="ms-game-mobile-actions">
-        <button type="button" class="is-jump" data-game-jump aria-label="Jump; hold for magnetic jump">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 20V6"></path>
-            <path d="M7 11l5-5 5 5"></path>
-            <path d="M5 21h14"></path>
-          </svg>
-          <span class="ms-game-charge-ring" aria-hidden="true"></span>
-        </button>
-
-        <button type="button" class="is-fire" data-game-fire aria-label="Attack">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 14h9l4-4h3v7h-3l-4-2H8l-2 4H4z"></path>
-            <circle cx="19" cy="8" r="2"></circle>
-          </svg>
-        </button>
-      </div>
+      <button type="button" class="ms-game-action-button is-fire" data-game-fire aria-label="Attack">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 14h9l4-4h3v7h-3l-4-2H8l-2 4H4z"></path>
+          <circle cx="19" cy="8" r="2"></circle>
+        </svg>
+      </button>
     </div>
 
-    <div class="ms-game-stick-wrap ms-game-stick-wrap--aim">
-      <div class="ms-game-stick ms-game-stick--aim" data-game-aim-stick aria-label="Aim stick">
-        <svg class="ms-game-stick__icon" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="7"></circle>
-          <circle cx="12" cy="12" r="2"></circle>
-          <path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path>
+    <div class="ms-game-right-controls">
+      <button type="button" class="ms-game-action-button is-jump" data-game-jump aria-label="Jump; hold for magnetic jump">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 20V6"></path>
+          <path d="M7 11l5-5 5 5"></path>
+          <path d="M5 21h14"></path>
         </svg>
-        <i data-game-aim-knob></i>
+        <span class="ms-game-charge-ring" aria-hidden="true"></span>
+      </button>
+
+      <div class="ms-game-stick-wrap ms-game-stick-wrap--aim">
+        <div class="ms-game-stick ms-game-stick--aim" data-game-aim-stick aria-label="Aim stick">
+          <svg class="ms-game-stick__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="7"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path>
+          </svg>
+          <i data-game-aim-knob></i>
+        </div>
       </div>
     </div>
   </div>
