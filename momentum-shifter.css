@@ -4635,3 +4635,85 @@ body[data-page="momentum"] .momentum-hero{
     margin-top:5px;
   }
 }
+
+
+/* v25 — section order mirrors the five-node system map */
+.ms-system-section{
+  --ms-system-accent:var(--ms-purple);
+  --ms-system-soft:rgba(121,108,240,.07);
+}
+
+.ms-system-section--01,
+.ms-system-section--02{
+  --ms-system-accent:var(--ms-purple);
+  --ms-system-soft:rgba(121,108,240,.07);
+}
+
+.ms-system-section--03{
+  --ms-system-accent:var(--ms-blue);
+  --ms-system-soft:rgba(94,160,240,.08);
+}
+
+.ms-system-section--04,
+.ms-system-section--05{
+  --ms-system-accent:#b09520;
+  --ms-system-soft:rgba(244,215,92,.12);
+}
+
+.ms-system-section::before{
+  background:var(--ms-system-accent)!important;
+}
+
+.ms-system-section .ms-step-kicker{
+  border-color:color-mix(in srgb,var(--ms-system-accent) 24%,transparent);
+  background:var(--ms-system-soft)!important;
+  color:var(--ms-system-accent)!important;
+}
+
+.ms-enemy-subsection{
+  padding-top:62px!important;
+  border-top:0;
+}
+
+.ms-enemy-subsection::before{
+  display:none;
+}
+
+/* Event zones no longer need a decorative scene: keep the tab concise and informative. */
+.ms-event-zone-card{
+  display:block;
+  width:100%;
+  min-width:0;
+}
+
+.ms-event-zone-copy{
+  width:100%;
+  min-width:0;
+}
+
+.ms-event-zone-copy>.page-label{
+  margin-bottom:12px;
+}
+
+.ms-event-zone-copy .ms-event-types{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+
+.ms-event-zone-copy .ms-event-types article{
+  min-height:108px;
+}
+
+.ms-event-zone-copy .ms-event-reward{
+  margin-top:12px;
+}
+
+@container (max-width:720px){
+  .ms-event-zone-copy .ms-event-types{
+    grid-template-columns:1fr;
+  }
+
+  .ms-event-zone-copy .ms-event-types article{
+    min-height:0;
+  }
+}
