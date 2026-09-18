@@ -996,3 +996,23 @@ body[data-page="momentum"] .ms-overview-section + .ms-path-section{
     padding-top:20px;
   }
 }
+
+
+/* v5 — editorial blocks use the shared section-shell alignment */
+body[data-page="momentum"] .ms-design-thesis--stacked{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
+body[data-page="momentum"] .ms-design-thesis--stacked > div:first-child,
+body[data-page="momentum"] .ms-design-thesis--stacked h2,
+body[data-page="momentum"] .ms-design-thesis--stacked .ms-design-thesis__copy,
+body[data-page="momentum"] .ms-design-thesis--stacked .ms-design-thesis__copy p{
+  max-width:none!important;
+}
+
+body[data-page="momentum"] .ms-design-thesis--stacked .ms-design-thesis__copy{
+  width:100%;
+}
