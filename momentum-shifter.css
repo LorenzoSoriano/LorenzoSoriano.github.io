@@ -1378,3 +1378,44 @@ body[data-page="momentum"] .ms-infinity-track__arrow{
     transform:none;
   }
 }
+
+
+/* v11 — seamless infinity motion with stronger, phase-locked arrows */
+body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track__line{
+  stroke-width:4;
+  opacity:1;
+  filter:drop-shadow(0 8px 18px rgba(83,91,170,.14));
+}
+
+body[data-page="momentum"] .ms-infinity-track__arrow{
+  stroke-width:3.8;
+  opacity:1;
+  filter:
+    drop-shadow(0 0 2px rgba(255,255,255,.95))
+    drop-shadow(0 5px 11px rgba(69,76,140,.26));
+}
+
+body[data-page="momentum"] .ms-infinity-track__arrow--one{
+  stroke:#6e61f0;
+}
+
+body[data-page="momentum"] .ms-infinity-track__arrow--two{
+  stroke:#caa515;
+}
+
+@media(min-width:1051px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track{
+    inset:-72px -15%;
+    width:130%;
+    height:calc(100% + 144px);
+  }
+}
+
+@media(min-width:761px) and (max-width:1050px){
+  body[data-page="momentum"] .ms-core-mechanic-section .ms-infinity-track__line{
+    stroke-width:3.5;
+  }
+  body[data-page="momentum"] .ms-infinity-track__arrow{
+    stroke-width:3.4;
+  }
+}
