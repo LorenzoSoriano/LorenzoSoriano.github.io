@@ -730,17 +730,19 @@
 
     if((p.surface==='left' || p.surface==='right') && p.attachedSolid){
       const solid=p.attachedSolid;
-      const verticalAxis=(input.down?1:0)-(input.up?1:0);
-      const horizontalAxis=(input.right?1:0)-(input.left?1:0);
-      const tangent=Math.abs(verticalAxis)>0 ? verticalAxis : -horizontalAxis;
+      const keyboardY=(input.down?1:0)-(input.up?1:0);
+      const keyboardX=(input.right?1:0)-(input.left?1:0);
+      const analogY=Math.abs(input.moveY)>.06 ? input.moveY : keyboardY;
+      const analogX=Math.abs(input.moveX)>.06 ? input.moveX : keyboardX;
+      const tangent=Math.abs(analogY)>.08 ? analogY : -analogX;
 
       p.vx=0;
       p.vy=0;
       p.grounded=true;
       p.x=p.surface==='left' ? solid.x-p.w : solid.x+solid.w;
 
-      if(tangent!==0){
-        p.y+=tangent*190*dt;
+      if(Math.abs(tangent)>.06){
+        p.y+=tangent*205*dt;
         state.actionPulse=.10;
       }
 
@@ -749,11 +751,14 @@
       return;
     }
 
-    const axis=(input.right?1:0)-(input.left?1:0);
-    p.vx=axis*225;
+    const keyboardAxis=(input.right?1:0)-(input.left?1:0);
+    const axis=Math.abs(input.moveX)>.06 ? input.moveX : keyboardAxis;
+    const targetVx=axis*235;
+    const moveAlpha=1-Math.exp(-dt*16);
+    p.vx=lerp(p.vx,targetVx,moveAlpha);
 
-    if(axis!==0){
-      p.facing=axis;
+    if(Math.abs(axis)>.06){
+      p.facing=axis>=0?1:-1;
       state.actionPulse=.10;
     }
 
@@ -1631,7 +1636,7 @@
     state.flash=Math.max(0,state.flash-dt);
     state.messageTimer=Math.max(0,state.messageTimer-dt);
 
-    const moving=input.left||input.right||input.up||input.down||!state.player.grounded||state.actionPulse>0||!!state.gravityJump;
+    const moving=input.left||input.right||input.up||input.down||Math.abs(input.moveX)>.06||Math.abs(input.moveY)>.06||!state.player.grounded||state.actionPulse>0||!!state.gravityJump;
     const scale=state.won?0:(moving?1:.22);
 
     if(!state.won){
@@ -1687,6 +1692,8 @@
     input.right=false;
     input.up=false;
     input.down=false;
+    input.moveX=0;
+    input.moveY=0;
     if(pausePanel) pausePanel.hidden=!state.paused;
     stage.classList.toggle('is-paused',state.paused);
   };
@@ -1701,6 +1708,8 @@
     input.right=false;
     input.up=false;
     input.down=false;
+    input.moveX=0;
+    input.moveY=0;
     resetGame();
 
     await enterMobileLandscape();
@@ -1720,6 +1729,8 @@
     input.right=false;
     input.up=false;
     input.down=false;
+    input.moveX=0;
+    input.moveY=0;
     stage.hidden=true;
     pausePanel && (pausePanel.hidden=true);
     document.body.classList.remove('ms-game-active');
@@ -1832,6 +1843,7 @@
   let jumpHoldTimer=0;
   let jumpHeldAt=0;
   let jumpHoldPointer=null;
+  let suppressAimReleaseUntil=0;
 
   const clearJumpHold = () => {
     window.clearTimeout(jumpHoldTimer);
@@ -1845,6 +1857,7 @@
 
     jumpHoldPointer=event.pointerId;
     jumpHeldAt=performance.now();
+    suppressAimReleaseUntil=Infinity;
     jumpButton.setPointerCapture?.(event.pointerId);
     jumpButton.classList.add('is-charging');
 
@@ -1859,8 +1872,11 @@
 
     const held=performance.now()-jumpHeldAt;
     jumpHoldPointer=null;
+    suppressAimReleaseUntil=performance.now()+180;
     clearJumpHold();
     jumpButton?.classList.remove('is-ready');
+
+    suppressAimReleaseUntil=performance.now()+220;
 
     if(held>=320) gravityJump();
     else jump();
@@ -1878,12 +1894,24 @@
     if(state.paused) return;
     event.preventDefault();
     fireToward(aim.x,aim.y);
+    navigator.vibrate?.(8);
   });
+
+  const applyStickDeadzone = (x,y,dead=.14) => {
+    const mag=Math.hypot(x,y);
+    if(mag<=dead) return {x:0,y:0,mag:0};
+
+    const scaled=clamp((mag-dead)/(1-dead),0,1);
+    const nx=x/(mag||1);
+    const ny=y/(mag||1);
+    return {x:nx*scaled,y:ny*scaled,mag:scaled};
+  };
 
   const setupStick = (element,knob,onMove,onEnd) => {
     if(!element || !knob) return;
 
     let pointerId=null;
+    let last={x:0,y:0,mag:0};
 
     const update = event => {
       const rect=element.getBoundingClientRect();
@@ -1891,7 +1919,7 @@
       const cy=rect.top+rect.height*.5;
       let dx=event.clientX-cx;
       let dy=event.clientY-cy;
-      const max=rect.width*.34;
+      const max=rect.width*.39;
       const len=Math.hypot(dx,dy);
 
       if(len>max){
@@ -1900,10 +1928,15 @@
       }
 
       knob.style.transform=`translate(${dx}px,${dy}px)`;
-      onMove(dx/max,dy/max);
+
+      const rawX=dx/max;
+      const rawY=dy/max;
+      last=applyStickDeadzone(rawX,rawY);
+      onMove(last.x,last.y,last.mag);
     };
 
     element.addEventListener('pointerdown',event=>{
+      if(state.paused) return;
       event.preventDefault();
       pointerId=event.pointerId;
       element.setPointerCapture?.(pointerId);
@@ -1920,7 +1953,8 @@
       if(pointerId!==event.pointerId) return;
       pointerId=null;
       knob.style.transform='translate(0px,0px)';
-      onEnd();
+      onEnd(last.x,last.y,last.mag);
+      last={x:0,y:0,mag:0};
     };
 
     element.addEventListener('pointerup',end);
@@ -1931,37 +1965,48 @@
     moveStick,
     moveKnob,
     (x,y)=>{
-      input.left=x<-.22;
-      input.right=x>.22;
-      input.up=y<-.22;
-      input.down=y>.22;
+      input.moveX=x;
+      input.moveY=y;
     },
     ()=>{
-      input.left=false;
-      input.right=false;
-      input.up=false;
-      input.down=false;
+      input.moveX=0;
+      input.moveY=0;
     }
   );
 
   setupStick(
     aimStick,
     aimKnob,
-    (x,y)=>{
-      const len=Math.hypot(x,y);
-      if(len<.08) return;
+    (x,y,mag)=>{
+      if(mag<.05) return;
 
+      const len=Math.hypot(x,y)||1;
       aim.dx=x/len;
       aim.dy=y/len;
 
       const pcx=state.player.x+state.player.w*.5;
       const pcy=state.player.y+state.player.h*.5;
-      aim.x=pcx+aim.dx*430;
-      aim.y=pcy+aim.dy*430;
+      const reach=360+mag*110;
+      aim.x=pcx+aim.dx*reach;
+      aim.y=pcy+aim.dy*reach;
       aim.active=true;
       aim.source='stick';
+      aimStick?.classList.toggle('is-armed',mag>.28);
     },
-    ()=>{}
+    (_x,_y,mag)=>{
+      aimStick?.classList.remove('is-armed');
+
+      // One-thumb shooting: drag the aim stick, then release to fire.
+      if(
+        mag>.28 &&
+        jumpHoldPointer===null &&
+        performance.now()>=suppressAimReleaseUntil &&
+        !state.paused
+      ){
+        fireToward(aim.x,aim.y);
+        navigator.vibrate?.(8);
+      }
+    }
   );
 
   let pressed=0;
