@@ -83,6 +83,37 @@
     'drone'
   ];
 
+  const combatZones = [
+    {
+      id:'A',
+      label:'ENEMY ZONE A',
+      triggerY:1480,
+      platformY:1510,
+      minX:470,
+      maxX:660,
+      spawnX:620,
+      zoneX:450,
+      zoneY:1420,
+      zoneW:230,
+      zoneH:105,
+      wave:['drone','webcaster','rumbler']
+    },
+    {
+      id:'B',
+      label:'ENEMY ZONE B',
+      triggerY:940,
+      platformY:900,
+      minX:355,
+      maxX:575,
+      spawnX:535,
+      zoneX:335,
+      zoneY:810,
+      zoneW:260,
+      zoneH:110,
+      wave:['drone','drone','webcaster','summoner']
+    }
+  ];
+
   const state = {
     active:false,
     paused:false,
@@ -103,6 +134,15 @@
     messageTimer:0,
     gravityTarget:null,
     gravityJump:null,
+    combatZones:combatZones.map(zone=>({
+      ...zone,
+      total:zone.wave.length,
+      remaining:zone.wave.length,
+      spawned:0,
+      timer:.6,
+      triggered:false,
+      cleared:false
+    })),
     camera:{ y:Math.max(0,floorY-H+70), targetY:Math.max(0,floorY-H+70) },
     player:{
       x:74, y:floorY-38, w:26, h:38,
@@ -113,7 +153,12 @@
       attachedFace:null
     },
     door:{
+      id:'final',
       x:1106, y:145, w:72, h:115,
+      platformY:doorPlatform.y,
+      minX:doorPlatform.x+8,
+      maxX:doorPlatform.x+doorPlatform.w-8,
+      spawnX:1100,
       total:wave.length,
       remaining:wave.length,
       spawned:0,
@@ -180,6 +225,21 @@
     });
   };
 
+  const resetCombatZones = () => {
+    state.combatZones=combatZones.map(zone=>({
+      ...zone,
+      total:zone.wave.length,
+      remaining:zone.wave.length,
+      spawned:0,
+      timer:.6,
+      triggered:false,
+      cleared:false
+    }));
+  };
+
+  const allEnemyZonesCleared = () =>
+    state.combatZones.every(zone=>zone.cleared) && !state.door.active;
+
   const resetGame = () => {
     state.ammo=6;
     state.cores=3;
@@ -200,6 +260,7 @@
     state.camera.y=Math.max(0,floorY-H+70);
     state.camera.targetY=state.camera.y;
     resetDoor();
+    resetCombatZones();
     resetPlayer();
     updateHud(.22);
   };
