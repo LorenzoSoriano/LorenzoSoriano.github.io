@@ -446,3 +446,529 @@ body[data-page="legend"] .legend-ability-band{
   }
   body[data-page="legend"] .legend-ability-copy{grid-column:auto}
 }
+/* v4 — annotated progression card */
+body[data-page="legend"] .legend-turn-loop__arrows path{
+  fill:none!important;
+  stroke:#796cf0!important;
+  stroke-width:3!important;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  opacity:.82!important;
+  vector-effect:non-scaling-stroke;
+}
+
+/* Progression: editorial column on the left, readable stat-card system on the right. */
+body[data-page="legend"] .legend-progression-system{
+  display:grid;
+  grid-template-columns:minmax(280px,.78fr) minmax(0,1.42fr);
+  gap:58px;
+  align-items:start;
+  max-width:1180px;
+  margin:0 auto;
+  padding-top:8px;
+}
+body[data-page="legend"] .legend-progression-copy{
+  position:relative;
+  display:grid;
+  gap:34px;
+  padding-top:18px;
+}
+body[data-page="legend"] .legend-progression-copy::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:82px;
+  height:3px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--purple),var(--blue),var(--gold));
+}
+body[data-page="legend"] .legend-progression-block{
+  position:relative;
+  padding:0 0 30px 44px;
+  border-bottom:1px solid rgba(121,108,240,.11);
+}
+body[data-page="legend"] .legend-progression-index{
+  position:absolute;
+  left:0;
+  top:1px;
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(121,108,240,.09);
+  color:var(--purple);
+  font:700 8px/1 "IBM Plex Mono",monospace;
+}
+body[data-page="legend"] .legend-progression-block--talents .legend-progression-index{
+  color:#487fbd;
+  background:rgba(94,160,240,.11);
+}
+body[data-page="legend"] .legend-progression-block h3{
+  margin:0 0 10px;
+  font-size:clamp(20px,1.65vw,25px);
+  line-height:1.18;
+  letter-spacing:-.035em;
+}
+body[data-page="legend"] .legend-progression-block p{
+  margin:0;
+  color:var(--muted);
+  font-size:13.5px;
+  line-height:1.72;
+}
+
+/* Compact specialisations remain part of the left progression story. */
+body[data-page="legend"] .legend-specialisation--compact{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:0;
+  margin:0!important;
+  max-width:none!important;
+}
+body[data-page="legend"] .legend-specialisation--compact .legend-specialisation-label{
+  grid-column:auto;
+  margin:0 0 8px;
+  padding:0 0 12px;
+  border-bottom:1px solid rgba(121,108,240,.11);
+}
+body[data-page="legend"] .legend-specialisation--compact article{
+  display:grid;
+  grid-template-columns:92px minmax(0,1fr);
+  gap:14px;
+  align-items:start;
+  padding:14px 0;
+  border-bottom:1px solid rgba(121,108,240,.08);
+}
+body[data-page="legend"] .legend-specialisation--compact article:last-child{border-bottom:0}
+body[data-page="legend"] .legend-specialisation--compact article::before{
+  width:28px;
+  height:2px;
+  top:0;
+}
+body[data-page="legend"] .legend-specialisation--compact h4{
+  margin:0;
+  font-size:14px;
+}
+body[data-page="legend"] .legend-specialisation--compact p{
+  margin:0;
+  font-size:12px;
+  line-height:1.55;
+}
+
+/* Stat-card panel */
+body[data-page="legend"] .legend-stat-system{
+  min-width:0;
+}
+body[data-page="legend"] .legend-stat-system__heading{
+  display:grid;
+  grid-template-columns:minmax(0,.72fr) minmax(240px,1fr);
+  gap:34px;
+  align-items:end;
+  margin:0 0 18px;
+}
+body[data-page="legend"] .legend-stat-system__eyebrow{
+  display:block;
+  margin:0 0 7px;
+  color:var(--purple);
+  font:700 9px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.1em;
+}
+body[data-page="legend"] .legend-stat-system__heading h3{
+  margin:0;
+  font-size:clamp(22px,2vw,29px);
+  letter-spacing:-.04em;
+}
+body[data-page="legend"] .legend-stat-system__heading p{
+  margin:0;
+  color:var(--muted);
+  font-size:12.5px;
+  line-height:1.62;
+}
+
+body[data-page="legend"] .legend-stat-stage{
+  position:relative;
+  min-height:550px;
+  overflow:hidden;
+  border:1px solid rgba(121,108,240,.12);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 50% 44%,rgba(121,108,240,.085),transparent 25%),
+    linear-gradient(135deg,rgba(255,255,255,.95),rgba(248,249,255,.92) 57%,rgba(255,248,226,.76));
+  box-shadow:0 18px 48px rgba(46,57,96,.07);
+}
+
+/* The card contains only visual values; explanations live outside it. */
+body[data-page="legend"] .legend-stat-card{
+  position:absolute;
+  left:50%;
+  top:49%;
+  width:250px;
+  height:350px;
+  transform:translate(-50%,-50%);
+  overflow:hidden;
+  border:1px solid rgba(121,108,240,.24);
+  border-radius:30px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.92),rgba(247,246,255,.98));
+  box-shadow:
+    0 24px 54px rgba(42,48,92,.16),
+    0 0 0 8px rgba(121,108,240,.035);
+}
+body[data-page="legend"] .legend-stat-card::before{
+  content:"";
+  position:absolute;
+  inset:7px;
+  z-index:3;
+  pointer-events:none;
+  border:1px solid rgba(255,255,255,.68);
+  border-radius:23px;
+}
+body[data-page="legend"] .legend-stat-card__portrait{
+  position:absolute;
+  inset:0 0 68px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 72% 18%,rgba(244,215,92,.55),transparent 16%),
+    linear-gradient(155deg,#dce6ff 0%,#f8efc8 55%,#e1c38e 100%);
+}
+body[data-page="legend"] .legend-stat-card__portrait::after{
+  content:"";
+  position:absolute;
+  left:-8%;
+  right:-8%;
+  bottom:-30px;
+  height:120px;
+  background:#c28f58;
+  clip-path:polygon(0 50%,18% 35%,35% 50%,52% 22%,72% 48%,100% 30%,100% 100%,0 100%);
+  opacity:.82;
+}
+body[data-page="legend"] .legend-stat-card__sun{
+  position:absolute;
+  right:28px;
+  top:31px;
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  background:#f4d75c;
+  box-shadow:0 0 0 10px rgba(244,215,92,.13);
+}
+body[data-page="legend"] .legend-stat-card__mesa{
+  position:absolute;
+  z-index:1;
+  bottom:44px;
+  height:54px;
+  background:#9f6948;
+  clip-path:polygon(16% 0,84% 0,100% 100%,0 100%);
+  opacity:.86;
+}
+body[data-page="legend"] .legend-stat-card__mesa--one{left:18px;width:94px}
+body[data-page="legend"] .legend-stat-card__mesa--two{right:8px;width:112px;height:43px;opacity:.64}
+body[data-page="legend"] .legend-stat-card__figure{
+  position:absolute;
+  z-index:2;
+  left:50%;
+  bottom:26px;
+  width:46px;
+  height:105px;
+  transform:translateX(-50%);
+  border-radius:48% 48% 18% 18%;
+  background:#1e2440;
+  clip-path:polygon(30% 0,70% 0,78% 14%,91% 20%,80% 36%,74% 100%,26% 100%,20% 36%,9% 20%,22% 14%);
+  opacity:.90;
+}
+body[data-page="legend"] .legend-stat-card__figure::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-17px;
+  width:34px;
+  height:22px;
+  transform:translateX(-50%);
+  border-radius:50% 50% 42% 42%;
+  background:#1e2440;
+}
+body[data-page="legend"] .legend-stat-card__ability{
+  position:absolute;
+  z-index:5;
+  right:20px;
+  top:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+}
+body[data-page="legend"] .legend-stat-card__ability-icon{
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.72);
+  background:linear-gradient(145deg,#796cf0,#5ea0f0);
+  color:#fff;
+  font-size:22px;
+  box-shadow:0 9px 22px rgba(73,76,151,.23);
+}
+body[data-page="legend"] .legend-stat-card__cooldown{
+  display:flex;
+  gap:4px;
+}
+body[data-page="legend"] .legend-stat-card__cooldown i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#1e2440;
+  box-shadow:0 0 0 2px rgba(255,255,255,.55);
+}
+body[data-page="legend"] .legend-stat-card__stats{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:78px;
+  z-index:4;
+  background:rgba(250,249,247,.96);
+  border-top:1px solid rgba(121,108,240,.12);
+}
+body[data-page="legend"] .legend-stat-card__stat{
+  position:absolute;
+  bottom:13px;
+  min-width:50px;
+  height:50px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#1e2440;
+  font-size:14px;
+  box-shadow:0 8px 18px rgba(30,36,64,.08);
+}
+body[data-page="legend"] .legend-stat-card__stat b{
+  font-size:14px;
+  letter-spacing:-.04em;
+}
+body[data-page="legend"] .legend-stat-card__stat--damage{
+  left:14px;
+  background:rgba(244,215,92,.64);
+}
+body[data-page="legend"] .legend-stat-card__stat--damage::before{
+  content:"⚔";
+  position:absolute;
+  top:-7px;
+  left:-4px;
+  width:20px;
+  height:20px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#fff7cf;
+  font-size:10px;
+}
+body[data-page="legend"] .legend-stat-card__stat--accuracy{
+  left:50%;
+  min-width:74px;
+  border-radius:999px;
+  transform:translateX(-50%);
+  background:rgba(94,160,240,.20);
+}
+body[data-page="legend"] .legend-stat-card__stat--accuracy::before{
+  content:"◎";
+  margin-right:2px;
+  color:#4c8edb;
+  font-size:13px;
+}
+body[data-page="legend"] .legend-stat-card__stat--health{
+  right:14px;
+  background:rgba(121,108,240,.17);
+}
+body[data-page="legend"] .legend-stat-card__stat--health::before{
+  content:"♥";
+  position:absolute;
+  top:-7px;
+  right:-3px;
+  width:20px;
+  height:20px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#eeeaff;
+  color:#796cf0;
+  font-size:10px;
+}
+
+/* External annotations */
+body[data-page="legend"] .legend-stat-callout{
+  position:absolute;
+  z-index:6;
+  width:170px;
+}
+body[data-page="legend"] .legend-stat-callout strong{
+  display:block;
+  margin:0 0 5px;
+  font-size:13px;
+  line-height:1.2;
+}
+body[data-page="legend"] .legend-stat-callout p{
+  margin:0;
+  color:var(--muted);
+  font-size:10.5px;
+  line-height:1.48;
+}
+body[data-page="legend"] .legend-stat-callout::after{
+  content:"";
+  position:absolute;
+  height:1px;
+  background:linear-gradient(90deg,rgba(121,108,240,.12),rgba(121,108,240,.52));
+  transform-origin:left center;
+}
+body[data-page="legend"] .legend-stat-callout::before{
+  content:"";
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--purple);
+  box-shadow:0 0 0 4px rgba(121,108,240,.07);
+}
+body[data-page="legend"] .legend-stat-callout--cooldown{left:22px;top:52px}
+body[data-page="legend"] .legend-stat-callout--cooldown::after{left:154px;top:48px;width:86px;transform:rotate(13deg)}
+body[data-page="legend"] .legend-stat-callout--cooldown::before{left:236px;top:65px}
+
+body[data-page="legend"] .legend-stat-callout--ability{right:20px;top:46px}
+body[data-page="legend"] .legend-stat-callout--ability::after{right:158px;top:54px;width:74px;transform:rotate(166deg)}
+body[data-page="legend"] .legend-stat-callout--ability::before{right:226px;top:66px}
+
+body[data-page="legend"] .legend-stat-callout--damage{left:22px;bottom:56px}
+body[data-page="legend"] .legend-stat-callout--damage::after{left:152px;top:8px;width:82px;transform:rotate(-9deg)}
+body[data-page="legend"] .legend-stat-callout--damage::before{left:230px;top:-5px}
+
+body[data-page="legend"] .legend-stat-callout--accuracy{
+  left:50%;
+  bottom:14px;
+  width:190px;
+  text-align:center;
+  transform:translateX(-50%);
+}
+body[data-page="legend"] .legend-stat-callout--accuracy::after{
+  left:50%;
+  bottom:100%;
+  width:44px;
+  transform:rotate(-90deg);
+}
+body[data-page="legend"] .legend-stat-callout--accuracy::before{
+  left:calc(50% - 3px);
+  bottom:calc(100% + 40px);
+}
+
+body[data-page="legend"] .legend-stat-callout--health{right:20px;bottom:56px}
+body[data-page="legend"] .legend-stat-callout--health::after{right:154px;top:8px;width:82px;transform:rotate(189deg)}
+body[data-page="legend"] .legend-stat-callout--health::before{right:232px;top:-5px}
+
+/* Ability examples remain a separate consequence layer. */
+body[data-page="legend"] .legend-ability-band{
+  max-width:1180px;
+  margin:46px auto 0;
+}
+
+@media(max-width:1120px){
+  body[data-page="legend"] .legend-progression-system{
+    grid-template-columns:1fr;
+    gap:44px;
+    max-width:900px;
+  }
+  body[data-page="legend"] .legend-progression-copy{
+    grid-template-columns:1fr 1fr;
+    gap:28px 36px;
+  }
+  body[data-page="legend"] .legend-progression-copy::before{grid-column:1/-1}
+  body[data-page="legend"] .legend-specialisation--compact{
+    grid-column:1/-1;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:24px;
+  }
+  body[data-page="legend"] .legend-specialisation--compact .legend-specialisation-label{
+    grid-column:1/-1;
+  }
+  body[data-page="legend"] .legend-specialisation--compact article{
+    grid-template-columns:1fr;
+    gap:7px;
+  }
+  body[data-page="legend"] .legend-stat-stage{
+    min-height:540px;
+  }
+}
+
+@media(max-width:760px){
+  body[data-page="legend"] .legend-progression-system{gap:34px}
+  body[data-page="legend"] .legend-progression-copy{grid-template-columns:1fr}
+  body[data-page="legend"] .legend-specialisation--compact{
+    grid-column:auto;
+    grid-template-columns:1fr;
+    gap:0;
+  }
+  body[data-page="legend"] .legend-specialisation--compact .legend-specialisation-label{grid-column:auto}
+  body[data-page="legend"] .legend-stat-system__heading{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  body[data-page="legend"] .legend-stat-stage{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    min-height:0;
+    padding:24px 18px;
+    overflow:visible;
+  }
+  body[data-page="legend"] .legend-stat-card{
+    position:relative;
+    left:auto;
+    top:auto;
+    order:1;
+    width:min(250px,82vw);
+    height:350px;
+    transform:none;
+    flex:0 0 auto;
+  }
+  body[data-page="legend"] .legend-stat-callout{
+    position:relative;
+    left:auto!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:auto!important;
+    order:2;
+    width:100%;
+    max-width:520px;
+    padding:12px 0 0 38px;
+    text-align:left!important;
+    transform:none!important;
+    border-top:1px solid rgba(121,108,240,.09);
+  }
+  body[data-page="legend"] .legend-stat-callout::after{display:none}
+  body[data-page="legend"] .legend-stat-callout::before{
+    left:12px!important;
+    right:auto!important;
+    top:16px!important;
+    bottom:auto!important;
+  }
+  body[data-page="legend"] .legend-stat-callout--cooldown{order:3}
+  body[data-page="legend"] .legend-stat-callout--ability{order:4}
+  body[data-page="legend"] .legend-stat-callout--damage{order:5}
+  body[data-page="legend"] .legend-stat-callout--accuracy{order:6}
+  body[data-page="legend"] .legend-stat-callout--health{order:7}
+}
+
+@media(max-width:520px){
+  body[data-page="legend"] .legend-progression-block{
+    padding-left:38px;
+  }
+  body[data-page="legend"] .legend-stat-stage{
+    border-radius:24px;
+    padding:20px 14px;
+  }
+  body[data-page="legend"] .legend-stat-card{
+    width:min(236px,78vw);
+    height:330px;
+  }
+  body[data-page="legend"] .legend-stat-card__portrait{inset:0 0 66px}
+}
