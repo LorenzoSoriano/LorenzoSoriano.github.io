@@ -27,19 +27,27 @@
   const H = canvas.height;
   const floorY = 650;
 
-  const input = { left:false, right:false };
+  const input = { left:false, right:false, up:false, down:false };
   const aim = { x:850, y:360, active:false, dx:1, dy:0 };
 
-  const doorPlatform = { x:980, y:305, w:270, h:18, kind:'platform', gravity:true };
+  const doorPlatform = { x:900, y:260, w:350, h:18, kind:'platform', gravity:true, faces:['top'] };
   const staticSolids = [
-    { x:0, y:floorY, w:W, h:H-floorY, kind:'floor', gravity:true },
-    { x:145, y:550, w:220, h:18, kind:'platform', gravity:true },
-    { x:430, y:475, w:175, h:18, kind:'platform', gravity:true },
-    { x:690, y:565, w:160, h:18, kind:'platform', gravity:true },
-    { x:790, y:405, w:185, h:18, kind:'platform', gravity:true },
-    doorPlatform,
-    { x:610, y:330, w:22, h:143, kind:'wall', gravity:false }
+    { x:0, y:floorY, w:W, h:H-floorY, kind:'floor', gravity:true, faces:['top'] },
+    { x:135, y:560, w:215, h:18, kind:'platform', gravity:true, faces:['top'] },
+    { x:385, y:405, w:24, h:155, kind:'wall', gravity:true, faces:['left','right'] },
+    { x:470, y:475, w:155, h:18, kind:'platform', gravity:true, faces:['top'] },
+    { x:655, y:305, w:24, h:188, kind:'wall', gravity:true, faces:['left','right'] },
+    { x:735, y:405, w:145, h:18, kind:'platform', gravity:true, faces:['top'] },
+    { x:850, y:260, w:24, h:145, kind:'wall', gravity:true, faces:['left','right'] },
+    doorPlatform
   ];
+
+  const goal = {
+    x:1202,
+    y:doorPlatform.y-62,
+    w:34,
+    h:62
+  };
 
   const wave = [
     'rumbler',
@@ -75,10 +83,13 @@
     player:{
       x:74, y:floorY-38, w:26, h:38,
       vx:0, vy:0, grounded:true,
-      facing:1, invuln:0
+      facing:1, invuln:0,
+      surface:'floor',
+      attachedSolid:null,
+      attachedFace:null
     },
     door:{
-      x:1145, y:190, w:78, h:115,
+      x:1106, y:145, w:72, h:115,
       total:wave.length,
       remaining:wave.length,
       spawned:0,
@@ -118,7 +129,8 @@
   const resetPlayer = () => {
     Object.assign(state.player,{
       x:74, y:floorY-38, vx:0, vy:0,
-      grounded:true, facing:1, invuln:1.0
+      grounded:true, facing:1, invuln:1.0,
+      surface:'floor', attachedSolid:null, attachedFace:null
     });
     state.gravityJump=null;
   };
