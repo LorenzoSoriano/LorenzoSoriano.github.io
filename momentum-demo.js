@@ -380,11 +380,19 @@
   const updateHud = scale => {
     ammoEl.textContent=String(state.ammo);
     coresEl.textContent=String(state.cores);
-    doorEl.textContent=state.door.active ? String(state.door.remaining).padStart(2,'0') : 'OPEN';
+
+    const activeZone=state.combatZones.find(zone=>zone.triggered && !zone.cleared);
+    if(activeZone){
+      doorEl.textContent='Z'+activeZone.id+' '+String(activeZone.remaining).padStart(2,'0');
+      doorEl.style.color='#ff9366';
+    }else{
+      doorEl.textContent=state.door.active ? String(state.door.remaining).padStart(2,'0') : 'OPEN';
+      doorEl.style.color=state.door.active?'#ff9366':'#72d5e9';
+    }
+
     scoreEl.textContent=String(state.score);
     timeEl.textContent=scale<.6?'SLOW':'NORMAL';
     timeEl.style.color=scale<.6?'#72d5e9':'#ffe875';
-    doorEl.style.color=state.door.active?'#ff9366':'#72d5e9';
   };
 
   const resolvePlayerX = dx => {
@@ -650,7 +658,7 @@
       }
     }
 
-    if(!state.door.active && rectHit(p,goal)){
+    if(allEnemyZonesCleared() && rectHit(p,goal)){
       state.won=true;
       state.message='SECTOR COMPLETE';
       state.messageTimer=999;
@@ -845,17 +853,46 @@
     });
   };
 
+  const updateCombatZones = (dt,scale) => {
+    for(const zone of state.combatZones){
+      if(zone.cleared) continue;
+
+      if(!zone.triggered && state.player.y<=zone.triggerY){
+        zone.triggered=true;
+        zone.timer=.35;
+        state.message=zone.label;
+        state.messageTimer=1.1;
+      }
+
+      if(!zone.triggered || zone.spawned>=zone.total) continue;
+
+      zone.timer-=dt*scale;
+      const alive=state.enemies.filter(enemy=>
+        enemy.waveEnemy && enemy.encounterId===zone.id
+      ).length;
+
+      if(zone.timer<=0 && alive<2){
+        const type=zone.wave[zone.spawned];
+        spawnEnemy(type,true,zone);
+        zone.spawned++;
+        zone.timer=1.15;
+      }
+    }
+  };
+
   const updateDoor = (dt,scale) => {
     const d=state.door;
     if(!d.active || d.spawned>=d.total) return;
     if(state.player.y>760) return;
 
     d.timer-=dt*scale;
-    const aliveWave=state.enemies.filter(e=>e.waveEnemy).length;
+    const aliveWave=state.enemies.filter(enemy=>
+      enemy.waveEnemy && enemy.encounterId==='final'
+    ).length;
 
     if(d.timer<=0 && aliveWave<3){
       const type=wave[d.spawned];
-      spawnEnemy(type,true);
+      spawnEnemy(type,true,d);
       d.spawned++;
       d.timer=1.28;
     }
@@ -863,7 +900,6 @@
 
   const updateEnemies = (dt,scale) => {
     const p=state.player;
-    const minX=doorPlatform.x+8;
 
     for(const enemy of [...state.enemies]){
       enemy.phase+=dt*scale*2.4;
@@ -877,8 +913,8 @@
         enemy.y+=dy/len*enemy.speed*dt*scale;
         enemy.y+=Math.sin(enemy.phase)*12*dt*scale;
       }else if(enemy.type==='webcaster'){
-        enemy.x=Math.max(minX,enemy.x-enemy.speed*dt*scale);
-        enemy.y=doorPlatform.y-enemy.h;
+        enemy.x=Math.max(enemy.minX,enemy.x-enemy.speed*dt*scale);
+        enemy.y=enemy.homeY-enemy.h;
         enemy.attack-=dt*scale;
 
         if(enemy.attack<=0){
@@ -886,8 +922,8 @@
           enemy.attack=2.0;
         }
       }else if(enemy.type==='summoner'){
-        enemy.x=Math.max(minX+20,enemy.x-enemy.speed*dt*scale);
-        enemy.y=doorPlatform.y-enemy.h;
+        enemy.x=Math.max(enemy.minX+20,enemy.x-enemy.speed*dt*scale);
+        enemy.y=enemy.homeY-enemy.h;
         enemy.attack-=dt*scale;
         enemy.summon-=dt*scale;
 
@@ -896,8 +932,15 @@
           enemy.attack=2.5;
         }
 
-        if(enemy.summon<=0 && state.enemies.filter(e=>!e.waveEnemy).length<2){
-          const summoned=spawnEnemy('drone',false);
+        if(enemy.summon<=0 && state.enemies.filter(e=>!e.waveEnemy).length<3){
+          const source={
+            id:enemy.encounterId || 'summon',
+            platformY:enemy.homeY,
+            minX:enemy.minX,
+            maxX:enemy.maxX,
+            spawnX:enemy.x
+          };
+          const summoned=spawnEnemy('drone',false,source);
           summoned.x=enemy.x-20;
           summoned.y=enemy.y-45;
           enemy.summon=3.8;
@@ -905,8 +948,8 @@
       }else{
         const direction=p.x<enemy.x?-1:1;
         enemy.x+=direction*enemy.speed*dt*scale;
-        enemy.x=clamp(enemy.x,minX,doorPlatform.x+doorPlatform.w-enemy.w-8);
-        enemy.y=doorPlatform.y-enemy.h;
+        enemy.x=clamp(enemy.x,enemy.minX,enemy.maxX-enemy.w);
+        enemy.y=enemy.homeY-enemy.h;
       }
 
       if(rectHit(p,enemy)) playerHit();
@@ -1483,6 +1526,7 @@
 
     if(!state.won){
       updatePlayer(dt);
+      updateCombatZones(dt,scale);
       updateDoor(dt,scale);
       updateEnemies(dt,scale);
       updateBullets(dt,scale);
