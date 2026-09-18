@@ -1,0 +1,540 @@
+/* Momentum Shifter — dedicated Game Design case study */
+body[data-page="momentum"]{
+  --ms-ink:#1e2440;
+  --ms-purple:#796cf0;
+  --ms-blue:#5ea0f0;
+  --ms-gold:#f4d75c;
+  --ms-cyan:#72d5e9;
+}
+
+body[data-page="momentum"] .momentum-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1.03fr) minmax(390px,.97fr);
+  gap:68px;
+  align-items:center;
+  padding-bottom:58px;
+}
+
+body[data-page="momentum"] .momentum-hero h1{
+  max-width:720px;
+}
+
+body[data-page="momentum"] .momentum-hero-copy>p:not(.page-label){
+  max-width:720px;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.72;
+}
+
+.ms-hero-visual{
+  position:relative;
+  min-height:470px;
+  overflow:hidden;
+  border:1px solid rgba(121,108,240,.16);
+  border-radius:32px;
+  background:
+    radial-gradient(circle at 75% 22%,rgba(244,215,92,.38),transparent 25%),
+    radial-gradient(circle at 24% 78%,rgba(94,160,240,.25),transparent 34%),
+    linear-gradient(145deg,#fff 0%,#f7f8ff 54%,#f7f2d6 100%);
+  box-shadow:0 26px 68px rgba(46,57,96,.12);
+}
+
+.ms-hero-visual::before,
+.ms-hero-visual::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:260px;
+  border-left:1px solid rgba(121,108,240,.18);
+  border-right:1px solid rgba(121,108,240,.18);
+}
+
+.ms-hero-visual::before{
+  top:42px;
+  bottom:42px;
+  background:
+    linear-gradient(90deg,transparent 48%,rgba(121,108,240,.08) 49%,rgba(121,108,240,.08) 51%,transparent 52%),
+    repeating-linear-gradient(0deg,rgba(121,108,240,.08) 0 1px,transparent 1px 74px);
+}
+
+.ms-hero-visual::after{
+  top:74px;
+  bottom:74px;
+  width:184px;
+  border-radius:18px;
+  border-top:1px solid rgba(121,108,240,.14);
+  border-bottom:1px solid rgba(121,108,240,.14);
+}
+
+.ms-tower-platform{
+  position:absolute;
+  left:50%;
+  width:170px;
+  height:11px;
+  transform:translateX(-50%);
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--ms-purple),var(--ms-blue));
+  box-shadow:0 8px 20px rgba(94,160,240,.18);
+}
+.ms-tower-platform.p1{top:94px;transform:translateX(-72%) rotate(-5deg)}
+.ms-tower-platform.p2{top:184px;transform:translateX(-29%) rotate(4deg)}
+.ms-tower-platform.p3{top:286px;transform:translateX(-75%) rotate(2deg)}
+.ms-tower-platform.p4{top:374px;transform:translateX(-24%) rotate(-4deg)}
+
+.ms-player{
+  position:absolute;
+  z-index:4;
+  left:50%;
+  top:224px;
+  width:34px;
+  height:72px;
+  transform:translateX(-50%);
+  border-radius:13px 13px 9px 9px;
+  background:var(--ms-ink);
+  box-shadow:0 0 0 7px rgba(121,108,240,.06);
+}
+.ms-player::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-20px;
+  width:25px;
+  height:25px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:var(--ms-ink);
+}
+.ms-player::after{
+  content:"";
+  position:absolute;
+  left:28px;
+  top:30px;
+  width:66px;
+  height:4px;
+  border-radius:999px;
+  background:var(--ms-gold);
+  transform:rotate(-12deg);
+  transform-origin:left center;
+}
+
+.ms-time-ring{
+  position:absolute;
+  z-index:2;
+  left:50%;
+  top:50%;
+  width:246px;
+  height:246px;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(121,108,240,.35);
+  border-radius:50%;
+  box-shadow:0 0 0 20px rgba(121,108,240,.035),0 0 0 42px rgba(94,160,240,.025);
+}
+.ms-time-ring::before,
+.ms-time-ring::after{
+  content:"";
+  position:absolute;
+  inset:22px;
+  border:1px dashed rgba(94,160,240,.34);
+  border-radius:50%;
+}
+.ms-time-ring::after{
+  inset:52px;
+  border-style:solid;
+  border-color:rgba(244,215,92,.42);
+}
+
+.ms-time-badge{
+  position:absolute;
+  z-index:5;
+  right:28px;
+  top:28px;
+  max-width:184px;
+  padding:13px 15px;
+  border:1px solid rgba(121,108,240,.15);
+  border-radius:16px;
+  background:rgba(255,255,255,.84);
+  box-shadow:0 14px 34px rgba(46,57,96,.08);
+  backdrop-filter:blur(10px);
+}
+.ms-time-badge span{
+  display:block;
+  font:600 9px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+  color:var(--ms-purple);
+  text-transform:uppercase;
+}
+.ms-time-badge strong{
+  display:block;
+  margin-top:6px;
+  font-size:13px;
+  line-height:1.35;
+}
+
+.ms-snapshot{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-top:-4px;
+}
+.ms-snapshot article{
+  min-height:116px;
+  padding:18px 20px;
+  border:1px solid rgba(121,108,240,.12);
+  border-radius:20px;
+  background:rgba(255,255,255,.88);
+}
+.ms-snapshot span{
+  display:block;
+  margin-bottom:8px;
+  font:600 9px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+  color:var(--purple);
+  text-transform:uppercase;
+}
+.ms-snapshot strong{font-size:15px;line-height:1.35}
+
+.ms-design-thesis{
+  display:grid;
+  grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);
+  gap:70px;
+  align-items:start;
+}
+.ms-design-thesis h2{
+  margin:10px 0 0;
+  max-width:620px;
+  font-size:clamp(34px,3.6vw,52px);
+  line-height:1.04;
+  letter-spacing:-.045em;
+}
+.ms-design-thesis__copy{
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.78;
+}
+.ms-design-thesis__copy p{margin:0 0 18px}
+
+.ms-time-system{
+  margin-top:32px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:18px;
+  align-items:stretch;
+}
+.ms-time-state{
+  padding:28px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:26px;
+  background:linear-gradient(160deg,#fff,#fafbff);
+  box-shadow:0 18px 46px rgba(46,57,96,.07);
+}
+.ms-time-state--slow{
+  background:linear-gradient(145deg,rgba(121,108,240,.10),#fff 48%,rgba(94,160,240,.10));
+}
+.ms-time-state--flow{
+  background:linear-gradient(145deg,rgba(244,215,92,.22),#fff 48%,rgba(94,160,240,.08));
+}
+.ms-time-state .page-label{margin-bottom:10px}
+.ms-time-state h3{margin:0 0 10px;font-size:24px;letter-spacing:-.03em}
+.ms-time-state p{margin:0;color:var(--muted);font-size:14px;line-height:1.68}
+.ms-time-state ul{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  list-style:none;
+  margin:18px 0 0;
+  padding:0;
+}
+.ms-time-state li{
+  padding:7px 10px;
+  border:1px solid rgba(121,108,240,.12);
+  border-radius:999px;
+  background:#fff;
+  font-size:11px;
+  font-weight:700;
+}
+.ms-time-arrow{
+  align-self:center;
+  display:grid;
+  place-items:center;
+  width:46px;
+  height:46px;
+  border:1px solid rgba(121,108,240,.16);
+  border-radius:50%;
+  background:#fff;
+  color:var(--purple);
+  font-size:20px;
+  box-shadow:0 12px 28px rgba(46,57,96,.08);
+}
+
+.ms-section-heading{
+  display:grid;
+  grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  gap:64px;
+  align-items:end;
+  margin-bottom:30px;
+}
+.ms-section-heading h2{
+  margin:8px 0 0;
+  font-size:clamp(32px,3.2vw,48px);
+  line-height:1.05;
+  letter-spacing:-.04em;
+}
+.ms-section-heading>p{
+  margin:0;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.72;
+}
+
+.ms-mechanic-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.ms-mechanic-card{
+  min-height:290px;
+  padding:28px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:24px;
+  background:linear-gradient(180deg,#fff,#fafbff);
+  box-shadow:0 18px 46px rgba(46,57,96,.07);
+}
+.ms-mechanic-card .ms-icon{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  margin-bottom:28px;
+  border-radius:14px;
+  background:rgba(121,108,240,.09);
+  color:var(--purple);
+  font-weight:800;
+}
+.ms-mechanic-card h3{margin:0 0 10px;font-size:22px;letter-spacing:-.03em}
+.ms-mechanic-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.68}
+.ms-mechanic-card strong{color:var(--text)}
+
+.ms-resource-flow{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+.ms-flow-node{
+  position:relative;
+  min-height:150px;
+  padding:22px;
+  border:1px solid rgba(121,108,240,.13);
+  border-radius:22px;
+  background:rgba(255,255,255,.92);
+}
+.ms-flow-node:not(:last-child)::after{
+  content:"→";
+  position:absolute;
+  right:-19px;
+  top:50%;
+  z-index:4;
+  transform:translateY(-50%);
+  color:var(--purple);
+  font-weight:800;
+}
+.ms-flow-node span{
+  font:600 9px/1.2 "IBM Plex Mono",monospace;
+  color:var(--purple);
+  letter-spacing:.08em;
+}
+.ms-flow-node h3{margin:9px 0 8px;font-size:18px}
+.ms-flow-node p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.6}
+
+.ms-ability-band{
+  display:grid;
+  grid-template-columns:190px repeat(3,minmax(0,1fr));
+  border:1px solid rgba(244,215,92,.46);
+  border-radius:24px;
+  overflow:hidden;
+  background:linear-gradient(90deg,rgba(238,242,157,.26),#fff 38%,rgba(121,108,240,.05));
+}
+.ms-ability-band>div,
+.ms-ability-band>article{padding:24px}
+.ms-ability-band>article{border-left:1px solid rgba(121,108,240,.10)}
+.ms-ability-band span{
+  font:600 9px/1.2 "IBM Plex Mono",monospace;
+  color:#9b7e12;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+.ms-ability-band h3{margin:6px 0 8px;font-size:17px}
+.ms-ability-band p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}
+
+.ms-run-map{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
+  padding:28px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:28px;
+  background:linear-gradient(145deg,#fff,#f9faff 58%,#fffbea);
+  box-shadow:0 20px 50px rgba(46,57,96,.07);
+}
+.ms-run-step{
+  position:relative;
+  z-index:2;
+  min-height:145px;
+  padding:20px;
+  border:1px solid rgba(121,108,240,.11);
+  border-radius:18px;
+  background:rgba(255,255,255,.94);
+}
+.ms-run-step:not(:last-child)::after{
+  content:"";
+  position:absolute;
+  left:100%;
+  top:50%;
+  width:14px;
+  height:1px;
+  background:rgba(121,108,240,.4);
+}
+.ms-run-step span{
+  font:600 9px/1.2 "IBM Plex Mono",monospace;
+  color:var(--purple);
+  letter-spacing:.07em;
+}
+.ms-run-step h3{margin:8px 0 8px;font-size:17px}
+.ms-run-step p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+
+.ms-platform-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+.ms-platform-grid article{
+  padding:17px;
+  border-top:1px solid rgba(121,108,240,.16);
+}
+.ms-platform-grid strong{display:block;margin-bottom:6px;font-size:13px}
+.ms-platform-grid p{margin:0;color:var(--muted);font-size:11.5px;line-height:1.5}
+
+.ms-enemy-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+.ms-enemy-card{
+  min-height:245px;
+  padding:26px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:24px;
+  background:#fff;
+  box-shadow:0 16px 40px rgba(46,57,96,.065);
+}
+.ms-enemy-card .enemy-role{
+  display:inline-flex;
+  margin-bottom:20px;
+  padding:6px 9px;
+  border-radius:999px;
+  background:rgba(121,108,240,.08);
+  color:var(--purple);
+  font:600 9px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.ms-enemy-card h3{margin:0 0 9px;font-size:20px}
+.ms-enemy-card p{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.58}
+.ms-enemy-card small{color:var(--muted-2);line-height:1.45}
+
+.ms-story-strip{
+  display:grid;
+  grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:18px;
+}
+.ms-story-card,
+.ms-character-card{
+  padding:30px;
+  border:1px solid rgba(121,108,240,.13);
+  border-radius:26px;
+  background:linear-gradient(145deg,#fff,#fafbff);
+}
+.ms-story-card h3,.ms-character-card h3{margin:8px 0 10px;font-size:24px}
+.ms-story-card p,.ms-character-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.72}
+
+.ms-reference-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px;
+}
+.ms-reference-grid article{
+  min-height:140px;
+  padding:19px;
+  border:1px solid rgba(121,108,240,.12);
+  border-radius:18px;
+  background:rgba(255,255,255,.9);
+}
+.ms-reference-grid h3{margin:0 0 7px;font-size:15px}
+.ms-reference-grid p{margin:0;color:var(--muted);font-size:11.5px;line-height:1.55}
+
+.ms-materials{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:30px;
+  align-items:center;
+  padding:32px 36px;
+  border:1px solid rgba(121,108,240,.15);
+  border-radius:26px;
+  background:linear-gradient(120deg,rgba(238,242,157,.26),#fff 46%,rgba(94,160,240,.10));
+  box-shadow:var(--shadow);
+}
+.ms-materials h2{margin:8px 0 9px;font-size:clamp(28px,2.7vw,40px);letter-spacing:-.04em}
+.ms-materials p{margin:0;max-width:760px;color:var(--muted);font-size:14px;line-height:1.65}
+.ms-material-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+
+.ms-lesson{
+  display:grid;
+  grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+  gap:54px;
+  padding:36px 38px;
+  border:1px solid rgba(244,215,92,.42);
+  border-radius:26px;
+  background:linear-gradient(120deg,rgba(238,242,157,.40),rgba(255,255,255,.96) 48%,rgba(121,108,240,.08));
+}
+.ms-lesson h2{margin:8px 0 0;font-size:clamp(28px,2.9vw,42px);letter-spacing:-.04em}
+.ms-lesson p{margin:0;color:var(--muted);font-size:15px;line-height:1.75}
+
+@media(max-width:1050px){
+  body[data-page="momentum"] .momentum-hero{grid-template-columns:1fr;gap:34px}
+  .ms-hero-visual{min-height:420px}
+  .ms-snapshot{grid-template-columns:repeat(2,1fr)}
+  .ms-mechanic-grid{grid-template-columns:1fr}
+  .ms-resource-flow{grid-template-columns:repeat(2,1fr)}
+  .ms-flow-node:nth-child(2)::after{display:none}
+  .ms-ability-band{grid-template-columns:1fr 1fr}
+  .ms-ability-band>article{border-left:0;border-top:1px solid rgba(121,108,240,.10)}
+  .ms-run-map{grid-template-columns:repeat(2,1fr)}
+  .ms-run-step:not(:last-child)::after{display:none}
+  .ms-platform-grid{grid-template-columns:repeat(2,1fr)}
+  .ms-enemy-grid{grid-template-columns:repeat(2,1fr)}
+  .ms-reference-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:760px){
+  .ms-design-thesis,.ms-section-heading,.ms-story-strip,.ms-lesson{grid-template-columns:1fr;gap:20px}
+  .ms-time-system{grid-template-columns:1fr}
+  .ms-time-arrow{transform:rotate(90deg);justify-self:center}
+  .ms-snapshot,.ms-resource-flow,.ms-run-map,.ms-platform-grid,.ms-enemy-grid,.ms-reference-grid{grid-template-columns:1fr}
+  .ms-flow-node:not(:last-child)::after{display:none}
+  .ms-ability-band{grid-template-columns:1fr}
+  .ms-materials{grid-template-columns:1fr}
+  .ms-material-actions{justify-content:flex-start}
+  .ms-hero-visual{min-height:360px}
+  .ms-time-badge{right:16px;top:16px}
+}
+
+@media(max-width:520px){
+  .ms-hero-visual{min-height:320px;border-radius:24px}
+  .ms-hero-visual::before{width:205px}
+  .ms-tower-platform{width:138px}
+  .ms-time-ring{width:190px;height:190px}
+  .ms-player{top:176px}
+}
