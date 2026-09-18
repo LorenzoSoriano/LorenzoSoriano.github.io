@@ -52,7 +52,7 @@ Object.assign(window.TRANSLATIONS.en, {
   "thesis.resultDesc":"Unity still operates in a conventional Cartesian space, but the prototype shows that rendering, camera transformations, shaders and controlled repositioning can create a spatial continuity that does not exist in the real scene structure.",
   "thesis.futureTitle":"Toward more accessible authoring tools.",
   "thesis.futureDesc":"The next step proposed by the research is to turn these techniques into more intuitive editor tools, reducing manual setup so that designers and artists can use non-conventional spatial logic without rebuilding the underlying systems each time.",
-  "thesis.back":"Back to portfolio"
+  "thesis.back":"Back to Game Development"
 });
 
 Object.assign(window.TRANSLATIONS.it, {
@@ -107,5 +107,5 @@ Object.assign(window.TRANSLATIONS.it, {
   "thesis.resultDesc":"Unity continua a operare in uno spazio cartesiano tradizionale, ma il prototipo mostra che rendering, trasformazioni delle camere, shader e ricollocamento controllato possono creare una continuità spaziale che nella struttura reale della scena non esiste.",
   "thesis.futureTitle":"Verso strumenti di authoring più accessibili.",
   "thesis.futureDesc":"Lo sviluppo futuro proposto dalla ricerca è trasformare queste tecniche in editor tool più intuitivi, riducendo le configurazioni manuali affinché designer e artisti possano utilizzare logiche spaziali non convenzionali senza ricostruire ogni volta i sistemi sottostanti.",
-  "thesis.back":"Torna al portfolio"
+  "thesis.back":"Torna a Game Development"
 });
