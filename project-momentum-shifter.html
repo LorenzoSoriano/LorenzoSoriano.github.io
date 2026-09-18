@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=18">
+  <link rel="stylesheet" href="momentum-shifter.css?v=19">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -240,19 +240,75 @@
       <aside class="ms-level-grammar reveal">
         <p class="page-label" data-i18n="momentum.levelGrammarLabel"></p>
         <h3 data-i18n="momentum.levelGrammarTitle"></h3>
-        <div class="ms-level-rule"><strong data-i18n="momentum.levelRule1"></strong><p data-i18n="momentum.levelRule1d"></p></div>
-        <div class="ms-level-rule"><strong data-i18n="momentum.levelRule2"></strong><p data-i18n="momentum.levelRule2d"></p></div>
-        <div class="ms-level-rule"><strong data-i18n="momentum.levelRule3"></strong><p data-i18n="momentum.levelRule3d"></p></div>
+        <p class="ms-level-grammar__intro" data-i18n="momentum.levelGrammarIntro"></p>
+
+        <div class="ms-level-rule ms-level-rule--moving">
+          <span class="ms-level-rule__icon" aria-hidden="true">↕</span>
+          <div>
+            <strong data-i18n="momentum.levelRule1"></strong>
+            <p data-i18n="momentum.levelRule1d"></p>
+          </div>
+          <em data-i18n="momentum.levelRule1effect"></em>
+        </div>
+
+        <div class="ms-level-rule ms-level-rule--magnetic">
+          <span class="ms-level-rule__icon" aria-hidden="true">⊕</span>
+          <div>
+            <strong data-i18n="momentum.levelRule2"></strong>
+            <p data-i18n="momentum.levelRule2d"></p>
+          </div>
+          <em data-i18n="momentum.levelRule2effect"></em>
+        </div>
+
+        <div class="ms-level-rule ms-level-rule--electric">
+          <span class="ms-level-rule__icon" aria-hidden="true">ϟ</span>
+          <div>
+            <strong data-i18n="momentum.levelRule3"></strong>
+            <p data-i18n="momentum.levelRule3d"></p>
+          </div>
+          <em data-i18n="momentum.levelRule3effect"></em>
+        </div>
       </aside>
     </div>
 
-    <div class="ms-spawn-door-band reveal">
-      <div>
+    <div class="ms-door-system reveal">
+      <div class="ms-door-system__copy">
         <span class="page-label" data-i18n="momentum.spawnLabel"></span>
         <h3 data-i18n="momentum.spawnTitle"></h3>
+        <p data-i18n="momentum.spawnDesc"></p>
+
+        <div class="ms-door-principle">
+          <span data-i18n="momentum.spawnPrincipleLabel"></span>
+          <strong data-i18n="momentum.spawnPrinciple"></strong>
+        </div>
       </div>
-      <p data-i18n="momentum.spawnDesc"></p>
-      <strong data-i18n="momentum.spawnReward"></strong>
+
+      <div class="ms-door-system__visual" aria-label="Enemy spawn door information example">
+        <div class="ms-door-hud">
+          <span data-i18n="momentum.spawnExampleLabel"></span>
+          <div>
+            <small data-i18n="momentum.spawnNextLabel"></small>
+            <strong>Screamer Drone</strong>
+          </div>
+          <div>
+            <small data-i18n="momentum.spawnCountLabel"></small>
+            <strong class="ms-door-count">03</strong>
+          </div>
+        </div>
+
+        <div class="ms-door-frame">
+          <span class="ms-door-frame__light"></span>
+          <span class="ms-door-frame__panel"></span>
+          <span class="ms-door-frame__panel"></span>
+          <span class="ms-door-frame__panel"></span>
+        </div>
+
+        <div class="ms-door-reward">
+          <span>0</span>
+          <i aria-hidden="true">→</i>
+          <strong data-i18n="momentum.spawnReward"></strong>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -314,7 +370,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=9"></script>
+<script src="translations-momentum.js?v=10"></script>
 <script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="script.js?v=5"></script>
 </body>
 </html>
