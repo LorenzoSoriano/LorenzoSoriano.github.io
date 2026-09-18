@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=29">
+  <link rel="stylesheet" href="momentum-shifter.css?v=30">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -635,9 +635,33 @@
     </div>
   </div>
 
+  <button class="ms-game-exit" type="button" data-game-exit aria-label="Exit Momentum Shifter demo">×</button>
+
   <div class="ms-game-help">
     <p data-i18n="momentum.demoControlsMouse"></p>
     <small data-i18n="momentum.demoExit"></small>
+  </div>
+
+  <div class="ms-game-mobile-controls" data-game-mobile-controls>
+    <div class="ms-game-stick-wrap">
+      <span data-i18n="momentum.demoMoveLabel"></span>
+      <div class="ms-game-stick" data-game-move-stick>
+        <i data-game-move-knob></i>
+      </div>
+    </div>
+
+    <div class="ms-game-mobile-actions">
+      <button type="button" data-game-jump data-i18n="momentum.demoJumpButton"></button>
+      <button type="button" class="is-gravity" data-game-gravity data-i18n="momentum.demoGravityButton"></button>
+      <button type="button" class="is-fire" data-game-fire data-i18n="momentum.demoFireButton"></button>
+    </div>
+
+    <div class="ms-game-stick-wrap ms-game-stick-wrap--aim">
+      <span data-i18n="momentum.demoAimLabel"></span>
+      <div class="ms-game-stick ms-game-stick--aim" data-game-aim-stick>
+        <i data-game-aim-knob></i>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -648,7 +672,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=17"></script>
-<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=2"></script><script src="script.js?v=5"></script>
+<script src="translations-momentum.js?v=18"></script>
+<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=3"></script><script src="script.js?v=5"></script>
 </body>
 </html>
