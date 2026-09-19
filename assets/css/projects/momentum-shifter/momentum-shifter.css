@@ -7196,17 +7196,17 @@ html[lang="it"] .ms-easter-hint__en{
 .ms-game-lives{
   display:flex;
   align-items:center;
-  gap:24px;
-  min-height:42px;
-  padding-left:5px;
+  gap:22px;
+  min-height:58px;
+  padding-left:4px;
 }
 
 .ms-game-lives i{
   position:relative;
   display:block;
-  width:42px;
-  height:38px;
-  flex:0 0 42px;
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
   overflow:visible;
   border:0;
   border-radius:0;
@@ -7218,18 +7218,28 @@ html[lang="it"] .ms-easter-hint__en{
 }
 
 .ms-game-lives i::before{
-  content:"♥";
+  content:"";
   position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-53%);
-  color:rgba(239,244,255,.96);
-  font:700 42px/1 Georgia,"Times New Roman",serif;
-  text-shadow:0 2px 12px rgba(0,0,0,.26);
+  inset:3px;
+  clip-path:polygon(50% 0,86% 15%,100% 50%,82% 84%,50% 100%,18% 84%,0 50%,14% 17%);
+  background:
+    linear-gradient(145deg,
+      rgba(255,242,153,.98) 0 24%,
+      rgba(244,215,92,.98) 25% 54%,
+      rgba(196,161,50,.98) 55% 100%);
+  box-shadow:
+    0 0 0 2px rgba(255,240,159,.38),
+    0 0 18px rgba(244,215,92,.30);
+  filter:drop-shadow(0 5px 8px rgba(0,0,0,.22));
 }
 
 .ms-game-lives i::after{
-  display:none;
+  content:"";
+  position:absolute;
+  inset:14px;
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+  background:rgba(255,255,255,.58);
+  box-shadow:0 0 10px rgba(255,255,255,.22);
 }
 
 .ms-game-lives i.is-lost{
@@ -7239,9 +7249,14 @@ html[lang="it"] .ms-easter-hint__en{
 }
 
 .ms-game-lives i.is-lost::before{
-  content:"♡";
-  color:rgba(239,244,255,.22);
-  text-shadow:none;
+  background:rgba(255,255,255,.04);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.12);
+  filter:none;
+}
+
+.ms-game-lives i.is-lost::after{
+  background:rgba(255,255,255,.08);
+  box-shadow:none;
 }
 
 .ms-game-ammo-pips{
@@ -7457,19 +7472,23 @@ html[lang="it"] .ms-easter-hint__en{
   }
 
   .ms-game-lives{
-    gap:17px;
-    min-height:34px;
+    gap:15px;
+    min-height:46px;
     padding-left:3px;
   }
 
   .ms-game-lives i{
-    width:34px;
-    height:31px;
-    flex-basis:34px;
+    width:42px;
+    height:42px;
+    flex-basis:42px;
   }
 
   .ms-game-lives i::before{
-    font-size:34px;
+    inset:3px;
+  }
+
+  .ms-game-lives i::after{
+    inset:12px;
   }
 
   .ms-game-ammo-pips{
