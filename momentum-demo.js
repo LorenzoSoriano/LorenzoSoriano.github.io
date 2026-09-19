@@ -502,6 +502,31 @@
       life.classList.toggle('is-lost',!active);
     });
 
+    gravityChargeEls.forEach((charge,index)=>{
+      const fill=charge.querySelector('b');
+      const active=index<state.gravityCharges.current;
+      const rechargeIndex=index-state.gravityCharges.current;
+      const recharge=!active && rechargeIndex>=0
+        ? state.gravityCharges.queue[rechargeIndex]
+        : null;
+      const progress=recharge
+        ? clamp(1-recharge.remaining/state.gravityCharges.recharge,0,1)
+        : 0;
+
+      charge.classList.toggle('is-active',active);
+      charge.classList.toggle('is-charging',!active && !!recharge);
+      if(fill) fill.style.transform='scaleY('+(active?1:progress).toFixed(3)+')';
+    });
+
+    if(gravityRechargeEl){
+      const next=state.gravityCharges.queue.length
+        ? Math.min(...state.gravityCharges.queue.map(item=>item.remaining))
+        : null;
+      gravityRechargeEl.textContent=state.gravityCharges.current===state.gravityCharges.max
+        ? 'READY'
+        : (next===null?'0.0s':next.toFixed(1)+'s');
+    }
+
     const cooling=state.bullets
       .map(b=>{
         if(b.mode==='stuck') return Math.max(0,b.returnAfter-b.wait);
@@ -537,8 +562,14 @@
     }
 
     if(scoreEl) scoreEl.textContent=String(state.score);
-    timeEl.textContent=scale<.6?'SLOW':'NORMAL';
-    timeEl.style.color=scale<.6?'#72d5e9':'#ffe875';
+
+    const slowed=scale<.6;
+    if(timeEl){
+      timeEl.classList.toggle('is-slow',slowed);
+      timeEl.classList.toggle('is-normal',!slowed);
+      timeEl.setAttribute('aria-label',slowed?'Time slowed':'Time flowing normally');
+    }
+    stage.classList.toggle('is-time-slow',slowed);
   };
 
   const resolvePlayerX = dx => {
@@ -893,6 +924,27 @@
       }
 
       p.y=clamp(p.y,solid.y,solid.y+solid.h-p.h);
+      checkPlayerProgress();
+      return;
+    }
+
+    if(p.surface==='bottom' && p.attachedSolid){
+      const solid=p.attachedSolid;
+      const keyboardAxis=(input.right?1:0)-(input.left?1:0);
+      const axis=Math.abs(input.moveX)>.06 ? input.moveX : keyboardAxis;
+
+      p.vx=0;
+      p.vy=0;
+      p.grounded=true;
+      p.y=solid.y+solid.h;
+
+      if(Math.abs(axis)>.06){
+        p.x+=axis*215*dt;
+        p.facing=axis>=0?1:-1;
+        state.actionPulse=.10;
+      }
+
+      p.x=clamp(p.x,solid.x,solid.x+solid.w-p.w);
       checkPlayerProgress();
       return;
     }
@@ -1631,7 +1683,13 @@
     const p=state.player;
     const cx=p.x+p.w*.5;
     const cy=p.y+p.h*.5;
-    const angle=p.surface==='left' ? -Math.PI*.5 : p.surface==='right' ? Math.PI*.5 : 0;
+    const angle=p.surface==='left'
+      ? -Math.PI*.5
+      : p.surface==='right'
+        ? Math.PI*.5
+        : p.surface==='bottom'
+          ? Math.PI
+          : 0;
 
     ctx.save();
     if(p.invuln>0 && Math.floor(p.invuln*12)%2===0) ctx.globalAlpha=.35;
@@ -1648,7 +1706,7 @@
     ctx.fillStyle='#5ea0f0';
     ctx.fillRect(-p.w*.5+5,p.h*.5-5,p.w-10,3);
 
-    if(p.surface==='left' || p.surface==='right'){
+    if(p.surface==='left' || p.surface==='right' || p.surface==='bottom'){
       ctx.fillStyle='rgba(114,213,233,.72)';
       ctx.fillRect(-p.w*.5+4,p.h*.5-2,p.w-8,2);
     }
@@ -1872,6 +1930,7 @@
     const scale=state.won?0:(moving?1:.22);
 
     if(!state.won){
+      updateGravityCharges(dt);
       updatePlayer(dt);
       updateCombatZones(dt,scale);
       updateDoor(dt,scale);
