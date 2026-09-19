@@ -29,6 +29,11 @@
   const GRAVITY_RECHARGE_SECONDS = 3;
   const COYOTE_TIME_SECONDS = 0.14;
   const EXTRA_AIR_JUMPS = 1;
+  const PLAYER_DEATH_DELAY = 2.0;
+  const DRONE_TRIGGER_RANGE = 58;
+  const DRONE_EXPLOSION_RANGE = 82;
+  const RUMBLER_RUMBLE_RANGE = 190;
+  const WEBCASTER_STUN_SECONDS = 1.5;
 
   const input = {
     left:false,right:false,up:false,down:false,
@@ -186,8 +191,13 @@
     bullets:[],
     enemies:[],
     enemyShots:[],
+    enemyTraps:[],
+    enemyEffects:[],
     pickups:[],
     enemyId:0,
+    playerDead:false,
+    deathTimer:0,
+    pendingFullReset:false,
     won:false,
     message:'',
     messageTimer:0,
@@ -213,6 +223,7 @@
       x:74, y:floorY-38, w:26, h:38,
       vx:0, vy:0, grounded:true,
       facing:1, invuln:0,
+      stunned:0,
       coyoteTimer:COYOTE_TIME_SECONDS,
       airJumps:EXTRA_AIR_JUMPS,
       surface:'floor',
@@ -268,6 +279,7 @@
     Object.assign(state.player,{
       x:74, y:floorY-38, vx:0, vy:0,
       grounded:true, facing:1, invuln:1.0,
+      stunned:0,
       coyoteTimer:COYOTE_TIME_SECONDS,
       airJumps:EXTRA_AIR_JUMPS,
       surface:'floor', attachedSolid:null, attachedFace:null
@@ -347,8 +359,13 @@
     state.bullets.length=0;
     state.enemies.length=0;
     state.enemyShots.length=0;
+    state.enemyTraps.length=0;
+    state.enemyEffects.length=0;
     state.pickups.length=0;
     state.enemyId=0;
+    state.playerDead=false;
+    state.deathTimer=0;
+    state.pendingFullReset=false;
     state.won=false;
     state.paused=false;
     state.message='';
@@ -404,19 +421,23 @@
       maxX,
       phase:state.enemyId*.8,
       attack:1.2 + (state.enemyId%3)*.28,
-      summon:3.4
+      summon:3.4,
+      trap:3.2 + (state.enemyId%3)*.55,
+      rumble:2.0 + (state.enemyId%3)*.45,
+      jumpTimer:1.5 + (state.enemyId%4)*.35,
+      jumpState:null,
+      selfDestruct:false
     };
     state.enemies.push(enemy);
     return enemy;
   };
 
-  const damageEnemy = (enemy, amount=1) => {
-    enemy.hp-=amount;
-    if(enemy.hp>0) return false;
-
+  const removeEnemy = (enemy,{awardScore=true}={}) => {
     const idx=state.enemies.indexOf(enemy);
-    if(idx>=0) state.enemies.splice(idx,1);
-    state.score+=enemy.waveEnemy?120:55;
+    if(idx<0) return false;
+
+    state.enemies.splice(idx,1);
+    if(awardScore) state.score+=enemy.waveEnemy?120:55;
 
     if(enemy.waveEnemy && enemy.encounterId){
       if(enemy.encounterId==='final'){
@@ -445,7 +466,6 @@
         const zone=state.combatZones.find(item=>item.id===enemy.encounterId);
         if(zone){
           zone.remaining=Math.max(0,zone.remaining-1);
-
           if(zone.remaining===0){
             zone.cleared=true;
             state.score+=250;
@@ -457,30 +477,68 @@
     return true;
   };
 
+  const damageEnemy = (enemy, amount=1) => {
+    enemy.hp-=amount;
+    if(enemy.hp>0) return false;
+    return removeEnemy(enemy,{awardScore:true});
+  };
+
+  const beginPlayerDeath = fullReset => {
+    if(state.playerDead) return;
+
+    state.playerDead=true;
+    state.deathTimer=PLAYER_DEATH_DELAY;
+    state.pendingFullReset=!!fullReset;
+    state.gravityJump=null;
+
+    const p=state.player;
+    p.vx=0;
+    p.vy=0;
+    p.stunned=0;
+    p.grounded=false;
+    p.surface='air';
+    p.attachedSolid=null;
+    p.attachedFace=null;
+
+    input.left=false;
+    input.right=false;
+    input.up=false;
+    input.down=false;
+    input.moveX=0;
+    input.moveY=0;
+  };
+
   const playerHit = () => {
-    if(state.player.invuln>0 || state.won || state.gravityJump) return;
+    if(
+      state.playerDead ||
+      state.player.invuln>0 ||
+      state.won ||
+      state.gravityJump
+    ) return;
 
     state.cores--;
     state.flash=.34;
-    state.message='WARP CORE LOST';
-    state.messageTimer=1.1;
+    state.message=state.cores<=0 ? 'RUN LOST' : 'WARP CORE LOST';
+    state.messageTimer=PLAYER_DEATH_DELAY;
 
-    if(state.cores<=0){
-      state.message='RUN RESET';
-      state.messageTimer=1.5;
-      state.bullets.length=0;
-      state.enemies.length=0;
-      state.enemyShots.length=0;
-      state.pickups.length=0;
-      state.ammo=6;
-      resetAmmoSlots();
-      state.cores=3;
-      resetDoor();
-      resetCombatZones();
-      resetGravityCharges();
+    beginPlayerDeath(state.cores<=0);
+  };
+
+  const updatePlayerDeath = dt => {
+    if(!state.playerDead) return false;
+
+    state.deathTimer=Math.max(0,state.deathTimer-dt);
+    if(state.deathTimer>0) return true;
+
+    if(state.pendingFullReset){
+      resetGame();
+      return true;
     }
 
+    state.playerDead=false;
+    state.pendingFullReset=false;
     resetPlayer();
+    return true;
   };
 
   const updateHud = scale => {
