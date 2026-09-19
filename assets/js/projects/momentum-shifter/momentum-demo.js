@@ -109,6 +109,21 @@
 
     // Architectural masses frame shafts/corridors while leaving the centre line open.
     { x:0, y:1840, w:50, h:240, kind:'block', gravity:true, faces:['top','right'], zone:1 },
+
+    // Arena A room: lower-left entry, upper-left exit.
+    { x:700, y:1500, w:24, h:105, kind:'bulkhead', gravity:false, zone:2 },
+    { x:1180, y:1415, w:42, h:190, kind:'bulkhead', gravity:false, zone:2 },
+    { x:820, y:1415, w:402, h:24, kind:'bulkhead', gravity:false, zone:2 },
+
+    // Arena B room: enter from below, leave through the upper-right opening.
+    { x:100, y:1095, w:24, h:165, kind:'bulkhead', gravity:false, zone:3 },
+    { x:450, y:1185, w:30, h:75, kind:'bulkhead', gravity:false, zone:3 },
+    { x:100, y:1095, w:290, h:22, kind:'bulkhead', gravity:false, zone:3 },
+
+    // Arena C room: lower-left entry, upper-left exit toward the maintenance link.
+    { x:760, y:825, w:30, h:75, kind:'bulkhead', gravity:false, zone:4 },
+    { x:1190, y:730, w:32, h:170, kind:'bulkhead', gravity:false, zone:4 },
+    { x:900, y:730, w:322, h:22, kind:'bulkhead', gravity:false, zone:4 },
     { x:1205, y:1660, w:75, h:150, kind:'block', gravity:true, faces:['top','left'], zone:2 },
     { x:0, y:1395, w:105, h:160, kind:'block', gravity:true, faces:['top','right'], zone:2 },
     { x:1170, y:1110, w:110, h:165, kind:'block', gravity:true, faces:['top','left'], zone:3 },
@@ -132,6 +147,30 @@
     { top:690, bottom:1050, label:'04 · ARENA C' },
     { top:350, bottom:690, label:'05 · FINAL ASCENT' },
     { top:170, bottom:350, label:'06 · EXIT' }
+  ];
+
+  const roomSections = [
+    {
+      id:'A',
+      x:700, y:1415, w:522, h:190,
+      entry:{x:700,y:1500,w:120,h:105},
+      exit:{x:700,y:1415,w:120,h:85},
+      label:'COMBAT MODULE A'
+    },
+    {
+      id:'B',
+      x:100, y:1095, w:380, h:165,
+      entry:{x:390,y:1185,w:90,h:75},
+      exit:{x:390,y:1095,w:90,h:90},
+      label:'COMBAT MODULE B'
+    },
+    {
+      id:'C',
+      x:760, y:730, w:462, h:170,
+      entry:{x:760,y:825,w:140,h:75},
+      exit:{x:760,y:730,w:140,h:95},
+      label:'COMBAT MODULE C'
+    }
   ];
 
   const fillerSections = [
@@ -1142,9 +1181,52 @@
 
   const updateCamera = (dt, snap=false) => {
     const p=state.player;
-    const lookAhead=state.gravityJump ? -70 : (p.vy<0 ? -45 : 0);
+    const playerY=p.y+p.h*.5;
+
+    // Base anticipation follows vertical motion. Rising keeps the player lower
+    // on screen so the route above remains visible; falling reveals more below.
+    const velocityLook=clamp(p.vy*.15,-92,72);
+    let focusY=playerY+velocityLook;
+
+    // Aim contributes only a restrained amount so combat is readable without
+    // making the camera chase the reticle.
+    if(aim.active){
+      const aimDelta=clamp(aim.y-playerY,-360,360);
+      focusY+=aimDelta*.10;
+    }
+
+    // Gravity traversal gets stronger framing because the destination is part
+    // of the player's immediate action.
+    const gravityFocus=state.gravityJump?.target || state.gravityTarget;
+    if(gravityFocus){
+      const gravityDelta=clamp(gravityFocus.cy-playerY,-420,420);
+      focusY+=gravityDelta*(state.gravityJump?.target ? .28 : .14);
+    }
+
+    // During combat, gently include the local enemy cluster. Only nearby units
+    // contribute, preventing enemies in another floor from pulling the view.
+    let enemyY=0;
+    let enemyCount=0;
+    for(const enemy of state.enemies){
+      const cy=enemy.y+enemy.h*.5;
+      if(Math.abs(cy-playerY)>360) continue;
+      enemyY+=cy;
+      enemyCount++;
+    }
+
+    if(enemyCount){
+      const clusterY=enemyY/enemyCount;
+      const enemyDelta=clamp(clusterY-playerY,-250,250);
+      focusY+=enemyDelta*.16;
+    }
+
+    let anchor=.59;
+    if(p.vy<-90) anchor=.65;
+    else if(p.vy>150) anchor=.52;
+    if(state.gravityJump) anchor=.61;
+
     const desired=clamp(
-      p.y+p.h*.5-H*.60+lookAhead,
+      focusY-H*anchor,
       0,
       Math.max(0,WORLD_H-H)
     );
@@ -1156,9 +1238,19 @@
       return;
     }
 
-    const alpha=1-Math.exp(-dt*5.2);
+    const distance=Math.abs(state.camera.targetY-state.camera.y);
+    const followRate=distance>150 ? 6.4 : 4.6;
+    const alpha=1-Math.exp(-dt*followRate);
     const previousY=state.camera.y;
-    state.camera.y=lerp(state.camera.y,state.camera.targetY,alpha);
+
+    // A small dead zone prevents micro-jitter while idling on a platform.
+    if(distance>2.5){
+      state.camera.y=lerp(
+        state.camera.y,
+        state.camera.targetY,
+        alpha
+      );
+    }
 
     if(aim.source==='mouse'){
       aim.y+=state.camera.y-previousY;
@@ -2394,11 +2486,32 @@
     for(const solid of staticSolids){
       const raised=solid===doorPlatform;
       const wall=solid.kind==='wall';
-      const zoneBlock=solid.kind==='block';
+      const bulkhead=solid.kind==='bulkhead';
+      const zoneBlock=solid.kind==='block' || bulkhead;
 
       const g=ctx.createLinearGradient(solid.x,solid.y,solid.x,solid.y+Math.max(solid.h,24));
-      g.addColorStop(0,raised?'#303b57':zoneBlock?'#1c2740':wall?'#2a334b':'#27324b');
-      g.addColorStop(1,solid.kind==='floor'?'#111a2d':zoneBlock?'#111a2d':'#172139');
+      g.addColorStop(
+        0,
+        raised
+          ? '#303b57'
+          : bulkhead
+            ? '#18243a'
+            : zoneBlock
+              ? '#1c2740'
+              : wall
+                ? '#2a334b'
+                : '#27324b'
+      );
+      g.addColorStop(
+        1,
+        solid.kind==='floor'
+          ? '#111a2d'
+          : bulkhead
+            ? '#0d1526'
+            : zoneBlock
+              ? '#111a2d'
+              : '#172139'
+      );
       ctx.fillStyle=g;
       ctx.fillRect(solid.x,solid.y,solid.w,solid.h);
 
@@ -2415,20 +2528,38 @@
           ctx.fillRect(solid.x+5,y,solid.w-10,3);
         }
       }else if(zoneBlock){
-        // Massive architectural blocks define tunnel edges but keep the playable lane open.
         ctx.fillRect(solid.x,solid.y,solid.w,3);
 
-        if(solid.faces?.includes('left')) ctx.fillRect(solid.x,solid.y,3,solid.h);
-        if(solid.faces?.includes('right')) ctx.fillRect(solid.x+solid.w-3,solid.y,3,solid.h);
+        if(bulkhead){
+          ctx.fillStyle='rgba(114,213,233,.16)';
+          ctx.fillRect(solid.x,solid.y,solid.w,2);
+          ctx.fillRect(solid.x,solid.y+solid.h-2,solid.w,2);
 
-        for(let y=solid.y+18;y<solid.y+solid.h-10;y+=32){
-          ctx.fillStyle='rgba(114,213,233,.075)';
-          ctx.fillRect(solid.x+10,y,Math.max(0,solid.w-20),2);
-        }
+          if(solid.h>solid.w){
+            ctx.fillStyle='rgba(255,255,255,.035)';
+            for(let y=solid.y+12;y<solid.y+solid.h-10;y+=26){
+              ctx.fillRect(solid.x+5,y,Math.max(0,solid.w-10),2);
+            }
+          }else{
+            ctx.fillStyle='rgba(255,255,255,.04)';
+            for(let x=solid.x+14;x<solid.x+solid.w-10;x+=34){
+              ctx.fillRect(x,solid.y+6,16,Math.max(0,solid.h-12));
+            }
+          }
+        }else{
+          // Massive architectural blocks frame the main vertical shaft.
+          if(solid.faces?.includes('left')) ctx.fillRect(solid.x,solid.y,3,solid.h);
+          if(solid.faces?.includes('right')) ctx.fillRect(solid.x+solid.w-3,solid.y,3,solid.h);
 
-        ctx.fillStyle='rgba(255,255,255,.035)';
-        for(let x=solid.x+16;x<solid.x+solid.w-12;x+=38){
-          ctx.fillRect(x,solid.y+10,14,Math.max(0,solid.h-20));
+          for(let y=solid.y+18;y<solid.y+solid.h-10;y+=32){
+            ctx.fillStyle='rgba(114,213,233,.075)';
+            ctx.fillRect(solid.x+10,y,Math.max(0,solid.w-20),2);
+          }
+
+          ctx.fillStyle='rgba(255,255,255,.035)';
+          for(let x=solid.x+16;x<solid.x+solid.w-12;x+=38){
+            ctx.fillRect(x,solid.y+10,14,Math.max(0,solid.h-20));
+          }
         }
       }else{
         ctx.fillRect(solid.x,solid.y,solid.w,2);
@@ -2454,6 +2585,65 @@
       ctx.fillRect(48,y-54,8,58);
       ctx.fillRect(W-56,y-54,8,58);
     }
+    ctx.restore();
+  };
+
+  const drawRoomSections = () => {
+    ctx.save();
+
+    for(const room of roomSections){
+      const zone=state.combatZones.find(item=>item.id===room.id);
+      const active=zone?.triggered && !zone?.cleared;
+      const cleared=!!zone?.cleared;
+
+      const g=ctx.createLinearGradient(room.x,room.y,room.x,room.y+room.h);
+      g.addColorStop(
+        0,
+        active
+          ? 'rgba(55,31,39,.42)'
+          : cleared
+            ? 'rgba(17,48,58,.25)'
+            : 'rgba(18,29,50,.40)'
+      );
+      g.addColorStop(1,'rgba(7,13,27,.18)');
+      ctx.fillStyle=g;
+      ctx.fillRect(room.x,room.y,room.w,room.h);
+
+      // Recessed back-wall panels make the enclosure read as a room.
+      ctx.strokeStyle=active
+        ? 'rgba(255,135,88,.13)'
+        : cleared
+          ? 'rgba(114,213,233,.12)'
+          : 'rgba(140,160,205,.08)';
+      ctx.lineWidth=1;
+
+      for(let x=room.x+26;x<room.x+room.w-20;x+=72){
+        ctx.strokeRect(x,room.y+18,54,room.h-36);
+      }
+
+      // Entry/exit apertures are intentionally brighter than the shell.
+      for(const aperture of [room.entry,room.exit]){
+        ctx.fillStyle='rgba(114,213,233,.045)';
+        ctx.fillRect(aperture.x,aperture.y,aperture.w,aperture.h);
+
+        ctx.strokeStyle='rgba(114,213,233,.18)';
+        ctx.setLineDash([5,5]);
+        ctx.strokeRect(
+          aperture.x+.5,
+          aperture.y+.5,
+          aperture.w-1,
+          aperture.h-1
+        );
+        ctx.setLineDash([]);
+      }
+
+      ctx.fillStyle=active
+        ? 'rgba(255,160,118,.42)'
+        : 'rgba(194,211,239,.22)';
+      ctx.font='700 7px monospace';
+      ctx.fillText(room.label,room.x+18,room.y+14);
+    }
+
     ctx.restore();
   };
 
@@ -3377,6 +3567,7 @@
     ctx.save();
     ctx.translate(0,-state.camera.y);
     drawLevelSections();
+    drawRoomSections();
     drawFillerSections();
     drawSolids();
     drawStartZone();
