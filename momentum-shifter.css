@@ -6901,3 +6901,271 @@ html[lang="it"] .ms-easter-hint__en{
     grid-template-columns:repeat(3,minmax(68px,1fr));
   }
 }
+
+
+/* v46 — larger, lighter gameplay interface */
+.ms-game-hud{
+  left:22px;
+  right:82px;
+  top:18px;
+  display:grid;
+  grid-template-columns:
+    minmax(132px,.9fr)
+    minmax(148px,1.05fr)
+    minmax(112px,.78fr)
+    minmax(128px,.88fr)
+    minmax(142px,.98fr)
+    minmax(104px,.7fr)
+    minmax(108px,.72fr);
+  gap:0;
+  padding:10px 14px;
+  border:1px solid rgba(114,213,233,.12);
+  border-radius:24px;
+  background:rgba(7,13,27,.58);
+  box-shadow:0 14px 34px rgba(0,0,0,.16);
+  backdrop-filter:blur(12px);
+}
+
+.ms-game-brand,
+.ms-game-stat{
+  min-height:62px;
+  padding:8px 16px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  backdrop-filter:none;
+}
+
+.ms-game-stat{
+  position:relative;
+}
+
+.ms-game-stat::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:13px;
+  bottom:13px;
+  width:1px;
+  background:linear-gradient(to bottom,transparent,rgba(114,213,233,.16),transparent);
+}
+
+.ms-game-brand{
+  align-items:center;
+  gap:8px;
+}
+
+.ms-game-brand span{
+  font-size:11px;
+}
+
+.ms-game-brand strong{
+  font-size:20px;
+}
+
+.ms-game-stat small{
+  margin-bottom:7px;
+  font-size:8px;
+  letter-spacing:.10em;
+}
+
+.ms-game-stat strong{
+  font-size:17px;
+}
+
+.ms-game-ammo-pips{
+  gap:5px;
+}
+
+.ms-game-ammo-pips i{
+  width:6px;
+  height:22px;
+}
+
+.ms-game-lives{
+  gap:12px;
+  min-height:26px;
+}
+
+.ms-game-lives i{
+  width:18px;
+  height:18px;
+  flex-basis:18px;
+}
+
+.ms-game-gravity-charges{
+  gap:7px;
+}
+
+.ms-game-gravity-charges i{
+  width:20px;
+  height:20px;
+}
+
+.ms-game-stat--gravity strong{
+  font-size:12px;
+}
+
+.ms-game-timeflow{
+  min-height:26px;
+  gap:5px;
+}
+
+.ms-game-timeflow i{
+  width:5px;
+  height:19px;
+}
+
+.ms-game-timeflow i:nth-child(2){height:14px}
+.ms-game-timeflow i:nth-child(3){height:23px}
+.ms-game-timeflow i:nth-child(4){height:12px}
+.ms-game-timeflow i:nth-child(5){height:18px}
+
+.ms-game-return-bar{
+  height:4px;
+  margin-top:8px;
+}
+
+.ms-game-pause{
+  top:21px;
+  right:20px;
+  width:50px;
+  height:50px;
+  border-color:rgba(255,255,255,.13);
+  background:rgba(7,13,27,.62);
+  box-shadow:0 10px 28px rgba(0,0,0,.16);
+}
+
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-hud{
+    left:max(10px,env(safe-area-inset-left));
+    right:max(64px,calc(env(safe-area-inset-right) + 58px));
+    top:max(10px,env(safe-area-inset-top));
+    grid-template-columns:repeat(3,minmax(90px,1fr));
+    gap:0;
+    padding:7px 9px;
+    border-radius:20px;
+    max-width:min(650px,calc(100vw - 78px));
+  }
+
+  .ms-game-brand{
+    display:none;
+  }
+
+  .ms-game-stat{
+    min-height:48px;
+    padding:6px 10px;
+  }
+
+  .ms-game-stat::before{
+    top:9px;
+    bottom:9px;
+  }
+
+  .ms-game-stat small{
+    margin-bottom:5px;
+    font-size:6.5px;
+  }
+
+  .ms-game-stat strong{
+    font-size:13px;
+  }
+
+  .ms-game-ammo-pips i{
+    width:5px;
+    height:17px;
+  }
+
+  .ms-game-lives{
+    gap:8px;
+    min-height:20px;
+  }
+
+  .ms-game-lives i{
+    width:14px;
+    height:14px;
+    flex-basis:14px;
+  }
+
+  .ms-game-gravity-charges i{
+    width:15px;
+    height:15px;
+  }
+
+  .ms-game-mobile-controls{
+    padding-bottom:max(18px,env(safe-area-inset-bottom));
+  }
+
+  .ms-game-stick{
+    width:124px;
+    height:124px;
+  }
+
+  .ms-game-stick i{
+    width:48px;
+    height:48px;
+    margin:-24px 0 0 -24px;
+  }
+
+  .ms-game-left-actions .is-fire{
+    width:64px;
+    height:64px;
+    min-width:64px;
+    min-height:64px;
+  }
+
+  .ms-game-left-actions .is-jump{
+    width:68px;
+    height:68px;
+    min-width:68px;
+    min-height:68px;
+  }
+
+  .ms-game-action-button svg{
+    width:30px;
+    height:30px;
+  }
+}
+
+@media (pointer:coarse) and (orientation:landscape){
+  .ms-game-hud{
+    grid-template-columns:
+      minmax(118px,1.05fr)
+      minmax(94px,.8fr)
+      minmax(96px,.82fr)
+      minmax(120px,.95fr)
+      minmax(82px,.62fr)
+      minmax(84px,.66fr);
+    max-width:none;
+  }
+
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(280px,1.35fr) minmax(138px,.65fr);
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-hud{
+    grid-template-columns:repeat(3,minmax(76px,1fr));
+  }
+
+  .ms-game-stick{
+    width:102px;
+    height:102px;
+  }
+
+  .ms-game-stick i{
+    width:40px;
+    height:40px;
+    margin:-20px 0 0 -20px;
+  }
+
+  .ms-game-left-actions .is-fire,
+  .ms-game-left-actions .is-jump{
+    width:54px;
+    height:54px;
+    min-width:54px;
+    min-height:54px;
+  }
+}
