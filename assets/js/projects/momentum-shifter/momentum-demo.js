@@ -2097,6 +2097,35 @@
     ctx.moveTo(cx,cy-3);
     ctx.lineTo(cx+ax*16,cy-3+ay*16);
     ctx.stroke();
+
+    if(p.stunned>0 && !state.playerDead){
+      ctx.save();
+      ctx.strokeStyle='rgba(185,140,255,.92)';
+      ctx.lineWidth=1.5;
+      const pulse=Math.sin(performance.now()*.018)*2;
+
+      for(const offset of [-1,1]){
+        ctx.beginPath();
+        ctx.moveTo(cx+offset*10,cy-18);
+        ctx.lineTo(cx+offset*(15+pulse),cy-8);
+        ctx.lineTo(cx+offset*9,cy+1);
+        ctx.lineTo(cx+offset*(14-pulse),cy+11);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    if(state.playerDead){
+      const fade=clamp(state.deathTimer/PLAYER_DEATH_DELAY,0,1);
+      ctx.save();
+      ctx.globalAlpha=.25+.45*fade;
+      ctx.strokeStyle='rgba(114,213,233,.70)';
+      ctx.beginPath();
+      ctx.arc(cx,cy,18+(1-fade)*22,0,Math.PI*2);
+      ctx.stroke();
+      ctx.restore();
+    }
   };
 
 
