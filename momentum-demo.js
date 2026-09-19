@@ -480,7 +480,7 @@
       returnEl.textContent=nextReturn===null
         ? 'READY'
         : nextReturn<=0
-          ? 'RETURNING'
+          ? '0.0s'
           : nextReturn.toFixed(1)+'s';
     }
 
