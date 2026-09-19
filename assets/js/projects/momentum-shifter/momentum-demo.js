@@ -63,6 +63,7 @@
     { x:900, y:1505, w:160, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
     { x:460, y:1435, w:250, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
     { x:355, y:1348, w:180, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
+    { x:210, y:1314, w:132, h:14, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
 
     // Arena B: route crosses back left without an occluding wall.
     { x:120, y:1260, w:330, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
@@ -74,6 +75,7 @@
     { x:790, y:900, w:400, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
     { x:1000, y:805, w:150, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
     { x:570, y:705, w:240, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
+    { x:505, y:620, w:155, h:15, kind:'platform', gravity:true, faces:['top','bottom'], zone:5 },
 
     // Final ascent: short, fully visible chain into the gate.
     { x:430, y:540, w:220, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:5 },
@@ -111,6 +113,21 @@
     { top:690, bottom:1050, label:'04 · ARENA C' },
     { top:350, bottom:690, label:'05 · FINAL ASCENT' },
     { top:170, bottom:350, label:'06 · EXIT' }
+  ];
+
+  const fillerSections = [
+    {
+      type:'tunnel',
+      x:168, y:1278, w:430, h:118,
+      label:'SERVICE TUNNEL',
+      ribs:7
+    },
+    {
+      type:'tunnel',
+      x:405, y:570, w:455, h:145,
+      label:'MAINTENANCE LINK',
+      ribs:8
+    }
   ];
 
   const checkpointConfig = {
@@ -238,7 +255,7 @@
       timer:.6,
       triggered:false,
       cleared:false,
-      coreGranted:false
+      coreDropped:false
     })),
     checkpoint:{...checkpointConfig,active:false},
     camera:{ y:Math.max(0,floorY-H+70), targetY:Math.max(0,floorY-H+70) },
@@ -349,7 +366,7 @@
       timer:.6,
       triggered:false,
       cleared:false,
-      coreGranted:false
+      coreDropped:false
     }));
   };
 
@@ -511,29 +528,46 @@
       enemy.webTargetX=enemy.x;
       enemy.webTargetY=enemy.y;
       enemy.webRepath=0;
+      enemy.webPath=[];
+      enemy.webPathIndex=0;
     }
 
     state.enemies.push(enemy);
     return enemy;
   };
 
-  const grantZoneCore = zone => {
-    if(zone.coreGranted) return;
+  const dropZoneCore = zone => {
+    if(zone.coreDropped) return;
 
-    zone.coreGranted=true;
-    if(state.cores<3){
-      state.cores++;
-      state.message=`ZONE ${zone.id} CLEARED · CORE +1`;
-    }else{
-      state.score+=180;
-      state.message=`ZONE ${zone.id} CLEARED · CORE FULL +180`;
-    }
+    zone.coreDropped=true;
+
+    const dropX=clamp(
+      zone.zoneX+zone.zoneW*.5-10,
+      zone.minX+12,
+      zone.maxX-32
+    );
+
+    state.pickups.push({
+      type:'core',
+      sourceZone:zone.id,
+      x:dropX,
+      y:zone.zoneY+24,
+      w:20,
+      h:20,
+      phase:0,
+      falling:true,
+      vy:-30,
+      gravity:650,
+      landY:zone.platformY-20
+    });
+
+    state.message=`ZONE ${zone.id} CLEARED · CORE DROPPED`;
     state.messageTimer=1.8;
 
     state.enemyEffects.push({
       type:'coreReward',
-      x:zone.zoneX+zone.zoneW*.5,
-      y:zone.platformY-30,
+      x:dropX+10,
+      y:zone.zoneY+34,
       age:0,
       duration:.72,
       radius:58
@@ -577,7 +611,7 @@
           if(zone.remaining===0){
             zone.cleared=true;
             state.score+=250;
-            grantZoneCore(zone);
+            dropZoneCore(zone);
           }
         }
       }
@@ -987,6 +1021,32 @@
 
     if(aim.source==='mouse'){
       aim.y+=state.camera.y-previousY;
+    }
+  };
+
+  const updatePickups = (dt,scale) => {
+    const step=dt*scale;
+
+    for(const pickup of state.pickups){
+      if(!pickup.falling) continue;
+
+      pickup.vy+=pickup.gravity*step;
+      pickup.y+=pickup.vy*step;
+
+      if(pickup.y>=pickup.landY){
+        pickup.y=pickup.landY;
+        pickup.vy=0;
+        pickup.falling=false;
+
+        state.enemyEffects.push({
+          type:'coreReward',
+          x:pickup.x+pickup.w*.5,
+          y:pickup.y+pickup.h*.5,
+          age:0,
+          duration:.42,
+          radius:30
+        });
+      }
     }
   };
 
@@ -1640,6 +1700,8 @@
       for(const solid of staticSolids){
         if(circleRect(x,y,3,solid)) return false;
       }
+
+      if(state.door.active && circleRect(x,y,3,state.door)) return false;
     }
 
     return true;
@@ -1655,6 +1717,153 @@
     );
   };
 
+  const webcasterPositionBlocked = (enemy,x,y) => {
+    const margin=4;
+    const body={x,y,w:enemy.w,h:enemy.h};
+
+    for(const solid of staticSolids){
+      const expanded={
+        x:solid.x-margin,
+        y:solid.y-margin,
+        w:solid.w+margin*2,
+        h:solid.h+margin*2
+      };
+      if(rectHit(body,expanded)) return true;
+    }
+
+    if(state.door.active){
+      const expandedDoor={
+        x:state.door.x-margin,
+        y:state.door.y-margin,
+        w:state.door.w+margin*2,
+        h:state.door.h+margin*2
+      };
+      if(rectHit(body,expandedDoor)) return true;
+    }
+
+    return false;
+  };
+
+  const buildWebcasterPath = (enemy,targetX,targetY) => {
+    const nav=enemy.backWall;
+    if(!nav) return [];
+
+    const step=24;
+    const cols=Math.max(1,Math.floor((nav.w-enemy.w)/step)+1);
+    const rows=Math.max(1,Math.floor((nav.h-enemy.h)/step)+1);
+
+    const nodes=[];
+    for(let gy=0;gy<rows;gy++){
+      for(let gx=0;gx<cols;gx++){
+        const x=clamp(nav.x+gx*step,nav.x,nav.x+nav.w-enemy.w);
+        const y=clamp(nav.y+gy*step,nav.y,nav.y+nav.h-enemy.h);
+        nodes.push({
+          gx,gy,x,y,
+          blocked:webcasterPositionBlocked(enemy,x,y)
+        });
+      }
+    }
+
+    const nodeAt=(gx,gy)=>
+      gx<0||gy<0||gx>=cols||gy>=rows
+        ? null
+        : nodes[gy*cols+gx];
+
+    const nearestWalkable=(x,y)=>{
+      let best=null;
+      let bestDist=Infinity;
+      for(const node of nodes){
+        if(node.blocked) continue;
+        const d=(node.x-x)*(node.x-x)+(node.y-y)*(node.y-y);
+        if(d<bestDist){
+          best=node;
+          bestDist=d;
+        }
+      }
+      return best;
+    };
+
+    const start=nearestWalkable(enemy.x,enemy.y);
+    const goal=nearestWalkable(targetX,targetY);
+    if(!start || !goal) return [];
+
+    const key=node=>node.gx+','+node.gy;
+    const open=[start];
+    const openKeys=new Set([key(start)]);
+    const came=new Map();
+    const gScore=new Map([[key(start),0]]);
+    const fScore=new Map([[key(start),Math.hypot(goal.gx-start.gx,goal.gy-start.gy)]]);
+    const dirs=[
+      [1,0],[-1,0],[0,1],[0,-1],
+      [1,1],[1,-1],[-1,1],[-1,-1]
+    ];
+
+    while(open.length){
+      let bestIndex=0;
+      for(let i=1;i<open.length;i++){
+        const ai=fScore.get(key(open[i])) ?? Infinity;
+        const bi=fScore.get(key(open[bestIndex])) ?? Infinity;
+        if(ai<bi) bestIndex=i;
+      }
+
+      const current=open.splice(bestIndex,1)[0];
+      const currentKey=key(current);
+      openKeys.delete(currentKey);
+
+      if(current===goal){
+        const path=[];
+        let cursor=current;
+        let cursorKey=currentKey;
+
+        while(cursor){
+          path.push({x:cursor.x,y:cursor.y});
+          const previousKey=came.get(cursorKey);
+          if(!previousKey) break;
+          const [pgx,pgy]=previousKey.split(',').map(Number);
+          cursor=nodeAt(pgx,pgy);
+          cursorKey=previousKey;
+        }
+
+        path.reverse();
+        if(path.length && Math.hypot(path[0].x-enemy.x,path[0].y-enemy.y)<10){
+          path.shift();
+        }
+        return path;
+      }
+
+      for(const [dx,dy] of dirs){
+        const neighbor=nodeAt(current.gx+dx,current.gy+dy);
+        if(!neighbor || neighbor.blocked) continue;
+
+        if(dx!==0 && dy!==0){
+          const sideA=nodeAt(current.gx+dx,current.gy);
+          const sideB=nodeAt(current.gx,current.gy+dy);
+          if(!sideA || !sideB || sideA.blocked || sideB.blocked) continue;
+        }
+
+        const neighborKey=key(neighbor);
+        const stepCost=(dx!==0 && dy!==0)?1.414:1;
+        const tentative=(gScore.get(currentKey) ?? Infinity)+stepCost;
+
+        if(tentative >= (gScore.get(neighborKey) ?? Infinity)) continue;
+
+        came.set(neighborKey,currentKey);
+        gScore.set(neighborKey,tentative);
+        fScore.set(
+          neighborKey,
+          tentative+Math.hypot(goal.gx-neighbor.gx,goal.gy-neighbor.gy)
+        );
+
+        if(!openKeys.has(neighborKey)){
+          open.push(neighbor);
+          openKeys.add(neighborKey);
+        }
+      }
+    }
+
+    return [];
+  };
+
   const findWebcasterFiringPoint = enemy => {
     const nav=enemy.backWall;
     const p=state.player;
@@ -1666,10 +1875,11 @@
     const tooFar=currentDistance>330;
 
     const offsets=[
-      [-260,-72],[-220,-26],[-190,34],
-      [190,-72],[220,-26],[260,34],
-      [-150,-98],[150,-98],
-      [-118,72],[118,72]
+      [-270,-76],[-235,-30],[-200,34],
+      [200,-76],[235,-30],[270,34],
+      [-160,-104],[160,-104],
+      [-130,70],[130,70],
+      [0,-112]
     ];
 
     const candidates=[
@@ -1679,8 +1889,8 @@
 
     if(tooFar){
       candidates.push({
-        cx:lerp(ex,px,.72),
-        cy:lerp(ey,py,.72)
+        cx:lerp(ex,px,.78),
+        cy:lerp(ey,py,.78)
       });
     }
 
@@ -1697,31 +1907,39 @@
         nav.y+enemy.h*.5,
         nav.y+nav.h-enemy.h*.5
       );
+      const x=cx-enemy.w*.5;
+      const y=cy-enemy.h*.5;
+
+      if(webcasterPositionBlocked(enemy,x,y)) continue;
+
+      const path=buildWebcasterPath(enemy,x,y);
+      const alreadyThere=Math.hypot(x-enemy.x,y-enemy.y)<12;
+      if(!alreadyThere && path.length===0) continue;
 
       const playerDistance=Math.hypot(px-cx,py-cy);
-      const moveDistance=Math.hypot(cx-ex,cy-ey);
       const clear=enemyShotLineClear(cx,cy,px,py);
+      const pathDistance=path.reduce((total,node,index)=>{
+        const prev=index===0
+          ? {x:enemy.x,y:enemy.y}
+          : path[index-1];
+        return total+Math.hypot(node.x-prev.x,node.y-prev.y);
+      },0);
 
-      const preferred=tooFar ? 235 : 215;
+      const preferred=tooFar ? 220 : 205;
       const rangePenalty=Math.abs(playerDistance-preferred);
-      const tooClosePenalty=playerDistance<125 ? (125-playerDistance)*2.6 : 0;
-      const tooFarPenalty=playerDistance>315 ? (playerDistance-315)*3.4 : 0;
-      const sightPenalty=clear ? 0 : 850;
-      const movementPenalty=moveDistance*.13;
+      const tooClosePenalty=playerDistance<120 ? (120-playerDistance)*3 : 0;
+      const tooFarPenalty=playerDistance>310 ? (playerDistance-310)*4 : 0;
+      const sightPenalty=clear ? 0 : 760;
+      const pathPenalty=pathDistance*.08;
       const score=
         sightPenalty+
         rangePenalty+
         tooClosePenalty+
         tooFarPenalty+
-        movementPenalty;
+        pathPenalty;
 
       if(!best || score<best.score){
-        best={
-          x:cx-enemy.w*.5,
-          y:cy-enemy.h*.5,
-          clear,
-          score
-        };
+        best={x,y,clear,score,path};
       }
     }
 
@@ -1743,24 +1961,50 @@
 
     enemy.webRepath=Math.max(0,(enemy.webRepath||0)-dt*scale);
 
-    if(enemy.webRepath<=0 || tooFar || lostSight){
+    const pathFinished=
+      !enemy.webPath ||
+      enemy.webPathIndex>=enemy.webPath.length;
+
+    if(enemy.webRepath<=0 || tooFar || lostSight || pathFinished){
       const target=findWebcasterFiringPoint(enemy);
       if(target){
         enemy.webTargetX=target.x;
         enemy.webTargetY=target.y;
+        enemy.webPath=target.path || [];
+        enemy.webPathIndex=0;
       }
-      enemy.webRepath=tooFar || lostSight ? .16 : .42;
+      enemy.webRepath=tooFar || lostSight ? .18 : .46;
     }
 
-    const dx=enemy.webTargetX-enemy.x;
-    const dy=enemy.webTargetY-enemy.y;
+    let waypoint=null;
+    if(enemy.webPath && enemy.webPathIndex<enemy.webPath.length){
+      waypoint=enemy.webPath[enemy.webPathIndex];
+    }else{
+      waypoint={x:enemy.webTargetX,y:enemy.webTargetY};
+    }
+
+    const dx=waypoint.x-enemy.x;
+    const dy=waypoint.y-enemy.y;
     const len=Math.hypot(dx,dy);
 
-    if(len>2){
-      const chaseMultiplier=tooFar ? 1.48 : 1;
+    if(len<5){
+      if(enemy.webPath && enemy.webPathIndex<enemy.webPath.length){
+        enemy.webPathIndex++;
+      }
+    }else{
+      const chaseMultiplier=tooFar ? 1.52 : 1;
       const move=Math.min(len,enemy.speed*chaseMultiplier*dt*scale);
-      enemy.x+=dx/len*move;
-      enemy.y+=dy/len*move;
+      const nx=enemy.x+dx/len*move;
+      const ny=enemy.y+dy/len*move;
+
+      if(!webcasterPositionBlocked(enemy,nx,ny)){
+        enemy.x=nx;
+        enemy.y=ny;
+      }else{
+        enemy.webPath=[];
+        enemy.webPathIndex=0;
+        enemy.webRepath=0;
+      }
     }
 
     enemy.x=clamp(enemy.x,nav.x,nav.x+nav.w-enemy.w);
@@ -2069,6 +2313,59 @@
       ctx.fillRect(48,y-54,8,58);
       ctx.fillRect(W-56,y-54,8,58);
     }
+    ctx.restore();
+  };
+
+  const drawFillerSections = () => {
+    ctx.save();
+
+    for(const section of fillerSections){
+      const x=section.x;
+      const y=section.y;
+      const w=section.w;
+      const h=section.h;
+
+      const g=ctx.createLinearGradient(x,y,x,y+h);
+      g.addColorStop(0,'rgba(20,31,54,.82)');
+      g.addColorStop(1,'rgba(8,16,31,.68)');
+      ctx.fillStyle=g;
+      ctx.fillRect(x,y,w,h);
+
+      ctx.strokeStyle='rgba(114,213,233,.18)';
+      ctx.lineWidth=2;
+      ctx.strokeRect(x+.5,y+.5,w-1,h-1);
+
+      ctx.fillStyle='rgba(114,213,233,.08)';
+      ctx.fillRect(x,y+14,w,3);
+      ctx.fillRect(x,y+h-17,w,3);
+
+      const ribs=Math.max(3,section.ribs||6);
+      for(let i=1;i<ribs;i++){
+        const rx=x+(w/ribs)*i;
+        ctx.fillStyle='rgba(114,213,233,.055)';
+        ctx.fillRect(rx-2,y+16,4,h-32);
+      }
+
+      // Recessed pipes/cable trays sell the tunnel without adding collision.
+      ctx.strokeStyle='rgba(244,215,92,.16)';
+      ctx.lineWidth=3;
+      ctx.beginPath();
+      ctx.moveTo(x+24,y+28);
+      ctx.lineTo(x+w-28,y+28);
+      ctx.stroke();
+
+      ctx.strokeStyle='rgba(121,108,240,.18)';
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.moveTo(x+28,y+h-30);
+      ctx.lineTo(x+w-24,y+h-30);
+      ctx.stroke();
+
+      ctx.fillStyle='rgba(210,224,246,.24)';
+      ctx.font='700 7px monospace';
+      ctx.fillText(section.label,x+16,y+12);
+    }
+
     ctx.restore();
   };
 
@@ -2813,7 +3110,17 @@
     for(const p of state.pickups){
       p.phase+=.04;
       const cx=p.x+p.w/2;
-      const cy=p.y+p.h/2+Math.sin(p.phase)*3;
+      const bob=p.falling ? 0 : Math.sin(p.phase)*3;
+      const cy=p.y+p.h/2+bob;
+
+      if(p.falling){
+        ctx.strokeStyle='rgba(244,215,92,.18)';
+        ctx.lineWidth=1.5;
+        ctx.beginPath();
+        ctx.moveTo(cx,cy-18);
+        ctx.lineTo(cx,cy-7);
+        ctx.stroke();
+      }
 
       ctx.beginPath();
       ctx.arc(cx,cy,9,0,Math.PI*2);
@@ -2821,8 +3128,10 @@
       ctx.fill();
 
       ctx.beginPath();
-      ctx.arc(cx,cy,15,0,Math.PI*2);
-      ctx.strokeStyle='rgba(244,215,92,.32)';
+      ctx.arc(cx,cy,p.falling?17:15,0,Math.PI*2);
+      ctx.strokeStyle=p.falling
+        ? 'rgba(244,215,92,.52)'
+        : 'rgba(244,215,92,.32)';
       ctx.stroke();
     }
   };
@@ -2910,6 +3219,7 @@
     ctx.save();
     ctx.translate(0,-state.camera.y);
     drawLevelSections();
+    drawFillerSections();
     drawSolids();
     drawStartZone();
     drawCheckpoint();
@@ -2970,6 +3280,7 @@
       updateCombatZones(dt,scale);
       updateDoor(dt,scale);
       updateEnemies(dt,scale);
+      updatePickups(dt,scale);
       updateBullets(dt,scale);
     }
 
