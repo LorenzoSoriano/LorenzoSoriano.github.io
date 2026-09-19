@@ -27,6 +27,8 @@
   const BULLET_RETURN_SECONDS = 10;
   const GRAVITY_MAX_CHARGES = 3;
   const GRAVITY_RECHARGE_SECONDS = 3;
+  const COYOTE_TIME_SECONDS = .13;
+  const MAX_NORMAL_JUMPS = 2;
 
   const input = {
     left:false,right:false,up:false,down:false,
@@ -213,7 +215,9 @@
       facing:1, invuln:0,
       surface:'floor',
       attachedSolid:null,
-      attachedFace:null
+      attachedFace:null,
+      jumpsRemaining:MAX_NORMAL_JUMPS,
+      coyote:COYOTE_TIME_SECONDS
     },
     door:{
       id:'final',
@@ -264,7 +268,9 @@
     Object.assign(state.player,{
       x:74, y:floorY-38, vx:0, vy:0,
       grounded:true, facing:1, invuln:1.0,
-      surface:'floor', attachedSolid:null, attachedFace:null
+      surface:'floor', attachedSolid:null, attachedFace:null,
+      jumpsRemaining:MAX_NORMAL_JUMPS,
+      coyote:COYOTE_TIME_SECONDS
     });
     state.gravityJump=null;
 
@@ -540,36 +546,54 @@
   };
 
   const jump = () => {
-    if(!state.active || state.won || state.gravityJump || !state.player.grounded) return;
+    if(!state.active || state.won || state.gravityJump) return;
 
     const p=state.player;
+    const groundedJump=p.grounded || p.coyote>0;
+    const airJump=!groundedJump && p.jumpsRemaining>0;
+
+    if(!groundedJump && !airJump) return;
 
     if(p.surface==='left' || p.surface==='right'){
       const outward=p.surface==='left' ? -1 : 1;
       p.x+=outward*9;
-      p.vx=outward*220;
-      p.vy=-300;
+      p.vx=outward*235;
+      p.vy=-325;
       p.grounded=false;
       p.surface='air';
       p.attachedSolid=null;
       p.attachedFace=null;
+      p.coyote=0;
+      p.jumpsRemaining=1;
       state.actionPulse=.22;
       return;
     }
 
     if(p.surface==='bottom'){
       p.y+=9;
-      p.vy=300;
+      p.vy=325;
       p.grounded=false;
       p.surface='air';
       p.attachedSolid=null;
       p.attachedFace=null;
+      p.coyote=0;
+      p.jumpsRemaining=1;
       state.actionPulse=.22;
       return;
     }
 
-    p.vy=-450;
+    if(groundedJump){
+      p.vy=-450;
+      p.jumpsRemaining=Math.max(0,p.jumpsRemaining-1);
+    }else{
+      // Second jump: slightly softer than the base jump, but strong enough to redirect a fall.
+      p.vy=-420;
+      p.jumpsRemaining=Math.max(0,p.jumpsRemaining-1);
+      state.flash=Math.max(state.flash,.05);
+    }
+
     p.grounded=false;
+    p.coyote=0;
     p.surface='air';
     p.attachedSolid=null;
     p.attachedFace=null;
@@ -844,6 +868,8 @@
         p.grounded=true;
         p.surface=g.target.face==='top' ? 'floor' : g.target.face;
         p.attachedSolid=g.target.solid;
+        p.jumpsRemaining=MAX_NORMAL_JUMPS;
+        p.coyote=COYOTE_TIME_SECONDS;
         p.attachedFace=g.target.face;
         state.gravityJump=null;
         checkPlayerProgress();
@@ -862,6 +888,8 @@
       p.vx=0;
       p.vy=0;
       p.grounded=true;
+      p.jumpsRemaining=MAX_NORMAL_JUMPS;
+      p.coyote=COYOTE_TIME_SECONDS;
       p.x=p.surface==='left' ? solid.x-p.w : solid.x+solid.w;
 
       if(Math.abs(tangent)>.06){
@@ -882,6 +910,8 @@
       p.vx=0;
       p.vy=0;
       p.grounded=true;
+      p.jumpsRemaining=MAX_NORMAL_JUMPS;
+      p.coyote=COYOTE_TIME_SECONDS;
       p.y=solid.y+solid.h;
 
       if(Math.abs(axis)>.06){
@@ -913,6 +943,18 @@
     resolvePlayerY(p.vy*dt);
 
     p.x=clamp(p.x,4,W-p.w-4);
+
+    if(p.grounded){
+      p.coyote=COYOTE_TIME_SECONDS;
+      p.jumpsRemaining=MAX_NORMAL_JUMPS;
+    }else{
+      p.coyote=Math.max(0,p.coyote-dt);
+      // Once coyote time expires after simply walking off an edge,
+      // preserve only the true mid-air jump.
+      if(p.coyote<=0 && p.jumpsRemaining===MAX_NORMAL_JUMPS){
+        p.jumpsRemaining=1;
+      }
+    }
 
     if(p.grounded){
       p.surface='floor';

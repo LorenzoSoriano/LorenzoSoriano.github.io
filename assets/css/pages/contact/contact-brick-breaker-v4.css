@@ -1,4 +1,4 @@
-@import url('contact-brick-breaker.css?v=3');
+@import url('/assets/css/pages/contact/contact-brick-breaker.css?v=3');
 
 /* V4: pointer-lock HUD, active power-ups and cleaner footer hint. */
 body[data-page="contact"] .footer{

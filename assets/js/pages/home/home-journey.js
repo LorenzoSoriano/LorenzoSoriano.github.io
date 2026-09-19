@@ -4,7 +4,7 @@
   if (!document.querySelector('link[data-home-thread-styles]')) {
     const threadStyles = document.createElement('link');
     threadStyles.rel = 'stylesheet';
-    threadStyles.href = 'home-thread.css?v=7';
+    threadStyles.href = 'assets/css/pages/home/home-thread.css?v=7';
     threadStyles.dataset.homeThreadStyles = 'true';
     document.head.appendChild(threadStyles);
   }

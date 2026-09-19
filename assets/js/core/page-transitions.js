@@ -2,7 +2,7 @@
   if (!document.querySelector('link[data-zoom-resilience]')) {
     const zoomStyles = document.createElement('link');
     zoomStyles.rel = 'stylesheet';
-    zoomStyles.href = 'zoom-resilience.css?v=1';
+    zoomStyles.href = 'assets/css/core/zoom-resilience.css?v=1';
     zoomStyles.dataset.zoomResilience = 'true';
     document.head.appendChild(zoomStyles);
   }
@@ -286,7 +286,7 @@
 
     const ignored=source=>{
       const name=new URL(source,targetUrl.href).pathname.split('/').pop()||'';
-      return /^script\.js(?:$|\?)/.test(name)||/^page-transitions\.js(?:$|\?)/.test(name)||name==='translations.js';
+      return /^script\.js(?:$|\?)/.test(name)||/^page-transitions\.js(?:$|\?)/.test(name)||name==='assets/js/i18n/translations.js';
     };
 
     const translationSources=sources.filter(src=>!ignored(src)&&/translations[^/]*\.js/i.test(new URL(src,targetUrl.href).pathname));

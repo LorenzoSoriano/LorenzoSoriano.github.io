@@ -1,13 +1,13 @@
 /* Themed full-page backgrounds for the main portfolio sections. */
-body[data-page="home"] main{--section-page-bg:url('assets/images/page-backgrounds/home-background.png')}
-body[data-page="game-dev"] .page-main{--section-page-bg:url('assets/images/page-backgrounds/game-development-background.png')}
-body[data-page="3d-art"] .page-main{--section-page-bg:url('assets/images/page-backgrounds/3d-art-background.png')}
-body[data-page="game-design"] .page-main{--section-page-bg:url('assets/images/page-backgrounds/game-design-background.png')}
-body[data-page="narrative"] .page-main{--section-page-bg:url('assets/images/page-backgrounds/narrative-design-background.png')}
-body[data-page="production"] .page-main{--section-page-bg:url('assets/images/page-backgrounds/game-production-background.png')}
-body[data-page="thesis"] .page-main{--section-page-bg:url('assets/images/page-backgrounds/thesis-background.png')}
-body[data-page="about"] .page-main{--section-page-bg:url('assets/images/page-backgrounds/about-background.png')}
-body[data-page="contact"] .page-main{--section-page-bg:url('assets/images/page-backgrounds/contact-background.png')}
+body[data-page="home"] main{--section-page-bg:url('/assets/images/page-backgrounds/home-background.png')}
+body[data-page="game-dev"] .page-main{--section-page-bg:url('/assets/images/page-backgrounds/game-development-background.png')}
+body[data-page="3d-art"] .page-main{--section-page-bg:url('/assets/images/page-backgrounds/3d-art-background.png')}
+body[data-page="game-design"] .page-main{--section-page-bg:url('/assets/images/page-backgrounds/game-design-background.png')}
+body[data-page="narrative"] .page-main{--section-page-bg:url('/assets/images/page-backgrounds/narrative-design-background.png')}
+body[data-page="production"] .page-main{--section-page-bg:url('/assets/images/page-backgrounds/game-production-background.png')}
+body[data-page="thesis"] .page-main{--section-page-bg:url('/assets/images/page-backgrounds/thesis-background.png')}
+body[data-page="about"] .page-main{--section-page-bg:url('/assets/images/page-backgrounds/about-background.png')}
+body[data-page="contact"] .page-main{--section-page-bg:url('/assets/images/page-backgrounds/contact-background.png')}
 
 body[data-page="home"] main,
 body[data-page="game-dev"] .page-main,
