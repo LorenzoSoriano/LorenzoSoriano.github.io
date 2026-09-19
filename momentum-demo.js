@@ -1162,10 +1162,11 @@
     for(const solid of staticSolids){
       const raised=solid===doorPlatform;
       const wall=solid.kind==='wall';
+      const zoneBlock=solid.kind==='block';
 
       const g=ctx.createLinearGradient(solid.x,solid.y,solid.x,solid.y+Math.max(solid.h,24));
-      g.addColorStop(0,raised?'#303b57':wall?'#2a334b':'#27324b');
-      g.addColorStop(1,solid.kind==='floor'?'#111a2d':'#172139');
+      g.addColorStop(0,raised?'#303b57':zoneBlock?'#1c2740':wall?'#2a334b':'#27324b');
+      g.addColorStop(1,solid.kind==='floor'?'#111a2d':zoneBlock?'#111a2d':'#172139');
       ctx.fillStyle=g;
       ctx.fillRect(solid.x,solid.y,solid.w,solid.h);
 
@@ -1180,6 +1181,22 @@
         for(let y=solid.y+12;y<solid.y+solid.h-8;y+=24){
           ctx.fillStyle='rgba(114,213,233,.20)';
           ctx.fillRect(solid.x+5,y,solid.w-10,3);
+        }
+      }else if(zoneBlock){
+        // Massive architectural blocks define tunnel edges but keep the playable lane open.
+        ctx.fillRect(solid.x,solid.y,solid.w,3);
+
+        if(solid.faces?.includes('left')) ctx.fillRect(solid.x,solid.y,3,solid.h);
+        if(solid.faces?.includes('right')) ctx.fillRect(solid.x+solid.w-3,solid.y,3,solid.h);
+
+        for(let y=solid.y+18;y<solid.y+solid.h-10;y+=32){
+          ctx.fillStyle='rgba(114,213,233,.075)';
+          ctx.fillRect(solid.x+10,y,Math.max(0,solid.w-20),2);
+        }
+
+        ctx.fillStyle='rgba(255,255,255,.035)';
+        for(let x=solid.x+16;x<solid.x+solid.w-12;x+=38){
+          ctx.fillRect(x,solid.y+10,14,Math.max(0,solid.h-20));
         }
       }else{
         ctx.fillRect(solid.x,solid.y,solid.w,2);
