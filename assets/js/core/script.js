@@ -1,37 +1,37 @@
 const graphicsStyles = document.createElement('link');
 graphicsStyles.rel = 'stylesheet';
-graphicsStyles.href = 'graphics-overrides.css?v=9';
+graphicsStyles.href = 'assets/css/core/graphics-overrides.css?v=10';
 document.head.appendChild(graphicsStyles);
 
 const timelineStyles = document.createElement('link');
 timelineStyles.rel = 'stylesheet';
-timelineStyles.href = 'about-timeline.css?v=3';
+timelineStyles.href = 'assets/css/pages/about/about-timeline.css?v=4';
 document.head.appendChild(timelineStyles);
 
 const typographyStyles = document.createElement('link');
 typographyStyles.rel = 'stylesheet';
-typographyStyles.href = 'typography.css?v=3';
+typographyStyles.href = 'assets/css/core/typography.css?v=4';
 document.head.appendChild(typographyStyles);
 
 const backgroundLayerStyles = document.createElement('link');
 backgroundLayerStyles.rel = 'stylesheet';
-backgroundLayerStyles.href = 'background-layer.css?v=2';
+backgroundLayerStyles.href = 'assets/css/core/background-layer.css?v=3';
 document.head.appendChild(backgroundLayerStyles);
 
 const sectionThemeStyles = document.createElement('link');
 sectionThemeStyles.rel = 'stylesheet';
-sectionThemeStyles.href = 'section-themes.css?v=1';
+sectionThemeStyles.href = 'assets/css/core/section-themes.css?v=4';
 document.head.appendChild(sectionThemeStyles);
 
 const bubbleResponsiveStyles = document.createElement('link');
 bubbleResponsiveStyles.rel = 'stylesheet';
-bubbleResponsiveStyles.href = 'bubble-responsive.css?v=2';
+bubbleResponsiveStyles.href = 'assets/css/components/bubble-responsive.css?v=3';
 bubbleResponsiveStyles.dataset.bubbleResponsive = 'true';
 document.head.appendChild(bubbleResponsiveStyles);
 
 const uiAudioStyles = document.createElement('link');
 uiAudioStyles.rel = 'stylesheet';
-uiAudioStyles.href = 'ui-audio.css?v=1';
+uiAudioStyles.href = 'assets/css/components/ui-audio.css?v=2';
 uiAudioStyles.dataset.uiAudio = 'true';
 document.head.appendChild(uiAudioStyles);
 
