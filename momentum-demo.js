@@ -929,7 +929,6 @@
 
   const stopBullet = b => {
     b.mode='stuck';
-    b.wait=0;
     b.dx=0;
     b.dy=0;
   };
@@ -1674,6 +1673,56 @@
     ctx.stroke();
   };
 
+
+  const drawGravityChargesUnderPlayer = () => {
+    const p=state.player;
+    const cx=p.x+p.w*.5;
+    const y=p.y+p.h+13;
+    const size=7;
+    const gap=5;
+    const total=state.gravityCharges.max*size+(state.gravityCharges.max-1)*gap;
+    const startX=cx-total*.5;
+
+    ctx.save();
+
+    for(let index=0;index<state.gravityCharges.max;index++){
+      const x=startX+index*(size+gap);
+      const active=index<state.gravityCharges.current;
+      const rechargeIndex=index-state.gravityCharges.current;
+      const recharge=!active && rechargeIndex>=0
+        ? state.gravityCharges.queue[rechargeIndex]
+        : null;
+      const progress=recharge
+        ? clamp(1-recharge.remaining/state.gravityCharges.recharge,0,1)
+        : 0;
+
+      ctx.save();
+      ctx.translate(x+size*.5,y+size*.5);
+      ctx.rotate(Math.PI*.25);
+
+      ctx.strokeStyle=active
+        ? 'rgba(159,234,248,.92)'
+        : 'rgba(159,234,248,.30)';
+      ctx.lineWidth=1.25;
+      ctx.strokeRect(-size*.5,-size*.5,size,size);
+
+      if(active || progress>0){
+        const fill=size*(active?1:progress);
+        ctx.beginPath();
+        ctx.rect(-size*.5,size*.5-fill,size,fill);
+        ctx.clip();
+        ctx.fillStyle=active
+          ? 'rgba(114,213,233,.90)'
+          : 'rgba(114,213,233,.55)';
+        ctx.fillRect(-size*.5,-size*.5,size,size);
+      }
+
+      ctx.restore();
+    }
+
+    ctx.restore();
+  };
+
   const drawEnemies = () => {
     for(const e of state.enemies){
       ctx.fillStyle=e.color;
@@ -1851,6 +1900,7 @@
     drawBullets();
     drawGravityPreview();
     drawPlayer();
+    drawGravityChargesUnderPlayer();
     drawCrosshair();
     ctx.restore();
 
