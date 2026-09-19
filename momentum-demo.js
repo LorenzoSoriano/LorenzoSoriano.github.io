@@ -86,7 +86,7 @@
     { x:385, y:540, w:22, h:165, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
 
     // Architectural masses frame shafts/corridors while leaving the centre line open.
-    { x:0, y:1840, w:88, h:240, kind:'block', gravity:true, faces:['top','right'], zone:1 },
+    { x:0, y:1840, w:50, h:240, kind:'block', gravity:true, faces:['top','right'], zone:1 },
     { x:1205, y:1660, w:75, h:150, kind:'block', gravity:true, faces:['top','left'], zone:2 },
     { x:0, y:1395, w:105, h:160, kind:'block', gravity:true, faces:['top','right'], zone:2 },
     { x:1170, y:1110, w:110, h:165, kind:'block', gravity:true, faces:['top','left'], zone:3 },
@@ -1350,24 +1350,25 @@
 
   const drawLevelSections = () => {
     ctx.save();
+
     for(const section of levelSections){
-      ctx.fillStyle='rgba(114,213,233,.12)';
-      ctx.fillRect(32,section.y-22,150,34);
+      const y=section.y;
 
-      ctx.fillStyle='rgba(114,213,233,.82)';
-      ctx.font='700 10px monospace';
-      ctx.fillText('SECTION '+section.number,44,section.y-7);
+      ctx.fillStyle='rgba(114,213,233,.035)';
+      ctx.fillRect(28,y-3,W-56,6);
 
-      ctx.fillStyle='rgba(255,255,255,.28)';
-      ctx.font='700 9px monospace';
-      ctx.fillText(section.title,44,section.y+7);
-
-      ctx.strokeStyle='rgba(114,213,233,.12)';
+      ctx.strokeStyle='rgba(114,213,233,.07)';
+      ctx.lineWidth=1;
       ctx.beginPath();
-      ctx.moveTo(190,section.y-5);
-      ctx.lineTo(W-34,section.y-5);
+      ctx.moveTo(46,y);
+      ctx.lineTo(W-46,y);
       ctx.stroke();
+
+      ctx.fillStyle='rgba(114,213,233,.14)';
+      ctx.fillRect(46,y-9,3,18);
+      ctx.fillRect(W-49,y-9,3,18);
     }
+
     ctx.restore();
   };
 
@@ -1409,36 +1410,22 @@
     for(const zone of state.combatZones){
       const triggered=zone.triggered;
       const cleared=zone.cleared;
-      const pulse=.12+Math.sin(performance.now()*.005+zone.id.charCodeAt(0))*.025;
+      const pulse=.06+Math.sin(performance.now()*.004+zone.id.charCodeAt(0))*.015;
 
       ctx.fillStyle=cleared
-        ? 'rgba(114,213,233,.035)'
+        ? 'rgba(114,213,233,.018)'
         : triggered
-          ? 'rgba(255,123,88,'+Math.max(.045,pulse)+')'
-          : 'rgba(255,123,88,.018)';
+          ? 'rgba(255,123,88,'+Math.max(.025,pulse)+')'
+          : 'rgba(255,255,255,.008)';
       ctx.fillRect(zone.zoneX,zone.zoneY,zone.zoneW,zone.zoneH);
 
       ctx.strokeStyle=cleared
-        ? 'rgba(114,213,233,.28)'
+        ? 'rgba(114,213,233,.16)'
         : triggered
-          ? 'rgba(255,123,88,.52)'
-          : 'rgba(255,123,88,.18)';
-      ctx.setLineDash(cleared ? [5,7] : [9,7]);
+          ? 'rgba(255,123,88,.24)'
+          : 'rgba(255,255,255,.045)';
+      ctx.lineWidth=1;
       ctx.strokeRect(zone.zoneX+.5,zone.zoneY+.5,zone.zoneW-1,zone.zoneH-1);
-      ctx.setLineDash([]);
-
-      ctx.fillStyle=cleared?'#72d5e9':'#ff9366';
-      ctx.font='700 9px monospace';
-      ctx.fillText(zone.label,zone.zoneX+10,zone.zoneY+16);
-
-      ctx.fillStyle='rgba(255,255,255,.34)';
-      ctx.font='700 8px monospace';
-      const status=cleared
-        ? 'CLEARED'
-        : triggered
-          ? String(zone.remaining).padStart(2,'0')+' HOSTILES'
-          : 'ARMED';
-      ctx.fillText(status,zone.zoneX+10,zone.zoneY+31);
     }
 
     ctx.restore();
@@ -1494,7 +1481,7 @@
     for(const zone of state.combatZones){
       const status=zone.cleared ? 'cleared' : zone.triggered ? 'active' : 'idle';
       zone.spawnPoints?.forEach((x,index)=>{
-        drawPad(x,zone.platformY,status,'S'+(index+1));
+        drawPad(x,zone.platformY,status,null);
       });
     }
 
@@ -1506,7 +1493,7 @@
         : 'cleared';
 
     state.door.spawnPoints?.forEach((x,index)=>{
-      drawPad(x,state.door.platformY,finalStatus,'G'+(index+1));
+      drawPad(x,state.door.platformY,finalStatus,null);
     });
 
     ctx.restore();
