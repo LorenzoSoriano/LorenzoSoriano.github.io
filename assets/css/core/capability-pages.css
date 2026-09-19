@@ -10,7 +10,7 @@ body[data-page="production"] .capability-hero{
 }
 .capability-hero-copy>p:last-of-type{max-width:720px}
 .capability-hero-art{position:relative;min-height:390px;overflow:hidden;border:1px solid rgba(121,108,240,.14);border-radius:30px;background:radial-gradient(circle at 76% 24%,rgba(244,215,92,.36),transparent 25%),radial-gradient(circle at 24% 74%,rgba(94,160,240,.26),transparent 30%),linear-gradient(145deg,#fff,rgba(238,242,157,.25));box-shadow:var(--shadow)}
-.capability-hero-art::before{content:"";position:absolute;inset:12%;background:url('assets/images/accent-graphic.png') center/contain no-repeat;opacity:.9}
+.capability-hero-art::before{content:"";position:absolute;inset:12%;background:url('../../images/accent-graphic.png') center/contain no-repeat;opacity:.9}
 .capability-hero-art::after{position:absolute;right:26px;bottom:18px;font:700 13px/1.2 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
 body[data-page="narrative"] .capability-hero-art::after{content:"Story / Space / Interaction"}
 body[data-page="communication"] .capability-hero-art::after{content:"Clarity / Team / Iteration"}
