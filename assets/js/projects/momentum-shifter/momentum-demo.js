@@ -27,6 +27,8 @@
   const BULLET_RETURN_SECONDS = 10;
   const GRAVITY_MAX_CHARGES = 3;
   const GRAVITY_RECHARGE_SECONDS = 3;
+  const COYOTE_TIME_SECONDS = 0.14;
+  const EXTRA_AIR_JUMPS = 1;
 
   const input = {
     left:false,right:false,up:false,down:false,
@@ -211,6 +213,8 @@
       x:74, y:floorY-38, w:26, h:38,
       vx:0, vy:0, grounded:true,
       facing:1, invuln:0,
+      coyoteTimer:COYOTE_TIME_SECONDS,
+      airJumps:EXTRA_AIR_JUMPS,
       surface:'floor',
       attachedSolid:null,
       attachedFace:null
@@ -264,6 +268,8 @@
     Object.assign(state.player,{
       x:74, y:floorY-38, vx:0, vy:0,
       grounded:true, facing:1, invuln:1.0,
+      coyoteTimer:COYOTE_TIME_SECONDS,
+      airJumps:EXTRA_AIR_JUMPS,
       surface:'floor', attachedSolid:null, attachedFace:null
     });
     state.gravityJump=null;
@@ -540,16 +546,18 @@
   };
 
   const jump = () => {
-    if(!state.active || state.won || state.gravityJump || !state.player.grounded) return;
+    if(!state.active || state.won || state.gravityJump) return;
 
     const p=state.player;
+    const groundedJump=p.grounded || p.coyoteTimer>0;
 
     if(p.surface==='left' || p.surface==='right'){
       const outward=p.surface==='left' ? -1 : 1;
       p.x+=outward*9;
       p.vx=outward*220;
-      p.vy=-300;
+      p.vy=-325;
       p.grounded=false;
+      p.coyoteTimer=0;
       p.surface='air';
       p.attachedSolid=null;
       p.attachedFace=null;
@@ -559,8 +567,9 @@
 
     if(p.surface==='bottom'){
       p.y+=9;
-      p.vy=300;
+      p.vy=320;
       p.grounded=false;
+      p.coyoteTimer=0;
       p.surface='air';
       p.attachedSolid=null;
       p.attachedFace=null;
@@ -568,12 +577,28 @@
       return;
     }
 
-    p.vy=-450;
+    if(groundedJump){
+      p.vy=-450;
+      p.grounded=false;
+      p.coyoteTimer=0;
+      p.surface='air';
+      p.attachedSolid=null;
+      p.attachedFace=null;
+      state.actionPulse=.18;
+      return;
+    }
+
+    if(p.airJumps<=0) return;
+
+    p.airJumps--;
+    p.vy=-420;
     p.grounded=false;
+    p.coyoteTimer=0;
     p.surface='air';
     p.attachedSolid=null;
     p.attachedFace=null;
-    state.actionPulse=.18;
+    state.actionPulse=.22;
+    navigator.vibrate?.(7);
   };
 
   const lineClear = (sx,sy,tx,ty,targetSolid) => {
@@ -842,6 +867,8 @@
         p.vx=0;
         p.vy=0;
         p.grounded=true;
+        p.coyoteTimer=COYOTE_TIME_SECONDS;
+        p.airJumps=EXTRA_AIR_JUMPS;
         p.surface=g.target.face==='top' ? 'floor' : g.target.face;
         p.attachedSolid=g.target.solid;
         p.attachedFace=g.target.face;
@@ -862,6 +889,8 @@
       p.vx=0;
       p.vy=0;
       p.grounded=true;
+      p.coyoteTimer=COYOTE_TIME_SECONDS;
+      p.airJumps=EXTRA_AIR_JUMPS;
       p.x=p.surface==='left' ? solid.x-p.w : solid.x+solid.w;
 
       if(Math.abs(tangent)>.06){
@@ -882,6 +911,8 @@
       p.vx=0;
       p.vy=0;
       p.grounded=true;
+      p.coyoteTimer=COYOTE_TIME_SECONDS;
+      p.airJumps=EXTRA_AIR_JUMPS;
       p.y=solid.y+solid.h;
 
       if(Math.abs(axis)>.06){
@@ -915,10 +946,13 @@
     p.x=clamp(p.x,4,W-p.w-4);
 
     if(p.grounded){
+      p.coyoteTimer=COYOTE_TIME_SECONDS;
+      p.airJumps=EXTRA_AIR_JUMPS;
       p.surface='floor';
       p.attachedSolid=null;
       p.attachedFace=null;
     }else{
+      p.coyoteTimer=Math.max(0,p.coyoteTimer-dt);
       p.surface='air';
     }
 
