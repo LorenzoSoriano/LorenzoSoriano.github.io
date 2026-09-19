@@ -1873,7 +1873,7 @@ body[data-page="legend"] .legend-progression-system--sheet{
 /* v15 — illustrated card artwork only; existing stats and UI remain unchanged */
 body[data-page="legend"] .legend-cover-card__scene{
   background:
-    url("assets/images/legend-of-the-west/cover-card-scene.svg")
+    url("../../../images/legend-of-the-west/cover-card-scene.svg")
     center center / cover no-repeat!important;
 }
 body[data-page="legend"] .legend-cover-card__ground,
@@ -1884,7 +1884,7 @@ body[data-page="legend"] .legend-cover-card__character{
 
 body[data-page="legend"] .legend-stat-card__portrait{
   background:
-    url("assets/images/legend-of-the-west/character-card-scene.svg")
+    url("../../../images/legend-of-the-west/character-card-scene.svg")
     center center / cover no-repeat!important;
 }
 body[data-page="legend"] .legend-stat-card__portrait::after{
