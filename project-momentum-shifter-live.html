@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="assets/css/core/styles.css?v=5">
   <link rel="stylesheet" href="assets/css/core/refinements.css">
   <link rel="stylesheet" href="assets/css/core/portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="assets/css/projects/momentum-shifter/momentum-shifter.css?v=50">
+  <link rel="stylesheet" href="assets/css/projects/momentum-shifter/momentum-shifter.css?v=51">
 <link rel="stylesheet" href="assets/css/core/project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -677,33 +677,32 @@
             <path d="M4 14h9l4-4h3v7h-3l-4-2H8l-2 4H4z"></path>
             <circle cx="19" cy="8" r="2"></circle>
           </svg>
+          <span class="ms-game-action-label" data-i18n="momentum.demoFireButton">FIRE</span>
         </button>
 
-        <div class="ms-game-jump-pair" aria-label="Jump controls">
-          <button type="button" class="ms-game-action-button is-gravity-jump" data-game-gravity-jump aria-label="Gravity jump">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="7"></circle>
-              <path d="M12 3v4M12 17v4M3 12h4M17 12h4"></path>
-              <path d="M9 12l3-3 3 3-3 3z"></path>
-            </svg>
-            <span class="ms-game-action-label" data-i18n="momentum.demoGravityButton">GRAV</span>
-          </button>
-
-          <button type="button" class="ms-game-action-button is-jump" data-game-jump aria-label="Jump">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 20V6"></path>
-              <path d="M7 11l5-5 5 5"></path>
-              <path d="M5 21h14"></path>
-            </svg>
-            <span class="ms-game-action-label" data-i18n="momentum.demoJumpButton">JUMP</span>
-          </button>
-        </div>
+        <button type="button" class="ms-game-action-button is-gravity-jump" data-game-gravity-jump aria-label="Gravity jump">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="7"></circle>
+            <path d="M12 3v4M12 17v4M3 12h4M17 12h4"></path>
+            <path d="M9 12l3-3 3 3-3 3z"></path>
+          </svg>
+          <span class="ms-game-action-label" data-i18n="momentum.demoGravityButton">GRAV</span>
+        </button>
       </div>
     </div>
 
     <div class="ms-game-right-controls">
+      <button type="button" class="ms-game-action-button is-jump ms-game-right-jump" data-game-jump aria-label="Jump">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 20V6"></path>
+          <path d="M7 11l5-5 5 5"></path>
+          <path d="M5 21h14"></path>
+        </svg>
+        <span class="ms-game-action-label" data-i18n="momentum.demoJumpButton">JUMP</span>
+      </button>
+
       <div class="ms-game-stick-wrap ms-game-stick-wrap--aim">
-        <div class="ms-game-stick ms-game-stick--aim" data-game-aim-stick aria-label="Aim; release to fire">
+        <div class="ms-game-stick ms-game-stick--aim" data-game-aim-stick aria-label="Aim for attack and gravity jump">
           <svg class="ms-game-stick__icon" viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="7"></circle>
             <circle cx="12" cy="12" r="2"></circle>
@@ -727,7 +726,7 @@
 
 <script src="assets/i18n/translations.js"></script>
 <script src="assets/i18n/translations-expanded.js?v=1"></script>
-<script src="assets/i18n/translations-momentum.js?v=30"></script>
-<script src="assets/i18n/translations-project-facts.js?v=1"></script><script src="assets/js/projects/momentum-shifter/momentum-infinity.js?v=1"></script><script src="assets/js/projects/momentum-shifter/momentum-level-elements.js?v=1"></script><script src="assets/js/projects/momentum-shifter/momentum-enemy-carousel.js?v=1"></script><script src="assets/js/projects/momentum-shifter/momentum-demo.js?v=27"></script><script src="assets/js/core/script.js?v=3"></script>
+<script src="assets/i18n/translations-momentum.js?v=31"></script>
+<script src="assets/i18n/translations-project-facts.js?v=1"></script><script src="assets/js/projects/momentum-shifter/momentum-infinity.js?v=1"></script><script src="assets/js/projects/momentum-shifter/momentum-level-elements.js?v=1"></script><script src="assets/js/projects/momentum-shifter/momentum-enemy-carousel.js?v=1"></script><script src="assets/js/projects/momentum-shifter/momentum-demo.js?v=28"></script><script src="assets/js/core/script.js?v=3"></script>
 </body>
 </html>

@@ -7664,3 +7664,125 @@ html[lang="it"] .ms-easter-hint__en{
   }
 }
 
+/* v51 — left actions: FIRE + GRAV, right action: JUMP */
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(270px,1.22fr) minmax(230px,.78fr)!important;
+    gap:24px!important;
+  }
+
+  .ms-game-left-controls{
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:flex-start!important;
+    gap:12px!important;
+  }
+
+  .ms-game-left-actions{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    gap:10px!important;
+    padding-bottom:2px!important;
+  }
+
+  .ms-game-jump-pair{
+    display:contents!important;
+  }
+
+  .ms-game-left-actions .is-fire,
+  .ms-game-left-actions .is-gravity-jump{
+    width:58px!important;
+    height:58px!important;
+    min-width:58px!important;
+    min-height:58px!important;
+    margin:0!important;
+    opacity:1!important;
+  }
+
+  .ms-game-left-actions .is-fire{
+    border-color:rgba(244,215,92,.34)!important;
+    color:#ffe875!important;
+    background:rgba(56,47,19,.78)!important;
+  }
+
+  .ms-game-left-actions .is-gravity-jump{
+    border-color:rgba(185,140,255,.42)!important;
+    color:#c9a9ff!important;
+    background:rgba(52,31,72,.78)!important;
+  }
+
+  .ms-game-right-controls{
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:flex-end!important;
+    justify-content:flex-end!important;
+    gap:12px!important;
+    pointer-events:auto!important;
+  }
+
+  .ms-game-right-controls .ms-game-stick-wrap--aim{
+    order:2;
+    margin:0!important;
+  }
+
+  .ms-game-right-jump{
+    order:1;
+    width:64px!important;
+    height:64px!important;
+    min-width:64px!important;
+    min-height:64px!important;
+    margin:0 0 10px 0!important;
+    border-color:rgba(114,213,233,.34)!important;
+    color:#8fe8f7!important;
+    background:rgba(17,44,62,.76)!important;
+  }
+
+  .ms-game-action-label{
+    bottom:-16px!important;
+  }
+}
+
+@media (pointer:coarse) and (orientation:landscape){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(300px,1.25fr) minmax(240px,.75fr)!important;
+  }
+
+  .ms-game-right-controls{
+    padding-right:max(8px,env(safe-area-inset-right));
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-mobile-controls{
+    grid-template-columns:minmax(190px,1.15fr) minmax(160px,.85fr)!important;
+    gap:8px!important;
+  }
+
+  .ms-game-left-actions{
+    gap:7px!important;
+  }
+
+  .ms-game-left-actions .is-fire,
+  .ms-game-left-actions .is-gravity-jump{
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    min-height:48px!important;
+  }
+
+  .ms-game-right-jump{
+    width:52px!important;
+    height:52px!important;
+    min-width:52px!important;
+    min-height:52px!important;
+    margin-bottom:7px!important;
+  }
+
+  .ms-game-action-label{
+    bottom:-13px!important;
+    font-size:6px!important;
+  }
+}
+

@@ -3479,12 +3479,9 @@
     setPaused(false);
   });
 
-  let suppressAimReleaseUntil=0;
-
   jumpButton?.addEventListener('pointerdown',event=>{
     if(!state.active || state.paused) return;
     event.preventDefault();
-    suppressAimReleaseUntil=performance.now()+180;
     jump();
     navigator.vibrate?.(7);
   });
@@ -3492,7 +3489,6 @@
   gravityJumpButton?.addEventListener('pointerdown',event=>{
     if(!state.active || state.paused) return;
     event.preventDefault();
-    suppressAimReleaseUntil=performance.now()+220;
     gravityJump();
     navigator.vibrate?.(10);
   });
@@ -3667,18 +3663,9 @@
     (x,y,mag)=>{
       aimStick?.classList.remove('is-armed');
 
-      if(
-        mag>.18 &&
-        performance.now()>=suppressAimReleaseUntil &&
-        !state.paused
-      ){
-        // Commit the exact release direction before firing so the smoothing
-        // never makes the shot lag behind the player's final thumb position.
-        setAimStickTarget(x,y,mag,true);
-        fireToward(aim.x,aim.y);
-        navigator.vibrate?.(8);
-      }
-
+      // The right stick only defines direction. Fire and gravity jump use
+      // the dedicated left-side buttons, so releasing aim never triggers an action.
+      if(mag>.015) setAimStickTarget(x,y,mag,true);
       aimStickState.active=false;
     },
     {
