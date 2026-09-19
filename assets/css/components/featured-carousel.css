@@ -88,3 +88,25 @@
 .featured-carousel .nolight-media .project-media-image{
   object-position:center;
 }
+
+
+/* v3 — Beyond case-study hero treatment */
+.featured-carousel .beyond-media{
+  background:
+    radial-gradient(circle at 72% 24%,rgba(244,215,92,.38),transparent 25%),
+    radial-gradient(circle at 24% 74%,rgba(94,160,240,.28),transparent 30%),
+    linear-gradient(145deg,#fff,rgba(238,242,157,.22))!important;
+}
+.featured-carousel .beyond-media::after{
+  background:url('../../images/accent-graphic.png') center/contain no-repeat!important;
+  opacity:.9!important;
+}
+.featured-carousel .project-hero-mark{
+  position:absolute;
+  z-index:2;
+  right:24px;
+  bottom:18px;
+  font:800 clamp(56px,7vw,104px)/1 "Space Grotesk",sans-serif;
+  letter-spacing:-.08em;
+  color:rgba(30,36,64,.09);
+}
