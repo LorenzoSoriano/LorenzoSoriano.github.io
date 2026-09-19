@@ -610,32 +610,48 @@
 
   const lineClear = (sx,sy,tx,ty,targetSolid) => {
     const dist=Math.hypot(tx-sx,ty-sy);
-    const steps=Math.max(2,Math.ceil(dist/12));
+    const steps=Math.max(3,Math.ceil(dist/9));
 
     for(let i=1;i<steps;i++){
       const t=i/steps;
       const x=lerp(sx,tx,t);
       const y=lerp(sy,ty,t);
 
-      for(const solid of staticSolids){
-        if(solid===targetSolid) continue;
+      for(const solid of getPlayerSolids()){
+        const leavingCurrentSurface=
+          solid===state.player.attachedSolid &&
+          i<=1;
+
+        if(leavingCurrentSurface) continue;
         if(circleRect(x,y,4,solid)) return false;
       }
     }
+
     return true;
   };
 
   const magneticFacesFor = solid => solid.faces || (solid.kind==='wall' ? ['left','right'] : ['top']);
 
   const getMagneticCandidate = (solid,face,tx,ty,p) => {
-    if(face==='top'){
+    if(face==='top' || face==='bottom'){
       const cx=clamp(tx,solid.x+p.w*.5,solid.x+solid.w-p.w*.5);
+
+      if(face==='top'){
+        return {
+          solid,face,
+          x:cx-p.w*.5,
+          y:solid.y-p.h,
+          cx,
+          cy:solid.y-p.h*.5
+        };
+      }
+
       return {
         solid,face,
         x:cx-p.w*.5,
-        y:solid.y-p.h,
+        y:solid.y+solid.h,
         cx,
-        cy:solid.y-p.h*.5
+        cy:solid.y+solid.h+p.h*.5
       };
     }
 
@@ -695,15 +711,26 @@
   const gravityJump = () => {
     if(!state.active || state.won || state.gravityJump || !state.player.grounded) return;
 
+    if(state.gravityCharges.current<=0){
+      state.message='MAGNETIC CHARGES EMPTY';
+      state.messageTimer=.8;
+      return;
+    }
+
     const target=findGravityTarget(aim.x,aim.y);
     if(!target){
-      state.message='NO MAGNETIC TARGET';
+      state.message='NO VISIBLE MAGNETIC TARGET';
       state.messageTimer=.8;
       return;
     }
 
     const p=state.player;
     const distance=Math.hypot(target.x-p.x,target.y-p.y);
+
+    state.gravityCharges.current--;
+    state.gravityCharges.queue.push({
+      remaining:state.gravityCharges.recharge
+    });
 
     state.gravityJump={
       fromX:p.x,
@@ -722,6 +749,7 @@
     p.attachedSolid=null;
     p.attachedFace=null;
     state.actionPulse=.45;
+    navigator.vibrate?.(10);
   };
 
   const fireToward = (tx,ty) => {
