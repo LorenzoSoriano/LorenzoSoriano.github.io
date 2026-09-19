@@ -31,6 +31,7 @@
   const EXTRA_AIR_JUMPS = 1;
   const PLAYER_DEATH_DELAY = 2.0;
   const DRONE_TRIGGER_RANGE = 58;
+  const DRONE_WINDUP_SECONDS = 0.55;
   const DRONE_EXPLOSION_RANGE = 82;
   const RUMBLER_RUMBLE_RANGE = 190;
   const WEBCASTER_STUN_SECONDS = 1.5;
@@ -426,7 +427,8 @@
       rumble:2.0 + (state.enemyId%3)*.45,
       jumpTimer:1.5 + (state.enemyId%4)*.35,
       jumpState:null,
-      selfDestruct:false
+      selfDestruct:false,
+      selfDestructTimer:0
     };
     if(type==='webcaster'){
       let nearestWall=null;
@@ -1304,6 +1306,16 @@
     p.attachedSolid=null;
     p.attachedFace=null;
     enemy.rumbleFlash=.24;
+
+    state.enemyEffects.push({
+      type:'rumble',
+      x:ex,
+      y:enemy.homeY,
+      age:0,
+      duration:.34,
+      radius:74
+    });
+
     navigator.vibrate?.(18);
     return true;
   };
@@ -1492,14 +1504,27 @@
         const dy=(p.y+p.h*.45)-(enemy.y+enemy.h*.5);
         const len=Math.hypot(dx,dy)||1;
 
-        if(!state.playerDead && len<=DRONE_TRIGGER_RANGE){
-          explodeDrone(enemy);
-          continue;
-        }
+        if(enemy.selfDestruct){
+          enemy.selfDestructTimer-=dt*scale;
+          enemy.phase+=dt*scale*8;
 
-        enemy.x+=dx/len*enemy.speed*dt*scale;
-        enemy.y+=dy/len*enemy.speed*dt*scale;
-        enemy.y+=Math.sin(enemy.phase)*12*dt*scale;
+          if(enemy.selfDestructTimer<=0){
+            explodeDrone(enemy);
+            continue;
+          }
+        }else{
+          if(!state.playerDead && len<=DRONE_TRIGGER_RANGE){
+            enemy.selfDestruct=true;
+            enemy.selfDestructTimer=DRONE_WINDUP_SECONDS;
+            enemy.vx=0;
+            enemy.vy=0;
+            navigator.vibrate?.(10);
+          }else{
+            enemy.x+=dx/len*enemy.speed*dt*scale;
+            enemy.y+=dy/len*enemy.speed*dt*scale;
+            enemy.y+=Math.sin(enemy.phase)*12*dt*scale;
+          }
+        }
       }else if(enemy.type==='webcaster'){
         if(enemy.wall){
           const wall=enemy.wall;
@@ -1615,7 +1640,12 @@
 
       if(!state.playerDead && rectHit(p,enemy)){
         if(enemy.type==='drone'){
-          explodeDrone(enemy);
+          if(!enemy.selfDestruct){
+            enemy.selfDestruct=true;
+            enemy.selfDestructTimer=Math.min(.22,DRONE_WINDUP_SECONDS);
+          }else{
+            enemy.selfDestructTimer=Math.min(enemy.selfDestructTimer,.18);
+          }
         }else if(enemy.type!=='rumbler'){
           playerHit();
         }
@@ -2135,6 +2165,24 @@
       ctx.fillRect(-p.w*.5+4,p.h*.5-2,p.w-8,2);
     }
 
+    if(p.stunned>0){
+      const spark=.55+Math.sin(performance.now()*.045)*.35;
+      ctx.strokeStyle='rgba(185,140,255,'+spark.toFixed(2)+')';
+      ctx.lineWidth=1.5;
+      ctx.beginPath();
+      ctx.moveTo(-p.w*.5-5,-8);
+      ctx.lineTo(-p.w*.5+2,-13);
+      ctx.lineTo(0,-7);
+      ctx.lineTo(5,-14);
+      ctx.lineTo(p.w*.5+5,-8);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(0,0,Math.max(p.w,p.h)*.62,0,Math.PI*2);
+      ctx.strokeStyle='rgba(185,140,255,.32)';
+      ctx.stroke();
+    }
+
     ctx.restore();
 
     const dx=aim.x-cx;
@@ -2240,6 +2288,20 @@
         ctx.fillRect(e.x+10,e.y+7,e.w-20,6);
         ctx.fillRect(e.x-7,e.y+10,7,3);
         ctx.fillRect(e.x+e.w,e.y+10,7,3);
+
+        if(e.selfDestruct){
+          const progress=clamp(1-e.selfDestructTimer/DRONE_WINDUP_SECONDS,0,1);
+          const pulse=5+Math.sin(performance.now()*.028)*2;
+
+          ctx.beginPath();
+          ctx.arc(e.x+e.w*.5,e.y+e.h*.5,14+pulse+progress*4,0,Math.PI*2);
+          ctx.strokeStyle='rgba(255,111,76,'+(0.38+progress*.52).toFixed(2)+')';
+          ctx.lineWidth=2;
+          ctx.stroke();
+
+          ctx.fillStyle='rgba(255,232,117,'+(0.18+progress*.55).toFixed(2)+')';
+          ctx.fillRect(e.x+e.w*.5-2,e.y+3,4,e.h-6);
+        }
       }else if(e.type==='webcaster'){
         ctx.fillRect(e.x+5,e.y+6,e.w-10,4);
         ctx.fillRect(e.x-5,e.y+8,5,2);
@@ -2253,6 +2315,11 @@
         ctx.fillRect(e.x+7,e.y+7,e.w-14,5);
         ctx.fillRect(e.x+4,e.y+e.h-9,8,7);
         ctx.fillRect(e.x+e.w-12,e.y+e.h-9,8,7);
+
+        if((e.rumbleFlash||0)>0){
+          ctx.fillStyle='rgba(255,232,117,.72)';
+          ctx.fillRect(e.x+2,e.y+e.h-6,e.w-4,3);
+        }
       }
 
       if(e.maxHp>1){
@@ -2312,6 +2379,22 @@
         ctx.arc(effect.x,effect.y,radius*.55,0,Math.PI*2);
         ctx.strokeStyle='rgba(255,232,117,.78)';
         ctx.lineWidth=2;
+        ctx.stroke();
+
+        ctx.restore();
+      }else if(effect.type==='rumble'){
+        ctx.save();
+        ctx.globalAlpha=1-t;
+
+        const width=lerp(18,effect.radius,t);
+        ctx.strokeStyle='rgba(255,135,88,.82)';
+        ctx.lineWidth=3;
+        ctx.beginPath();
+        ctx.moveTo(effect.x-width,effect.y-2);
+        ctx.lineTo(effect.x-width*.45,effect.y-10);
+        ctx.lineTo(effect.x,effect.y-3);
+        ctx.lineTo(effect.x+width*.45,effect.y-10);
+        ctx.lineTo(effect.x+width,effect.y-2);
         ctx.stroke();
 
         ctx.restore();
@@ -2409,6 +2492,22 @@
     if(state.flash>0){
       ctx.fillStyle='rgba(255,64,64,.14)';
       ctx.fillRect(0,0,W,H);
+    }
+
+    if(state.playerDead){
+      const progress=1-clamp(state.deathTimer/PLAYER_DEATH_DELAY,0,1);
+      ctx.fillStyle='rgba(5,9,18,'+(0.10+progress*.34).toFixed(2)+')';
+      ctx.fillRect(0,0,W,H);
+
+      ctx.fillStyle='rgba(255,255,255,'+(0.30+progress*.38).toFixed(2)+')';
+      ctx.font='700 9px monospace';
+      ctx.textAlign='center';
+      ctx.fillText(
+        state.pendingFullReset ? 'SYSTEM REWIND' : 'RECALIBRATING',
+        W/2,
+        H/2+64
+      );
+      ctx.textAlign='left';
     }
 
     if(state.messageTimer>0 && state.message){
