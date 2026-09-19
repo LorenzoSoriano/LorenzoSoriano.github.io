@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css?v=3">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=46">
+  <link rel="stylesheet" href="momentum-shifter.css?v=47">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -608,54 +608,17 @@
   <canvas class="ms-game-canvas" data-momentum-game-canvas width="1280" height="720"></canvas>
 
   <div class="ms-game-hud">
-    <div class="ms-game-brand">
-      <span>MOMENTUM</span>
-      <strong>SHIFTER</strong>
+    <div class="ms-game-lives" data-game-cores aria-label="Warp cores">
+      <i></i><i></i><i></i>
     </div>
 
-    <div class="ms-game-stat ms-game-stat--ammo">
-      <small data-i18n="momentum.demoAmmo"></small>
-      <div class="ms-game-ammo-line">
-        <div class="ms-game-ammo-pips" data-game-ammo-pips aria-label="Temporal bullets">
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-        </div>
-        <strong data-game-ammo>6/6</strong>
-      </div>
-    </div>
-
-    <div class="ms-game-stat ms-game-stat--return">
-      <small data-i18n="momentum.demoReturn">RETURN</small>
-      <strong data-game-return>READY</strong>
-      <span class="ms-game-return-bar" aria-hidden="true"><i data-game-return-progress></i></span>
-    </div>
-
-    <div class="ms-game-stat ms-game-stat--lives">
-      <small data-i18n="momentum.demoCores"></small>
-      <div class="ms-game-lives" data-game-cores aria-label="Warp cores">
-        <i></i><i></i><i></i>
-      </div>
-    </div>
-
-    <div class="ms-game-stat ms-game-stat--gravity">
-      <small data-i18n="momentum.demoGravity">GRAVITY</small>
-      <div class="ms-game-gravity-line">
-        <div class="ms-game-gravity-charges" data-game-gravity-charges aria-label="Magnetic jump charges">
-          <i><b></b></i><i><b></b></i><i><b></b></i>
-        </div>
-        <strong data-game-gravity-time>READY</strong>
-      </div>
-    </div>
-
-    <div class="ms-game-stat ms-game-stat--time">
-      <small data-i18n="momentum.demoTime"></small>
-      <div class="ms-game-timeflow" data-game-time aria-label="Time flow">
-        <i></i><i></i><i></i><i></i><i></i>
-      </div>
-    </div>
-
-    <div class="ms-game-stat ms-game-stat--objective">
-      <small data-i18n="momentum.demoDoor"></small>
-      <strong data-game-door>08</strong>
+    <div class="ms-game-ammo-pips" data-game-ammo-pips aria-label="Temporal bullets">
+      <i><em></em></i>
+      <i><em></em></i>
+      <i><em></em></i>
+      <i><em></em></i>
+      <i><em></em></i>
+      <i><em></em></i>
     </div>
   </div>
 
@@ -669,12 +632,31 @@
   </div>
 
   <div class="ms-game-pause-panel" data-game-pause-panel hidden>
-    <button type="button" data-game-resume aria-label="Resume">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
-    </button>
-    <button type="button" data-game-exit aria-label="Exit">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5"></path><path d="M13 8l4 4-4 4"></path><path d="M8 12h9"></path></svg>
-    </button>
+    <div class="ms-game-pause-menu">
+      <div class="ms-game-pause-title">
+        <span>MOMENTUM</span>
+        <strong>SHIFTER</strong>
+      </div>
+
+      <div class="ms-game-pause-actions">
+        <button type="button" data-game-resume aria-label="Resume">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+          <span data-i18n="momentum.demoResume">RESUME</span>
+        </button>
+
+        <a href="contact.html" class="ms-game-pause-contact" data-game-contact>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"></path><path d="M4 7l8 6 8-6"></path></svg>
+          <span data-i18n="momentum.demoContact">CONTACT</span>
+        </a>
+
+        <button type="button" data-game-exit aria-label="Exit">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5"></path><path d="M13 8l4 4-4 4"></path><path d="M8 12h9"></path></svg>
+          <span data-i18n="momentum.demoExitButton">EXIT</span>
+        </button>
+      </div>
+
+      <p class="ms-game-pause-controls" data-i18n="momentum.demoControlsMouse"></p>
+    </div>
   </div>
 
   <div class="ms-game-mobile-controls" data-game-mobile-controls>
@@ -734,7 +716,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=26"></script>
-<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=18"></script><script src="script.js?v=5"></script>
+<script src="translations-momentum.js?v=27"></script>
+<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=19"></script><script src="script.js?v=5"></script>
 </body>
 </html>
