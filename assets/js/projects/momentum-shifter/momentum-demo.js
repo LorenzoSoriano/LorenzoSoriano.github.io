@@ -62,11 +62,13 @@
     { x:735, y:1605, w:445, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
     { x:900, y:1505, w:160, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
     { x:460, y:1435, w:250, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
+    { x:355, y:1348, w:180, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
 
     // Arena B: route crosses back left without an occluding wall.
     { x:120, y:1260, w:330, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
     { x:285, y:1165, w:150, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
     { x:485, y:1085, w:270, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
+    { x:700, y:995, w:165, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
 
     // Arena C: long combat floor with an optional upper underside route.
     { x:790, y:900, w:400, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
@@ -101,6 +103,24 @@
   const levelSections = [
     { y:2020 }, { y:1780 }, { y:1588 }, { y:1245 }, { y:885 }, { y:690 }, { y:350 }
   ];
+
+  const levelBands = [
+    { top:1780, bottom:2080, label:'01 · ENTRY' },
+    { top:1395, bottom:1780, label:'02 · ARENA A' },
+    { top:1050, bottom:1395, label:'03 · ARENA B' },
+    { top:690, bottom:1050, label:'04 · ARENA C' },
+    { top:350, bottom:690, label:'05 · FINAL ASCENT' },
+    { top:170, bottom:350, label:'06 · EXIT' }
+  ];
+
+  const checkpointConfig = {
+    x:585,
+    y:1027,
+    w:96,
+    h:58,
+    respawnX:620,
+    respawnY:1047
+  };
 
   const startZone = {
     x:36,
@@ -217,8 +237,10 @@
       spawned:0,
       timer:.6,
       triggered:false,
-      cleared:false
+      cleared:false,
+      coreGranted:false
     })),
+    checkpoint:{...checkpointConfig,active:false},
     camera:{ y:Math.max(0,floorY-H+70), targetY:Math.max(0,floorY-H+70) },
     player:{
       x:74, y:floorY-38, w:26, h:38,
@@ -277,8 +299,12 @@
   };
 
   const resetPlayer = () => {
+    const spawn=state.checkpoint?.active
+      ? {x:state.checkpoint.respawnX,y:state.checkpoint.respawnY}
+      : {x:74,y:floorY-38};
+
     Object.assign(state.player,{
-      x:74, y:floorY-38, vx:0, vy:0,
+      x:spawn.x, y:spawn.y, vx:0, vy:0,
       grounded:true, facing:1, invuln:1.0,
       stunned:0,
       coyoteTimer:COYOTE_TIME_SECONDS,
@@ -288,12 +314,17 @@
     state.gravityJump=null;
 
     if(state.camera){
-      state.camera.y=Math.max(0,floorY-H+70);
-      state.camera.targetY=state.camera.y;
+      const spawnCameraY=clamp(
+        spawn.y+state.player.h*.5-H*.60,
+        0,
+        Math.max(0,WORLD_H-H)
+      );
+      state.camera.y=spawnCameraY;
+      state.camera.targetY=spawnCameraY;
     }
 
-    aim.x=300;
-    aim.y=floorY-110;
+    aim.x=spawn.x+230;
+    aim.y=spawn.y-72;
     aim.dx=1;
     aim.dy=0;
   };
@@ -317,7 +348,8 @@
       spawned:0,
       timer:.6,
       triggered:false,
-      cleared:false
+      cleared:false,
+      coreGranted:false
     }));
   };
 
@@ -373,6 +405,7 @@
     state.messageTimer=0;
     state.gravityTarget=null;
     state.gravityJump=null;
+    state.checkpoint.active=false;
     resetGravityCharges();
     state.camera.y=Math.max(0,floorY-H+70);
     state.camera.targetY=state.camera.y;
@@ -475,10 +508,36 @@
         nav.y+nav.h-enemy.h
       );
       enemy.backWallOffset=(state.enemyId%2===0?1:-1)*(48+(state.enemyId%3)*14);
+      enemy.webTargetX=enemy.x;
+      enemy.webTargetY=enemy.y;
+      enemy.webRepath=0;
     }
 
     state.enemies.push(enemy);
     return enemy;
+  };
+
+  const grantZoneCore = zone => {
+    if(zone.coreGranted) return;
+
+    zone.coreGranted=true;
+    if(state.cores<3){
+      state.cores++;
+      state.message=`ZONE ${zone.id} CLEARED · CORE +1`;
+    }else{
+      state.score+=180;
+      state.message=`ZONE ${zone.id} CLEARED · CORE FULL +180`;
+    }
+    state.messageTimer=1.8;
+
+    state.enemyEffects.push({
+      type:'coreReward',
+      x:zone.zoneX+zone.zoneW*.5,
+      y:zone.platformY-30,
+      age:0,
+      duration:.72,
+      radius:58
+    });
   };
 
   const removeEnemy = (enemy,{awardScore=true}={}) => {
@@ -518,6 +577,7 @@
           if(zone.remaining===0){
             zone.cleared=true;
             state.score+=250;
+            grantZoneCore(zone);
           }
         }
       }
@@ -932,6 +992,21 @@
 
   const checkPlayerProgress = () => {
     const p=state.player;
+
+    if(!state.checkpoint.active && rectHit(p,state.checkpoint)){
+      state.checkpoint.active=true;
+      state.score+=100;
+      state.message='CHECKPOINT ACTIVE';
+      state.messageTimer=1.5;
+      state.enemyEffects.push({
+        type:'checkpoint',
+        x:state.checkpoint.x+state.checkpoint.w*.5,
+        y:state.checkpoint.y+state.checkpoint.h*.5,
+        age:0,
+        duration:.8,
+        radius:70
+      });
+    }
 
     for(let i=state.pickups.length-1;i>=0;i--){
       const pickup=state.pickups[i];
@@ -1553,32 +1628,137 @@
     }
   };
 
+  const enemyShotLineClear = (sx,sy,tx,ty) => {
+    const dist=Math.hypot(tx-sx,ty-sy);
+    const steps=Math.max(4,Math.ceil(dist/12));
+
+    for(let i=1;i<steps;i++){
+      const t=i/steps;
+      const x=lerp(sx,tx,t);
+      const y=lerp(sy,ty,t);
+
+      for(const solid of staticSolids){
+        if(circleRect(x,y,3,solid)) return false;
+      }
+    }
+
+    return true;
+  };
+
+  const webcasterHasLineOfSight = enemy => {
+    const p=state.player;
+    return enemyShotLineClear(
+      enemy.x+enemy.w*.5,
+      enemy.y+enemy.h*.38,
+      p.x+p.w*.5,
+      p.y+p.h*.45
+    );
+  };
+
+  const findWebcasterFiringPoint = enemy => {
+    const nav=enemy.backWall;
+    const p=state.player;
+    const px=p.x+p.w*.5;
+    const py=p.y+p.h*.45;
+    const ex=enemy.x+enemy.w*.5;
+    const ey=enemy.y+enemy.h*.5;
+    const currentDistance=Math.hypot(px-ex,py-ey);
+    const tooFar=currentDistance>330;
+
+    const offsets=[
+      [-260,-72],[-220,-26],[-190,34],
+      [190,-72],[220,-26],[260,34],
+      [-150,-98],[150,-98],
+      [-118,72],[118,72]
+    ];
+
+    const candidates=[
+      {cx:ex,cy:ey},
+      ...offsets.map(([ox,oy])=>({cx:px+ox,cy:py+oy}))
+    ];
+
+    if(tooFar){
+      candidates.push({
+        cx:lerp(ex,px,.72),
+        cy:lerp(ey,py,.72)
+      });
+    }
+
+    let best=null;
+
+    for(const candidate of candidates){
+      const cx=clamp(
+        candidate.cx,
+        nav.x+enemy.w*.5,
+        nav.x+nav.w-enemy.w*.5
+      );
+      const cy=clamp(
+        candidate.cy,
+        nav.y+enemy.h*.5,
+        nav.y+nav.h-enemy.h*.5
+      );
+
+      const playerDistance=Math.hypot(px-cx,py-cy);
+      const moveDistance=Math.hypot(cx-ex,cy-ey);
+      const clear=enemyShotLineClear(cx,cy,px,py);
+
+      const preferred=tooFar ? 235 : 215;
+      const rangePenalty=Math.abs(playerDistance-preferred);
+      const tooClosePenalty=playerDistance<125 ? (125-playerDistance)*2.6 : 0;
+      const tooFarPenalty=playerDistance>315 ? (playerDistance-315)*3.4 : 0;
+      const sightPenalty=clear ? 0 : 850;
+      const movementPenalty=moveDistance*.13;
+      const score=
+        sightPenalty+
+        rangePenalty+
+        tooClosePenalty+
+        tooFarPenalty+
+        movementPenalty;
+
+      if(!best || score<best.score){
+        best={
+          x:cx-enemy.w*.5,
+          y:cy-enemy.h*.5,
+          clear,
+          score
+        };
+      }
+    }
+
+    return best;
+  };
+
   const moveWebcasterOnBackWall = (enemy,dt,scale) => {
     const nav=enemy.backWall;
     if(!nav) return;
 
     const p=state.player;
-    const pcx=p.x+p.w*.5;
-    const pcy=p.y+p.h*.5;
-    const desiredCx=clamp(
-      pcx+enemy.backWallOffset+Math.sin(enemy.phase*.72)*24,
-      nav.x+enemy.w*.5,
-      nav.x+nav.w-enemy.w*.5
-    );
-    const desiredCy=clamp(
-      pcy-54+Math.cos(enemy.phase*.58+enemy.id)*28,
-      nav.y+enemy.h*.5,
-      nav.y+nav.h-enemy.h*.5
-    );
-
+    const px=p.x+p.w*.5;
+    const py=p.y+p.h*.45;
     const ex=enemy.x+enemy.w*.5;
     const ey=enemy.y+enemy.h*.5;
-    const dx=desiredCx-ex;
-    const dy=desiredCy-ey;
+    const playerDistance=Math.hypot(px-ex,py-ey);
+    const tooFar=playerDistance>330;
+    const lostSight=!webcasterHasLineOfSight(enemy);
+
+    enemy.webRepath=Math.max(0,(enemy.webRepath||0)-dt*scale);
+
+    if(enemy.webRepath<=0 || tooFar || lostSight){
+      const target=findWebcasterFiringPoint(enemy);
+      if(target){
+        enemy.webTargetX=target.x;
+        enemy.webTargetY=target.y;
+      }
+      enemy.webRepath=tooFar || lostSight ? .16 : .42;
+    }
+
+    const dx=enemy.webTargetX-enemy.x;
+    const dy=enemy.webTargetY-enemy.y;
     const len=Math.hypot(dx,dy);
 
-    if(len>3){
-      const move=Math.min(len,enemy.speed*dt*scale);
+    if(len>2){
+      const chaseMultiplier=tooFar ? 1.48 : 1;
+      const move=Math.min(len,enemy.speed*chaseMultiplier*dt*scale);
       enemy.x+=dx/len*move;
       enemy.y+=dy/len*move;
     }
@@ -1629,8 +1809,12 @@
         enemy.trap-=dt*scale;
 
         if(enemy.attack<=0 && !state.playerDead){
-          shootWebcasterSpread(enemy);
-          enemy.attack=2.15;
+          if(webcasterHasLineOfSight(enemy)){
+            shootWebcasterSpread(enemy);
+            enemy.attack=2.15;
+          }else{
+            enemy.attack=.18;
+          }
         }
 
         if(enemy.trap<=0 && !state.playerDead){
@@ -1764,57 +1948,59 @@
     const climb=1-clamp(cam/Math.max(1,WORLD_H-H),0,1);
 
     const g=ctx.createLinearGradient(0,0,0,H);
-    g.addColorStop(0,climb>.68?'#101b32':'#111a30');
-    g.addColorStop(.58,'#0c1427');
-    g.addColorStop(1,'#070e1b');
+    g.addColorStop(0,climb>.68?'#101b32':'#10192d');
+    g.addColorStop(.58,'#0b1426');
+    g.addColorStop(1,'#060d19');
     ctx.fillStyle=g;
     ctx.fillRect(0,0,W,H);
 
-    const glowY=110+climb*80;
-    const glow=ctx.createRadialGradient(1080,glowY,10,1080,glowY,470);
-    glow.addColorStop(0,'rgba(241,132,70,.18)');
-    glow.addColorStop(1,'rgba(241,132,70,0)');
+    const glow=ctx.createRadialGradient(W*.72,120+climb*70,12,W*.72,120+climb*70,520);
+    glow.addColorStop(0,'rgba(244,151,77,.13)');
+    glow.addColorStop(1,'rgba(244,151,77,0)');
     ctx.fillStyle=glow;
-    ctx.fillRect(620,0,660,520);
+    ctx.fillRect(0,0,W,H);
 
-    const farOffset=(cam*.10)%210;
-    for(let i=0;i<18;i++){
-      const x=i*82-30;
-      const towerH=210+(i%5)*56;
-      const base=H+70-farOffset;
-      ctx.fillStyle=i%2?'#10182a':'#0c1424';
-      ctx.fillRect(x,base-towerH,62,towerH+80);
+    // Dark side walls and a brighter central shaft make the playable lane obvious.
+    ctx.fillStyle='rgba(3,8,18,.52)';
+    ctx.fillRect(0,0,72,H);
+    ctx.fillRect(W-72,0,72,H);
 
-      ctx.fillStyle='rgba(244,151,77,.09)';
-      for(let y=base-towerH+26;y<base-24;y+=38){
-        if((i+Math.round(y))%4!==0) ctx.fillRect(x+13,y,5,14);
-      }
+    ctx.fillStyle='rgba(27,40,70,.20)';
+    ctx.fillRect(92,0,W-184,H);
+
+    ctx.strokeStyle='rgba(114,213,233,.10)';
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.moveTo(92,0);ctx.lineTo(92,H);
+    ctx.moveTo(W-92,0);ctx.lineTo(W-92,H);
+    ctx.stroke();
+
+    // Far machinery moves slowly, keeping depth without obscuring gameplay.
+    const farOffset=(cam*.09)%250;
+    ctx.fillStyle='rgba(18,28,50,.62)';
+    for(let y=-250+farOffset;y<H+250;y+=250){
+      ctx.fillRect(38,y,32,155);
+      ctx.fillRect(W-70,y+82,32,155);
+      ctx.fillRect(112,y+34,W-224,5);
     }
 
-    // Interior shaft silhouettes move more slowly than gameplay geometry.
-    const shaftOffset=(cam*.22)%260;
-    ctx.fillStyle='rgba(28,39,65,.52)';
-    for(let y=-260+shaftOffset;y<H+260;y+=260){
-      ctx.fillRect(78,y,16,170);
-      ctx.fillRect(W-98,y+68,16,170);
-      ctx.fillRect(95,y+28,W-190,6);
+    // Maintenance lights establish a vertical rhythm.
+    const lightOffset=-(cam*.14)%120;
+    for(let y=lightOffset-120;y<H+120;y+=120){
+      ctx.fillStyle='rgba(114,213,233,.065)';
+      ctx.fillRect(106,y,W-212,1);
+      ctx.fillStyle='rgba(244,215,92,.14)';
+      ctx.fillRect(109,y-2,20,4);
+      ctx.fillRect(W-129,y-2,20,4);
     }
 
-    ctx.strokeStyle='rgba(114,213,233,.055)';
+    // Very subtle grid only inside the shaft.
+    ctx.strokeStyle='rgba(114,213,233,.035)';
     ctx.lineWidth=1;
-
-    for(let x=0;x<W;x+=40){
+    for(let x=120;x<W-120;x+=80){
       ctx.beginPath();
       ctx.moveTo(x,0);
       ctx.lineTo(x,H);
-      ctx.stroke();
-    }
-
-    const gridOffset=-(cam*.18)%40;
-    for(let y=gridOffset-40;y<H+40;y+=40){
-      ctx.beginPath();
-      ctx.moveTo(0,y);
-      ctx.lineTo(W,y);
       ctx.stroke();
     }
   };
@@ -1889,20 +2075,36 @@
   const drawLevelSections = () => {
     ctx.save();
 
+    for(let i=0;i<levelBands.length;i++){
+      const band=levelBands[i];
+      ctx.fillStyle=i%2===0
+        ? 'rgba(114,213,233,.018)'
+        : 'rgba(121,108,240,.018)';
+      ctx.fillRect(30,band.top,W-60,band.bottom-band.top);
+
+      ctx.fillStyle='rgba(185,205,235,.18)';
+      ctx.font='700 8px monospace';
+      ctx.fillText(band.label,56,band.top+24);
+
+      ctx.fillStyle='rgba(114,213,233,.055)';
+      ctx.fillRect(48,band.top+38,3,Math.max(0,band.bottom-band.top-54));
+      ctx.fillRect(W-51,band.top+38,3,Math.max(0,band.bottom-band.top-54));
+    }
+
     for(const section of levelSections){
       const y=section.y;
 
-      ctx.fillStyle='rgba(114,213,233,.035)';
+      ctx.fillStyle='rgba(114,213,233,.055)';
       ctx.fillRect(28,y-3,W-56,6);
 
-      ctx.strokeStyle='rgba(114,213,233,.07)';
+      ctx.strokeStyle='rgba(114,213,233,.11)';
       ctx.lineWidth=1;
       ctx.beginPath();
       ctx.moveTo(46,y);
       ctx.lineTo(W-46,y);
       ctx.stroke();
 
-      ctx.fillStyle='rgba(114,213,233,.14)';
+      ctx.fillStyle='rgba(114,213,233,.22)';
       ctx.fillRect(46,y-9,3,18);
       ctx.fillRect(W-49,y-9,3,18);
     }
@@ -1937,6 +2139,43 @@
     ctx.lineTo(cx+9,startZone.y+52);
     ctx.strokeStyle='rgba(114,213,233,.52)';
     ctx.stroke();
+
+    ctx.textAlign='left';
+    ctx.restore();
+  };
+
+  const drawCheckpoint = () => {
+    const cp=state.checkpoint;
+    const cx=cp.x+cp.w*.5;
+    const baseY=cp.y+cp.h;
+    const active=cp.active;
+    const pulse=4+Math.sin(performance.now()*.007)*2;
+
+    ctx.save();
+
+    ctx.fillStyle=active?'rgba(114,213,233,.10)':'rgba(244,215,92,.055)';
+    ctx.fillRect(cp.x,cp.y,cp.w,cp.h);
+
+    ctx.strokeStyle=active?'rgba(114,213,233,.58)':'rgba(244,215,92,.34)';
+    ctx.setLineDash([6,5]);
+    ctx.strokeRect(cp.x+.5,cp.y+.5,cp.w-1,cp.h-1);
+    ctx.setLineDash([]);
+
+    ctx.fillStyle=active?'#72d5e9':'#f4d75c';
+    ctx.fillRect(cx-2,cp.y+12,4,cp.h-18);
+
+    ctx.beginPath();
+    ctx.arc(cx,cp.y+14,8+pulse,0,Math.PI*2);
+    ctx.strokeStyle=active?'rgba(114,213,233,.72)':'rgba(244,215,92,.62)';
+    ctx.stroke();
+
+    ctx.fillStyle=active?'rgba(114,213,233,.92)':'rgba(244,215,92,.85)';
+    ctx.font='700 9px monospace';
+    ctx.textAlign='center';
+    ctx.fillText(active?'CHECKPOINT ACTIVE':'CHECKPOINT',cx,cp.y-10);
+
+    ctx.fillStyle=active?'rgba(114,213,233,.32)':'rgba(244,215,92,.20)';
+    ctx.fillRect(cp.x-7,baseY-3,cp.w+14,3);
 
     ctx.textAlign='left';
     ctx.restore();
@@ -2498,6 +2737,28 @@
         ctx.stroke();
 
         ctx.restore();
+      }else if(effect.type==='coreReward' || effect.type==='checkpoint'){
+        ctx.save();
+        ctx.globalAlpha=1-t;
+
+        const radius=lerp(12,effect.radius,t);
+        ctx.beginPath();
+        ctx.arc(effect.x,effect.y,radius,0,Math.PI*2);
+        ctx.strokeStyle=effect.type==='checkpoint'
+          ? 'rgba(114,213,233,.90)'
+          : 'rgba(244,215,92,.92)';
+        ctx.lineWidth=2.5;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(effect.x,effect.y,radius*.48,0,Math.PI*2);
+        ctx.strokeStyle=effect.type==='checkpoint'
+          ? 'rgba(185,236,255,.55)'
+          : 'rgba(255,238,140,.58)';
+        ctx.lineWidth=1.5;
+        ctx.stroke();
+
+        ctx.restore();
       }
     }
   };
@@ -2651,6 +2912,7 @@
     drawLevelSections();
     drawSolids();
     drawStartZone();
+    drawCheckpoint();
     drawCombatZones();
     drawEnemySpawners();
     drawDoor();
