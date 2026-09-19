@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css?v=3">
   <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="portfolio-expanded.css?v=1">
-  <link rel="stylesheet" href="momentum-shifter.css?v=40">
+  <link rel="stylesheet" href="momentum-shifter.css?v=42">
 <link rel="stylesheet" href="project-facts.css?v=5"></head>
 <body data-page="momentum">
 <header class="site-header">
@@ -613,25 +613,37 @@
       <strong>SHIFTER</strong>
     </div>
 
-    <div class="ms-game-stat">
+    <div class="ms-game-stat ms-game-stat--ammo">
       <small data-i18n="momentum.demoAmmo"></small>
-      <strong data-game-ammo>6</strong>
+      <div class="ms-game-ammo-line">
+        <div class="ms-game-ammo-pips" data-game-ammo-pips aria-label="Temporal bullets">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <strong data-game-ammo>6/6</strong>
+      </div>
     </div>
-    <div class="ms-game-stat">
+
+    <div class="ms-game-stat ms-game-stat--return">
+      <small data-i18n="momentum.demoReturn">RETURN</small>
+      <strong data-game-return>READY</strong>
+      <span class="ms-game-return-bar" aria-hidden="true"><i data-game-return-progress></i></span>
+    </div>
+
+    <div class="ms-game-stat ms-game-stat--lives">
       <small data-i18n="momentum.demoCores"></small>
-      <strong data-game-cores>3</strong>
+      <div class="ms-game-lives" data-game-cores aria-label="Warp cores">
+        <i></i><i></i><i></i>
+      </div>
     </div>
-    <div class="ms-game-stat">
+
+    <div class="ms-game-stat ms-game-stat--time">
       <small data-i18n="momentum.demoTime"></small>
       <strong data-game-time>SLOW</strong>
     </div>
-    <div class="ms-game-stat">
+
+    <div class="ms-game-stat ms-game-stat--objective">
       <small data-i18n="momentum.demoDoor"></small>
-      <strong data-game-door>8</strong>
-    </div>
-    <div class="ms-game-stat">
-      <small data-i18n="momentum.demoScore"></small>
-      <strong data-game-score>0</strong>
+      <strong data-game-door>08</strong>
     </div>
   </div>
 
@@ -710,7 +722,7 @@
 
 <script src="translations.js"></script>
 <script src="translations-expanded.js?v=1"></script>
-<script src="translations-momentum.js?v=21"></script>
-<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=10"></script><script src="script.js?v=5"></script>
+<script src="translations-momentum.js?v=22"></script>
+<script src="translations-project-facts.js?v=1"></script><script src="momentum-infinity.js?v=1"></script><script src="momentum-level-elements.js?v=1"></script><script src="momentum-enemy-carousel.js?v=1"></script><script src="momentum-demo.js?v=12"></script><script src="script.js?v=5"></script>
 </body>
 </html>
