@@ -11,6 +11,8 @@
   const returnProgressEl = stage.querySelector('[data-game-return-progress]');
   const coresEl = stage.querySelector('[data-game-cores]');
   const lifeEls = Array.from(stage.querySelectorAll('[data-game-cores] i'));
+  const gravityChargeEls = Array.from(stage.querySelectorAll('[data-game-gravity-charges] i'));
+  const gravityRechargeEl = stage.querySelector('[data-game-gravity-time]');
   const timeEl = stage.querySelector('[data-game-time]');
   const doorEl = stage.querySelector('[data-game-door]');
   const scoreEl = stage.querySelector('[data-game-score]');
@@ -32,6 +34,8 @@
   const WORLD_H = 2200;
   const floorY = 2080;
   const BULLET_RETURN_SECONDS = 10;
+  const GRAVITY_MAX_CHARGES = 3;
+  const GRAVITY_RECHARGE_SECONDS = 3;
 
   const input = {
     left:false,right:false,up:false,down:false,
@@ -42,44 +46,44 @@
   // The climb now reads as a sequence of traversal shafts and wider combat decks.
   const doorPlatform = {
     x:700, y:400, w:540, h:18,
-    kind:'platform', gravity:true, faces:['top'], zone:6
+    kind:'platform', gravity:true, faces:['top','bottom'], zone:6
   };
 
   const staticSolids = [
     { x:0, y:floorY, w:W, h:WORLD_H-floorY, kind:'floor', gravity:true, faces:['top'], zone:0 },
 
     // Entry / tutorial climb: broad landings and one clear magnetic lesson.
-    { x:125, y:1930, w:285, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
+    { x:125, y:1930, w:285, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:1 },
     { x:430, y:1710, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:1 },
-    { x:500, y:1760, w:245, h:18, kind:'platform', gravity:true, faces:['top'], zone:1 },
-    { x:600, y:1665, w:120, h:16, kind:'platform', gravity:true, faces:['top'], zone:1 },
+    { x:500, y:1760, w:245, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:1 },
+    { x:600, y:1665, w:120, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:1 },
 
     // Enemy Deck A: wide floor with two elevated dodge / aiming ledges.
-    { x:720, y:1580, w:470, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
-    { x:830, y:1492, w:120, h:16, kind:'platform', gravity:true, faces:['top'], zone:2 },
-    { x:1010, y:1450, w:125, h:16, kind:'platform', gravity:true, faces:['top'], zone:2 },
+    { x:720, y:1580, w:470, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
+    { x:830, y:1492, w:120, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
+    { x:1010, y:1450, w:125, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
     { x:675, y:1360, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
-    { x:430, y:1420, w:225, h:18, kind:'platform', gravity:true, faces:['top'], zone:2 },
+    { x:430, y:1420, w:225, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
 
     // Cross-shaft / Enemy Deck B: open center lane plus a magnetic escape ledge.
     { x:390, y:1180, w:24, h:240, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
-    { x:90, y:1230, w:300, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
-    { x:175, y:1145, w:125, h:16, kind:'platform', gravity:true, faces:['top'], zone:3 },
-    { x:455, y:1115, w:110, h:16, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    { x:90, y:1230, w:300, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
+    { x:175, y:1145, w:125, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
+    { x:455, y:1115, w:110, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
     { x:500, y:980, w:24, h:250, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
-    { x:565, y:1040, w:250, h:18, kind:'platform', gravity:true, faces:['top'], zone:3 },
+    { x:565, y:1040, w:250, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
 
     // Enemy Deck C: longest arena with optional upper route.
-    { x:780, y:870, w:420, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
-    { x:875, y:785, w:115, h:16, kind:'platform', gravity:true, faces:['top'], zone:4 },
-    { x:1050, y:750, w:105, h:16, kind:'platform', gravity:true, faces:['top'], zone:4 },
+    { x:780, y:870, w:420, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
+    { x:875, y:785, w:115, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
+    { x:1050, y:750, w:105, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
     { x:735, y:640, w:24, h:230, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
-    { x:515, y:700, w:205, h:18, kind:'platform', gravity:true, faces:['top'], zone:4 },
+    { x:515, y:700, w:205, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
 
     // Final magnetic shaft and gate: shorter hops before the final combat deck.
     { x:475, y:455, w:24, h:245, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
-    { x:545, y:520, w:140, h:18, kind:'platform', gravity:true, faces:['top'], zone:5 },
-    { x:610, y:455, w:88, h:16, kind:'platform', gravity:true, faces:['top'], zone:5 },
+    { x:545, y:520, w:140, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:5 },
+    { x:610, y:455, w:88, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:5 },
     { x:660, y:400, w:24, h:120, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
 
     // Architectural zone blocks: they close empty edges into readable shafts/tunnels,
@@ -201,6 +205,12 @@
     messageTimer:0,
     gravityTarget:null,
     gravityJump:null,
+    gravityCharges:{
+      max:GRAVITY_MAX_CHARGES,
+      current:GRAVITY_MAX_CHARGES,
+      recharge:GRAVITY_RECHARGE_SECONDS,
+      queue:[]
+    },
     combatZones:combatZones.map(zone=>({
       ...zone,
       total:zone.wave.length,
@@ -309,6 +319,28 @@
   const allEnemyZonesCleared = () =>
     state.combatZones.every(zone=>zone.cleared) && !state.door.active;
 
+  const resetGravityCharges = () => {
+    state.gravityCharges.current=state.gravityCharges.max;
+    state.gravityCharges.queue.length=0;
+  };
+
+  const updateGravityCharges = dt => {
+    if(state.gravityCharges.queue.length===0) return;
+
+    for(const recharge of state.gravityCharges.queue){
+      recharge.remaining=Math.max(0,recharge.remaining-dt);
+    }
+
+    for(let i=state.gravityCharges.queue.length-1;i>=0;i--){
+      if(state.gravityCharges.queue[i].remaining>0) continue;
+      state.gravityCharges.queue.splice(i,1);
+      state.gravityCharges.current=Math.min(
+        state.gravityCharges.max,
+        state.gravityCharges.current+1
+      );
+    }
+  };
+
   const resetGame = () => {
     state.ammo=6;
     state.cores=3;
@@ -326,6 +358,7 @@
     state.messageTimer=0;
     state.gravityTarget=null;
     state.gravityJump=null;
+    resetGravityCharges();
     state.camera.y=Math.max(0,floorY-H+70);
     state.camera.targetY=state.camera.y;
     resetDoor();
@@ -448,6 +481,7 @@
       state.cores=3;
       resetDoor();
       resetCombatZones();
+      resetGravityCharges();
     }
 
     resetPlayer();
@@ -547,6 +581,17 @@
       p.x+=outward*9;
       p.vx=outward*220;
       p.vy=-300;
+      p.grounded=false;
+      p.surface='air';
+      p.attachedSolid=null;
+      p.attachedFace=null;
+      state.actionPulse=.22;
+      return;
+    }
+
+    if(p.surface==='bottom'){
+      p.y+=9;
+      p.vy=300;
       p.grounded=false;
       p.surface='air';
       p.attachedSolid=null;
