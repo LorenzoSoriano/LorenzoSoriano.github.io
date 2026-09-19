@@ -6718,3 +6718,185 @@ html[lang="it"] .ms-easter-hint__en{
     min-height:34px;
   }
 }
+
+
+/* v45 — magnetic jump charges + visual time-flow HUD */
+.ms-game-hud{
+  grid-template-columns:
+    minmax(110px,.82fr)
+    minmax(128px,1fr)
+    minmax(92px,.68fr)
+    minmax(96px,.72fr)
+    minmax(118px,.88fr)
+    minmax(82px,.58fr)
+    minmax(88px,.62fr);
+  gap:6px;
+}
+
+.ms-game-gravity-line{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.ms-game-gravity-charges{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.ms-game-gravity-charges i{
+  position:relative;
+  display:block;
+  width:17px;
+  height:17px;
+  overflow:hidden;
+  border:1px solid rgba(114,213,233,.26);
+  clip-path:polygon(50% 0,100% 27%,100% 73%,50% 100%,0 73%,0 27%);
+  background:rgba(114,213,233,.055);
+}
+
+.ms-game-gravity-charges i b{
+  position:absolute;
+  inset:0;
+  display:block;
+  transform:scaleY(0);
+  transform-origin:center bottom;
+  background:linear-gradient(to top,rgba(114,213,233,.82),rgba(159,234,248,.98));
+  transition:transform .08s linear;
+}
+
+.ms-game-gravity-charges i.is-active{
+  border-color:rgba(159,234,248,.74);
+  box-shadow:0 0 9px rgba(114,213,233,.16);
+}
+
+.ms-game-gravity-charges i.is-active b{
+  transform:scaleY(1);
+}
+
+.ms-game-gravity-charges i.is-charging{
+  border-color:rgba(114,213,233,.34);
+  background:rgba(114,213,233,.025);
+}
+
+.ms-game-stat--gravity strong{
+  color:#9feaf8;
+  font-size:11px;
+}
+
+.ms-game-timeflow{
+  --time-glow:rgba(244,215,92,.46);
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:4px;
+  min-height:21px;
+}
+
+.ms-game-timeflow i{
+  display:block;
+  width:4px;
+  height:15px;
+  border-radius:999px;
+  background:var(--time-glow);
+  transform-origin:center bottom;
+  animation:msTimeFlowNormal .58s ease-in-out infinite alternate;
+}
+
+.ms-game-timeflow i:nth-child(2){height:11px;animation-delay:-.12s}
+.ms-game-timeflow i:nth-child(3){height:18px;animation-delay:-.24s}
+.ms-game-timeflow i:nth-child(4){height:9px;animation-delay:-.36s}
+.ms-game-timeflow i:nth-child(5){height:14px;animation-delay:-.48s}
+
+.ms-game-timeflow.is-slow{
+  --time-glow:rgba(114,213,233,.86);
+  filter:drop-shadow(0 0 7px rgba(114,213,233,.22));
+}
+
+.ms-game-timeflow.is-slow i{
+  animation-name:msTimeFlowSlow;
+  animation-duration:2.2s;
+  opacity:.74;
+}
+
+@keyframes msTimeFlowNormal{
+  from{transform:scaleY(.48);opacity:.52}
+  to{transform:scaleY(1);opacity:1}
+}
+
+@keyframes msTimeFlowSlow{
+  from{transform:scaleY(.68);opacity:.44}
+  to{transform:scaleY(1);opacity:.88}
+}
+
+.ms-game-stage{
+  transition:box-shadow .25s ease;
+}
+
+.ms-game-stage.is-time-slow{
+  box-shadow:
+    inset 0 0 90px rgba(114,213,233,.055),
+    inset 0 0 26px rgba(114,213,233,.035);
+}
+
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-hud{
+    grid-template-columns:repeat(3,minmax(76px,1fr));
+    grid-auto-rows:minmax(35px,auto);
+    max-width:min(560px,calc(100vw - 72px));
+  }
+
+  .ms-game-stat{
+    min-height:35px;
+  }
+
+  .ms-game-stat--gravity strong{
+    font-size:9px;
+  }
+
+  .ms-game-gravity-charges{
+    gap:4px;
+  }
+
+  .ms-game-gravity-charges i{
+    width:13px;
+    height:13px;
+  }
+
+  .ms-game-timeflow{
+    min-height:16px;
+    gap:3px;
+  }
+
+  .ms-game-timeflow i{
+    width:3px;
+    height:12px;
+  }
+
+  .ms-game-timeflow i:nth-child(2){height:9px}
+  .ms-game-timeflow i:nth-child(3){height:14px}
+  .ms-game-timeflow i:nth-child(4){height:8px}
+  .ms-game-timeflow i:nth-child(5){height:11px}
+}
+
+@media (pointer:coarse) and (orientation:landscape){
+  .ms-game-hud{
+    grid-template-columns:
+      minmax(105px,1.05fr)
+      minmax(82px,.78fr)
+      minmax(88px,.82fr)
+      minmax(105px,.92fr)
+      minmax(66px,.58fr)
+      minmax(72px,.65fr);
+    grid-auto-rows:auto;
+    max-width:none;
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-hud{
+    grid-template-columns:repeat(3,minmax(68px,1fr));
+  }
+}
