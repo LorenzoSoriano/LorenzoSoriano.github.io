@@ -6,7 +6,11 @@
 
   const ctx = canvas.getContext('2d');
   const ammoEl = stage.querySelector('[data-game-ammo]');
+  const ammoPips = Array.from(stage.querySelectorAll('[data-game-ammo-pips] i'));
+  const returnEl = stage.querySelector('[data-game-return]');
+  const returnProgressEl = stage.querySelector('[data-game-return-progress]');
   const coresEl = stage.querySelector('[data-game-cores]');
+  const lifeEls = Array.from(stage.querySelectorAll('[data-game-cores] i'));
   const timeEl = stage.querySelector('[data-game-time]');
   const doorEl = stage.querySelector('[data-game-door]');
   const scoreEl = stage.querySelector('[data-game-score]');
@@ -27,6 +31,7 @@
   const H = canvas.height;
   const WORLD_H = 2200;
   const floorY = 2080;
+  const BULLET_RETURN_SECONDS = 10;
 
   const input = {
     left:false,right:false,up:false,down:false,
@@ -76,6 +81,17 @@
     { x:545, y:520, w:140, h:18, kind:'platform', gravity:true, faces:['top'], zone:5 },
     { x:610, y:455, w:88, h:16, kind:'platform', gravity:true, faces:['top'], zone:5 },
     { x:660, y:400, w:24, h:120, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
+
+    // Architectural zone blocks: they close empty edges into readable shafts/tunnels,
+    // while leaving the central traversal routes open. Their tops/sides are magnetic.
+    { x:0, y:1840, w:95, h:240, kind:'block', gravity:true, faces:['top','right'], zone:1 },
+    { x:1085, y:1695, w:195, h:125, kind:'block', gravity:true, faces:['top','left'], zone:2 },
+    { x:0, y:1345, w:155, h:175, kind:'block', gravity:true, faces:['top','right'], zone:3 },
+    { x:1110, y:1110, w:170, h:155, kind:'block', gravity:true, faces:['top','left'], zone:3 },
+    { x:0, y:805, w:220, h:170, kind:'block', gravity:true, faces:['top','right'], zone:4 },
+    { x:1080, y:610, w:200, h:135, kind:'block', gravity:true, faces:['top','left'], zone:4 },
+    { x:0, y:430, w:270, h:125, kind:'block', gravity:true, faces:['top','right'], zone:5 },
+    { x:1010, y:250, w:270, h:110, kind:'block', gravity:true, faces:['top','left'], zone:6 },
     doorPlatform
   ];
 
@@ -438,8 +454,44 @@
   };
 
   const updateHud = scale => {
-    ammoEl.textContent=String(state.ammo);
-    coresEl.textContent=String(state.cores);
+    if(ammoEl) ammoEl.textContent=state.ammo+'/6';
+
+    ammoPips.forEach((pip,index)=>{
+      const available=index<state.ammo;
+      pip.classList.toggle('is-ready',available);
+      pip.classList.toggle('is-cooling',!available);
+    });
+
+    lifeEls.forEach((life,index)=>{
+      const active=index<state.cores;
+      life.classList.toggle('is-active',active);
+      life.classList.toggle('is-lost',!active);
+    });
+
+    const cooling=state.bullets
+      .map(b=>{
+        if(b.mode==='stuck') return Math.max(0,b.returnAfter-b.wait);
+        if(b.mode==='out') return b.returnAfter;
+        return 0;
+      });
+
+    const nextReturn=cooling.length ? Math.min(...cooling) : null;
+    if(returnEl){
+      returnEl.textContent=nextReturn===null
+        ? 'READY'
+        : nextReturn<=0
+          ? 'RETURNING'
+          : nextReturn.toFixed(1)+'s';
+    }
+
+    if(returnProgressEl){
+      const progress=nextReturn===null
+        ? 1
+        : nextReturn<=0
+          ? 1
+          : clamp(1-nextReturn/BULLET_RETURN_SECONDS,0,1);
+      returnProgressEl.style.transform='scaleX('+progress.toFixed(3)+')';
+    }
 
     const activeZone=state.combatZones.find(zone=>zone.triggered && !zone.cleared);
     if(activeZone){
@@ -450,7 +502,7 @@
       doorEl.style.color=state.door.active?'#ff9366':'#72d5e9';
     }
 
-    scoreEl.textContent=String(state.score);
+    if(scoreEl) scoreEl.textContent=String(state.score);
     timeEl.textContent=scale<.6?'SLOW':'NORMAL';
     timeEl.style.color=scale<.6?'#72d5e9':'#ffe875';
   };
@@ -574,8 +626,6 @@
       if(!solid.gravity) continue;
 
       for(const face of magneticFacesFor(solid)){
-        if(solid.kind==='floor' && face==='top' && p.surface==='floor') continue;
-
         const candidate=getMagneticCandidate(solid,face,tx,ty,p);
         const dx=candidate.cx-sx;
         const dy=candidate.cy-sy;
@@ -658,7 +708,7 @@
       r:4,
       mode:'out',
       wait:0,
-      returnAfter:1.85,
+      returnAfter:BULLET_RETURN_SECONDS,
       returnHits:new Set()
     });
   };
