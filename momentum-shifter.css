@@ -7169,3 +7169,364 @@ html[lang="it"] .ms-easter-hint__en{
     min-height:54px;
   }
 }
+
+
+/* v47 — mockup HUD: hearts + temporal bullets, no stat cards */
+.ms-game-hud{
+  position:absolute;
+  left:26px;
+  right:auto;
+  top:22px;
+  z-index:7;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:13px;
+  width:auto;
+  max-width:none;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  backdrop-filter:none;
+  pointer-events:none;
+}
+
+.ms-game-lives{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  min-height:42px;
+  padding-left:5px;
+}
+
+.ms-game-lives i{
+  position:relative;
+  display:block;
+  width:42px;
+  height:38px;
+  flex:0 0 42px;
+  overflow:visible;
+  border:0;
+  border-radius:0;
+  clip-path:none;
+  background:transparent!important;
+  filter:none;
+  transform:none;
+  opacity:1;
+}
+
+.ms-game-lives i::before{
+  content:"♥";
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-53%);
+  color:rgba(239,244,255,.96);
+  font:700 42px/1 Georgia,"Times New Roman",serif;
+  text-shadow:0 2px 12px rgba(0,0,0,.26);
+}
+
+.ms-game-lives i::after{
+  display:none;
+}
+
+.ms-game-lives i.is-lost{
+  opacity:1;
+  transform:none;
+  background:transparent!important;
+}
+
+.ms-game-lives i.is-lost::before{
+  content:"♡";
+  color:rgba(239,244,255,.22);
+  text-shadow:none;
+}
+
+.ms-game-ammo-pips{
+  display:flex;
+  align-items:center;
+  gap:17px;
+  min-width:0;
+  padding-top:16px;
+}
+
+.ms-game-ammo-pips i{
+  position:relative;
+  display:block;
+  width:52px;
+  height:18px;
+  flex:0 0 52px;
+  overflow:visible;
+  border:2px solid rgba(238,243,255,.82);
+  border-radius:3px 1px 1px 3px;
+  background:rgba(255,255,255,.025);
+  box-shadow:none;
+  clip-path:none;
+  transform:none;
+  transform-origin:center;
+  color:rgba(238,243,255,.82);
+  opacity:1;
+}
+
+.ms-game-ammo-pips i::after{
+  content:"";
+  position:absolute;
+  right:-17px;
+  top:-2px;
+  width:17px;
+  height:18px;
+  clip-path:polygon(0 0,58% 0,100% 50%,58% 100%,0 100%,25% 50%);
+  background:currentColor;
+  opacity:.94;
+}
+
+.ms-game-ammo-pips i::before{
+  content:"";
+  position:absolute;
+  inset:3px 5px 3px 6px;
+  z-index:1;
+  opacity:0;
+  background:
+    repeating-linear-gradient(
+      118deg,
+      transparent 0 7px,
+      rgba(114,213,233,.78) 7px 8.5px,
+      transparent 8.5px 14px
+    );
+  background-size:24px 24px;
+  pointer-events:none;
+}
+
+.ms-game-ammo-pips i em{
+  position:absolute;
+  left:50%;
+  top:-18px;
+  min-width:32px;
+  transform:translateX(-50%);
+  color:rgba(255,255,255,.82);
+  font:700 9px/1 "IBM Plex Mono","DM Mono",monospace;
+  font-style:normal;
+  letter-spacing:-.02em;
+  text-align:center;
+  text-shadow:0 2px 5px rgba(0,0,0,.5);
+  white-space:nowrap;
+}
+
+.ms-game-ammo-pips i.is-ready{
+  border-color:rgba(238,243,255,.86);
+  background:rgba(255,255,255,.035);
+  color:rgba(238,243,255,.86);
+  box-shadow:none;
+}
+
+.ms-game-ammo-pips i.is-cooling{
+  opacity:.55;
+  transform:none;
+  border-color:rgba(155,140,255,.68);
+  color:rgba(155,140,255,.75);
+  background:rgba(155,140,255,.08);
+}
+
+.ms-game-stage.is-time-slow .ms-game-ammo-pips i::before{
+  opacity:.78;
+  animation:msBulletSlowLines 2.4s linear infinite;
+}
+
+@keyframes msBulletSlowLines{
+  from{background-position:0 0}
+  to{background-position:24px 0}
+}
+
+/* Pause menu mirrors the project's title treatment instead of two floating icon buttons. */
+.ms-game-pause-panel{
+  position:absolute;
+  inset:0;
+  z-index:12;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(29,47,78,.32),transparent 42%),
+    rgba(5,9,18,.78);
+  backdrop-filter:blur(12px);
+}
+
+.ms-game-pause-menu{
+  width:min(560px,calc(100vw - 42px));
+  text-align:center;
+  color:#fff;
+}
+
+.ms-game-pause-title{
+  display:flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:30px;
+}
+
+.ms-game-pause-title span{
+  color:rgba(255,255,255,.48);
+  font:700 13px/1 "IBM Plex Mono","DM Mono",monospace;
+  letter-spacing:.16em;
+}
+
+.ms-game-pause-title strong{
+  color:#fff;
+  font:800 clamp(34px,5vw,58px)/.9 Inter,system-ui,sans-serif;
+  letter-spacing:-.055em;
+}
+
+.ms-game-pause-actions{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.ms-game-pause-actions button,
+.ms-game-pause-actions a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  width:auto;
+  height:auto;
+  min-width:138px;
+  padding:13px 18px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:999px;
+  background:rgba(17,26,48,.62);
+  color:#fff;
+  box-shadow:none;
+  text-decoration:none;
+  font:700 10px/1 "IBM Plex Mono","DM Mono",monospace;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+.ms-game-pause-actions button:first-child{
+  color:#9feaf8;
+  border-color:rgba(114,213,233,.26);
+}
+
+.ms-game-pause-actions .ms-game-pause-contact{
+  color:#ffe875;
+  border-color:rgba(244,215,92,.22);
+}
+
+.ms-game-pause-actions button:last-child{
+  color:#ff9a72;
+  border-color:rgba(255,154,114,.20);
+}
+
+.ms-game-pause-actions svg{
+  width:18px;
+  height:18px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.ms-game-pause-actions button:first-child svg{
+  fill:currentColor;
+  stroke:none;
+}
+
+.ms-game-pause-controls{
+  max-width:520px;
+  margin:20px auto 0;
+  color:rgba(255,255,255,.42);
+  font:600 9px/1.55 "IBM Plex Mono","DM Mono",monospace;
+}
+
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-hud{
+    left:max(16px,env(safe-area-inset-left));
+    right:auto;
+    top:max(14px,env(safe-area-inset-top));
+    gap:9px;
+    max-width:none;
+    padding:0;
+  }
+
+  .ms-game-lives{
+    gap:17px;
+    min-height:34px;
+    padding-left:3px;
+  }
+
+  .ms-game-lives i{
+    width:34px;
+    height:31px;
+    flex-basis:34px;
+  }
+
+  .ms-game-lives i::before{
+    font-size:34px;
+  }
+
+  .ms-game-ammo-pips{
+    gap:12px;
+    padding-top:14px;
+  }
+
+  .ms-game-ammo-pips i{
+    width:39px;
+    height:15px;
+    flex-basis:39px;
+    border-width:1.5px;
+  }
+
+  .ms-game-ammo-pips i::after{
+    right:-14px;
+    top:-1.5px;
+    width:14px;
+    height:15px;
+  }
+
+  .ms-game-ammo-pips i em{
+    top:-16px;
+    min-width:28px;
+    font-size:8px;
+  }
+
+  .ms-game-pause{
+    width:50px;
+    height:50px;
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-ammo-pips{
+    gap:8px;
+  }
+
+  .ms-game-ammo-pips i{
+    width:29px;
+    height:13px;
+    flex-basis:29px;
+  }
+
+  .ms-game-ammo-pips i::after{
+    right:-11px;
+    width:11px;
+    height:13px;
+  }
+
+  .ms-game-pause-actions{
+    gap:8px;
+  }
+
+  .ms-game-pause-actions button,
+  .ms-game-pause-actions a{
+    min-width:112px;
+    padding:11px 14px;
+  }
+}
