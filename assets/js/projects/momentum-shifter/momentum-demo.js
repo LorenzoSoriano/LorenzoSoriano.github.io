@@ -428,6 +428,39 @@
       jumpState:null,
       selfDestruct:false
     };
+    if(type==='webcaster'){
+      let nearestWall=null;
+      let nearestDistance=Infinity;
+      const ex=enemy.x+enemy.w*.5;
+      const ey=enemy.y+enemy.h*.5;
+
+      for(const solid of staticSolids){
+        if(solid.kind!=='wall') continue;
+        const wx=solid.x+solid.w*.5;
+        const wy=solid.y+solid.h*.5;
+        const distance=Math.hypot(wx-ex,wy-ey);
+
+        if(distance<nearestDistance && distance<390){
+          nearestWall=solid;
+          nearestDistance=distance;
+        }
+      }
+
+      if(nearestWall){
+        enemy.wall=nearestWall;
+        enemy.wallDir=state.enemyId%2===0?1:-1;
+        enemy.wallSide=ex<nearestWall.x+nearestWall.w*.5?'left':'right';
+        enemy.x=enemy.wallSide==='left'
+          ? nearestWall.x-enemy.w
+          : nearestWall.x+nearestWall.w;
+        enemy.y=clamp(
+          enemy.y,
+          nearestWall.y,
+          nearestWall.y+nearestWall.h-enemy.h
+        );
+      }
+    }
+
     state.enemies.push(enemy);
     return enemy;
   };
@@ -1468,8 +1501,27 @@
         enemy.y+=dy/len*enemy.speed*dt*scale;
         enemy.y+=Math.sin(enemy.phase)*12*dt*scale;
       }else if(enemy.type==='webcaster'){
-        enemy.x=Math.max(enemy.minX,enemy.x-enemy.speed*dt*scale);
-        enemy.y=enemy.homeY-enemy.h;
+        if(enemy.wall){
+          const wall=enemy.wall;
+          enemy.x=enemy.wallSide==='left'
+            ? wall.x-enemy.w
+            : wall.x+wall.w;
+          enemy.y+=enemy.wallDir*enemy.speed*dt*scale;
+
+          const minY=wall.y+6;
+          const maxY=wall.y+wall.h-enemy.h-6;
+          if(enemy.y<=minY){
+            enemy.y=minY;
+            enemy.wallDir=1;
+          }else if(enemy.y>=maxY){
+            enemy.y=maxY;
+            enemy.wallDir=-1;
+          }
+        }else{
+          enemy.x=Math.max(enemy.minX,enemy.x-enemy.speed*dt*scale);
+          enemy.y=enemy.homeY-enemy.h;
+        }
+
         enemy.attack-=dt*scale;
         enemy.trap-=dt*scale;
 
