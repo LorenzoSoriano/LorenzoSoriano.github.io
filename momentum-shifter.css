@@ -6531,3 +6531,190 @@ html[lang="it"] .ms-easter-hint__en{
     min-height:48px;
   }
 }
+
+
+/* v42 — compact gameplay HUD, temporal return timer, visual warp-core lives */
+.ms-game-hud{
+  grid-template-columns:minmax(118px,.9fr) minmax(132px,1.05fr) minmax(96px,.72fr) minmax(104px,.78fr) minmax(82px,.58fr) minmax(92px,.64fr);
+  gap:6px;
+}
+
+.ms-game-stat{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.ms-game-ammo-line{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.ms-game-ammo-pips{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  min-width:0;
+}
+
+.ms-game-ammo-pips i{
+  display:block;
+  width:5px;
+  height:18px;
+  border:1px solid rgba(244,215,92,.24);
+  border-radius:3px 3px 2px 2px;
+  background:rgba(244,215,92,.08);
+  box-shadow:inset 0 -3px 0 rgba(255,255,255,.03);
+  transform-origin:center bottom;
+}
+
+.ms-game-ammo-pips i.is-ready{
+  border-color:rgba(255,232,117,.72);
+  background:#ffe875;
+  box-shadow:0 0 8px rgba(244,215,92,.18);
+}
+
+.ms-game-ammo-pips i.is-cooling{
+  opacity:.24;
+  transform:scaleY(.78);
+}
+
+.ms-game-stat--return strong{
+  color:#9feaf8;
+  font-size:13px;
+}
+
+.ms-game-return-bar{
+  position:relative;
+  display:block;
+  width:100%;
+  height:3px;
+  margin-top:7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+}
+
+.ms-game-return-bar i{
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:#72d5e9;
+  transform:scaleX(1);
+  transform-origin:left center;
+  transition:transform .08s linear;
+}
+
+.ms-game-lives{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-height:22px;
+}
+
+.ms-game-lives i{
+  position:relative;
+  display:block;
+  width:15px;
+  height:15px;
+  flex:0 0 15px;
+  clip-path:polygon(50% 0,100% 28%,84% 82%,50% 100%,16% 82%,0 28%);
+  border-radius:2px;
+  background:rgba(244,215,92,.12);
+  filter:drop-shadow(0 0 0 rgba(0,0,0,0));
+  transition:opacity .18s ease,transform .18s ease,filter .18s ease,background .18s ease;
+}
+
+.ms-game-lives i::after{
+  content:"";
+  position:absolute;
+  inset:3px;
+  clip-path:inherit;
+  background:rgba(255,255,255,.12);
+}
+
+.ms-game-lives i.is-active{
+  background:#f4d75c;
+  filter:drop-shadow(0 0 6px rgba(244,215,92,.28));
+}
+
+.ms-game-lives i.is-active::after{
+  background:rgba(255,255,255,.40);
+}
+
+.ms-game-lives i.is-lost{
+  opacity:.18;
+  transform:scale(.82);
+  background:rgba(255,255,255,.22);
+}
+
+.ms-game-stat--objective strong{
+  color:#ff9a72;
+}
+
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-hud{
+    left:max(8px,env(safe-area-inset-left));
+    right:max(56px,calc(env(safe-area-inset-right) + 50px));
+    top:max(8px,env(safe-area-inset-top));
+    grid-template-columns:minmax(110px,1.12fr) minmax(88px,.78fr) minmax(92px,.82fr) minmax(64px,.55fr) minmax(70px,.62fr);
+    gap:4px;
+  }
+
+  .ms-game-brand{
+    display:none;
+  }
+
+  .ms-game-stat{
+    min-height:38px;
+    padding:6px 7px;
+    border-radius:9px;
+  }
+
+  .ms-game-stat small{
+    margin-bottom:4px;
+    font-size:5.5px;
+  }
+
+  .ms-game-stat strong{
+    font-size:11px;
+  }
+
+  .ms-game-ammo-pips{
+    gap:3px;
+  }
+
+  .ms-game-ammo-pips i{
+    width:4px;
+    height:14px;
+  }
+
+  .ms-game-lives{
+    gap:7px;
+    min-height:16px;
+  }
+
+  .ms-game-lives i{
+    width:12px;
+    height:12px;
+    flex-basis:12px;
+  }
+
+  .ms-game-return-bar{
+    margin-top:5px;
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-hud{
+    grid-template-columns:repeat(3,minmax(68px,1fr));
+    right:56px;
+  }
+
+  .ms-game-stat--time,
+  .ms-game-stat--objective{
+    min-height:34px;
+  }
+}
