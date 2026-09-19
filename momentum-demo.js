@@ -498,9 +498,9 @@
           timer.textContent='';
         }else if(bullet){
           const remaining=Math.max(0,bullet.returnAfter-bullet.wait);
-          timer.textContent=remaining.toFixed(1);
+          timer.textContent=remaining.toFixed(1)+'s';
         }else{
-          timer.textContent='0.0';
+          timer.textContent='0.0s';
         }
       }
     });
