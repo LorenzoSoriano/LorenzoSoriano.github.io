@@ -653,7 +653,11 @@
           solid===state.player.attachedSolid &&
           i<=1;
 
-        if(leavingCurrentSurface) continue;
+        const touchingDestinationEdge=
+          solid===targetSolid &&
+          i>=steps-2;
+
+        if(leavingCurrentSurface || touchingDestinationEdge) continue;
         if(circleRect(x,y,4,solid)) return false;
       }
     }
@@ -1325,6 +1329,10 @@
         }
       }else{
         ctx.fillRect(solid.x,solid.y,solid.w,2);
+        if(solid.kind==='platform'){
+          ctx.fillStyle='rgba(114,213,233,.36)';
+          ctx.fillRect(solid.x,solid.y+solid.h-2,solid.w,2);
+        }
 
         for(let x=solid.x+14;x<solid.x+solid.w-10;x+=30){
           ctx.fillStyle=raised?'rgba(255,135,88,.18)':'rgba(114,213,233,.14)';
