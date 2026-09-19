@@ -50,20 +50,15 @@
   const isMobileGameplay = () =>
     isTouchDevice() && stage.classList.contains('is-mobile-game');
 
-  const MOBILE_AIM_ASSIST_DOT = 0.93;
   const MOBILE_GRAVITY_ASSIST_DOT = 0.80;
-  const MOBILE_AUTO_FIRE_THRESHOLD = 0.34;
-  const MOBILE_AUTO_FIRE_DELAY = 0.13;
-  const MOBILE_AUTO_FIRE_COOLDOWN = 0.68;
+  const MOBILE_SHOT_ASSIST_HALF_ANGLE = 10 * Math.PI / 180;
+  const MOBILE_SHOT_ASSIST_DOT = Math.cos(MOBILE_SHOT_ASSIST_HALF_ANGLE);
 
   const mobileAssist = {
     rawX:1,
     rawY:0,
     mag:0,
-    enemy:null,
-    enemyPoint:null,
-    autoFireHold:0,
-    autoFireCooldown:0
+    hiddenShotTarget:null
   };
 
   // Visible-route layout: every mandatory magnetic jump has an unobstructed
@@ -447,10 +442,7 @@
     state.gravityTarget=null;
     state.gravityJump=null;
     mobileAssist.mag=0;
-    mobileAssist.enemy=null;
-    mobileAssist.enemyPoint=null;
-    mobileAssist.autoFireHold=0;
-    mobileAssist.autoFireCooldown=0;
+    mobileAssist.hiddenShotTarget=null;
     state.checkpoint.active=false;
     resetGravityCharges();
     state.camera.y=Math.max(0,floorY-H+70);
@@ -1050,20 +1042,47 @@
     });
   };
 
-  const findMobileAimEnemy = (dirX,dirY) => {
+  const mobileShotLineClear = (sx,sy,tx,ty) => {
+    const dist=Math.hypot(tx-sx,ty-sy);
+    const steps=Math.max(4,Math.ceil(dist/10));
+
+    for(let i=1;i<steps;i++){
+      const t=i/steps;
+      const x=lerp(sx,tx,t);
+      const y=lerp(sy,ty,t);
+
+      for(const solid of getBulletSolids()){
+        if(circleRect(x,y,3,solid)) return false;
+      }
+    }
+
+    return true;
+  };
+
+  const resolveMobileShotTarget = (tx,ty) => {
+    mobileAssist.hiddenShotTarget=null;
+
     if(
       !isMobileGameplay() ||
-      mobileAssist.mag<.16 ||
+      aim.source!=='stick' ||
       state.playerDead ||
       state.won
-    ) return null;
+    ){
+      return {x:tx,y:ty,assisted:false};
+    }
 
     const p=state.player;
     const sx=p.x+p.w*.54;
     const sy=p.y+p.h*.38;
-    const dirLen=Math.hypot(dirX,dirY)||1;
-    const nx=dirX/dirLen;
-    const ny=dirY/dirLen;
+
+    let aimX=tx-sx;
+    let aimY=ty-sy;
+    const aimLen=Math.hypot(aimX,aimY);
+
+    if(aimLen<8) return {x:tx,y:ty,assisted:false};
+
+    aimX/=aimLen;
+    aimY/=aimLen;
 
     let best=null;
 
@@ -1074,72 +1093,43 @@
       const dy=cy-sy;
       const dist=Math.hypot(dx,dy);
 
-      if(dist<36 || dist>540) continue;
+      if(dist<34 || dist>560) continue;
 
       const ex=dx/(dist||1);
       const ey=dy/(dist||1);
-      const dot=nx*ex+ny*ey;
+      const dot=aimX*ex+aimY*ey;
 
-      if(dot<MOBILE_AIM_ASSIST_DOT) continue;
-      if(!lineClear(sx,sy,cx,cy,null)) continue;
+      // Roughly ±10° around the visible reticle direction.
+      if(dot<MOBILE_SHOT_ASSIST_DOT) continue;
+      if(!mobileShotLineClear(sx,sy,cx,cy)) continue;
 
-      const score=(1-dot)*900 + dist*.055;
+      const angularError=Math.acos(clamp(dot,-1,1));
+      const score=
+        angularError*1000 +
+        dist*.035;
 
       if(!best || score<best.score){
         best={
           enemy,
-          cx,
-          cy,
-          dx:ex,
-          dy:ey,
-          dot,
-          dist,
-          score
+          x:cx,
+          y:cy,
+          score,
+          angularError
         };
       }
     }
 
-    return best;
-  };
+    if(!best) return {x:tx,y:ty,assisted:false};
 
-  const updateMobileAutoFire = dt => {
-    mobileAssist.autoFireCooldown=Math.max(
-      0,
-      mobileAssist.autoFireCooldown-dt
-    );
+    // This target is intentionally never drawn. The visible crosshair stays
+    // exactly where the player's thumb put it; only the fired shot uses it.
+    mobileAssist.hiddenShotTarget=best;
 
-    const validTarget=
-      isMobileGameplay() &&
-      mobileAssist.mag>=MOBILE_AUTO_FIRE_THRESHOLD &&
-      mobileAssist.enemy &&
-      state.enemies.includes(mobileAssist.enemy) &&
-      !state.paused &&
-      !state.playerDead &&
-      !state.won;
-
-    if(!validTarget){
-      mobileAssist.autoFireHold=0;
-      return;
-    }
-
-    mobileAssist.autoFireHold+=dt;
-
-    if(
-      mobileAssist.autoFireHold<MOBILE_AUTO_FIRE_DELAY ||
-      mobileAssist.autoFireCooldown>0 ||
-      state.ammo<=0 ||
-      !state.ammoSlots.some(slot=>slot.available)
-    ) return;
-
-    const enemy=mobileAssist.enemy;
-    fireToward(
-      enemy.x+enemy.w*.5,
-      enemy.y+enemy.h*.42
-    );
-
-    mobileAssist.autoFireCooldown=MOBILE_AUTO_FIRE_COOLDOWN;
-    mobileAssist.autoFireHold=MOBILE_AUTO_FIRE_DELAY;
-    navigator.vibrate?.(6);
+    return {
+      x:best.x,
+      y:best.y,
+      assisted:true
+    };
   };
 
   const pointerToWorld = event => {
@@ -3288,24 +3278,19 @@
   };
 
   const drawCrosshair = () => {
-    const mobile=isMobileGameplay();
-    const enemyLock=mobile && !!mobileAssist.enemy;
     const gravityLock=
-      mobile &&
-      !enemyLock &&
+      isMobileGameplay() &&
       !!state.gravityTarget &&
       state.player.grounded;
 
-    const stroke=enemyLock
-      ? 'rgba(255,232,117,.94)'
-      : gravityLock
-        ? 'rgba(114,213,233,.92)'
-        : 'rgba(255,255,255,.72)';
+    const stroke=gravityLock
+      ? 'rgba(114,213,233,.92)'
+      : 'rgba(255,255,255,.72)';
 
     ctx.save();
     ctx.translate(aim.x,aim.y);
     ctx.strokeStyle=stroke;
-    ctx.lineWidth=enemyLock||gravityLock ? 1.6 : 1;
+    ctx.lineWidth=gravityLock ? 1.6 : 1;
 
     ctx.beginPath();
     ctx.arc(0,0,8,0,Math.PI*2);
@@ -3315,7 +3300,7 @@
     ctx.moveTo(0,5);ctx.lineTo(0,13);
     ctx.stroke();
 
-    if(enemyLock||gravityLock){
+    if(gravityLock){
       const pulse=11+Math.sin(performance.now()*.012)*2;
       ctx.beginPath();
       ctx.arc(0,0,pulse,0,Math.PI*2);
@@ -3459,7 +3444,6 @@
 
     updateCamera(dt);
     positionAimFromStick(dt);
-    updateMobileAutoFire(dt);
     updateHud(scale);
     render(scale);
     state.raf=requestAnimationFrame(frame);
@@ -3665,7 +3649,9 @@
   fireButton?.addEventListener('pointerdown',event=>{
     if(state.paused) return;
     event.preventDefault();
-    fireToward(aim.x,aim.y);
+
+    const shotTarget=resolveMobileShotTarget(aim.x,aim.y);
+    fireToward(shotTarget.x,shotTarget.y);
     navigator.vibrate?.(8);
   });
 
@@ -3773,48 +3759,15 @@
     aimStickState.currentX/=dirLen;
     aimStickState.currentY/=dirLen;
 
-    let finalX=aimStickState.currentX;
-    let finalY=aimStickState.currentY;
-
-    const assisted=findMobileAimEnemy(finalX,finalY);
-    mobileAssist.enemy=assisted?.enemy || null;
-    mobileAssist.enemyPoint=assisted || null;
-
-    if(assisted){
-      const normalizedLock=clamp(
-        (assisted.dot-MOBILE_AIM_ASSIST_DOT)/(1-MOBILE_AIM_ASSIST_DOT),
-        0,
-        1
-      );
-      const magnet=0.18+normalizedLock*.12;
-
-      finalX=lerp(finalX,assisted.dx,magnet);
-      finalY=lerp(finalY,assisted.dy,magnet);
-
-      const assistedLen=Math.hypot(finalX,finalY)||1;
-      finalX/=assistedLen;
-      finalY/=assistedLen;
-    }
-
-    aim.dx=finalX;
-    aim.dy=finalY;
+    aim.dx=aimStickState.currentX;
+    aim.dy=aimStickState.currentY;
 
     const pcx=state.player.x+state.player.w*.5;
     const pcy=state.player.y+state.player.h*.5;
 
     const reach=175+aimStickState.mag*335;
-    const freeX=pcx+aim.dx*reach;
-    const freeY=pcy+aim.dy*reach;
-
-    if(assisted){
-      const visualMagnet=.34;
-      aim.x=lerp(freeX,assisted.cx,visualMagnet);
-      aim.y=lerp(freeY,assisted.cy,visualMagnet);
-    }else{
-      aim.x=freeX;
-      aim.y=freeY;
-    }
-
+    aim.x=pcx+aim.dx*reach;
+    aim.y=pcy+aim.dy*reach;
     aim.active=true;
     aim.source='stick';
   };
@@ -3873,9 +3826,7 @@
 
       aimStickState.active=false;
       mobileAssist.mag=0;
-      mobileAssist.enemy=null;
-      mobileAssist.enemyPoint=null;
-      mobileAssist.autoFireHold=0;
+      mobileAssist.hiddenShotTarget=null;
     },
     {
       deadzone:.085,
