@@ -2183,6 +2183,61 @@
     }
   };
 
+  const drawEnemyTraps = () => {
+    for(const trap of state.enemyTraps){
+      const armed=trap.arm<=0;
+      const pulse=.55+Math.sin(trap.phase*2)*.18;
+
+      ctx.save();
+      ctx.fillStyle=armed?'rgba(185,140,255,.26)':'rgba(185,140,255,.10)';
+      ctx.fillRect(trap.x,trap.y,trap.w,trap.h);
+
+      ctx.strokeStyle=armed?'rgba(185,140,255,.88)':'rgba(185,140,255,.35)';
+      ctx.lineWidth=1.5;
+      ctx.strokeRect(trap.x+.5,trap.y+.5,trap.w-1,trap.h-1);
+
+      if(armed){
+        ctx.strokeStyle='rgba(215,191,255,'+pulse.toFixed(2)+')';
+        ctx.beginPath();
+        ctx.moveTo(trap.x+3,trap.y+1);
+        ctx.lineTo(trap.x+10,trap.y-7);
+        ctx.lineTo(trap.x+16,trap.y+1);
+        ctx.lineTo(trap.x+23,trap.y-8);
+        ctx.lineTo(trap.x+30,trap.y+1);
+        ctx.lineTo(trap.x+35,trap.y-5);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+  };
+
+  const drawEnemyEffects = () => {
+    for(const effect of state.enemyEffects){
+      const t=clamp(effect.age/effect.duration,0,1);
+
+      if(effect.type==='explosion'){
+        const radius=lerp(10,effect.radius,t);
+        ctx.save();
+        ctx.globalAlpha=1-t;
+
+        ctx.beginPath();
+        ctx.arc(effect.x,effect.y,radius,0,Math.PI*2);
+        ctx.strokeStyle='#ff8758';
+        ctx.lineWidth=3;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(effect.x,effect.y,radius*.55,0,Math.PI*2);
+        ctx.strokeStyle='rgba(255,232,117,.78)';
+        ctx.lineWidth=2;
+        ctx.stroke();
+
+        ctx.restore();
+      }
+    }
+  };
+
   const drawEnemyShots = () => {
     for(const shot of state.enemyShots){
       ctx.beginPath();
