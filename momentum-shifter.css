@@ -6722,6 +6722,7 @@ html[lang="it"] .ms-easter-hint__en{
 
 /* v45 — magnetic jump charges + visual time-flow HUD */
 .ms-game-hud{
+  right:72px;
   grid-template-columns:
     minmax(110px,.82fr)
     minmax(128px,1fr)
