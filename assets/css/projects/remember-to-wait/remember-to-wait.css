@@ -41,7 +41,7 @@ body[data-page="remember"] .wait-hero-art::before{
   content:"";
   position:absolute;
   inset:13%;
-  background:url('assets/images/accent-graphic.png') center/contain no-repeat;
+  background:url('../../../images/accent-graphic.png') center/contain no-repeat;
   opacity:.92;
 }
 
