@@ -490,6 +490,8 @@
     state.deathTimer=PLAYER_DEATH_DELAY;
     state.pendingFullReset=!!fullReset;
     state.gravityJump=null;
+    state.enemyShots.length=0;
+    state.enemyTraps.length=0;
 
     const p=state.player;
     p.vx=0;
@@ -604,7 +606,7 @@
   };
 
   const jump = () => {
-    if(!state.active || state.won || state.gravityJump) return;
+    if(!state.active || state.won || state.gravityJump || state.playerDead || state.player.stunned>0) return;
 
     const p=state.player;
     const groundedJump=p.grounded || p.coyoteTimer>0;
@@ -764,7 +766,7 @@
   };
 
   const gravityJump = () => {
-    if(!state.active || state.won || state.gravityJump || !state.player.grounded) return;
+    if(!state.active || state.won || state.gravityJump || !state.player.grounded || state.playerDead || state.player.stunned>0) return;
 
     if(state.gravityCharges.current<=0){
       state.message='MAGNETIC CHARGES EMPTY';
@@ -808,7 +810,7 @@
   };
 
   const fireToward = (tx,ty) => {
-    if(!state.active || state.won || state.ammo<=0) return;
+    if(!state.active || state.won || state.ammo<=0 || state.playerDead || state.player.stunned>0) return;
 
     const slotIndex=state.ammoSlots.findIndex(slot=>slot.available);
     if(slotIndex<0) return;
@@ -911,6 +913,18 @@
   const updatePlayer = dt => {
     const p=state.player;
     p.invuln=Math.max(0,p.invuln-dt);
+    p.stunned=Math.max(0,p.stunned-dt);
+
+    if(p.stunned>0){
+      p.vx=lerp(p.vx,0,1-Math.exp(-dt*18));
+
+      if(!p.grounded && p.surface==='air'){
+        p.vy=Math.min(640,p.vy+920*dt);
+        resolvePlayerY(p.vy*dt);
+      }
+
+      return;
+    }
 
     if(state.gravityJump){
       const g=state.gravityJump;
@@ -1119,7 +1133,7 @@
     }
   };
 
-  const shootEnemyProjectile = (enemy, speed=220) => {
+  const shootEnemyProjectile = (enemy, speed=220, kind='normal') => {
     const p=state.player;
     const sx=enemy.x+enemy.w*.5;
     const sy=enemy.y+enemy.h*.4;
@@ -1133,8 +1147,258 @@
 
     state.enemyShots.push({
       x:sx,y:sy,dx,dy,speed,r:5,
-      color:enemy.type==='webcaster'?'#b98cff':'#f4d75c'
+      kind,
+      color:kind==='web'?'#b98cff':'#f4d75c'
     });
+  };
+
+  const shootWebcasterSpread = enemy => {
+    const p=state.player;
+    const sx=enemy.x+enemy.w*.5;
+    const sy=enemy.y+enemy.h*.38;
+    const base=Math.atan2(
+      (p.y+p.h*.45)-sy,
+      (p.x+p.w*.5)-sx
+    );
+
+    for(const offset of [-0.16,0,0.16]){
+      const angle=base+offset;
+      state.enemyShots.push({
+        x:sx,
+        y:sy,
+        dx:Math.cos(angle),
+        dy:Math.sin(angle),
+        speed:205,
+        r:5,
+        kind:'web',
+        color:'#b98cff'
+      });
+    }
+  };
+
+  const findTrapSurface = player => {
+    const px=player.x+player.w*.5;
+    const bottom=player.y+player.h;
+    let best=null;
+
+    for(const solid of staticSolids){
+      if(!['floor','platform','block'].includes(solid.kind)) continue;
+      if(px<solid.x-28 || px>solid.x+solid.w+28) continue;
+
+      const drop=solid.y-bottom;
+      if(drop<-20 || drop>250) continue;
+
+      if(!best || drop<best.drop){
+        best={solid,drop};
+      }
+    }
+
+    return best?.solid || null;
+  };
+
+  const throwWebcasterTrap = enemy => {
+    const p=state.player;
+    const surface=findTrapSurface(p);
+    if(!surface) return;
+
+    const width=38;
+    const center=clamp(
+      p.x+p.w*.5,
+      surface.x+width*.5+5,
+      surface.x+surface.w-width*.5-5
+    );
+
+    state.enemyTraps.push({
+      x:center-width*.5,
+      y:surface.y-8,
+      w:width,
+      h:8,
+      arm:.55,
+      life:5.5,
+      stun:WEBCASTER_STUN_SECONDS,
+      phase:0,
+      owner:enemy.id
+    });
+  };
+
+  const explodeDrone = enemy => {
+    const cx=enemy.x+enemy.w*.5;
+    const cy=enemy.y+enemy.h*.5;
+    const p=state.player;
+    const px=p.x+p.w*.5;
+    const py=p.y+p.h*.5;
+
+    state.enemyEffects.push({
+      type:'explosion',
+      x:cx,
+      y:cy,
+      age:0,
+      duration:.38,
+      radius:DRONE_EXPLOSION_RANGE
+    });
+
+    if(Math.hypot(px-cx,py-cy)<=DRONE_EXPLOSION_RANGE){
+      playerHit();
+    }
+
+    removeEnemy(enemy,{awardScore:false});
+  };
+
+  const magneticPlayerAttached = p =>
+    p.surface==='left' ||
+    p.surface==='right' ||
+    p.surface==='bottom';
+
+  const knockPlayerFromMagneticSurface = enemy => {
+    const p=state.player;
+    if(!magneticPlayerAttached(p)) return false;
+
+    const ex=enemy.x+enemy.w*.5;
+    const ey=enemy.y+enemy.h*.5;
+    const px=p.x+p.w*.5;
+    const py=p.y+p.h*.5;
+    const dist=Math.hypot(px-ex,py-ey);
+
+    if(dist>RUMBLER_RUMBLE_RANGE) return false;
+
+    const direction=px<ex?-1:1;
+    p.x+=direction*7;
+    p.vx=direction*155;
+    p.vy=185;
+    p.grounded=false;
+    p.coyoteTimer=0;
+    p.surface='air';
+    p.attachedSolid=null;
+    p.attachedFace=null;
+    enemy.rumbleFlash=.24;
+    navigator.vibrate?.(18);
+    return true;
+  };
+
+  const platformForEnemy = enemy => {
+    let best=null;
+    let delta=Infinity;
+
+    for(const solid of staticSolids){
+      if(solid.kind!=='platform') continue;
+      const d=Math.abs(solid.y-enemy.homeY);
+      if(d<delta && enemy.x+enemy.w*.5>=solid.x-40 && enemy.x+enemy.w*.5<=solid.x+solid.w+40){
+        best=solid;
+        delta=d;
+      }
+    }
+
+    return best;
+  };
+
+  const rumblerArcClear = (enemy,target,targetX) => {
+    const source=platformForEnemy(enemy);
+    const fromX=enemy.x;
+    const fromY=enemy.y;
+    const toX=targetX;
+    const toY=target.y-enemy.h;
+
+    for(let i=1;i<12;i++){
+      const t=i/12;
+      const x=lerp(fromX,toX,t);
+      const y=lerp(fromY,toY,t)-Math.sin(Math.PI*t)*72;
+      const test={x,y,w:enemy.w,h:enemy.h};
+
+      for(const solid of staticSolids){
+        if(solid===source || solid===target) continue;
+        if(rectHit(test,solid)) return false;
+      }
+    }
+
+    return true;
+  };
+
+  const findRumblerJumpTarget = enemy => {
+    const p=state.player;
+    const ex=enemy.x+enemy.w*.5;
+    let best=null;
+
+    for(const solid of staticSolids){
+      if(solid.kind!=='platform') continue;
+      if(Math.abs(solid.y-enemy.homeY)<14) continue;
+
+      const cx=clamp(
+        p.x+p.w*.5,
+        solid.x+enemy.w*.5+6,
+        solid.x+solid.w-enemy.w*.5-6
+      );
+      const dx=cx-ex;
+      const dy=solid.y-enemy.homeY;
+      const distance=Math.hypot(dx,dy);
+
+      if(distance>350 || Math.abs(dy)>235) continue;
+
+      const targetX=cx-enemy.w*.5;
+      if(!rumblerArcClear(enemy,solid,targetX)) continue;
+
+      const score=
+        Math.abs((p.y+p.h)-solid.y)*1.15 +
+        Math.abs((p.x+p.w*.5)-cx)*.28 +
+        distance*.08;
+
+      if(!best || score<best.score){
+        best={solid,x:targetX,y:solid.y-enemy.h,score};
+      }
+    }
+
+    return best;
+  };
+
+  const startRumblerJump = (enemy,target) => {
+    if(!target) return false;
+
+    enemy.jumpState={
+      fromX:enemy.x,
+      fromY:enemy.y,
+      toX:target.x,
+      toY:target.y,
+      target:target.solid,
+      t:0,
+      duration:.62
+    };
+
+    return true;
+  };
+
+  const updateEnemyTraps = (dt,scale) => {
+    const p=state.player;
+
+    for(let i=state.enemyTraps.length-1;i>=0;i--){
+      const trap=state.enemyTraps[i];
+      trap.phase+=dt*scale*5;
+      trap.arm=Math.max(0,trap.arm-dt*scale);
+      trap.life-=dt*scale;
+
+      if(trap.life<=0){
+        state.enemyTraps.splice(i,1);
+        continue;
+      }
+
+      if(
+        !state.playerDead &&
+        trap.arm<=0 &&
+        rectHit(p,{x:trap.x,y:trap.y-6,w:trap.w,h:14})
+      ){
+        p.stunned=Math.max(p.stunned,trap.stun);
+        p.vx=0;
+        state.flash=.12;
+        navigator.vibrate?.(25);
+        state.enemyTraps.splice(i,1);
+      }
+    }
+  };
+
+  const updateEnemyEffects = dt => {
+    for(let i=state.enemyEffects.length-1;i>=0;i--){
+      const effect=state.enemyEffects[i];
+      effect.age+=dt;
+      if(effect.age>=effect.duration) state.enemyEffects.splice(i,1);
+    }
   };
 
   const updateCombatZones = (dt,scale) => {
@@ -1185,12 +1449,20 @@
     const p=state.player;
 
     for(const enemy of [...state.enemies]){
+      if(!state.enemies.includes(enemy)) continue;
+
       enemy.phase+=dt*scale*2.4;
+      enemy.rumbleFlash=Math.max(0,(enemy.rumbleFlash||0)-dt);
 
       if(enemy.type==='drone'){
         const dx=(p.x+p.w*.5)-(enemy.x+enemy.w*.5);
         const dy=(p.y+p.h*.45)-(enemy.y+enemy.h*.5);
         const len=Math.hypot(dx,dy)||1;
+
+        if(!state.playerDead && len<=DRONE_TRIGGER_RANGE){
+          explodeDrone(enemy);
+          continue;
+        }
 
         enemy.x+=dx/len*enemy.speed*dt*scale;
         enemy.y+=dy/len*enemy.speed*dt*scale;
@@ -1199,10 +1471,16 @@
         enemy.x=Math.max(enemy.minX,enemy.x-enemy.speed*dt*scale);
         enemy.y=enemy.homeY-enemy.h;
         enemy.attack-=dt*scale;
+        enemy.trap-=dt*scale;
 
-        if(enemy.attack<=0){
-          shootEnemyProjectile(enemy,205);
-          enemy.attack=2.0;
+        if(enemy.attack<=0 && !state.playerDead){
+          shootWebcasterSpread(enemy);
+          enemy.attack=2.15;
+        }
+
+        if(enemy.trap<=0 && !state.playerDead){
+          throwWebcasterTrap(enemy);
+          enemy.trap=4.6;
         }
       }else if(enemy.type==='summoner'){
         enemy.x=Math.max(enemy.minX+20,enemy.x-enemy.speed*dt*scale);
@@ -1210,8 +1488,8 @@
         enemy.attack-=dt*scale;
         enemy.summon-=dt*scale;
 
-        if(enemy.attack<=0){
-          shootEnemyProjectile(enemy,180);
+        if(enemy.attack<=0 && !state.playerDead){
+          shootEnemyProjectile(enemy,180,'normal');
           enemy.attack=2.5;
         }
 
@@ -1228,6 +1506,54 @@
           summoned.y=enemy.y-45;
           enemy.summon=3.8;
         }
+      }else if(enemy.type==='rumbler'){
+        enemy.attack-=dt*scale;
+        enemy.rumble-=dt*scale;
+        enemy.jumpTimer-=dt*scale;
+
+        if(enemy.jumpState){
+          const jump=enemy.jumpState;
+          jump.t=Math.min(1,jump.t+(dt*scale)/jump.duration);
+          const t=jump.t;
+          enemy.x=lerp(jump.fromX,jump.toX,t);
+          enemy.y=lerp(jump.fromY,jump.toY,t)-Math.sin(Math.PI*t)*72;
+
+          if(t>=1){
+            enemy.x=jump.toX;
+            enemy.y=jump.toY;
+            enemy.homeY=jump.target.y;
+            enemy.minX=jump.target.x;
+            enemy.maxX=jump.target.x+jump.target.w;
+            enemy.jumpState=null;
+            enemy.jumpTimer=1.7;
+          }
+        }else{
+          const direction=p.x<enemy.x?-1:1;
+          enemy.x+=direction*enemy.speed*dt*scale;
+          enemy.x=clamp(enemy.x,enemy.minX,enemy.maxX-enemy.w);
+          enemy.y=enemy.homeY-enemy.h;
+
+          const px=p.x+p.w*.5;
+          const py=p.y+p.h*.5;
+          const ex=enemy.x+enemy.w*.5;
+          const ey=enemy.y+enemy.h*.5;
+          const dist=Math.hypot(px-ex,py-ey);
+
+          if(enemy.attack<=0 && dist<52 && !state.playerDead){
+            playerHit();
+            enemy.attack=1.35;
+          }
+
+          if(enemy.rumble<=0){
+            knockPlayerFromMagneticSurface(enemy);
+            enemy.rumble=3.25;
+          }
+
+          if(enemy.jumpTimer<=0){
+            const target=findRumblerJumpTarget(enemy);
+            if(!startRumblerJump(enemy,target)) enemy.jumpTimer=.75;
+          }
+        }
       }else{
         const direction=p.x<enemy.x?-1:1;
         enemy.x+=direction*enemy.speed*dt*scale;
@@ -1235,7 +1561,13 @@
         enemy.y=enemy.homeY-enemy.h;
       }
 
-      if(rectHit(p,enemy)) playerHit();
+      if(!state.playerDead && rectHit(p,enemy)){
+        if(enemy.type==='drone'){
+          explodeDrone(enemy);
+        }else if(enemy.type!=='rumbler'){
+          playerHit();
+        }
+      }
     }
 
     for(let i=state.enemyShots.length-1;i>=0;i--){
@@ -1256,13 +1588,15 @@
         }
       }
 
-      if(!remove && circleRect(shot.x,shot.y,shot.r,p)){
+      if(!remove && !state.playerDead && circleRect(shot.x,shot.y,shot.r,p)){
         remove=true;
         playerHit();
       }
 
       if(remove) state.enemyShots.splice(i,1);
     }
+
+    updateEnemyTraps(dt,scale);
   };
 
   const drawBackground = () => {
