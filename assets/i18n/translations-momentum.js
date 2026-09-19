@@ -73,7 +73,7 @@ Object.assign(window.TRANSLATIONS.en,{
   "momentum.bootsTitle":"Gravity traversal",
   "momentum.bootsDesc":"Vincent can attach to valid surfaces and launch a linear gravity jump toward a nearby visible landing point. The choice is made while reading the scene in slow time, then becomes a committed movement action. Magnetic platforms act as exceptions, allowing freer movement when the level needs a more flexible space.",
   "momentum.controlsTitle":"Dual-stick control",
-  "momentum.controlsDesc":"The left stick moves relative to the current surface. The right stick controls attack and jump direction. A tap performs a normal jump; holding the jump input charges a directional linear jump.",
+  "momentum.controlsDesc":"The left stick controls movement and the right stick handles precise aiming. Jump and gravity jump now use two separate instant buttons: gravity jump on the left, normal jump on the right, with no hold input required.",
   "momentum.readabilityTitle":"Readable commitment",
   "momentum.readabilityDesc":"The design asks the player to read the next landing, enemy position and projectile pattern before committing, so slow time supports precision rather than replacing execution skill.",
 
@@ -395,7 +395,7 @@ Object.assign(window.TRANSLATIONS.it,{
   "momentum.bootsTitle":"Traversal gravitazionale",
   "momentum.bootsDesc":"Vincent può agganciarsi alle superfici valide ed eseguire un salto gravitazionale lineare verso un punto di atterraggio vicino e visibile. La scelta avviene leggendo la scena a tempo rallentato, poi diventa un movimento vincolante. Le piattaforme magnetiche fanno eccezione e permettono maggiore libertà quando il livello richiede spazi più flessibili.",
   "momentum.controlsTitle":"Controllo a doppia levetta",
-  "momentum.controlsDesc":"La levetta sinistra muove il personaggio rispetto alla superficie attuale. La destra controlla direzione dell'attacco e del salto. Una pressione breve produce un salto normale; tenendo premuto si carica un salto lineare direzionale.",
+  "momentum.controlsDesc":"La levetta sinistra controlla il movimento e quella destra gestisce una mira più precisa. Salto e salto gravitazionale usano ora due pulsanti separati e immediati: gravitazionale a sinistra, normale a destra, senza dover tenere premuto.",
   "momentum.readabilityTitle":"Impegno leggibile",
   "momentum.readabilityDesc":"Il design chiede di leggere il prossimo atterraggio, la posizione dei nemici e i pattern dei proiettili prima di impegnarsi nell'azione: il rallentamento aiuta la precisione, ma non sostituisce l'esecuzione.",
 

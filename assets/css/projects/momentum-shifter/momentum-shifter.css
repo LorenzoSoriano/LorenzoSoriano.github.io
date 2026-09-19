@@ -7549,3 +7549,118 @@ html[lang="it"] .ms-easter-hint__en{
     padding:11px 14px;
   }
 }
+
+/* v50 — separate jump controls + precision aim stick */
+@media (pointer:coarse), (max-width:900px){
+  .ms-game-left-actions{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    gap:10px!important;
+    padding-bottom:2px!important;
+  }
+
+  .ms-game-jump-pair{
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    pointer-events:auto;
+  }
+
+  .ms-game-left-actions .is-fire{
+    width:48px!important;
+    height:48px!important;
+    min-width:48px!important;
+    min-height:48px!important;
+    margin:0!important;
+    opacity:.82;
+  }
+
+  .ms-game-left-actions .is-gravity-jump,
+  .ms-game-left-actions .is-jump{
+    width:64px!important;
+    height:64px!important;
+    min-width:64px!important;
+    min-height:64px!important;
+    margin:0!important;
+  }
+
+  .ms-game-action-button.is-gravity-jump{
+    border-color:rgba(185,140,255,.42);
+    color:#c9a9ff;
+    background:rgba(52,31,72,.78);
+    box-shadow:0 8px 22px rgba(0,0,0,.18),0 0 18px rgba(185,140,255,.07);
+  }
+
+  .ms-game-action-button.is-jump{
+    border-color:rgba(114,213,233,.34);
+    color:#8fe8f7;
+    background:rgba(17,44,62,.76);
+  }
+
+  .ms-game-charge-ring{
+    display:none!important;
+  }
+
+  .ms-game-action-label{
+    position:absolute;
+    left:50%;
+    bottom:-17px;
+    transform:translateX(-50%);
+    color:rgba(238,243,255,.62);
+    font:700 7px/1 "IBM Plex Mono","DM Mono",monospace;
+    letter-spacing:.08em;
+    white-space:nowrap;
+    pointer-events:none;
+  }
+
+  .ms-game-action-button.is-gravity-jump .ms-game-action-label{
+    color:rgba(201,169,255,.82);
+  }
+
+  .ms-game-action-button.is-jump .ms-game-action-label{
+    color:rgba(143,232,247,.82);
+  }
+
+  .ms-game-stick--aim{
+    border-color:rgba(244,215,92,.24);
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.025),
+      0 10px 28px rgba(0,0,0,.16),
+      0 0 0 1px rgba(244,215,92,.025);
+  }
+
+  .ms-game-stick--aim i{
+    transition:transform .025s linear,border-color .12s ease,background .12s ease;
+  }
+}
+
+@media (pointer:coarse) and (orientation:portrait){
+  .ms-game-jump-pair{
+    gap:6px;
+  }
+
+  .ms-game-left-actions .is-fire{
+    width:42px!important;
+    height:42px!important;
+    min-width:42px!important;
+    min-height:42px!important;
+  }
+
+  .ms-game-left-actions .is-gravity-jump,
+  .ms-game-left-actions .is-jump{
+    width:52px!important;
+    height:52px!important;
+    min-width:52px!important;
+    min-height:52px!important;
+  }
+
+  .ms-game-action-label{
+    bottom:-14px;
+    font-size:6px;
+  }
+}
+

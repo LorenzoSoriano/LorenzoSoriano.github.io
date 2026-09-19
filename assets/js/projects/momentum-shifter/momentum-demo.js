@@ -13,6 +13,7 @@
   const pausePanel = stage.querySelector('[data-game-pause-panel]');
   const resumeButton = stage.querySelector('[data-game-resume]');
   const jumpButton = stage.querySelector('[data-game-jump]');
+  const gravityJumpButton = stage.querySelector('[data-game-gravity-jump]');
   const fireButton = stage.querySelector('[data-game-fire]');
 
   const moveStick = stage.querySelector('[data-game-move-stick]');
@@ -3285,6 +3286,7 @@
     }
 
     updateCamera(dt);
+    positionAimFromStick(dt);
     updateHud(scale);
     render(scale);
     state.raf=requestAnimationFrame(frame);
@@ -3477,54 +3479,22 @@
     setPaused(false);
   });
 
-  let jumpHoldTimer=0;
-  let jumpHeldAt=0;
-  let jumpHoldPointer=null;
   let suppressAimReleaseUntil=0;
-
-  const clearJumpHold = () => {
-    window.clearTimeout(jumpHoldTimer);
-    jumpHoldTimer=0;
-    jumpButton?.classList.remove('is-charging');
-  };
 
   jumpButton?.addEventListener('pointerdown',event=>{
     if(!state.active || state.paused) return;
     event.preventDefault();
-
-    jumpHoldPointer=event.pointerId;
-    jumpHeldAt=performance.now();
-    suppressAimReleaseUntil=Infinity;
-    jumpButton.setPointerCapture?.(event.pointerId);
-    jumpButton.classList.add('is-charging');
-
-    jumpHoldTimer=window.setTimeout(()=>{
-      jumpButton.classList.add('is-ready');
-    },320);
+    suppressAimReleaseUntil=performance.now()+180;
+    jump();
+    navigator.vibrate?.(7);
   });
 
-  const releaseJump = event => {
-    if(jumpHoldPointer!==event.pointerId) return;
+  gravityJumpButton?.addEventListener('pointerdown',event=>{
+    if(!state.active || state.paused) return;
     event.preventDefault();
-
-    const held=performance.now()-jumpHeldAt;
-    jumpHoldPointer=null;
-    suppressAimReleaseUntil=performance.now()+180;
-    clearJumpHold();
-    jumpButton?.classList.remove('is-ready');
-
     suppressAimReleaseUntil=performance.now()+220;
-
-    if(held>=320) gravityJump();
-    else jump();
-  };
-
-  jumpButton?.addEventListener('pointerup',releaseJump);
-  jumpButton?.addEventListener('pointercancel',event=>{
-    if(jumpHoldPointer!==event.pointerId) return;
-    jumpHoldPointer=null;
-    clearJumpHold();
-    jumpButton?.classList.remove('is-ready');
+    gravityJump();
+    navigator.vibrate?.(10);
   });
 
   fireButton?.addEventListener('pointerdown',event=>{
@@ -3534,17 +3504,18 @@
     navigator.vibrate?.(8);
   });
 
-  const applyStickDeadzone = (x,y,dead=.14) => {
+  const applyStickDeadzone = (x,y,dead=.14,exponent=1) => {
     const mag=Math.hypot(x,y);
     if(mag<=dead) return {x:0,y:0,mag:0};
 
-    const scaled=clamp((mag-dead)/(1-dead),0,1);
+    const linear=clamp((mag-dead)/(1-dead),0,1);
+    const scaled=Math.pow(linear,exponent);
     const nx=x/(mag||1);
     const ny=y/(mag||1);
     return {x:nx*scaled,y:ny*scaled,mag:scaled};
   };
 
-  const setupStick = (element,knob,onMove,onEnd) => {
+  const setupStick = (element,knob,onMove,onEnd,options={}) => {
     if(!element || !knob) return;
 
     let pointerId=null;
@@ -3568,7 +3539,12 @@
 
       const rawX=dx/max;
       const rawY=dy/max;
-      last=applyStickDeadzone(rawX,rawY);
+      last=applyStickDeadzone(
+        rawX,
+        rawY,
+        options.deadzone ?? .14,
+        options.exponent ?? 1
+      );
       onMove(last.x,last.y,last.mag);
     };
 
@@ -3598,6 +3574,74 @@
     element.addEventListener('pointercancel',end);
   };
 
+  const aimStickState={
+    active:false,
+    targetX:1,
+    targetY:0,
+    currentX:1,
+    currentY:0,
+    mag:0
+  };
+
+  const positionAimFromStick = (dt=0,snap=false) => {
+    if(!aimStickState.active) return;
+
+    const rate=18+aimStickState.mag*18;
+    const alpha=snap ? 1 : (1-Math.exp(-Math.max(0,dt)*rate));
+
+    aimStickState.currentX=lerp(
+      aimStickState.currentX,
+      aimStickState.targetX,
+      alpha
+    );
+    aimStickState.currentY=lerp(
+      aimStickState.currentY,
+      aimStickState.targetY,
+      alpha
+    );
+
+    const dirLen=Math.hypot(
+      aimStickState.currentX,
+      aimStickState.currentY
+    )||1;
+
+    aimStickState.currentX/=dirLen;
+    aimStickState.currentY/=dirLen;
+
+    aim.dx=aimStickState.currentX;
+    aim.dy=aimStickState.currentY;
+
+    const pcx=state.player.x+state.player.w*.5;
+    const pcy=state.player.y+state.player.h*.5;
+
+    // Small stick movements keep the reticle closer for fine corrections;
+    // full deflection still gives enough reach for fast target acquisition.
+    const reach=175+aimStickState.mag*335;
+    aim.x=pcx+aim.dx*reach;
+    aim.y=pcy+aim.dy*reach;
+    aim.active=true;
+    aim.source='stick';
+  };
+
+  const setAimStickTarget = (x,y,mag,snap=false) => {
+    if(mag<=.01) return;
+
+    const len=Math.hypot(x,y)||1;
+    const wasActive=aimStickState.active;
+
+    aimStickState.targetX=x/len;
+    aimStickState.targetY=y/len;
+    aimStickState.mag=mag;
+    aimStickState.active=true;
+
+    if(!wasActive || snap){
+      aimStickState.currentX=aimStickState.targetX;
+      aimStickState.currentY=aimStickState.targetY;
+    }
+
+    positionAimFromStick(0,snap || !wasActive);
+  };
+
   setupStick(
     moveStick,
     moveKnob,
@@ -3615,34 +3659,31 @@
     aimStick,
     aimKnob,
     (x,y,mag)=>{
-      if(mag<.05) return;
+      if(mag<.015) return;
 
-      const len=Math.hypot(x,y)||1;
-      aim.dx=x/len;
-      aim.dy=y/len;
-
-      const pcx=state.player.x+state.player.w*.5;
-      const pcy=state.player.y+state.player.h*.5;
-      const reach=360+mag*110;
-      aim.x=pcx+aim.dx*reach;
-      aim.y=pcy+aim.dy*reach;
-      aim.active=true;
-      aim.source='stick';
-      aimStick?.classList.toggle('is-armed',mag>.28);
+      setAimStickTarget(x,y,mag,false);
+      aimStick?.classList.toggle('is-armed',mag>.20);
     },
-    (_x,_y,mag)=>{
+    (x,y,mag)=>{
       aimStick?.classList.remove('is-armed');
 
-      // One-thumb shooting: drag the aim stick, then release to fire.
       if(
-        mag>.28 &&
-        jumpHoldPointer===null &&
+        mag>.18 &&
         performance.now()>=suppressAimReleaseUntil &&
         !state.paused
       ){
+        // Commit the exact release direction before firing so the smoothing
+        // never makes the shot lag behind the player's final thumb position.
+        setAimStickTarget(x,y,mag,true);
         fireToward(aim.x,aim.y);
         navigator.vibrate?.(8);
       }
+
+      aimStickState.active=false;
+    },
+    {
+      deadzone:.085,
+      exponent:1.42
     }
   );
 
