@@ -1,0 +1,53 @@
+window.TRANSLATIONS = window.TRANSLATIONS || { en:{}, it:{} };
+
+Object.assign(window.TRANSLATIONS.en, {
+  "vitis.focusValue":"World Building · Tools · Rendering",
+  "vitis.overviewTitle":"A stylized world built together with the tools needed to shape it.",
+  "vitis.overview1":"Vitis: A Wine Country Tale is a long-term Unity project set around an Italian-inspired stylized world. The project is developed as both a game world and a technical playground where editor tools, rendering and environmental systems are tested directly in production.",
+  "vitis.overview2":"Instead of treating terrain, water, atmosphere and rendering as isolated features, I am building them to work as one authoring workflow. The goal is to make iteration faster while keeping the visual language of the world consistent.",
+  "vitis.systemsTitle":"Core systems",
+  "vitis.systemsSubtitle":"Four areas currently define most of the development work.",
+  "vitis.worldTitle":"World Editor & Terrain",
+  "vitis.worldDesc":"A modular authoring workflow for terrain, painting, scatter, props and nature, built to make environment iteration faster inside Unity.",
+  "vitis.waterTitle":"Water System",
+  "vitis.waterDesc":"A modular River, Lake and Ocean workflow with spline authoring, flow data, connections between water bodies, foam and displacement controls.",
+  "vitis.renderTitle":"Pixel Art Rendering",
+  "vitis.renderDesc":"Stylized rendering inspired by pixel art, including quantized lighting, outlines, atmosphere, foliage treatment and environmental materials.",
+  "vitis.climateTitle":"Climate & Atmosphere",
+  "vitis.climateDesc":"Day and night, weather, rain, clouds and atmospheric controls designed to change the mood of the world without breaking its visual coherence.",
+  "vitis.approachLabel":"Approach",
+  "vitis.approachTitle":"A focused authoring workflow.",
+  "vitis.approachDesc":"The World Editor is designed to quickly add and modify terrain, rivers, props, nature and climate from a unified workflow. Its purpose is to accelerate world building and iteration, rather than become a separate level-planning tool.",
+  "vitis.progressKicker":"VITIS / WORK IN PROGRESS",
+  "vitis.progressTitle":"A project that grows together with its tools.",
+  "vitis.progressDesc":"Vitis is still in active development. World building, rendering, water, climate and authoring tools are refined alongside the world itself, so real production needs continuously guide what gets improved next.",
+  "vitis.progressPanelLabel":"CURRENT FOCUS",
+  "vitis.progressPanelTitle":"Building the world while improving the pipeline.",
+  "vitis.progressPanelDesc":"World Editor · Water System · Climate · Pixel Art Rendering · Environment Authoring"
+});
+
+Object.assign(window.TRANSLATIONS.it, {
+  "vitis.focusValue":"World Building · Tool · Rendering",
+  "vitis.overviewTitle":"Un mondo stilizzato costruito insieme agli strumenti necessari per modellarlo.",
+  "vitis.overview1":"Vitis: A Wine Country Tale è un progetto Unity a lungo termine ambientato in un mondo stilizzato ispirato all’Italia. Il progetto cresce sia come mondo di gioco sia come spazio di sviluppo in cui editor tool, rendering e sistemi ambientali vengono testati direttamente durante la produzione.",
+  "vitis.overview2":"Terreno, acqua, atmosfera e rendering non vengono trattati come elementi isolati: li sto sviluppando perché funzionino come un unico workflow di authoring. L’obiettivo è rendere l’iterazione più rapida mantenendo coerente il linguaggio visivo del mondo.",
+  "vitis.systemsTitle":"Sistemi principali",
+  "vitis.systemsSubtitle":"Quattro aree definiscono gran parte dello sviluppo attuale.",
+  "vitis.worldTitle":"World Editor & Terreno",
+  "vitis.worldDesc":"Un workflow modulare per terreno, painting, scatter, prop e natura, pensato per velocizzare la costruzione e l’iterazione degli ambienti direttamente in Unity.",
+  "vitis.waterTitle":"Sistema Acqua",
+  "vitis.waterDesc":"Un sistema modulare per River, Lake e Ocean con authoring tramite spline, dati di flusso, connessioni tra corpi d’acqua, foam e controllo del displacement.",
+  "vitis.renderTitle":"Pixel Art Rendering",
+  "vitis.renderDesc":"Rendering stilizzato ispirato alla pixel art con quantizzazione della luce, outline, atmosfera, gestione del foliage e materiali ambientali.",
+  "vitis.climateTitle":"Clima & Atmosfera",
+  "vitis.climateDesc":"Ciclo giorno/notte, meteo, pioggia, nuvole e controlli atmosferici pensati per cambiare il mood del mondo mantenendo coerenza visiva.",
+  "vitis.approachLabel":"Approccio",
+  "vitis.approachTitle":"Un workflow di authoring mirato.",
+  "vitis.approachDesc":"Il World Editor è progettato per aggiungere e modificare rapidamente terreno, fiumi, prop, natura e clima da un workflow unificato. Il suo scopo è accelerare il world building e l’iterazione, non diventare uno strumento separato di pianificazione del level design.",
+  "vitis.progressKicker":"VITIS / WORK IN PROGRESS",
+  "vitis.progressTitle":"Un progetto che cresce insieme ai suoi strumenti.",
+  "vitis.progressDesc":"Vitis è ancora in sviluppo attivo. World building, rendering, acqua, clima e strumenti di authoring vengono raffinati insieme al mondo di gioco, così le esigenze reali della produzione guidano continuamente cosa migliorare e sviluppare dopo.",
+  "vitis.progressPanelLabel":"FOCUS ATTUALE",
+  "vitis.progressPanelTitle":"Costruire il mondo mentre migliora anche la pipeline.",
+  "vitis.progressPanelDesc":"World Editor · Sistema Acqua · Clima · Pixel Art Rendering · Environment Authoring"
+});

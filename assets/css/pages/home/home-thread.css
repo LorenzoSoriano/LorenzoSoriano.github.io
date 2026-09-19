@@ -1,0 +1,138 @@
+/* Home journey — curved portal boundaries aligned to the real route axis. */
+
+body[data-page="home"] .home-journey-end{display:none!important}
+
+body[data-page="home"] main{
+  position:relative;
+  z-index:1;
+  overflow:visible!important;
+}
+
+body[data-page="home"] .areas-section::before,
+body[data-page="home"] .areas-section::after,
+body[data-page="home"] .areas-section + .section-shell.section-block::before,
+body[data-page="home"] .areas-section + .section-shell.section-block::after{
+  content:none!important;
+}
+
+body[data-page="home"] .areas-section + .section-shell.section-block{
+  position:relative!important;
+  padding-bottom:64px!important;
+}
+
+/* Soft portal/surface used to open and close the Home route. */
+body[data-page="home"] .home-journey-divider{
+  --portal-node-y:74px;
+  position:absolute;
+  z-index:40;
+  left:0;
+  right:0;
+  height:96px;
+  overflow:visible;
+  pointer-events:none;
+  background:none;
+}
+
+body[data-page="home"] .home-journey-divider::before{
+  content:"";
+  position:absolute;
+  left:-6vw;
+  width:112vw;
+  height:76px;
+  pointer-events:none;
+}
+
+body[data-page="home"] .home-journey-divider--start::before{
+  top:0;
+  background:linear-gradient(180deg,rgba(121,108,240,.115) 0%,rgba(94,160,240,.065) 52%,rgba(238,242,157,.025) 100%);
+  border-bottom:2px solid rgba(105,126,237,.30);
+  border-radius:0 0 50% 50% / 0 0 88% 88%;
+  box-shadow:0 20px 34px rgba(72,82,143,.055);
+}
+
+/* The closing portal is a real flow element. This guarantees that the footer
+   always follows it and prevents the route from visually leaking below it. */
+body[data-page="home"] .home-journey-divider--end{
+  --portal-node-y:22px;
+  position:relative;
+  left:0;
+  right:auto;
+  width:100%;
+  margin:0;
+}
+
+body[data-page="home"] .home-journey-divider--end::before{
+  bottom:0;
+  background:linear-gradient(0deg,rgba(30,36,64,.11) 0%,rgba(94,160,240,.065) 54%,rgba(121,108,240,.02) 100%);
+  border-top:2px solid rgba(105,126,237,.30);
+  border-radius:50% 50% 0 0 / 88% 88% 0 0;
+  box-shadow:0 -20px 34px rgba(72,82,143,.055);
+}
+
+/* Empty ring: the thread passes through it instead of ending on a button-like dot. */
+body[data-page="home"] .home-journey-divider-node{
+  position:absolute;
+  z-index:42;
+  top:var(--portal-node-y);
+  width:24px;
+  height:24px;
+  box-sizing:border-box;
+  transform:translate(-50%,-50%);
+  border:3px solid #fff;
+  border-radius:50%;
+  background:rgba(251,250,246,.76);
+  box-shadow:
+    0 0 0 2px rgba(121,108,240,.92),
+    0 0 0 8px rgba(121,108,240,.10),
+    0 10px 28px rgba(48,59,110,.15);
+  pointer-events:none;
+}
+
+body[data-page="home"] .home-journey-divider-node::after{
+  content:"";
+  position:absolute;
+  inset:6px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  opacity:.68;
+}
+
+/* Home-only footer safeguard. The fixed thematic background lives inside main,
+   so the footer must sit in a higher stacking context. */
+body[data-page="home"] .footer{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:100!important;
+  isolation:isolate;
+  margin-top:0!important;
+  border-top:0!important;
+}
+
+@media(max-width:980px){
+  body[data-page="home"] .areas-section + .section-shell.section-block{
+    padding-bottom:54px!important;
+  }
+}
+
+@media(max-width:620px){
+  body[data-page="home"] .home-journey-divider{
+    --portal-node-y:60px;
+    height:78px;
+  }
+  body[data-page="home"] .home-journey-divider::before{
+    height:62px;
+  }
+  body[data-page="home"] .home-journey-divider--end{
+    --portal-node-y:18px;
+  }
+  body[data-page="home"] .home-journey-divider-node{
+    width:20px;
+    height:20px;
+  }
+  body[data-page="home"] .home-journey-divider-node::after{inset:5px}
+  body[data-page="home"] .areas-section + .section-shell.section-block{
+    padding-bottom:42px!important;
+  }
+}

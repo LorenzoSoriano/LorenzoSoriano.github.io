@@ -1,0 +1,99 @@
+/* Global UI audio control */
+.ui-audio-root{
+  position:fixed;
+  right:122px;
+  bottom:18px;
+  z-index:2147482992;
+  display:flex;
+  align-items:center;
+  font-family:"Manrope",sans-serif;
+}
+
+.ui-audio-button{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:1px solid rgba(121,108,240,.16);
+  border-radius:999px;
+  background:rgba(255,255,255,.84);
+  backdrop-filter:blur(14px) saturate(120%);
+  box-shadow:0 14px 36px rgba(46,57,96,.14);
+  color:#1e2440;
+  cursor:pointer;
+  transition:transform .2s ease,background .2s ease,border-color .2s ease;
+}
+
+.ui-audio-button:hover{transform:translateY(-2px);background:#fff;border-color:rgba(121,108,240,.28)}
+.ui-audio-button svg{width:18px;height:18px;display:block}
+.ui-audio-button[data-muted="true"] .sound-wave{opacity:.22}
+
+.ui-audio-panel{
+  position:absolute;
+  right:0;
+  bottom:calc(100% + 10px);
+  width:210px;
+  padding:14px 14px 12px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:18px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(18px) saturate(120%);
+  box-shadow:0 18px 48px rgba(46,57,96,.16);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(7px) scale(.98);
+  transform-origin:bottom right;
+  pointer-events:none;
+  transition:opacity .18s ease,transform .18s ease,visibility .18s ease;
+}
+
+.ui-audio-root.open .ui-audio-panel{
+  opacity:1;
+  visibility:visible;
+  transform:none;
+  pointer-events:auto;
+}
+
+.ui-audio-panel__top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.ui-audio-panel__label{
+  font:600 10px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+  color:#796cf0;
+}
+
+.ui-audio-panel output{
+  font-size:11px;
+  font-weight:700;
+  color:#626a82;
+}
+
+.ui-audio-slider{
+  width:100%;
+  accent-color:#796cf0;
+  cursor:pointer;
+}
+
+.ui-audio-hint{
+  margin:8px 0 0;
+  color:#8b91a3;
+  font-size:10px;
+  line-height:1.45;
+}
+
+@media(max-width:700px){
+  .ui-audio-root{right:108px;bottom:12px}
+  .ui-audio-button{width:40px;height:40px}
+  .ui-audio-panel{width:min(200px,calc(100vw - 24px))}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .ui-audio-button,.ui-audio-panel{transition:none!important}
+}

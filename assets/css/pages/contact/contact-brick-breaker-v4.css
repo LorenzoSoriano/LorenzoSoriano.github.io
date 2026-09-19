@@ -1,0 +1,175 @@
+@import url('contact-brick-breaker.css?v=3');
+
+/* V4: pointer-lock HUD, active power-ups and cleaner footer hint. */
+body[data-page="contact"] .footer{
+  position:relative!important;
+}
+
+body[data-page="contact"] .contact-easter-hint{
+  position:absolute;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:7px 11px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:999px;
+  background:rgba(255,255,255,.035);
+  opacity:.48;
+  color:rgba(255,255,255,.78);
+  font:500 9px/1.1 "IBM Plex Mono",monospace;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  transition:opacity .2s ease,background .2s ease,border-color .2s ease;
+}
+body[data-page="contact"] .contact-easter-hint:hover{
+  opacity:.82;
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.15);
+}
+.contact-easter-hint__label{color:#eef29d;font-weight:700}
+.contact-easter-hint__it{display:none}
+html[lang="it"] .contact-easter-hint__it{display:inline}
+html[lang="it"] .contact-easter-hint__en{display:none}
+
+.brick-egg-hud{
+  align-items:center!important;
+}
+.brick-egg-help{
+  pointer-events:none;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:42px;
+  padding:8px 12px;
+  border:1px solid rgba(121,108,240,.14);
+  border-radius:999px;
+  background:rgba(255,255,255,.84);
+  backdrop-filter:blur(14px) saturate(120%);
+  box-shadow:0 12px 32px rgba(46,57,96,.10);
+  color:#72798f;
+  font:600 9px/1.1 "IBM Plex Mono",monospace;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.brick-egg-help strong{
+  color:#1e2440;
+  font-weight:700;
+}
+
+.brick-egg-active-powers{
+  position:absolute;
+  left:18px;
+  bottom:max(18px,env(safe-area-inset-bottom));
+  z-index:8;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  min-height:42px;
+  pointer-events:none;
+}
+.brick-egg-power-icon{
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:1px;
+  border:1px solid rgba(121,108,240,.17);
+  border-radius:14px;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(14px) saturate(120%);
+  box-shadow:0 12px 30px rgba(30,36,64,.14);
+  color:#1e2440;
+  animation:brickPowerIn .2s ease both;
+}
+.brick-egg-power-icon span{
+  display:block;
+  font:800 15px/1 "Manrope",sans-serif;
+  letter-spacing:-.06em;
+}
+.brick-egg-power-icon small{
+  display:block;
+  color:#72798f;
+  font:700 8px/1 "IBM Plex Mono",monospace;
+  letter-spacing:.02em;
+}
+.brick-egg-power-icon--wide{box-shadow:inset 0 0 0 2px rgba(238,242,157,.45),0 12px 30px rgba(30,36,64,.12)}
+.brick-egg-power-icon--multi{box-shadow:inset 0 0 0 2px rgba(143,130,245,.32),0 12px 30px rgba(30,36,64,.12)}
+.brick-egg-power-icon--slow{box-shadow:inset 0 0 0 2px rgba(130,185,244,.34),0 12px 30px rgba(30,36,64,.12)}
+.brick-egg-power-icon--life{box-shadow:inset 0 0 0 2px rgba(244,215,92,.42),0 12px 30px rgba(30,36,64,.12)}
+.brick-egg-power-icon.is-flash{animation:brickPowerFlash 1.15s ease both}
+
+/* Level two is a clean playfield: only the site header remains. */
+body.brick-egg-phase2 .page-main,
+body.brick-egg-phase2 .footer{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* The site header is the hard ceiling of the game. */
+body.brick-egg-running .site-header{
+  position:relative;
+  z-index:2147482905!important;
+}
+.brick-egg-layer{
+  clip-path:inset(var(--brick-ceiling,0px) 0 0 0)!important;
+}
+
+@keyframes brickPowerIn{
+  from{opacity:0;transform:translateY(6px) scale(.94)}
+  to{opacity:1;transform:none}
+}
+@keyframes brickPowerFlash{
+  0%{opacity:0;transform:translateY(8px) scale(.82)}
+  18%,72%{opacity:1;transform:none}
+  100%{opacity:0;transform:translateY(-8px) scale(.9)}
+}
+
+@media(max-width:700px){
+  body[data-page="contact"] .contact-easter-hint{
+    position:static;
+    transform:none;
+    order:3;
+    margin:10px auto 0;
+    width:max-content;
+    max-width:calc(100% - 24px);
+    white-space:normal;
+    text-align:center;
+    justify-content:center;
+    font-size:8px;
+  }
+  .brick-egg-hud{
+    gap:8px!important;
+  }
+  .brick-egg-hud__meta{
+    max-width:calc(100vw - 148px)!important;
+  }
+  .brick-egg-help{
+    min-height:38px;
+    padding:7px 9px;
+    gap:6px;
+    font-size:8px;
+  }
+  .brick-egg-help span{display:none}
+  .brick-egg-active-powers{
+    left:10px;
+    bottom:max(12px,env(safe-area-inset-bottom));
+    gap:6px;
+  }
+  .brick-egg-power-icon{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+  }
+  .brick-egg-power-icon span{font-size:13px}
+  .brick-egg-power-icon small{font-size:7px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .brick-egg-power-icon{animation:none!important}
+}
