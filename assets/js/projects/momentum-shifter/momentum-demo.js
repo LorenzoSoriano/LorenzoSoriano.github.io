@@ -43,6 +43,29 @@
   };
   const aim = { x:850, y:floorY-180, active:false, dx:1, dy:0, source:'mouse' };
 
+  const isTouchDevice = () =>
+    window.matchMedia('(pointer: coarse)').matches ||
+    navigator.maxTouchPoints > 0;
+
+  const isMobileGameplay = () =>
+    isTouchDevice() && stage.classList.contains('is-mobile-game');
+
+  const MOBILE_AIM_ASSIST_DOT = 0.93;
+  const MOBILE_GRAVITY_ASSIST_DOT = 0.80;
+  const MOBILE_AUTO_FIRE_THRESHOLD = 0.34;
+  const MOBILE_AUTO_FIRE_DELAY = 0.13;
+  const MOBILE_AUTO_FIRE_COOLDOWN = 0.68;
+
+  const mobileAssist = {
+    rawX:1,
+    rawY:0,
+    mag:0,
+    enemy:null,
+    enemyPoint:null,
+    autoFireHold:0,
+    autoFireCooldown:0
+  };
+
   // Visible-route layout: every mandatory magnetic jump has an unobstructed
   // next surface within range. Solid architecture frames the route instead of
   // sitting between consecutive traversal targets.
@@ -423,6 +446,11 @@
     state.messageTimer=0;
     state.gravityTarget=null;
     state.gravityJump=null;
+    mobileAssist.mag=0;
+    mobileAssist.enemy=null;
+    mobileAssist.enemyPoint=null;
+    mobileAssist.autoFireHold=0;
+    mobileAssist.autoFireCooldown=0;
     state.checkpoint.active=false;
     resetGravityCharges();
     state.camera.y=Math.max(0,floorY-H+70);
@@ -882,6 +910,14 @@
     const sx=p.x+p.w*.5;
     const sy=p.y+p.h*.5;
     const maxRange=500;
+    const mobileDirectional=
+      isMobileGameplay() &&
+      mobileAssist.mag>.08;
+
+    const rawLen=Math.hypot(mobileAssist.rawX,mobileAssist.rawY)||1;
+    const rawX=mobileAssist.rawX/rawLen;
+    const rawY=mobileAssist.rawY/rawLen;
+
     let best=null;
 
     for(const solid of staticSolids){
@@ -898,10 +934,32 @@
 
         const pointerDistance=Math.hypot(tx-candidate.cx,ty-candidate.cy);
         const sameSurface=p.attachedSolid===solid && p.attachedFace===face;
-        const score=pointerDistance + dist*.08 + (sameSurface?55:0);
+
+        let score;
+
+        if(mobileDirectional){
+          const ndx=dx/(dist||1);
+          const ndy=dy/(dist||1);
+          const dot=ndx*rawX+ndy*rawY;
+
+          if(dot<MOBILE_GRAVITY_ASSIST_DOT) continue;
+
+          score=
+            (1-dot)*560 +
+            dist*.10 +
+            pointerDistance*.08 +
+            (sameSurface?70:0);
+        }else{
+          score=pointerDistance + dist*.08 + (sameSurface?55:0);
+        }
 
         if(!best || score<best.score){
-          best={...candidate,dist,score};
+          best={
+            ...candidate,
+            dist,
+            score,
+            mobileAssisted:mobileDirectional
+          };
         }
       }
     }
@@ -990,6 +1048,98 @@
       slotIndex,
       returnHits:new Set()
     });
+  };
+
+  const findMobileAimEnemy = (dirX,dirY) => {
+    if(
+      !isMobileGameplay() ||
+      mobileAssist.mag<.16 ||
+      state.playerDead ||
+      state.won
+    ) return null;
+
+    const p=state.player;
+    const sx=p.x+p.w*.54;
+    const sy=p.y+p.h*.38;
+    const dirLen=Math.hypot(dirX,dirY)||1;
+    const nx=dirX/dirLen;
+    const ny=dirY/dirLen;
+
+    let best=null;
+
+    for(const enemy of state.enemies){
+      const cx=enemy.x+enemy.w*.5;
+      const cy=enemy.y+enemy.h*.42;
+      const dx=cx-sx;
+      const dy=cy-sy;
+      const dist=Math.hypot(dx,dy);
+
+      if(dist<36 || dist>540) continue;
+
+      const ex=dx/(dist||1);
+      const ey=dy/(dist||1);
+      const dot=nx*ex+ny*ey;
+
+      if(dot<MOBILE_AIM_ASSIST_DOT) continue;
+      if(!lineClear(sx,sy,cx,cy,null)) continue;
+
+      const score=(1-dot)*900 + dist*.055;
+
+      if(!best || score<best.score){
+        best={
+          enemy,
+          cx,
+          cy,
+          dx:ex,
+          dy:ey,
+          dot,
+          dist,
+          score
+        };
+      }
+    }
+
+    return best;
+  };
+
+  const updateMobileAutoFire = dt => {
+    mobileAssist.autoFireCooldown=Math.max(
+      0,
+      mobileAssist.autoFireCooldown-dt
+    );
+
+    const validTarget=
+      isMobileGameplay() &&
+      mobileAssist.mag>=MOBILE_AUTO_FIRE_THRESHOLD &&
+      mobileAssist.enemy &&
+      state.enemies.includes(mobileAssist.enemy) &&
+      !state.paused &&
+      !state.playerDead &&
+      !state.won;
+
+    if(!validTarget){
+      mobileAssist.autoFireHold=0;
+      return;
+    }
+
+    mobileAssist.autoFireHold+=dt;
+
+    if(
+      mobileAssist.autoFireHold<MOBILE_AUTO_FIRE_DELAY ||
+      mobileAssist.autoFireCooldown>0 ||
+      state.ammo<=0 ||
+      !state.ammoSlots.some(slot=>slot.available)
+    ) return;
+
+    const enemy=mobileAssist.enemy;
+    fireToward(
+      enemy.x+enemy.w*.5,
+      enemy.y+enemy.h*.42
+    );
+
+    mobileAssist.autoFireCooldown=MOBILE_AUTO_FIRE_COOLDOWN;
+    mobileAssist.autoFireHold=MOBILE_AUTO_FIRE_DELAY;
+    navigator.vibrate?.(6);
   };
 
   const pointerToWorld = event => {
@@ -3138,10 +3288,24 @@
   };
 
   const drawCrosshair = () => {
+    const mobile=isMobileGameplay();
+    const enemyLock=mobile && !!mobileAssist.enemy;
+    const gravityLock=
+      mobile &&
+      !enemyLock &&
+      !!state.gravityTarget &&
+      state.player.grounded;
+
+    const stroke=enemyLock
+      ? 'rgba(255,232,117,.94)'
+      : gravityLock
+        ? 'rgba(114,213,233,.92)'
+        : 'rgba(255,255,255,.72)';
+
     ctx.save();
     ctx.translate(aim.x,aim.y);
-    ctx.strokeStyle='rgba(255,255,255,.72)';
-    ctx.lineWidth=1;
+    ctx.strokeStyle=stroke;
+    ctx.lineWidth=enemyLock||gravityLock ? 1.6 : 1;
 
     ctx.beginPath();
     ctx.arc(0,0,8,0,Math.PI*2);
@@ -3150,6 +3314,14 @@
     ctx.moveTo(0,-13);ctx.lineTo(0,-5);
     ctx.moveTo(0,5);ctx.lineTo(0,13);
     ctx.stroke();
+
+    if(enemyLock||gravityLock){
+      const pulse=11+Math.sin(performance.now()*.012)*2;
+      ctx.beginPath();
+      ctx.arc(0,0,pulse,0,Math.PI*2);
+      ctx.globalAlpha=.42;
+      ctx.stroke();
+    }
 
     ctx.restore();
   };
@@ -3287,14 +3459,11 @@
 
     updateCamera(dt);
     positionAimFromStick(dt);
+    updateMobileAutoFire(dt);
     updateHud(scale);
     render(scale);
     state.raf=requestAnimationFrame(frame);
   };
-
-  const isTouchDevice = () =>
-    window.matchMedia('(pointer: coarse)').matches ||
-    navigator.maxTouchPoints > 0;
 
   const enterMobileLandscape = async () => {
     if(!isTouchDevice()) return;
@@ -3604,17 +3773,48 @@
     aimStickState.currentX/=dirLen;
     aimStickState.currentY/=dirLen;
 
-    aim.dx=aimStickState.currentX;
-    aim.dy=aimStickState.currentY;
+    let finalX=aimStickState.currentX;
+    let finalY=aimStickState.currentY;
+
+    const assisted=findMobileAimEnemy(finalX,finalY);
+    mobileAssist.enemy=assisted?.enemy || null;
+    mobileAssist.enemyPoint=assisted || null;
+
+    if(assisted){
+      const normalizedLock=clamp(
+        (assisted.dot-MOBILE_AIM_ASSIST_DOT)/(1-MOBILE_AIM_ASSIST_DOT),
+        0,
+        1
+      );
+      const magnet=0.18+normalizedLock*.12;
+
+      finalX=lerp(finalX,assisted.dx,magnet);
+      finalY=lerp(finalY,assisted.dy,magnet);
+
+      const assistedLen=Math.hypot(finalX,finalY)||1;
+      finalX/=assistedLen;
+      finalY/=assistedLen;
+    }
+
+    aim.dx=finalX;
+    aim.dy=finalY;
 
     const pcx=state.player.x+state.player.w*.5;
     const pcy=state.player.y+state.player.h*.5;
 
-    // Small stick movements keep the reticle closer for fine corrections;
-    // full deflection still gives enough reach for fast target acquisition.
     const reach=175+aimStickState.mag*335;
-    aim.x=pcx+aim.dx*reach;
-    aim.y=pcy+aim.dy*reach;
+    const freeX=pcx+aim.dx*reach;
+    const freeY=pcy+aim.dy*reach;
+
+    if(assisted){
+      const visualMagnet=.34;
+      aim.x=lerp(freeX,assisted.cx,visualMagnet);
+      aim.y=lerp(freeY,assisted.cy,visualMagnet);
+    }else{
+      aim.x=freeX;
+      aim.y=freeY;
+    }
+
     aim.active=true;
     aim.source='stick';
   };
@@ -3629,6 +3829,10 @@
     aimStickState.targetY=y/len;
     aimStickState.mag=mag;
     aimStickState.active=true;
+
+    mobileAssist.rawX=aimStickState.targetX;
+    mobileAssist.rawY=aimStickState.targetY;
+    mobileAssist.mag=mag;
 
     if(!wasActive || snap){
       aimStickState.currentX=aimStickState.targetX;
@@ -3666,7 +3870,12 @@
       // The right stick only defines direction. Fire and gravity jump use
       // the dedicated left-side buttons, so releasing aim never triggers an action.
       if(mag>.015) setAimStickTarget(x,y,mag,true);
+
       aimStickState.active=false;
+      mobileAssist.mag=0;
+      mobileAssist.enemy=null;
+      mobileAssist.enemyPoint=null;
+      mobileAssist.autoFireHold=0;
     },
     {
       deadzone:.085,

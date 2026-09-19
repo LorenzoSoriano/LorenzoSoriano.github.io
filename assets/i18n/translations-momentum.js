@@ -73,7 +73,7 @@ Object.assign(window.TRANSLATIONS.en,{
   "momentum.bootsTitle":"Gravity traversal",
   "momentum.bootsDesc":"Vincent can attach to valid surfaces and launch a linear gravity jump toward a nearby visible landing point. The choice is made while reading the scene in slow time, then becomes a committed movement action. Magnetic platforms act as exceptions, allowing freer movement when the level needs a more flexible space.",
   "momentum.controlsTitle":"Dual-stick control",
-  "momentum.controlsDesc":"The left stick controls movement, while the right stick is dedicated to aiming both shots and gravity-jump destinations. Fire and Gravity Jump sit beside the movement controls on the left; the normal Jump button sits beside the aim stick on the right, so movement and jumping can be combined without changing aim.",
+  "momentum.controlsDesc":"The left stick controls movement, while the right stick aims both shots and gravity-jump destinations. On mobile, soft enemy aim assist, stronger gravity-target magnetism and contextual auto-fire reduce thumb precision demands without changing the desktop controls.",
   "momentum.readabilityTitle":"Readable commitment",
   "momentum.readabilityDesc":"The design asks the player to read the next landing, enemy position and projectile pattern before committing, so slow time supports precision rather than replacing execution skill.",
 
@@ -395,7 +395,7 @@ Object.assign(window.TRANSLATIONS.it,{
   "momentum.bootsTitle":"Traversal gravitazionale",
   "momentum.bootsDesc":"Vincent può agganciarsi alle superfici valide ed eseguire un salto gravitazionale lineare verso un punto di atterraggio vicino e visibile. La scelta avviene leggendo la scena a tempo rallentato, poi diventa un movimento vincolante. Le piattaforme magnetiche fanno eccezione e permettono maggiore libertà quando il livello richiede spazi più flessibili.",
   "momentum.controlsTitle":"Controllo a doppia levetta",
-  "momentum.controlsDesc":"La levetta sinistra controlla il movimento, mentre quella destra è dedicata alla mira sia dei colpi sia della destinazione del salto gravitazionale. Sparo e Gravity Jump sono accanto al movimento sulla sinistra; il salto normale è accanto alla mira sulla destra, così movimento e salto possono essere combinati senza cambiare direzione di mira.",
+  "momentum.controlsDesc":"La levetta sinistra controlla il movimento, mentre quella destra mira sia i colpi sia la destinazione del salto gravitazionale. Su mobile, aim assist morbido sui nemici, magnetismo più forte sui target gravitazionali e auto-fire contestuale riducono la precisione richiesta ai pollici senza modificare i controlli desktop.",
   "momentum.readabilityTitle":"Impegno leggibile",
   "momentum.readabilityDesc":"Il design chiede di leggere il prossimo atterraggio, la posizione dei nemici e i pattern dei proiettili prima di impegnarsi nell'azione: il rallentamento aiuta la precisione, ma non sostituisce l'esecuzione.",
 
