@@ -446,8 +446,6 @@
           if(zone.remaining===0){
             zone.cleared=true;
             state.score+=250;
-            state.message=zone.label+' CLEARED';
-            state.messageTimer=1.5;
           }
         }
       }
