@@ -2405,7 +2405,9 @@
     drawDoor();
     drawGoal();
     drawPickups();
+    drawEnemyTraps();
     drawEnemies();
+    drawEnemyEffects();
     drawEnemyShots();
     drawBullets();
     drawGravityPreview();
@@ -2432,11 +2434,24 @@
     state.actionPulse=Math.max(0,state.actionPulse-dt);
     state.flash=Math.max(0,state.flash-dt);
     state.messageTimer=Math.max(0,state.messageTimer-dt);
+    updateEnemyEffects(dt);
 
-    const moving=input.left||input.right||input.up||input.down||Math.abs(input.moveX)>.06||Math.abs(input.moveY)>.06||!state.player.grounded||state.actionPulse>0||!!state.gravityJump;
-    const scale=state.won?0:(moving?1:.22);
+    const wasDead=state.playerDead;
+    if(wasDead) updatePlayerDeath(dt);
+    const deathHolding=wasDead || state.playerDead;
 
-    if(!state.won){
+    const moving=
+      input.left||input.right||input.up||input.down||
+      Math.abs(input.moveX)>.06||Math.abs(input.moveY)>.06||
+      !state.player.grounded||
+      state.actionPulse>0||
+      !!state.gravityJump;
+
+    const scale=state.won||deathHolding
+      ? 0
+      : (moving?1:.22);
+
+    if(!state.won && !deathHolding){
       updateGravityCharges(dt);
       updatePlayer(dt);
       updateCombatZones(dt,scale);
