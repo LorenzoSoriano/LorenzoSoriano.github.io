@@ -5,17 +5,8 @@
   if (seals.length !== 6 || !stage || !canvas) return;
 
   const ctx = canvas.getContext('2d');
-  const ammoEl = stage.querySelector('[data-game-ammo]');
   const ammoPips = Array.from(stage.querySelectorAll('[data-game-ammo-pips] i'));
-  const returnEl = stage.querySelector('[data-game-return]');
-  const returnProgressEl = stage.querySelector('[data-game-return-progress]');
-  const coresEl = stage.querySelector('[data-game-cores]');
   const lifeEls = Array.from(stage.querySelectorAll('[data-game-cores] i'));
-  const gravityChargeEls = Array.from(stage.querySelectorAll('[data-game-gravity-charges] i'));
-  const gravityRechargeEl = stage.querySelector('[data-game-gravity-time]');
-  const timeEl = stage.querySelector('[data-game-time]');
-  const doorEl = stage.querySelector('[data-game-door]');
-  const scoreEl = stage.querySelector('[data-game-score]');
 
   const exitButton = stage.querySelector('[data-game-exit]');
   const pauseButton = stage.querySelector('[data-game-pause]');
@@ -185,6 +176,7 @@
     raf:0,
     last:0,
     ammo:6,
+    ammoSlots:Array.from({length:6},()=>({available:true})),
     cores:3,
     score:0,
     actionPulse:0,
@@ -313,6 +305,10 @@
   const allEnemyZonesCleared = () =>
     state.combatZones.every(zone=>zone.cleared) && !state.door.active;
 
+  const resetAmmoSlots = () => {
+    for(const slot of state.ammoSlots) slot.available=true;
+  };
+
   const resetGravityCharges = () => {
     state.gravityCharges.current=state.gravityCharges.max;
     state.gravityCharges.queue.length=0;
@@ -337,6 +333,7 @@
 
   const resetGame = () => {
     state.ammo=6;
+    resetAmmoSlots();
     state.cores=3;
     state.score=0;
     state.actionPulse=0;
@@ -470,6 +467,7 @@
       state.enemyShots.length=0;
       state.pickups.length=0;
       state.ammo=6;
+      resetAmmoSlots();
       state.cores=3;
       resetDoor();
       resetCombatZones();
@@ -480,87 +478,34 @@
   };
 
   const updateHud = scale => {
-    if(ammoEl) ammoEl.textContent=state.ammo+'/6';
-
-    ammoPips.forEach((pip,index)=>{
-      const available=index<state.ammo;
-      pip.classList.toggle('is-ready',available);
-      pip.classList.toggle('is-cooling',!available);
-    });
-
     lifeEls.forEach((life,index)=>{
       const active=index<state.cores;
       life.classList.toggle('is-active',active);
       life.classList.toggle('is-lost',!active);
     });
 
-    gravityChargeEls.forEach((charge,index)=>{
-      const fill=charge.querySelector('b');
-      const active=index<state.gravityCharges.current;
-      const rechargeIndex=index-state.gravityCharges.current;
-      const recharge=!active && rechargeIndex>=0
-        ? state.gravityCharges.queue[rechargeIndex]
-        : null;
-      const progress=recharge
-        ? clamp(1-recharge.remaining/state.gravityCharges.recharge,0,1)
-        : 0;
+    ammoPips.forEach((pip,index)=>{
+      const slot=state.ammoSlots[index];
+      const bullet=state.bullets.find(item=>item.slotIndex===index);
+      const available=slot?.available!==false;
+      const timer=pip.querySelector('em');
 
-      charge.classList.toggle('is-active',active);
-      charge.classList.toggle('is-charging',!active && !!recharge);
-      if(fill) fill.style.transform='scaleY('+(active?1:progress).toFixed(3)+')';
+      pip.classList.toggle('is-ready',available);
+      pip.classList.toggle('is-cooling',!available);
+
+      if(timer){
+        if(available){
+          timer.textContent='';
+        }else if(bullet){
+          const remaining=Math.max(0,bullet.returnAfter-bullet.wait);
+          timer.textContent=remaining.toFixed(1);
+        }else{
+          timer.textContent='0.0';
+        }
+      }
     });
 
-    if(gravityRechargeEl){
-      const next=state.gravityCharges.queue.length
-        ? Math.min(...state.gravityCharges.queue.map(item=>item.remaining))
-        : null;
-      gravityRechargeEl.textContent=state.gravityCharges.current===state.gravityCharges.max
-        ? 'READY'
-        : (next===null?'0.0s':next.toFixed(1)+'s');
-    }
-
-    const cooling=state.bullets
-      .map(b=>{
-        if(b.mode==='stuck') return Math.max(0,b.returnAfter-b.wait);
-        if(b.mode==='out') return b.returnAfter;
-        return 0;
-      });
-
-    const nextReturn=cooling.length ? Math.min(...cooling) : null;
-    if(returnEl){
-      returnEl.textContent=nextReturn===null
-        ? 'READY'
-        : nextReturn<=0
-          ? '0.0s'
-          : nextReturn.toFixed(1)+'s';
-    }
-
-    if(returnProgressEl){
-      const progress=nextReturn===null
-        ? 1
-        : nextReturn<=0
-          ? 1
-          : clamp(1-nextReturn/BULLET_RETURN_SECONDS,0,1);
-      returnProgressEl.style.transform='scaleX('+progress.toFixed(3)+')';
-    }
-
-    const activeZone=state.combatZones.find(zone=>zone.triggered && !zone.cleared);
-    if(activeZone){
-      doorEl.textContent=String(activeZone.remaining).padStart(2,'0');
-      doorEl.style.color='#ff9366';
-    }else{
-      doorEl.textContent=state.door.active ? String(state.door.remaining).padStart(2,'0') : 'OPEN';
-      doorEl.style.color=state.door.active?'#ff9366':'#72d5e9';
-    }
-
-    if(scoreEl) scoreEl.textContent=String(state.score);
-
     const slowed=scale<.6;
-    if(timeEl){
-      timeEl.classList.toggle('is-slow',slowed);
-      timeEl.classList.toggle('is-normal',!slowed);
-      timeEl.setAttribute('aria-label',slowed?'Time slowed':'Time flowing normally');
-    }
     stage.classList.toggle('is-time-slow',slowed);
   };
 
@@ -623,7 +568,7 @@
       return;
     }
 
-    p.vy=-410;
+    p.vy=-450;
     p.grounded=false;
     p.surface='air';
     p.attachedSolid=null;
@@ -782,6 +727,9 @@
   const fireToward = (tx,ty) => {
     if(!state.active || state.won || state.ammo<=0) return;
 
+    const slotIndex=state.ammoSlots.findIndex(slot=>slot.available);
+    if(slotIndex<0) return;
+
     const p=state.player;
     const sx=p.x+p.w*.54;
     const sy=p.y+p.h*.38;
@@ -797,6 +745,7 @@
     aim.dx=dx;
     aim.dy=dy;
     p.facing=dx>=0?1:-1;
+    state.ammoSlots[slotIndex].available=false;
     state.ammo--;
     state.actionPulse=.26;
 
@@ -809,6 +758,7 @@
       mode:'out',
       wait:0,
       returnAfter:BULLET_RETURN_SECONDS,
+      slotIndex,
       returnHits:new Set()
     });
   };
@@ -1038,11 +988,15 @@
     for(let i=state.bullets.length-1;i>=0;i--){
       const b=state.bullets[i];
 
+      if(b.mode!=='return'){
+        b.wait+=dt*scale;
+        if(b.wait>=b.returnAfter) b.mode='return';
+      }
+
       if(b.mode==='out'){
         updateOutgoingBullet(b,dt,scale);
       }else if(b.mode==='stuck'){
-        b.wait+=dt*scale;
-        if(b.wait>=b.returnAfter) b.mode='return';
+        // The bullet remains embedded until its individual return timer expires.
       }else{
         const tx=p.x+p.w*.52;
         const ty=p.y+p.h*.40;
@@ -1064,6 +1018,9 @@
         }
 
         if(dist<12){
+          if(Number.isInteger(b.slotIndex) && state.ammoSlots[b.slotIndex]){
+            state.ammoSlots[b.slotIndex].available=true;
+          }
           state.bullets.splice(i,1);
           state.ammo=Math.min(6,state.ammo+1);
         }
