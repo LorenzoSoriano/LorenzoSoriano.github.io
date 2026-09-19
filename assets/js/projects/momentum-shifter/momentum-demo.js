@@ -385,8 +385,39 @@
   const enemySpec = type => {
     if(type==='rumbler') return { w:40,h:48,hp:2,speed:52,color:'#9b4347',accent:'#ff8758' };
     if(type==='drone') return { w:34,h:24,hp:1,speed:112,color:'#6b3140',accent:'#ff6f4c' };
-    if(type==='webcaster') return { w:34,h:42,hp:1,speed:26,color:'#68405f',accent:'#b98cff' };
+    if(type==='webcaster') return { w:34,h:42,hp:1,speed:42,color:'#68405f',accent:'#b98cff' };
     return { w:36,h:50,hp:1,speed:22,color:'#704b39',accent:'#f4d75c' };
+  };
+
+  const getWebcasterNavBounds = (encounter, enemy) => {
+    const padX=14;
+    const padY=10;
+
+    if(
+      Number.isFinite(encounter.zoneX) &&
+      Number.isFinite(encounter.zoneY) &&
+      Number.isFinite(encounter.zoneW) &&
+      Number.isFinite(encounter.zoneH)
+    ){
+      return {
+        x:encounter.zoneX+padX,
+        y:encounter.zoneY+padY,
+        w:Math.max(enemy.w+28,encounter.zoneW-padX*2),
+        h:Math.max(enemy.h+24,encounter.zoneH-padY*2)
+      };
+    }
+
+    const platformY=encounter.platformY ?? doorPlatform.y;
+    const minX=encounter.minX ?? doorPlatform.x;
+    const maxX=encounter.maxX ?? (doorPlatform.x+doorPlatform.w);
+    const top=Math.max(80,platformY-178);
+
+    return {
+      x:minX+padX,
+      y:top,
+      w:Math.max(enemy.w+28,maxX-minX-padX*2),
+      h:Math.max(enemy.h+30,platformY-top-18)
+    };
   };
 
   const spawnEnemy = (type, waveEnemy=true, source=null) => {
@@ -431,36 +462,19 @@
       selfDestructTimer:0
     };
     if(type==='webcaster'){
-      let nearestWall=null;
-      let nearestDistance=Infinity;
-      const ex=enemy.x+enemy.w*.5;
-      const ey=enemy.y+enemy.h*.5;
-
-      for(const solid of staticSolids){
-        if(solid.kind!=='wall') continue;
-        const wx=solid.x+solid.w*.5;
-        const wy=solid.y+solid.h*.5;
-        const distance=Math.hypot(wx-ex,wy-ey);
-
-        if(distance<nearestDistance && distance<390){
-          nearestWall=solid;
-          nearestDistance=distance;
-        }
-      }
-
-      if(nearestWall){
-        enemy.wall=nearestWall;
-        enemy.wallDir=state.enemyId%2===0?1:-1;
-        enemy.wallSide=ex<nearestWall.x+nearestWall.w*.5?'left':'right';
-        enemy.x=enemy.wallSide==='left'
-          ? nearestWall.x-enemy.w
-          : nearestWall.x+nearestWall.w;
-        enemy.y=clamp(
-          enemy.y,
-          nearestWall.y,
-          nearestWall.y+nearestWall.h-enemy.h
-        );
-      }
+      const nav=getWebcasterNavBounds(encounter,enemy);
+      enemy.backWall=nav;
+      enemy.x=clamp(
+        spawnX-enemy.w*.5,
+        nav.x,
+        nav.x+nav.w-enemy.w
+      );
+      enemy.y=clamp(
+        homeY-enemy.h-58-(state.enemyId%3)*18,
+        nav.y,
+        nav.y+nav.h-enemy.h
+      );
+      enemy.backWallOffset=(state.enemyId%2===0?1:-1)*(48+(state.enemyId%3)*14);
     }
 
     state.enemies.push(enemy);
@@ -1211,43 +1225,33 @@
     }
   };
 
-  const findTrapSurface = player => {
-    const px=player.x+player.w*.5;
-    const bottom=player.y+player.h;
-    let best=null;
-
-    for(const solid of staticSolids){
-      if(!['floor','platform','block'].includes(solid.kind)) continue;
-      if(px<solid.x-28 || px>solid.x+solid.w+28) continue;
-
-      const drop=solid.y-bottom;
-      if(drop<-20 || drop>250) continue;
-
-      if(!best || drop<best.drop){
-        best={solid,drop};
-      }
-    }
-
-    return best?.solid || null;
-  };
-
   const throwWebcasterTrap = enemy => {
     const p=state.player;
-    const surface=findTrapSurface(p);
-    if(!surface) return;
+    const sx=enemy.x+enemy.w*.5;
+    const sy=enemy.y+enemy.h*.42;
+    const tx=p.x+p.w*.5;
+    const ty=p.y+p.h*.72;
+    const gravity=760;
+    const distance=Math.hypot(tx-sx,ty-sy);
+    const flight=clamp(distance/360,.52,.92);
 
-    const width=38;
-    const center=clamp(
-      p.x+p.w*.5,
-      surface.x+width*.5+5,
-      surface.x+surface.w-width*.5-5
-    );
+    const vx=(tx-sx)/flight;
+    const vy=(ty-sy-.5*gravity*flight*flight)/flight;
 
     state.enemyTraps.push({
-      x:center-width*.5,
-      y:surface.y-8,
-      w:width,
-      h:8,
+      mode:'projectile',
+      x:sx-6,
+      y:sy-6,
+      px:sx-6,
+      py:sy-6,
+      w:12,
+      h:12,
+      vx:clamp(vx,-390,390),
+      vy:clamp(vy,-520,260),
+      gravity,
+      flightLife:2.25,
+      deployedW:38,
+      deployedH:8,
       arm:.55,
       life:5.5,
       stun:WEBCASTER_STUN_SECONDS,
@@ -1415,9 +1419,68 @@
 
     for(let i=state.enemyTraps.length-1;i>=0;i--){
       const trap=state.enemyTraps[i];
-      trap.phase+=dt*scale*5;
-      trap.arm=Math.max(0,trap.arm-dt*scale);
-      trap.life-=dt*scale;
+      const step=dt*scale;
+
+      if(trap.mode==='projectile'){
+        trap.phase+=step*9;
+        trap.flightLife-=step;
+        trap.px=trap.x;
+        trap.py=trap.y;
+
+        trap.vy+=trap.gravity*step;
+        trap.x+=trap.vx*step;
+        trap.y+=trap.vy*step;
+
+        let landedOn=null;
+        const previousBottom=trap.py+trap.h;
+        const currentBottom=trap.y+trap.h;
+
+        if(trap.vy>=0){
+          for(const solid of staticSolids){
+            if(!['floor','platform','block'].includes(solid.kind)) continue;
+            if(trap.x+trap.w<solid.x || trap.x>solid.x+solid.w) continue;
+            if(previousBottom>solid.y+3 || currentBottom<solid.y) continue;
+
+            if(!landedOn || solid.y<landedOn.y) landedOn=solid;
+          }
+        }
+
+        if(landedOn){
+          const width=trap.deployedW;
+          const height=trap.deployedH;
+          const center=clamp(
+            trap.x+trap.w*.5,
+            landedOn.x+width*.5+3,
+            landedOn.x+landedOn.w-width*.5-3
+          );
+
+          trap.mode='deployed';
+          trap.x=center-width*.5;
+          trap.y=landedOn.y-height;
+          trap.w=width;
+          trap.h=height;
+          trap.vx=0;
+          trap.vy=0;
+          trap.phase=0;
+          continue;
+        }
+
+        if(
+          trap.flightLife<=0 ||
+          trap.x<-80 ||
+          trap.x>W+80 ||
+          trap.y>WORLD_H+80 ||
+          trap.y<-160
+        ){
+          state.enemyTraps.splice(i,1);
+        }
+
+        continue;
+      }
+
+      trap.phase+=step*5;
+      trap.arm=Math.max(0,trap.arm-step);
+      trap.life-=step;
 
       if(trap.life<=0){
         state.enemyTraps.splice(i,1);
@@ -1490,6 +1553,40 @@
     }
   };
 
+  const moveWebcasterOnBackWall = (enemy,dt,scale) => {
+    const nav=enemy.backWall;
+    if(!nav) return;
+
+    const p=state.player;
+    const pcx=p.x+p.w*.5;
+    const pcy=p.y+p.h*.5;
+    const desiredCx=clamp(
+      pcx+enemy.backWallOffset+Math.sin(enemy.phase*.72)*24,
+      nav.x+enemy.w*.5,
+      nav.x+nav.w-enemy.w*.5
+    );
+    const desiredCy=clamp(
+      pcy-54+Math.cos(enemy.phase*.58+enemy.id)*28,
+      nav.y+enemy.h*.5,
+      nav.y+nav.h-enemy.h*.5
+    );
+
+    const ex=enemy.x+enemy.w*.5;
+    const ey=enemy.y+enemy.h*.5;
+    const dx=desiredCx-ex;
+    const dy=desiredCy-ey;
+    const len=Math.hypot(dx,dy);
+
+    if(len>3){
+      const move=Math.min(len,enemy.speed*dt*scale);
+      enemy.x+=dx/len*move;
+      enemy.y+=dy/len*move;
+    }
+
+    enemy.x=clamp(enemy.x,nav.x,nav.x+nav.w-enemy.w);
+    enemy.y=clamp(enemy.y,nav.y,nav.y+nav.h-enemy.h);
+  };
+
   const updateEnemies = (dt,scale) => {
     const p=state.player;
 
@@ -1526,26 +1623,7 @@
           }
         }
       }else if(enemy.type==='webcaster'){
-        if(enemy.wall){
-          const wall=enemy.wall;
-          enemy.x=enemy.wallSide==='left'
-            ? wall.x-enemy.w
-            : wall.x+wall.w;
-          enemy.y+=enemy.wallDir*enemy.speed*dt*scale;
-
-          const minY=wall.y+6;
-          const maxY=wall.y+wall.h-enemy.h-6;
-          if(enemy.y<=minY){
-            enemy.y=minY;
-            enemy.wallDir=1;
-          }else if(enemy.y>=maxY){
-            enemy.y=maxY;
-            enemy.wallDir=-1;
-          }
-        }else{
-          enemy.x=Math.max(enemy.minX,enemy.x-enemy.speed*dt*scale);
-          enemy.y=enemy.homeY-enemy.h;
-        }
+        moveWebcasterOnBackWall(enemy,dt,scale);
 
         enemy.attack-=dt*scale;
         enemy.trap-=dt*scale;
@@ -2333,6 +2411,28 @@
 
   const drawEnemyTraps = () => {
     for(const trap of state.enemyTraps){
+      if(trap.mode==='projectile'){
+        const cx=trap.x+trap.w*.5;
+        const cy=trap.y+trap.h*.5;
+
+        ctx.save();
+        ctx.strokeStyle='rgba(185,140,255,.24)';
+        ctx.lineWidth=1.5;
+        ctx.beginPath();
+        ctx.moveTo(trap.px+trap.w*.5,trap.py+trap.h*.5);
+        ctx.lineTo(cx,cy);
+        ctx.stroke();
+
+        ctx.translate(cx,cy);
+        ctx.rotate(trap.phase);
+        ctx.fillStyle='rgba(185,140,255,.82)';
+        ctx.fillRect(-5,-3,10,6);
+        ctx.strokeStyle='rgba(224,207,255,.92)';
+        ctx.strokeRect(-5.5,-3.5,11,7);
+        ctx.restore();
+        continue;
+      }
+
       const armed=trap.arm<=0;
       const pulse=.55+Math.sin(trap.phase*2)*.18;
 
@@ -2600,7 +2700,7 @@
 
     const scale=state.won||deathHolding
       ? 0
-      : (moving?1:.22);
+      : (state.player.stunned>0 ? 1 : (moving?1:.22));
 
     if(!state.won && !deathHolding){
       updateGravityCharges(dt);
