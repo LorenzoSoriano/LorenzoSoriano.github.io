@@ -548,7 +548,7 @@
 
     const activeZone=state.combatZones.find(zone=>zone.triggered && !zone.cleared);
     if(activeZone){
-      doorEl.textContent='Z'+activeZone.id+' '+String(activeZone.remaining).padStart(2,'0');
+      doorEl.textContent=String(activeZone.remaining).padStart(2,'0');
       doorEl.style.color='#ff9366';
     }else{
       doorEl.textContent=state.door.active ? String(state.door.remaining).padStart(2,'0') : 'OPEN';
@@ -1098,8 +1098,6 @@
       if(!zone.triggered && state.player.y<=zone.triggerY){
         zone.triggered=true;
         zone.timer=.35;
-        state.message=zone.label;
-        state.messageTimer=1.1;
       }
 
       if(!zone.triggered || zone.spawned>=zone.total) continue;
