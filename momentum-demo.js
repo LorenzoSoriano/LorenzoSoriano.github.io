@@ -1641,40 +1641,45 @@
     if(state.won) return;
 
     const p=state.player;
-    const sx=p.x+p.w*.5;
-    const sy=p.y+p.h*.5;
-    const target=state.gravityJump ? state.gravityJump.target : (p.grounded ? findGravityTarget(aim.x,aim.y) : null);
+    const target=state.gravityJump
+      ? state.gravityJump.target
+      : (p.grounded ? findGravityTarget(aim.x,aim.y) : null);
 
     state.gravityTarget=target;
     if(!target) return;
 
+    const hasCharge=state.gravityCharges.current>0 || !!state.gravityJump;
+    const pulse=2+Math.sin(performance.now()*.009)*2;
+
     ctx.save();
-    ctx.setLineDash([8,7]);
-    ctx.strokeStyle=state.gravityJump?'rgba(114,213,233,.90)':'rgba(114,213,233,.46)';
+
+    ctx.beginPath();
+    ctx.arc(target.cx,target.cy,10+pulse,0,Math.PI*2);
+    ctx.strokeStyle=hasCharge
+      ? 'rgba(114,213,233,.88)'
+      : 'rgba(255,255,255,.20)';
     ctx.lineWidth=2;
-    ctx.beginPath();
-    ctx.moveTo(sx,sy);
-    ctx.lineTo(target.cx,target.cy);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    ctx.beginPath();
-    ctx.arc(target.cx,target.cy,11,0,Math.PI*2);
-    ctx.strokeStyle='rgba(114,213,233,.90)';
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.arc(target.cx,target.cy,4,0,Math.PI*2);
-    ctx.fillStyle='#72d5e9';
+    ctx.arc(target.cx,target.cy,3.5,0,Math.PI*2);
+    ctx.fillStyle=hasCharge?'#72d5e9':'rgba(255,255,255,.28)';
     ctx.fill();
 
+    ctx.strokeStyle=hasCharge
+      ? 'rgba(114,213,233,.52)'
+      : 'rgba(255,255,255,.16)';
+    ctx.lineWidth=2;
+    ctx.beginPath();
+
     if(target.face==='left' || target.face==='right'){
-      ctx.beginPath();
-      ctx.moveTo(target.cx,target.cy-13);
-      ctx.lineTo(target.cx,target.cy+13);
-      ctx.strokeStyle='rgba(114,213,233,.42)';
-      ctx.stroke();
+      ctx.moveTo(target.cx,target.cy-14);
+      ctx.lineTo(target.cx,target.cy+14);
+    }else{
+      ctx.moveTo(target.cx-14,target.cy);
+      ctx.lineTo(target.cx+14,target.cy);
     }
+    ctx.stroke();
 
     ctx.restore();
   };
