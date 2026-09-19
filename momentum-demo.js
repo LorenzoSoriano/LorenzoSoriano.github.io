@@ -43,70 +43,64 @@
   };
   const aim = { x:850, y:floorY-180, active:false, dx:1, dy:0, source:'mouse' };
 
-  // The climb now reads as a sequence of traversal shafts and wider combat decks.
+  // Visible-route layout: every mandatory magnetic jump has an unobstructed
+  // next surface within range. Solid architecture frames the route instead of
+  // sitting between consecutive traversal targets.
   const doorPlatform = {
-    x:700, y:400, w:540, h:18,
+    x:720, y:365, w:520, h:18,
     kind:'platform', gravity:true, faces:['top','bottom'], zone:6
   };
 
   const staticSolids = [
     { x:0, y:floorY, w:W, h:WORLD_H-floorY, kind:'floor', gravity:true, faces:['top'], zone:0 },
 
-    // Entry / tutorial climb: broad landings and one clear magnetic lesson.
-    { x:125, y:1930, w:285, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:1 },
-    { x:430, y:1710, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:1 },
-    { x:500, y:1760, w:245, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:1 },
-    { x:600, y:1665, w:120, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:1 },
+    // Entry: broad, readable ascent.
+    { x:145, y:1935, w:300, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:1 },
+    { x:445, y:1775, w:260, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:1 },
+    { x:555, y:1695, w:120, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:1 },
 
-    // Enemy Deck A: wide floor with two elevated dodge / aiming ledges.
-    { x:720, y:1580, w:470, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
-    { x:830, y:1492, w:120, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
-    { x:1010, y:1450, w:125, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
-    { x:675, y:1360, w:24, h:220, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
-    { x:430, y:1420, w:225, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
+    // Arena A: landing is visible from the previous deck; optional upper shelf stays inside the arena.
+    { x:735, y:1605, w:445, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
+    { x:900, y:1505, w:160, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
+    { x:460, y:1435, w:250, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:2 },
 
-    // Cross-shaft / Enemy Deck B: open center lane plus a magnetic escape ledge.
-    { x:390, y:1180, w:24, h:240, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
-    { x:90, y:1230, w:300, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
-    { x:175, y:1145, w:125, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
-    { x:455, y:1115, w:110, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
-    { x:500, y:980, w:24, h:250, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
-    { x:565, y:1040, w:250, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
+    // Arena B: route crosses back left without an occluding wall.
+    { x:120, y:1260, w:330, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
+    { x:285, y:1165, w:150, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
+    { x:485, y:1085, w:270, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:3 },
 
-    // Enemy Deck C: longest arena with optional upper route.
-    { x:780, y:870, w:420, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
-    { x:875, y:785, w:115, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
-    { x:1050, y:750, w:105, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
-    { x:735, y:640, w:24, h:230, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
-    { x:515, y:700, w:205, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
+    // Arena C: long combat floor with an optional upper underside route.
+    { x:790, y:900, w:400, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
+    { x:1000, y:805, w:150, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
+    { x:570, y:705, w:240, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:4 },
 
-    // Final magnetic shaft and gate: shorter hops before the final combat deck.
-    { x:475, y:455, w:24, h:245, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
-    { x:545, y:520, w:140, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:5 },
-    { x:610, y:455, w:88, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:5 },
-    { x:660, y:400, w:24, h:120, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
+    // Final ascent: short, fully visible chain into the gate.
+    { x:430, y:540, w:220, h:18, kind:'platform', gravity:true, faces:['top','bottom'], zone:5 },
+    { x:630, y:450, w:150, h:16, kind:'platform', gravity:true, faces:['top','bottom'], zone:5 },
 
-    // Architectural zone blocks: they close empty edges into readable shafts/tunnels,
-    // while leaving the central traversal routes open. Their tops/sides are magnetic.
-    { x:0, y:1840, w:95, h:240, kind:'block', gravity:true, faces:['top','right'], zone:1 },
-    { x:1085, y:1695, w:195, h:125, kind:'block', gravity:true, faces:['top','left'], zone:2 },
-    { x:0, y:1345, w:155, h:175, kind:'block', gravity:true, faces:['top','right'], zone:3 },
-    { x:1110, y:1110, w:170, h:155, kind:'block', gravity:true, faces:['top','left'], zone:3 },
-    { x:0, y:805, w:220, h:170, kind:'block', gravity:true, faces:['top','right'], zone:4 },
-    { x:1080, y:610, w:200, h:135, kind:'block', gravity:true, faces:['top','left'], zone:4 },
-    { x:0, y:430, w:270, h:125, kind:'block', gravity:true, faces:['top','right'], zone:5 },
-    { x:1010, y:250, w:270, h:110, kind:'block', gravity:true, faces:['top','left'], zone:6 },
+    // Optional magnetic side surfaces. They sit beside, never across, the critical sight-lines.
+    { x:90, y:1810, w:22, h:125, kind:'wall', gravity:true, faces:['left','right'], zone:1 },
+    { x:1195, y:1485, w:22, h:120, kind:'wall', gravity:true, faces:['left','right'], zone:2 },
+    { x:82, y:1160, w:22, h:100, kind:'wall', gravity:true, faces:['left','right'], zone:3 },
+    { x:1200, y:790, w:22, h:110, kind:'wall', gravity:true, faces:['left','right'], zone:4 },
+    { x:385, y:540, w:22, h:165, kind:'wall', gravity:true, faces:['left','right'], zone:5 },
+
+    // Architectural masses frame shafts/corridors while leaving the centre line open.
+    { x:0, y:1840, w:88, h:240, kind:'block', gravity:true, faces:['top','right'], zone:1 },
+    { x:1205, y:1660, w:75, h:150, kind:'block', gravity:true, faces:['top','left'], zone:2 },
+    { x:0, y:1395, w:105, h:160, kind:'block', gravity:true, faces:['top','right'], zone:2 },
+    { x:1170, y:1110, w:110, h:165, kind:'block', gravity:true, faces:['top','left'], zone:3 },
+    { x:0, y:810, w:135, h:175, kind:'block', gravity:true, faces:['top','right'], zone:4 },
+    { x:1165, y:625, w:115, h:150, kind:'block', gravity:true, faces:['top','left'], zone:4 },
+    { x:0, y:350, w:210, h:170, kind:'block', gravity:true, faces:['top','right'], zone:5 },
+    { x:1115, y:215, w:165, h:105, kind:'block', gravity:true, faces:['top','left'], zone:6 },
+
     doorPlatform
   ];
 
+  // Used only to place subtle architectural separators; no in-world section text.
   const levelSections = [
-    { y:2020, number:'01', title:'ENTRY DECK' },
-    { y:1780, number:'02', title:'MAGNETIC SHAFT' },
-    { y:1570, number:'03', title:'SECURITY DECK' },
-    { y:1220, number:'04', title:'SERVICE SPINE' },
-    { y:860, number:'05', title:'CONTAINMENT DECK' },
-    { y:610, number:'06', title:'CORE ACCESS' },
-    { y:390, number:'07', title:'ENEMY GATE' }
+    { y:2020 }, { y:1780 }, { y:1588 }, { y:1245 }, { y:885 }, { y:690 }, { y:350 }
   ];
 
   const startZone = {
@@ -138,49 +132,49 @@
     {
       id:'A',
       label:'ENEMY ZONE A',
-      triggerY:1620,
-      platformY:1580,
-      minX:720,
-      maxX:1190,
+      triggerY:1645,
+      platformY:1605,
+      minX:735,
+      maxX:1180,
       spawnX:1140,
-      spawnPoints:[760,1145],
+      spawnPoints:[775,1140],
       maxAlive:2,
-      zoneX:700,
-      zoneY:1480,
-      zoneW:510,
-      zoneH:120,
+      zoneX:720,
+      zoneY:1490,
+      zoneW:480,
+      zoneH:135,
       wave:['drone','webcaster','rumbler','drone']
     },
     {
       id:'B',
       label:'ENEMY ZONE B',
-      triggerY:1270,
-      platformY:1230,
-      minX:90,
-      maxX:390,
-      spawnX:345,
-      spawnPoints:[125,350],
+      triggerY:1300,
+      platformY:1260,
+      minX:120,
+      maxX:450,
+      spawnX:410,
+      spawnPoints:[160,410],
       maxAlive:2,
-      zoneX:70,
-      zoneY:1136,
-      zoneW:340,
-      zoneH:114,
+      zoneX:105,
+      zoneY:1150,
+      zoneW:360,
+      zoneH:130,
       wave:['rumbler','drone','webcaster','drone']
     },
     {
       id:'C',
       label:'ENEMY ZONE C',
-      triggerY:910,
-      platformY:870,
-      minX:780,
-      maxX:1200,
+      triggerY:940,
+      platformY:900,
+      minX:790,
+      maxX:1190,
       spawnX:1150,
-      spawnPoints:[820,985,1160],
+      spawnPoints:[830,990,1150],
       maxAlive:3,
-      zoneX:760,
-      zoneY:775,
-      zoneW:460,
-      zoneH:115,
+      zoneX:775,
+      zoneY:790,
+      zoneW:440,
+      zoneH:130,
       wave:['drone','webcaster','drone','summoner','rumbler']
     }
   ];
@@ -231,7 +225,7 @@
     },
     door:{
       id:'final',
-      x:1082, y:285, w:74, h:115,
+      x:1082, y:250, w:74, h:115,
       platformY:doorPlatform.y,
       minX:doorPlatform.x+8,
       maxX:doorPlatform.x+doorPlatform.w-8,
