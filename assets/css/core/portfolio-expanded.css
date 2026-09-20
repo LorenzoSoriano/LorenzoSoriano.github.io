@@ -826,3 +826,160 @@
   }
 }
 
+/* v8 — Beyond the Curtain: editorial cleanup */
+.beyond-notion-button{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  width:max-content;
+  min-height:32px;
+  padding:6px 10px;
+  border:1px solid rgba(121,108,240,.16);
+  border-radius:10px;
+  background:rgba(255,255,255,.74);
+  color:#49516a;
+  font-size:11px;
+  font-weight:650;
+  line-height:1;
+  text-decoration:none;
+  transition:border-color .2s ease,background .2s ease,transform .2s ease;
+}
+.beyond-notion-button:hover{
+  transform:translateY(-1px);
+  border-color:rgba(121,108,240,.34);
+  background:#fff;
+}
+.beyond-notion-button strong{
+  color:#1f2438;
+  font:800 12px/1 "IBM Plex Mono",monospace;
+}
+
+/* Protagonist card: less UI-like, more editorial. */
+.beyond-character-card{
+  padding-top:36px;
+}
+.beyond-character-card::after{
+  content:"";
+  position:absolute;
+  right:28px;
+  top:30px;
+  width:44px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(121,108,240,.32));
+}
+.beyond-character-card .page-label{
+  margin-bottom:8px;
+}
+.beyond-character-card h3{
+  margin-top:0;
+}
+.beyond-character-age,
+.beyond-character-tags{
+  display:none!important;
+}
+
+/* Construction cards: keep meaning, remove badge clutter. */
+.beyond-space-card{
+  padding-bottom:28px;
+}
+.beyond-space-tags{
+  display:none!important;
+}
+.beyond-space-details{
+  margin-top:24px;
+}
+.beyond-space-details>div{
+  background:transparent;
+  border-left:2px solid var(--space-panel-border);
+  border-top:0;
+  border-right:0;
+  border-bottom:0;
+  border-radius:0;
+  padding:3px 0 3px 12px;
+}
+.beyond-space-details dt{
+  margin-bottom:5px;
+}
+
+/* Act side notes stay in normal document flow. */
+.beyond-act-screen__aside{
+  position:static!important;
+  top:auto!important;
+  align-self:start;
+}
+.beyond-act-insight{
+  flex:none;
+}
+.beyond-act-insight + .beyond-act-insight{
+  margin-top:0;
+}
+
+/* Museum evolution is one continuous progression, not a second section. */
+.beyond-museum-journey{
+  margin-top:42px;
+  padding-top:0;
+}
+.beyond-museum-evolution{
+  display:grid;
+  grid-template-columns:minmax(40px,1fr) auto minmax(40px,1fr);
+  gap:14px;
+  align-items:center;
+  margin:0 0 20px;
+}
+.beyond-museum-evolution>span{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(121,108,240,.22));
+}
+.beyond-museum-evolution>span:last-child{
+  transform:scaleX(-1);
+}
+.beyond-museum-evolution p{
+  margin:0;
+  max-width:620px;
+  color:#72798d;
+  font:650 10px/1.45 "IBM Plex Mono",monospace;
+  letter-spacing:.04em;
+  text-align:center;
+}
+.beyond-museum-progress{
+  position:relative;
+}
+.beyond-museum-progress::before{
+  content:"";
+  position:absolute;
+  left:12%;
+  right:12%;
+  top:24px;
+  height:1px;
+  background:linear-gradient(
+    90deg,
+    rgba(80,76,108,.18),
+    rgba(172,126,70,.36) 50%,
+    rgba(205,163,61,.30)
+  );
+  pointer-events:none;
+}
+.beyond-museum-card{
+  position:relative;
+  z-index:1;
+}
+
+@media(max-width:1040px){
+  .beyond-museum-progress::before{
+    display:none;
+  }
+}
+@media(max-width:620px){
+  .beyond-notion-button{
+    min-height:30px;
+    padding:5px 9px;
+    font-size:10px;
+  }
+  .beyond-museum-evolution{
+    grid-template-columns:1fr;
+  }
+  .beyond-museum-evolution>span{
+    display:none;
+  }
+}
+
