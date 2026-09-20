@@ -1210,3 +1210,145 @@
   }
 }
 
+/* v10 — Beyond the Curtain: remove repetition, add player agency */
+.beyond-agency-section{
+  position:relative;
+}
+.beyond-agency-loop{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:28px 0 20px;
+  padding:16px 18px;
+  border:1px solid rgba(121,108,240,.11);
+  border-radius:16px;
+  background:linear-gradient(90deg,rgba(121,108,240,.035),rgba(244,215,92,.06));
+}
+.beyond-agency-loop span{
+  padding:7px 9px;
+  border-radius:999px;
+  background:#fff;
+  color:#59627a;
+  font:700 9px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.05em;
+}
+.beyond-agency-loop i{
+  color:rgba(121,108,240,.42);
+  font-style:normal;
+}
+.beyond-agency-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+.beyond-agency-card{
+  min-height:300px;
+  padding:26px;
+  border:1px solid rgba(121,108,240,.12);
+  border-radius:22px;
+  background:linear-gradient(155deg,#fff,#fbfbff);
+}
+.beyond-agency-card:nth-child(2){
+  background:linear-gradient(155deg,#fffdf7,#fff);
+}
+.beyond-agency-card:nth-child(3){
+  background:linear-gradient(155deg,#f9f6ff,#fff);
+}
+.beyond-agency-card__index{
+  display:block;
+  margin-bottom:48px;
+  color:#796cf0;
+  font:800 10px/1 "IBM Plex Mono",monospace;
+  opacity:.65;
+}
+.beyond-agency-card h3{
+  margin:0 0 10px;
+  color:#1e2440;
+  font-size:20px;
+  line-height:1.3;
+}
+.beyond-agency-card>p{
+  margin:0;
+  color:#68718a;
+  font-size:13px;
+  line-height:1.68;
+}
+.beyond-agency-card__example{
+  margin-top:20px;
+  padding-top:15px;
+  border-top:1px solid rgba(121,108,240,.10);
+}
+.beyond-agency-card__example strong{
+  display:block;
+  margin-bottom:6px;
+  color:#796cf0;
+  font:700 8px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+}
+.beyond-agency-card__example span{
+  color:#545e76;
+  font-size:11px;
+  line-height:1.55;
+}
+
+/* Theme is part of the ending now, not a second ending section. */
+.beyond-resolution__meaning{
+  max-width:680px;
+  margin-top:24px;
+  padding-top:18px;
+  border-top:1px solid rgba(75,55,67,.18);
+}
+.beyond-resolution__meaning>span{
+  display:block;
+  margin-bottom:7px;
+  color:#6d4c58;
+  font:700 8px/1.2 "IBM Plex Mono",monospace;
+  letter-spacing:.08em;
+}
+.beyond-resolution__meaning strong{
+  display:block;
+  max-width:640px;
+  color:#322739;
+  font-size:16px;
+  line-height:1.4;
+}
+.beyond-resolution__meaning p{
+  margin:7px 0 0;
+  max-width:660px;
+  color:rgba(50,39,57,.74);
+  font-size:12px;
+  line-height:1.65;
+}
+
+/* Removed callouts no longer need to affect document rhythm. */
+.beyond-narrative-principle,
+.beyond-museum-thesis,
+.beyond-theme-callout{
+  display:none!important;
+}
+
+@media(max-width:900px){
+  .beyond-agency-grid{
+    grid-template-columns:1fr;
+  }
+  .beyond-agency-card{
+    min-height:0;
+  }
+  .beyond-agency-card__index{
+    margin-bottom:28px;
+  }
+}
+@media(max-width:620px){
+  .beyond-agency-loop{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+  .beyond-agency-loop i{
+    display:none;
+  }
+  .beyond-agency-loop span{
+    text-align:center;
+  }
+}
+
