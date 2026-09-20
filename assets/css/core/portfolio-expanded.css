@@ -42,3 +42,120 @@
 @media(max-width:980px){.beyond-story-grid,.beyond-language-grid{grid-template-columns:1fr}.beyond-hero-visual{min-height:360px}.beyond-language-card{min-height:0}}
 @media(max-width:620px){.beyond-story-card,.beyond-character-card,.beyond-language-card{padding:24px;border-radius:22px}.beyond-story-card h2{font-size:32px}.beyond-arc-step{grid-template-columns:52px minmax(0,1fr);gap:14px;padding:22px 0}.beyond-arc-step>span{font-size:18px}.beyond-hero-caption{bottom:20px;width:82%;font-size:10px}}
 
+/* v3 — Beyond the Curtain: narrative map */
+.beyond-stage-floor{position:absolute;z-index:2;left:14%;right:14%;bottom:42px;height:2px;background:linear-gradient(90deg,transparent,rgba(255,228,151,.5),transparent)}
+.beyond-stage-figure{position:absolute;z-index:2;left:50%;bottom:44px;width:16px;height:52px;transform:translateX(-50%);border-radius:9px 9px 5px 5px;background:linear-gradient(180deg,rgba(255,242,194,.92),rgba(180,133,119,.68));box-shadow:0 0 40px rgba(255,221,147,.32)}
+.beyond-stage-figure::before{content:"";position:absolute;left:50%;top:-13px;width:18px;height:18px;transform:translateX(-50%);border-radius:50%;background:rgba(255,235,191,.88)}
+.beyond-stage-figure::after{content:"";position:absolute;left:50%;bottom:-9px;width:34px;height:9px;transform:translateX(-50%);border-radius:50%;background:rgba(0,0,0,.22);filter:blur(3px)}
+
+.beyond-space-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px}
+.beyond-space-card{position:relative;min-height:340px;padding:28px;overflow:hidden;border:1px solid rgba(121,108,240,.13);border-radius:26px;background:#fff;box-shadow:0 18px 46px rgba(46,57,96,.06)}
+.beyond-space-card::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--purple),var(--blue))}
+.beyond-space-card.is-theatre{background:linear-gradient(155deg,#17162a,#30244b);color:#fff;border-color:rgba(255,255,255,.08)}
+.beyond-space-card.is-theatre::before{background:linear-gradient(90deg,#9d547f,#f0cb72)}
+.beyond-space-card.is-museum{background:linear-gradient(155deg,#fffdf7,#f7f3ff)}
+.beyond-space-card.is-museum::before{background:linear-gradient(90deg,var(--gold),var(--purple))}
+.beyond-space-index{position:absolute;right:20px;top:18px;color:rgba(121,108,240,.26);font:800 24px/1 "IBM Plex Mono",monospace}
+.beyond-space-card.is-theatre .beyond-space-index{color:rgba(255,255,255,.18)}
+.beyond-space-icon{position:relative;width:66px;height:66px;margin:4px 0 34px;border:1px solid rgba(121,108,240,.16);border-radius:18px;background:rgba(121,108,240,.04)}
+.beyond-space-icon i,.beyond-space-icon::before,.beyond-space-icon::after{content:"";position:absolute;display:block}
+.is-home .beyond-space-icon i{left:18px;right:18px;bottom:15px;height:25px;border:2px solid rgba(121,108,240,.6);border-top:0}
+.is-home .beyond-space-icon::before{left:14px;top:17px;width:36px;height:36px;border-left:2px solid rgba(121,108,240,.6);border-top:2px solid rgba(121,108,240,.6);transform:rotate(45deg)}
+.is-theatre .beyond-space-icon{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.05)}
+.is-theatre .beyond-space-icon i{left:31px;top:8px;width:2px;height:49px;background:rgba(244,215,92,.65)}
+.is-theatre .beyond-space-icon::before{left:9px;top:12px;width:21px;height:42px;border-radius:8px 0 0 8px;background:linear-gradient(90deg,rgba(157,84,127,.9),rgba(157,84,127,.36))}
+.is-theatre .beyond-space-icon::after{right:9px;top:12px;width:21px;height:42px;border-radius:0 8px 8px 0;background:linear-gradient(90deg,rgba(157,84,127,.36),rgba(157,84,127,.9))}
+.is-museum .beyond-space-icon i{left:14px;right:14px;bottom:12px;height:31px;border:2px solid rgba(180,143,52,.58);border-top:0}
+.is-museum .beyond-space-icon::before{left:11px;right:11px;top:16px;height:2px;background:rgba(180,143,52,.58);box-shadow:0 8px 0 rgba(180,143,52,.35)}
+.is-museum .beyond-space-icon::after{left:18px;right:18px;top:25px;height:25px;background:repeating-linear-gradient(90deg,rgba(180,143,52,.38) 0 2px,transparent 2px 8px)}
+.beyond-space-card h3{margin:0 0 12px;font-size:24px;letter-spacing:-.035em}
+.beyond-space-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.72}
+.beyond-space-card.is-theatre p{color:rgba(244,243,255,.72)}
+.beyond-space-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}
+.beyond-space-tags span{padding:6px 9px;border:1px solid rgba(121,108,240,.13);border-radius:999px;background:rgba(121,108,240,.045);font:700 8px/1.2 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--purple)}
+.beyond-space-card.is-theatre .beyond-space-tags span{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:rgba(255,232,166,.85)}
+
+.beyond-act-map{position:relative;display:grid;gap:20px;margin-top:30px}
+.beyond-act-map::before{content:"";position:absolute;left:29px;top:34px;bottom:34px;width:1px;background:linear-gradient(180deg,rgba(121,108,240,.2),rgba(244,215,92,.42),rgba(121,108,240,.2))}
+.beyond-act-card{position:relative;display:grid;grid-template-columns:60px minmax(0,1fr);gap:24px}
+.beyond-act-marker{position:relative;z-index:2;display:grid;place-items:center;width:60px;height:60px;border:1px solid rgba(121,108,240,.18);border-radius:50%;background:#fff;box-shadow:0 10px 28px rgba(46,57,96,.08)}
+.beyond-act-marker span{color:var(--purple);font:800 15px/1 "IBM Plex Mono",monospace}
+.beyond-act-body{padding:28px 30px;border:1px solid rgba(121,108,240,.13);border-radius:24px;background:linear-gradient(155deg,#fff,#fbfbff);box-shadow:0 14px 38px rgba(46,57,96,.05)}
+.beyond-act-card.is-major .beyond-act-body{background:radial-gradient(circle at 100% 0,rgba(151,84,127,.09),transparent 30%),linear-gradient(155deg,#fff,#fbf8ff)}
+.beyond-act-heading p{margin:0 0 6px;color:var(--purple);font:700 9px/1.2 "IBM Plex Mono",monospace;letter-spacing:.09em;text-transform:uppercase}
+.beyond-act-heading h3{margin:0;font-size:clamp(25px,2.4vw,34px);letter-spacing:-.04em}
+.beyond-act-copy{max-width:930px;margin:14px 0 0;color:var(--muted);line-height:1.72}
+.beyond-beat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:22px}
+.beyond-beat-grid span,.beyond-route span{padding:9px 10px;border:1px solid rgba(121,108,240,.12);border-radius:12px;background:rgba(121,108,240,.035);color:var(--text);font-size:11px;line-height:1.45}
+.beyond-route{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin-top:22px}
+.beyond-route i{color:rgba(121,108,240,.45);font-style:normal}
+.beyond-act-note{margin:14px 0 0;padding-left:14px;border-left:2px solid rgba(244,215,92,.7);color:var(--muted);font-size:13px;line-height:1.65}
+
+.beyond-museum-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px}
+.beyond-museum-card{position:relative;min-height:360px;padding:26px;overflow:hidden;border:1px solid rgba(121,108,240,.14);border-radius:24px;background:#fff;box-shadow:0 18px 45px rgba(46,57,96,.06)}
+.beyond-museum-card.is-fragmented{background:linear-gradient(155deg,#191a29,#2a2636);color:#fff}
+.beyond-museum-card.is-conflict{background:linear-gradient(145deg,#f8f4e9 0%,#f7f2ff 46%,#28283a 100%)}
+.beyond-museum-card.is-clear{background:radial-gradient(circle at 70% 18%,rgba(244,215,92,.34),transparent 34%),linear-gradient(155deg,#fffdf4,#fff)}
+.beyond-museum-state{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.beyond-museum-state span{font:800 22px/1 "IBM Plex Mono",monospace;color:rgba(121,108,240,.52)}
+.beyond-museum-card.is-fragmented .beyond-museum-state span{color:rgba(255,255,255,.35)}
+.beyond-museum-state em{font:700 8px/1 "IBM Plex Mono",monospace;font-style:normal;letter-spacing:.1em;color:var(--purple)}
+.beyond-museum-card.is-fragmented .beyond-museum-state em{color:rgba(255,233,182,.72)}
+.beyond-museum-card h3{margin:46px 0 12px;font-size:23px;letter-spacing:-.035em}
+.beyond-museum-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}
+.beyond-museum-card.is-fragmented p{color:rgba(239,238,248,.68)}
+.beyond-museum-visual{position:absolute;left:24px;right:24px;bottom:20px;height:54px}
+.beyond-museum-visual i{position:absolute;bottom:0;height:38px;border-radius:8px;border:1px solid rgba(121,108,240,.16);background:rgba(255,255,255,.35)}
+.beyond-museum-visual i:nth-child(1){left:0;width:27%}.beyond-museum-visual i:nth-child(2){left:34%;width:30%;height:50px}.beyond-museum-visual i:nth-child(3){right:0;width:28%;height:31px}
+.is-fragmented .beyond-museum-visual i{transform:rotate(-3deg);border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.045);filter:blur(.5px)}
+.is-fragmented .beyond-museum-visual i:nth-child(2){transform:translateY(-8px) rotate(4deg)}
+.is-conflict .beyond-museum-visual i:nth-child(1){background:rgba(244,215,92,.18)}.is-conflict .beyond-museum-visual i:nth-child(3){background:rgba(31,30,48,.24)}
+.is-clear .beyond-museum-visual i{border-color:rgba(180,143,52,.22);background:rgba(244,215,92,.16)}
+
+.beyond-anxiety-ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));overflow:hidden;margin-top:28px;border:1px solid rgba(121,108,240,.14);border-radius:22px;background:#fff}
+.beyond-anxiety-ladder article{position:relative;min-height:220px;padding:20px 18px;border-right:1px solid rgba(121,108,240,.1)}
+.beyond-anxiety-ladder article:last-child{border-right:0}
+.beyond-anxiety-ladder article::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:#76c8dd}
+.beyond-anxiety-ladder .is-worry::before{background:#8f8ddb}.beyond-anxiety-ladder .is-anxious::before{background:#d0a557}.beyond-anxiety-ladder .is-panic::before{background:#d47668}.beyond-anxiety-ladder .is-overwhelmed::before{background:#8e4459}
+.beyond-anxiety-ladder span{display:block;margin:5px 0 36px;color:rgba(30,36,64,.28);font:800 18px/1 "IBM Plex Mono",monospace}
+.beyond-anxiety-ladder h3{margin:0 0 9px;font-size:18px}
+.beyond-anxiety-ladder p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+.beyond-calm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.beyond-calm-card{display:grid;grid-template-columns:44px 1fr;column-gap:14px;padding:20px;border:1px solid rgba(121,108,240,.11);border-radius:18px;background:linear-gradient(145deg,rgba(114,213,233,.045),#fff)}
+.beyond-calm-card>span{grid-row:1 / span 2;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(114,213,233,.1);color:#4da9bd;font-size:22px}
+.beyond-calm-card h3{margin:2px 0 5px;font-size:16px}.beyond-calm-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.58}
+
+.beyond-ending{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:44px;overflow:hidden;margin-bottom:20px;padding:46px;border:1px solid rgba(244,181,91,.28);border-radius:30px;background:linear-gradient(135deg,#fff6dd 0%,#f4c57a 34%,#ca7580 68%,#4a355d 100%);box-shadow:0 22px 58px rgba(83,55,82,.12)}
+.beyond-ending::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,transparent,rgba(35,30,45,.22))}
+.beyond-ending-sun{position:absolute;right:16%;top:15%;width:110px;height:110px;border-radius:50%;background:rgba(255,239,175,.72);box-shadow:0 0 54px rgba(255,229,151,.42)}
+.beyond-ending-copy,.beyond-ending-beats{position:relative;z-index:2}
+.beyond-ending-copy h2{max-width:680px;margin:10px 0 16px;font-size:clamp(34px,3.6vw,50px);line-height:1.05;letter-spacing:-.045em;color:#302639}
+.beyond-ending-copy p:last-child{max-width:760px;margin:0;color:rgba(48,38,57,.76);line-height:1.74}
+.beyond-ending-beats{display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding-top:130px}
+.beyond-ending-beats span{padding:10px 12px;border:1px solid rgba(255,255,255,.26);border-radius:12px;background:rgba(31,25,43,.16);backdrop-filter:blur(5px);color:#fff;font-size:12px;line-height:1.4}
+
+@media(max-width:1040px){
+  .beyond-space-grid,.beyond-museum-progress{grid-template-columns:1fr}
+  .beyond-space-card,.beyond-museum-card{min-height:0}
+  .beyond-museum-card{padding-bottom:100px}
+  .beyond-anxiety-ladder{grid-template-columns:1fr}
+  .beyond-anxiety-ladder article{min-height:0;border-right:0;border-bottom:1px solid rgba(121,108,240,.1)}
+  .beyond-anxiety-ladder article:last-child{border-bottom:0}
+  .beyond-anxiety-ladder span{margin-bottom:16px}
+  .beyond-calm-grid{grid-template-columns:1fr}
+  .beyond-ending{grid-template-columns:1fr}
+  .beyond-ending-beats{padding-top:40px}
+}
+@media(max-width:700px){
+  .beyond-beat-grid{grid-template-columns:1fr}
+  .beyond-act-map::before{left:22px}
+  .beyond-act-card{grid-template-columns:46px minmax(0,1fr);gap:12px}
+  .beyond-act-marker{width:46px;height:46px}
+  .beyond-act-body{padding:22px 20px}
+  .beyond-route{align-items:flex-start}
+  .beyond-route i{display:none}
+  .beyond-route span{width:100%}
+  .beyond-ending{padding:28px 24px}
+  .beyond-ending-sun{right:-12px;top:30px;width:88px;height:88px}
+}
+
