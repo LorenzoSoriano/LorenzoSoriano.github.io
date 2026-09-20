@@ -487,3 +487,58 @@
   }
 }
 
+/* v6 — Beyond the Curtain: narrative construction + background-aware text */
+.beyond-narrative-flow{margin:30px 0 18px;padding:22px 24px;border:1px solid rgba(121,108,240,.12);border-radius:22px;background:linear-gradient(145deg,#fbfbff,#fffdf7)}
+.beyond-narrative-flow__rail{display:flex;align-items:center;justify-content:center;gap:14px}
+.beyond-narrative-node{display:flex;align-items:center;gap:10px;min-width:150px;padding:11px 14px;border:1px solid rgba(121,108,240,.13);border-radius:999px;background:#fff;color:#1e2440}
+.beyond-narrative-node span{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(121,108,240,.08);color:#796cf0;font:800 9px/1 "IBM Plex Mono",monospace}
+.beyond-narrative-node strong{color:inherit;font:750 10px/1.2 "IBM Plex Mono",monospace;letter-spacing:.08em}
+.beyond-narrative-node.is-theatre{border-color:rgba(157,84,127,.2);background:#242039;color:#fff7e8}
+.beyond-narrative-node.is-theatre span{background:rgba(255,231,167,.1);color:#f1d38a}
+.beyond-narrative-node.is-memory{border-color:rgba(205,163,61,.22);background:#fff9e9;color:#3b3020}
+.beyond-narrative-flow__rail>i{color:rgba(121,108,240,.42);font-style:normal;font-size:18px}
+.beyond-narrative-return{color:#bf9340!important;font-size:24px!important}
+.beyond-narrative-flow__caption{max-width:900px;margin:18px auto 0;color:#66708b;font-size:13px;line-height:1.65;text-align:center}
+
+.beyond-space-card{--space-text:#1e2440;--space-muted:#68718a;--space-label:#796cf0;--space-panel:rgba(121,108,240,.045);--space-panel-border:rgba(121,108,240,.11);color:var(--space-text)}
+.beyond-space-card.is-home{--space-text:#1e2440;--space-muted:#68718a;--space-label:#796cf0;--space-panel:rgba(121,108,240,.045);--space-panel-border:rgba(121,108,240,.11)}
+.beyond-space-card.is-theatre{--space-text:#fffaf0;--space-muted:rgba(247,242,255,.72);--space-label:#f0cf83;--space-panel:rgba(255,255,255,.055);--space-panel-border:rgba(255,255,255,.11);background:radial-gradient(circle at 80% 10%,rgba(157,84,127,.2),transparent 34%),linear-gradient(155deg,#171624,#2a233f 70%,#342643)}
+.beyond-space-card.is-museum{--space-text:#352d28;--space-muted:#716b68;--space-label:#a77b27;--space-panel:rgba(205,163,61,.06);--space-panel-border:rgba(180,143,52,.14);background:radial-gradient(circle at 100% 0,rgba(244,215,92,.18),transparent 35%),linear-gradient(155deg,#fffdf8,#f7f3ff)}
+.beyond-space-card__top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:4px}
+.beyond-space-card .beyond-space-index{position:static;color:var(--space-label);opacity:.55}
+.beyond-space-mode{color:var(--space-label);font:700 8px/1.2 "IBM Plex Mono",monospace;letter-spacing:.09em}
+.beyond-space-card h3{color:var(--space-text)}
+.beyond-space-card>p{color:var(--space-muted)}
+.beyond-space-card.is-theatre h3{color:var(--space-text)}
+.beyond-space-card.is-theatre>p{color:var(--space-muted)}
+.beyond-space-details{display:grid;gap:8px;margin:22px 0 0}
+.beyond-space-details>div{padding:12px;border:1px solid var(--space-panel-border);border-radius:14px;background:var(--space-panel)}
+.beyond-space-details dt{margin:0 0 6px;color:var(--space-label);font:700 8px/1.2 "IBM Plex Mono",monospace;letter-spacing:.09em}
+.beyond-space-details dd{margin:0;color:var(--space-text);font-size:11px;line-height:1.55}
+.beyond-space-card .beyond-space-tags span{border-color:var(--space-panel-border);background:var(--space-panel);color:var(--space-label)}
+.beyond-space-card.is-theatre .beyond-space-tags span{color:var(--space-label)}
+
+.beyond-narrative-principle{position:relative;display:grid;grid-template-columns:80px minmax(0,1fr);gap:24px;align-items:center;margin-top:18px;padding:26px 30px;overflow:hidden;border:1px solid rgba(121,108,240,.12);border-radius:22px;background:linear-gradient(110deg,rgba(121,108,240,.07),rgba(255,255,255,.96) 48%,rgba(244,215,92,.12))}
+.beyond-narrative-principle__mark{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:linear-gradient(145deg,#26213e,#4a3657);color:#f4d987;font:700 34px/1 "Space Grotesk",sans-serif;box-shadow:0 12px 28px rgba(46,36,70,.14)}
+.beyond-narrative-principle h3{margin:7px 0 8px;color:#1e2440;font-size:22px;line-height:1.25}
+.beyond-narrative-principle p:last-child{max-width:930px;margin:0;color:#68718a;font-size:13px;line-height:1.68}
+
+.beyond-museum-card.is-fragmented{color:#fffaf2}
+.beyond-museum-card.is-fragmented h3{color:#fffaf2}
+.beyond-museum-card.is-fragmented .beyond-museum-state em{color:#f1d38a}
+.beyond-ending-copy .page-label{color:#5a3e58}
+.beyond-ending-copy h2{color:#302639}
+
+@media(max-width:900px){
+  .beyond-narrative-flow__rail{flex-wrap:wrap}
+  .beyond-narrative-flow__rail>i{display:none}
+  .beyond-narrative-node{flex:1 1 30%;min-width:180px;justify-content:center}
+}
+@media(max-width:620px){
+  .beyond-narrative-flow{padding:18px}
+  .beyond-narrative-flow__rail{display:grid;grid-template-columns:1fr}
+  .beyond-narrative-node{width:100%;min-width:0}
+  .beyond-narrative-principle{grid-template-columns:1fr;padding:22px}
+  .beyond-narrative-principle__mark{width:58px;height:58px;font-size:28px}
+}
+
