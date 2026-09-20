@@ -273,3 +273,467 @@ body[data-page="narrative"] .narrative-skills-section .content-card p{
     padding-left:60px;
   }
 }
+
+/* v2 — more artistic / authorial Narrative Design identity */
+
+/* Warm paper atmosphere for the whole narrative area. */
+body[data-page="narrative"] .page-main{
+  background:
+    radial-gradient(circle at 12% 18%,rgba(121,108,240,.055),transparent 22%),
+    radial-gradient(circle at 88% 46%,rgba(214,173,78,.07),transparent 24%),
+    linear-gradient(180deg,rgba(255,253,248,.72),rgba(255,255,255,.92));
+}
+
+/* HERO — abstract stage + branching manuscript, without a hero image. */
+body[data-page="narrative"] .narrative-hero{
+  min-height:560px;
+  display:flex;
+  align-items:center;
+  padding-top:clamp(100px,12vw,160px);
+  padding-bottom:clamp(82px,9vw,126px);
+}
+
+body[data-page="narrative"] .narrative-hero::before{
+  left:30px;
+  top:94px;
+  bottom:64px;
+  width:2px;
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(121,108,240,.40) 17%,
+      rgba(214,173,78,.34) 54%,
+      rgba(121,108,240,.16) 82%,
+      transparent
+    );
+  box-shadow:18px 0 0 rgba(121,108,240,.025);
+}
+
+body[data-page="narrative"] .narrative-hero::after{
+  right:2%;
+  top:50%;
+  width:min(38vw,500px);
+  height:310px;
+  transform:translateY(-46%);
+  opacity:.92;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 52% 48%,rgba(255,247,208,.72) 0 12%,rgba(244,215,92,.12) 30%,transparent 52%),
+    radial-gradient(circle at 18% 20%,rgba(121,108,240,.36) 0 4px,transparent 5px),
+    radial-gradient(circle at 72% 12%,rgba(214,173,78,.45) 0 4px,transparent 5px),
+    radial-gradient(circle at 84% 72%,rgba(121,108,240,.30) 0 4px,transparent 5px),
+    radial-gradient(circle at 28% 82%,rgba(157,84,127,.28) 0 4px,transparent 5px),
+    linear-gradient(28deg,transparent 0 47.8%,rgba(121,108,240,.12) 48% 48.25%,transparent 48.45% 100%),
+    linear-gradient(151deg,transparent 0 55.3%,rgba(214,173,78,.13) 55.5% 55.75%,transparent 55.95% 100%);
+  filter:drop-shadow(0 28px 50px rgba(62,55,89,.05));
+}
+
+body[data-page="narrative"] .narrative-hero .capability-hero-copy{
+  max-width:780px;
+  padding-left:64px;
+}
+
+body[data-page="narrative"] .narrative-hero .page-label{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+
+body[data-page="narrative"] .narrative-hero .page-label::before{
+  content:"";
+  width:34px;
+  height:1px;
+  background:linear-gradient(90deg,var(--narrative-purple),var(--narrative-gold));
+}
+
+body[data-page="narrative"] .narrative-hero h1{
+  max-width:760px;
+  margin-top:16px;
+  font-size:clamp(56px,7vw,96px);
+  line-height:.96;
+  letter-spacing:-.06em;
+}
+
+body[data-page="narrative"] .narrative-hero .capability-hero-copy>p:last-child{
+  max-width:640px;
+  margin-top:24px;
+  padding-left:22px;
+  border-left:2px solid rgba(214,173,78,.46);
+  font-size:16px;
+  line-height:1.78;
+}
+
+/* APPROACH — reads like an open notebook spread. */
+body[data-page="narrative"] .narrative-approach-section{
+  position:relative;
+}
+
+body[data-page="narrative"] .narrative-approach-section .capability-intro-grid{
+  position:relative;
+  gap:0;
+  overflow:hidden;
+  padding:0;
+  border:1px solid rgba(91,82,118,.12);
+  border-radius:28px;
+  background:
+    linear-gradient(90deg,#fffdf7 0 49.9%,rgba(121,108,240,.08) 50%,#fffefa 50.1% 100%);
+  box-shadow:0 24px 60px rgba(48,44,74,.055);
+}
+
+body[data-page="narrative"] .narrative-approach-section .capability-intro-grid::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:24px;
+  bottom:24px;
+  width:1px;
+  background:linear-gradient(180deg,transparent,rgba(86,78,111,.16),transparent);
+}
+
+body[data-page="narrative"] .narrative-approach-section .capability-intro-grid>div{
+  padding:44px 46px;
+}
+
+body[data-page="narrative"] .narrative-approach-section .capability-intro-grid>div:first-child{
+  position:relative;
+}
+
+body[data-page="narrative"] .narrative-approach-section .capability-intro-grid>div:first-child::after{
+  content:"✦";
+  position:absolute;
+  right:38px;
+  bottom:26px;
+  color:rgba(214,173,78,.34);
+  font-size:24px;
+}
+
+body[data-page="narrative"] .narrative-approach-section h2{
+  max-width:520px;
+}
+
+body[data-page="narrative"] .narrative-approach-section .capability-copy{
+  max-width:none;
+}
+
+/* Decorative chapter divider. */
+body[data-page="narrative"] .narrative-chapter-mark{
+  display:grid;
+  grid-template-columns:minmax(30px,1fr) auto minmax(30px,1fr);
+  gap:16px;
+  align-items:center;
+  max-width:620px;
+  margin:0 auto 48px;
+}
+
+body[data-page="narrative"] .narrative-chapter-mark span{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(121,108,240,.22));
+}
+
+body[data-page="narrative"] .narrative-chapter-mark span:last-child{
+  transform:scaleX(-1);
+}
+
+body[data-page="narrative"] .narrative-chapter-mark i{
+  width:9px;
+  height:9px;
+  border:1px solid rgba(121,108,240,.32);
+  border-radius:50%;
+  background:#fffdf8;
+  box-shadow:0 0 0 6px rgba(214,173,78,.055);
+}
+
+/* PROJECTS — more like authored story dossiers than interface cards. */
+body[data-page="narrative"] .narrative-projects-section{
+  position:relative;
+}
+
+body[data-page="narrative"] .narrative-projects-section .category-projects-heading{
+  max-width:760px;
+  margin-bottom:34px;
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:28px 22px;
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card,
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card.featured{
+  isolation:isolate;
+  min-height:390px;
+  padding:42px 42px 38px 72px;
+  border:1px solid rgba(77,68,100,.14);
+  border-radius:8px 30px 30px 8px;
+  background:
+    linear-gradient(90deg,rgba(121,108,240,.048) 0 40px,transparent 40px),
+    radial-gradient(circle at 88% 10%,rgba(244,215,92,.17),transparent 26%),
+    linear-gradient(155deg,#fffefa,#fbf8ff);
+  box-shadow:
+    0 24px 56px rgba(46,40,68,.075),
+    -9px 9px 0 rgba(121,108,240,.018);
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card:nth-child(even){
+  transform:translateY(24px);
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card:nth-child(even):hover{
+  transform:translateY(19px) rotate(.18deg);
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card.featured{
+  grid-column:span 2;
+  min-height:430px;
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card::before{
+  left:39px;
+  background:linear-gradient(180deg,rgba(121,108,240,.12),rgba(214,173,78,.22),rgba(121,108,240,.08));
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card::after{
+  content:"";
+  right:28px;
+  top:30px;
+  width:88px;
+  height:88px;
+  border:1px solid rgba(121,108,240,.08);
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(244,215,92,.10) 0 10%,transparent 11%),
+    linear-gradient(45deg,transparent 49%,rgba(121,108,240,.08) 50%,transparent 51%),
+    linear-gradient(-45deg,transparent 49%,rgba(121,108,240,.08) 50%,transparent 51%);
+  opacity:.9;
+}
+
+body[data-page="narrative"] .narrative-projects-section .project-tags{
+  margin-bottom:64px;
+}
+
+body[data-page="narrative"] .narrative-projects-section .project-tags::before{
+  content:"";
+  display:block;
+  width:28px;
+  height:1px;
+  margin-right:12px;
+  align-self:center;
+  background:rgba(121,108,240,.22);
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card h3{
+  max-width:700px;
+  font-size:clamp(34px,3.3vw,50px);
+  line-height:1.02;
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card p{
+  max-width:760px;
+  font-size:15px;
+  line-height:1.8;
+}
+
+body[data-page="narrative"] .narrative-projects-section .project-arrow{
+  padding-top:42px;
+  font-size:12px;
+  letter-spacing:.01em;
+}
+
+/* CAPABILITIES — an artistic vertical story path rather than a generic skills grid. */
+body[data-page="narrative"] .narrative-skills-section{
+  position:relative;
+}
+
+body[data-page="narrative"] .narrative-skills-section .section-heading{
+  max-width:900px;
+  margin-bottom:38px;
+}
+
+body[data-page="narrative"] .narrative-skills-section .capability-grid{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:0;
+  max-width:980px;
+  margin-left:auto;
+  border-top:0;
+}
+
+body[data-page="narrative"] .narrative-skills-section .capability-grid::before{
+  content:"";
+  position:absolute;
+  left:74px;
+  top:8px;
+  bottom:8px;
+  width:1px;
+  background:linear-gradient(
+    180deg,
+    rgba(121,108,240,.10),
+    rgba(121,108,240,.28) 25%,
+    rgba(214,173,78,.30) 68%,
+    rgba(121,108,240,.08)
+  );
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card{
+  padding:28px 30px 30px 114px;
+  border:0!important;
+  border-radius:0;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card::before{
+  left:46px;
+  top:34px;
+  z-index:2;
+  display:grid;
+  place-items:center;
+  width:56px;
+  height:56px;
+  border:1px solid rgba(121,108,240,.16);
+  border-radius:50%;
+  background:#fffdf8;
+  color:var(--narrative-purple);
+  box-shadow:0 0 0 8px rgba(121,108,240,.025);
+  font-size:9px;
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card::after{
+  left:102px;
+  top:61px;
+  width:30px;
+  background:rgba(121,108,240,.18);
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card:nth-child(2n){
+  margin-left:72px;
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card h3{
+  margin:4px 0 9px;
+  font-size:23px;
+  letter-spacing:-.025em;
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card p{
+  max-width:720px;
+  color:var(--narrative-muted);
+  font-size:14px;
+  line-height:1.75;
+}
+
+/* Small hand-drawn-feeling accent, still entirely CSS. */
+body[data-page="narrative"] .narrative-skills-section::after{
+  content:"";
+  position:absolute;
+  right:7%;
+  bottom:4%;
+  width:130px;
+  height:70px;
+  opacity:.38;
+  transform:rotate(-6deg);
+  border-bottom:2px solid rgba(214,173,78,.30);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+@media(max-width:980px){
+  body[data-page="narrative"] .narrative-hero{
+    min-height:500px;
+  }
+
+  body[data-page="narrative"] .narrative-hero::after{
+    right:-16%;
+    opacity:.46;
+  }
+
+  body[data-page="narrative"] .narrative-approach-section .capability-intro-grid{
+    grid-template-columns:1fr;
+    background:#fffdf8;
+  }
+
+  body[data-page="narrative"] .narrative-approach-section .capability-intro-grid::before{
+    display:none;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-grid{
+    grid-template-columns:1fr;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card.featured{
+    grid-column:auto;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card:nth-child(even),
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card:nth-child(even):hover{
+    transform:none;
+  }
+}
+
+@media(max-width:620px){
+  body[data-page="narrative"] .narrative-hero{
+    min-height:0;
+    padding-top:80px;
+    padding-bottom:64px;
+  }
+
+  body[data-page="narrative"] .narrative-hero::before{
+    left:14px;
+  }
+
+  body[data-page="narrative"] .narrative-hero .capability-hero-copy{
+    padding-left:34px;
+  }
+
+  body[data-page="narrative"] .narrative-hero h1{
+    font-size:clamp(46px,16vw,68px);
+  }
+
+  body[data-page="narrative"] .narrative-approach-section .capability-intro-grid>div{
+    padding:30px 24px;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card,
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card.featured{
+    padding:30px 22px 30px 48px;
+    border-radius:7px 22px 22px 7px;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card::before{
+    left:28px;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .project-tags{
+    margin-bottom:42px;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .project-tags::before{
+    display:none;
+  }
+
+  body[data-page="narrative"] .narrative-skills-section .capability-grid::before{
+    left:38px;
+  }
+
+  body[data-page="narrative"] .narrative-skills-section .content-card,
+  body[data-page="narrative"] .narrative-skills-section .content-card:nth-child(2n){
+    margin-left:0;
+    padding:24px 12px 24px 82px;
+  }
+
+  body[data-page="narrative"] .narrative-skills-section .content-card::before{
+    left:14px;
+    top:26px;
+    width:48px;
+    height:48px;
+  }
+
+  body[data-page="narrative"] .narrative-skills-section .content-card::after{
+    left:62px;
+    top:50px;
+    width:16px;
+  }
+}
+
