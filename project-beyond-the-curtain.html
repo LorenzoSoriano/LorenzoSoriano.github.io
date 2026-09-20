@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Beyond the Curtain — narrative design case study about Imma, grief, agoraphobia, memory and a final journey through Rome."><title>Beyond the Curtain — Lorenzo Soriano</title><link rel="stylesheet" href="assets/css/core/styles.css?v=4"><link rel="stylesheet" href="assets/css/core/refinements.css"><link rel="stylesheet" href="assets/css/core/portfolio-expanded.css?v=4"><link rel="stylesheet" href="assets/css/core/project-facts.css?v=5"></head><body data-page="beyond"><header class="site-header"><a class="brand" href="index.html">LS<span>.</span></a><button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">Menu</button><nav class="nav"><a href="index.html">Home</a><div class="lang-switch"><button data-lang="it">IT</button><span>/</span><button data-lang="en">EN</button></div></nav></header><main class="page-main">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Beyond the Curtain — narrative design case study about Imma, grief, agoraphobia, memory and a final journey through Rome."><title>Beyond the Curtain — Lorenzo Soriano</title><link rel="stylesheet" href="assets/css/core/styles.css?v=4"><link rel="stylesheet" href="assets/css/core/refinements.css"><link rel="stylesheet" href="assets/css/core/portfolio-expanded.css?v=5"><link rel="stylesheet" href="assets/css/core/project-facts.css?v=5"></head><body data-page="beyond"><header class="site-header"><a class="brand" href="index.html">LS<span>.</span></a><button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">Menu</button><nav class="nav"><a href="index.html">Home</a><div class="lang-switch"><button data-lang="it">IT</button><span>/</span><button data-lang="en">EN</button></div></nav></header><main class="page-main">
   <section class="page-intro section-shell case-hero beyond-hero">
     <div class="case-hero-copy reveal">
       <p class="page-label" data-i18n="beyond.label"></p>
@@ -99,49 +99,113 @@
       <p class="beyond-section-intro" data-i18n="beyond.actsIntro"></p>
     </div>
 
-    <div class="beyond-act-map">
-      <article class="beyond-act-card reveal">
-        <div class="beyond-act-marker"><span>I</span></div>
-        <div class="beyond-act-body">
-          <div class="beyond-act-heading"><p data-i18n="beyond.act1Kicker"></p><h3 data-i18n="beyond.act1Title"></h3></div>
-          <p class="beyond-act-copy" data-i18n="beyond.act1Desc"></p>
-          <div class="beyond-beat-grid">
-            <span data-i18n="beyond.act1Beat1"></span>
-            <span data-i18n="beyond.act1Beat2"></span>
-            <span data-i18n="beyond.act1Beat3"></span>
-          </div>
-        </div>
-      </article>
+    <div class="beyond-act-timeline reveal" data-beyond-act-tabs>
+      <div class="beyond-act-timeline__rail" role="tablist" aria-label="Beyond the Curtain narrative acts">
+        <button class="beyond-act-pearl is-active" type="button" role="tab"
+          id="beyond-act-tab-1" aria-controls="beyond-act-panel-1" aria-selected="true"
+          tabindex="0" data-beyond-act-tab="1">
+          <span class="beyond-act-pearl__orb">I</span>
+          <span class="beyond-act-pearl__label" data-i18n="beyond.act1Tab"></span>
+        </button>
 
-      <article class="beyond-act-card is-major reveal">
-        <div class="beyond-act-marker"><span>II</span></div>
-        <div class="beyond-act-body">
-          <div class="beyond-act-heading"><p data-i18n="beyond.act2Kicker"></p><h3 data-i18n="beyond.act2Title"></h3></div>
-          <p class="beyond-act-copy" data-i18n="beyond.act2Desc"></p>
-          <div class="beyond-route" aria-label="Act II narrative route">
-            <span data-i18n="beyond.route1"></span><i>→</i>
-            <span data-i18n="beyond.route2"></span><i>→</i>
-            <span data-i18n="beyond.route3"></span><i>→</i>
-            <span data-i18n="beyond.route4"></span><i>→</i>
-            <span data-i18n="beyond.route5"></span><i>→</i>
-            <span data-i18n="beyond.route6"></span>
-          </div>
-          <p class="beyond-act-note" data-i18n="beyond.act2Note"></p>
-        </div>
-      </article>
+        <button class="beyond-act-pearl" type="button" role="tab"
+          id="beyond-act-tab-2" aria-controls="beyond-act-panel-2" aria-selected="false"
+          tabindex="-1" data-beyond-act-tab="2">
+          <span class="beyond-act-pearl__orb">II</span>
+          <span class="beyond-act-pearl__label" data-i18n="beyond.act2Tab"></span>
+        </button>
 
-      <article class="beyond-act-card reveal">
-        <div class="beyond-act-marker"><span>III</span></div>
-        <div class="beyond-act-body">
-          <div class="beyond-act-heading"><p data-i18n="beyond.act3Kicker"></p><h3 data-i18n="beyond.act3Title"></h3></div>
-          <p class="beyond-act-copy" data-i18n="beyond.act3Desc"></p>
-          <div class="beyond-beat-grid">
-            <span data-i18n="beyond.act3Beat1"></span>
-            <span data-i18n="beyond.act3Beat2"></span>
-            <span data-i18n="beyond.act3Beat3"></span>
+        <button class="beyond-act-pearl" type="button" role="tab"
+          id="beyond-act-tab-3" aria-controls="beyond-act-panel-3" aria-selected="false"
+          tabindex="-1" data-beyond-act-tab="3">
+          <span class="beyond-act-pearl__orb">III</span>
+          <span class="beyond-act-pearl__label" data-i18n="beyond.act3Tab"></span>
+        </button>
+      </div>
+
+      <div class="beyond-act-screens">
+        <section class="beyond-act-screen is-active" role="tabpanel"
+          id="beyond-act-panel-1" aria-labelledby="beyond-act-tab-1" data-beyond-act-panel="1">
+          <div class="beyond-act-screen__main">
+            <p class="beyond-act-screen__kicker" data-i18n="beyond.act1Kicker"></p>
+            <h3 data-i18n="beyond.act1Title"></h3>
+            <p class="beyond-act-screen__copy" data-i18n="beyond.act1Desc"></p>
+            <div class="beyond-beat-grid">
+              <span data-i18n="beyond.act1Beat1"></span>
+              <span data-i18n="beyond.act1Beat2"></span>
+              <span data-i18n="beyond.act1Beat3"></span>
+            </div>
           </div>
-        </div>
-      </article>
+          <aside class="beyond-act-screen__aside">
+            <div class="beyond-act-insight">
+              <span data-i18n="beyond.actFunctionLabel"></span>
+              <h4 data-i18n="beyond.act1FunctionTitle"></h4>
+              <p data-i18n="beyond.act1FunctionDesc"></p>
+            </div>
+            <div class="beyond-act-insight is-turn">
+              <span data-i18n="beyond.actTurnLabel"></span>
+              <h4 data-i18n="beyond.act1TransitionTitle"></h4>
+              <p data-i18n="beyond.act1TransitionDesc"></p>
+            </div>
+          </aside>
+        </section>
+
+        <section class="beyond-act-screen" role="tabpanel"
+          id="beyond-act-panel-2" aria-labelledby="beyond-act-tab-2" data-beyond-act-panel="2" hidden>
+          <div class="beyond-act-screen__main">
+            <p class="beyond-act-screen__kicker" data-i18n="beyond.act2Kicker"></p>
+            <h3 data-i18n="beyond.act2Title"></h3>
+            <p class="beyond-act-screen__copy" data-i18n="beyond.act2Desc"></p>
+            <div class="beyond-route" aria-label="Act II narrative route">
+              <span data-i18n="beyond.route1"></span><i>→</i>
+              <span data-i18n="beyond.route2"></span><i>→</i>
+              <span data-i18n="beyond.route3"></span><i>→</i>
+              <span data-i18n="beyond.route4"></span><i>→</i>
+              <span data-i18n="beyond.route5"></span><i>→</i>
+              <span data-i18n="beyond.route6"></span>
+            </div>
+            <p class="beyond-act-note" data-i18n="beyond.act2Note"></p>
+          </div>
+          <aside class="beyond-act-screen__aside">
+            <div class="beyond-act-insight">
+              <span data-i18n="beyond.actFunctionLabel"></span>
+              <h4 data-i18n="beyond.act2FunctionTitle"></h4>
+              <p data-i18n="beyond.act2FunctionDesc"></p>
+            </div>
+            <div class="beyond-act-insight is-turn">
+              <span data-i18n="beyond.actTurnLabel"></span>
+              <h4 data-i18n="beyond.act2TransitionTitle"></h4>
+              <p data-i18n="beyond.act2TransitionDesc"></p>
+            </div>
+          </aside>
+        </section>
+
+        <section class="beyond-act-screen" role="tabpanel"
+          id="beyond-act-panel-3" aria-labelledby="beyond-act-tab-3" data-beyond-act-panel="3" hidden>
+          <div class="beyond-act-screen__main">
+            <p class="beyond-act-screen__kicker" data-i18n="beyond.act3Kicker"></p>
+            <h3 data-i18n="beyond.act3Title"></h3>
+            <p class="beyond-act-screen__copy" data-i18n="beyond.act3Desc"></p>
+            <div class="beyond-beat-grid">
+              <span data-i18n="beyond.act3Beat1"></span>
+              <span data-i18n="beyond.act3Beat2"></span>
+              <span data-i18n="beyond.act3Beat3"></span>
+            </div>
+          </div>
+          <aside class="beyond-act-screen__aside">
+            <div class="beyond-act-insight">
+              <span data-i18n="beyond.actFunctionLabel"></span>
+              <h4 data-i18n="beyond.act3FunctionTitle"></h4>
+              <p data-i18n="beyond.act3FunctionDesc"></p>
+            </div>
+            <div class="beyond-act-insight is-turn">
+              <span data-i18n="beyond.actTurnLabel"></span>
+              <h4 data-i18n="beyond.act3TransitionTitle"></h4>
+              <p data-i18n="beyond.act3TransitionDesc"></p>
+            </div>
+          </aside>
+        </section>
+      </div>
     </div>
   </section>
 
@@ -231,4 +295,4 @@
     </div>
     <div class="related-links"><a class="button ghost" href="narrative-design.html" data-i18n="case.backNarrative">Back to Narrative Design</a></div>
   </section>
-</main><footer class="footer section-shell"><span>© <span id="year"></span> Lorenzo Soriano</span></footer><script src="assets/i18n/translations.js"></script><script src="assets/i18n/translations-expanded.js?v=3"></script><script src="assets/i18n/translations-project-facts.js?v=1"></script><script src="assets/js/core/script.js?v=3"></script></body></html>
+</main><footer class="footer section-shell"><span>© <span id="year"></span> Lorenzo Soriano</span></footer><script src="assets/i18n/translations.js"></script><script src="assets/i18n/translations-expanded.js?v=4"></script><script src="assets/i18n/translations-project-facts.js?v=1"></script><script src="assets/js/core/script.js?v=3"></script><script src="assets/js/projects/beyond-the-curtain/beyond-the-curtain-acts.js?v=1"></script></body></html>
