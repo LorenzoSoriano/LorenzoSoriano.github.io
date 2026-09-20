@@ -1,0 +1,275 @@
+/* Narrative Design — section-specific visual language
+   Script pages, story beats and branching structure. */
+
+body[data-page="narrative"]{
+  --narrative-ink:#26233b;
+  --narrative-muted:#6f7184;
+  --narrative-purple:#796cf0;
+  --narrative-gold:#d6ad4e;
+  --narrative-paper:#fffdf8;
+  --narrative-line:rgba(121,108,240,.15);
+}
+
+/* Hero: no artwork. The page itself becomes the graphic. */
+body[data-page="narrative"] .narrative-hero{
+  position:relative;
+  display:block;
+  padding-top:clamp(92px,11vw,150px);
+  padding-bottom:clamp(70px,8vw,110px);
+  overflow:hidden;
+}
+
+body[data-page="narrative"] .narrative-hero::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:88px;
+  bottom:44px;
+  width:1px;
+  background:linear-gradient(
+    180deg,
+    transparent,
+    rgba(121,108,240,.28) 18%,
+    rgba(121,108,240,.14) 72%,
+    transparent
+  );
+}
+
+body[data-page="narrative"] .narrative-hero::after{
+  content:"";
+  position:absolute;
+  right:4%;
+  top:38%;
+  width:min(34vw,460px);
+  height:180px;
+  opacity:.85;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 4% 50%,rgba(121,108,240,.34) 0 4px,transparent 5px),
+    radial-gradient(circle at 49% 18%,rgba(214,173,78,.40) 0 4px,transparent 5px),
+    radial-gradient(circle at 49% 82%,rgba(121,108,240,.26) 0 4px,transparent 5px),
+    radial-gradient(circle at 96% 50%,rgba(121,108,240,.30) 0 4px,transparent 5px),
+    linear-gradient(27deg,transparent 0 49.5%,rgba(121,108,240,.13) 49.8% 50.2%,transparent 50.5%),
+    linear-gradient(153deg,transparent 0 49.5%,rgba(214,173,78,.14) 49.8% 50.2%,transparent 50.5%);
+}
+
+body[data-page="narrative"] .narrative-hero .capability-hero-copy{
+  position:relative;
+  z-index:2;
+  max-width:900px;
+  padding-left:30px;
+}
+
+body[data-page="narrative"] .narrative-hero h1{
+  max-width:850px;
+}
+
+body[data-page="narrative"] .narrative-hero .capability-hero-copy>p:last-child{
+  max-width:710px;
+}
+
+/* Projects: manuscript / screenplay cards.
+   Any future .portfolio-project-card on this page inherits the same system. */
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-grid{
+  gap:18px;
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card{
+  position:relative;
+  min-height:360px;
+  padding:38px 42px 34px 64px;
+  overflow:hidden;
+  border:1px solid rgba(84,78,117,.15);
+  border-radius:10px 26px 26px 10px;
+  background:
+    linear-gradient(90deg,rgba(121,108,240,.035) 0 34px,transparent 34px),
+    linear-gradient(180deg,#fffefa,#fffdf8);
+  box-shadow:
+    0 20px 48px rgba(48,44,74,.07),
+    inset 34px 0 0 rgba(121,108,240,.025);
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card.featured{
+  grid-column:span 2;
+  background:
+    linear-gradient(90deg,rgba(121,108,240,.045) 0 34px,transparent 34px),
+    radial-gradient(circle at 88% 14%,rgba(244,215,92,.18),transparent 28%),
+    linear-gradient(150deg,#fffefa,#fbf8ff);
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card::before{
+  content:"";
+  position:absolute;
+  left:33px;
+  top:0;
+  bottom:0;
+  width:1px;
+  background:rgba(121,108,240,.14);
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card::after{
+  content:"“";
+  position:absolute;
+  right:24px;
+  top:8px;
+  color:rgba(121,108,240,.08);
+  font:700 92px/1 Georgia,serif;
+  pointer-events:none;
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card:hover{
+  transform:translateY(-4px) rotate(-.15deg);
+  border-color:rgba(121,108,240,.30);
+  box-shadow:0 26px 58px rgba(48,44,74,.11);
+}
+
+body[data-page="narrative"] .narrative-projects-section .project-tags{
+  margin-bottom:46px;
+  gap:0;
+}
+
+body[data-page="narrative"] .narrative-projects-section .project-tags span{
+  position:relative;
+  padding:0 14px 0 0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#8a7f63;
+  font:700 9px/1.25 "IBM Plex Mono","DM Mono",monospace;
+  letter-spacing:.08em;
+}
+
+body[data-page="narrative"] .narrative-projects-section .project-tags span:not(:last-child)::after{
+  content:"/";
+  margin-left:14px;
+  color:rgba(121,108,240,.36);
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card h3{
+  position:relative;
+  z-index:1;
+  max-width:720px;
+  margin-bottom:16px;
+  font-size:clamp(30px,3vw,44px);
+}
+
+body[data-page="narrative"] .narrative-projects-section .portfolio-project-card p{
+  position:relative;
+  z-index:1;
+  max-width:780px;
+  font-size:15px;
+  line-height:1.78;
+}
+
+body[data-page="narrative"] .narrative-projects-section .project-arrow{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  width:max-content;
+  margin-top:auto;
+  padding-top:34px;
+  color:var(--narrative-purple);
+}
+
+body[data-page="narrative"] .narrative-projects-section .project-arrow::before{
+  content:"";
+  width:34px;
+  height:1px;
+  background:linear-gradient(90deg,var(--narrative-purple),rgba(121,108,240,.18));
+}
+
+/* Capability cards become narrative beats instead of generic UI cards. */
+body[data-page="narrative"] .narrative-skills-section .capability-grid{
+  counter-reset:narrative-skill;
+  gap:0;
+  border-top:1px solid var(--narrative-line);
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card{
+  counter-increment:narrative-skill;
+  position:relative;
+  min-height:0;
+  padding:26px 22px 28px 74px;
+  border:0;
+  border-bottom:1px solid var(--narrative-line);
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card::before{
+  content:counter(narrative-skill,decimal-leading-zero);
+  position:absolute;
+  left:0;
+  top:29px;
+  width:44px;
+  color:rgba(121,108,240,.42);
+  font:700 11px/1 "IBM Plex Mono","DM Mono",monospace;
+  letter-spacing:.08em;
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card::after{
+  content:"";
+  position:absolute;
+  left:44px;
+  top:34px;
+  width:16px;
+  height:1px;
+  background:rgba(121,108,240,.24);
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card h3{
+  margin:0 0 8px;
+  font-size:20px;
+}
+
+body[data-page="narrative"] .narrative-skills-section .content-card p{
+  max-width:760px;
+  line-height:1.7;
+}
+
+@media(max-width:980px){
+  body[data-page="narrative"] .narrative-hero::after{
+    right:-10%;
+    opacity:.45;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card.featured{
+    grid-column:auto;
+  }
+}
+
+@media(max-width:620px){
+  body[data-page="narrative"] .narrative-hero{
+    padding-top:78px;
+    padding-bottom:56px;
+  }
+
+  body[data-page="narrative"] .narrative-hero::after{
+    display:none;
+  }
+
+  body[data-page="narrative"] .narrative-hero .capability-hero-copy{
+    padding-left:20px;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card,
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card.featured{
+    min-height:0;
+    padding:28px 22px 28px 44px;
+    border-radius:8px 20px 20px 8px;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .portfolio-project-card::before{
+    left:24px;
+  }
+
+  body[data-page="narrative"] .narrative-projects-section .project-tags{
+    margin-bottom:34px;
+  }
+
+  body[data-page="narrative"] .narrative-skills-section .content-card{
+    padding-left:60px;
+  }
+}
