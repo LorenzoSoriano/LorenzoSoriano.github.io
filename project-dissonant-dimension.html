@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/css/core/refinements.css">
   <link rel="stylesheet" href="assets/css/core/portfolio-expanded.css?v=1">
   <link rel="stylesheet" href="assets/css/core/project-facts.css?v=5">
-  <link rel="stylesheet" href="assets/css/projects/dissonant/dissonant.css?v=4">
+  <link rel="stylesheet" href="assets/css/projects/dissonant/dissonant.css?v=5">
 </head>
 <body data-page="dissonant">
   <header class="site-header">
@@ -61,15 +61,37 @@
     <section class="section-shell section-block">
       <div class="dd-premise">
         <article class="dd-premise__story reveal">
-          <p class="page-label" data-i18n="dissonant.premiseLabel"></p>
+          <div class="dd-premise__topline">
+            <p class="page-label" data-i18n="dissonant.premiseLabel"></p>
+            <div class="dd-premise-icon dd-premise-icon--story" aria-hidden="true">
+              <svg viewBox="0 0 48 48" focusable="false">
+                <path d="M8 37h32M12 33h24M15 33V20M21 33V20M27 33V20M33 33V20"></path>
+                <path d="M10 20h28L24 9 10 20Z"></path>
+                <circle cx="24" cy="14.5" r="2.2"></circle>
+              </svg>
+            </div>
+          </div>
           <h2 data-i18n="dissonant.premiseTitle"></h2>
-          <p data-i18n="dissonant.premiseDesc"></p>
+          <p class="dd-premise__lead" data-i18n="dissonant.premiseDesc"></p>
         </article>
         <aside class="dd-premise__thesis reveal">
-          <span class="dd-premise__symbol" aria-hidden="true">⌬</span>
-          <p class="page-label" data-i18n="dissonant.designIdeaLabel"></p>
+          <div class="dd-premise__topline">
+            <p class="page-label" data-i18n="dissonant.designIdeaLabel"></p>
+            <div class="dd-premise-icon dd-premise-icon--shift" aria-hidden="true">
+              <svg viewBox="0 0 48 48" focusable="false">
+                <rect x="8" y="11" width="20" height="20" rx="4"></rect>
+                <rect x="20" y="17" width="20" height="20" rx="4"></rect>
+                <path d="M13 37h12M21 33l4 4-4 4M35 11H23M27 7l-4 4 4 4"></path>
+              </svg>
+            </div>
+          </div>
           <h3 data-i18n="dissonant.designIdeaTitle"></h3>
-          <p data-i18n="dissonant.designIdeaDesc"></p>
+          <p class="dd-premise__thesis-copy" data-i18n="dissonant.designIdeaDesc"></p>
+          <div class="dd-premise__principles">
+            <span><i aria-hidden="true"></i><b data-i18n="dissonant.designPrinciple1"></b></span>
+            <span><i aria-hidden="true"></i><b data-i18n="dissonant.designPrinciple2"></b></span>
+            <span><i aria-hidden="true"></i><b data-i18n="dissonant.designPrinciple3"></b></span>
+          </div>
         </aside>
       </div>
     </section>
@@ -418,7 +440,7 @@
   <script src="assets/i18n/translations.js"></script>
   <script src="assets/i18n/translations-expanded.js?v=20260921-1"></script>
   <script src="assets/i18n/translations-project-facts.js?v=1"></script>
-  <script src="assets/i18n/translations-dissonant.js?v=3"></script>
+  <script src="assets/i18n/translations-dissonant.js?v=4"></script>
   <script src="assets/js/core/script.js?v=20260921-2"></script>
   <script src="assets/js/projects/dissonant/dissonant.js?v=1"></script>
 </body>
