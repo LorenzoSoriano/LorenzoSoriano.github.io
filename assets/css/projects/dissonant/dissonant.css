@@ -517,3 +517,304 @@ body[data-page="dissonant"] .dd-final-callout{padding:32px 36px;border:1px solid
   .dd-premise__lead{font-size:14px!important}
 }
 
+/* v6 — gameplay diagram redesign */
+
+/* CENTRAL MECHANIC / GAME-DESIGN BOARD */
+.dd-shift-stage{
+  min-height:470px;
+  background:
+    radial-gradient(circle at 18% 18%,rgba(255,255,255,.16),transparent 28%),
+    linear-gradient(160deg,#312b6a,#6757d4 68%,#7d70e8)!important;
+}
+.dd-shift-stage.is-two{
+  background:
+    radial-gradient(circle at 78% 22%,rgba(255,255,255,.16),transparent 30%),
+    linear-gradient(160deg,#173e56,#267d9f 68%,#43a7c8)!important;
+}
+.dd-stage-blueprint{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  opacity:.6;
+}
+.dd-stage-ruin{
+  fill:none;
+  stroke:rgba(255,255,255,.15);
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.dd-stage-ruin.is-faint{opacity:.55}
+.dd-stage-route{
+  fill:none;
+  stroke:rgba(255,255,255,.44);
+  stroke-width:2.2;
+  stroke-dasharray:7 8;
+  transition:opacity .35s ease;
+}
+.dd-stage-route.route-two{opacity:0}
+.dd-shift-stage.is-two .route-one{opacity:0}
+.dd-shift-stage.is-two .route-two{opacity:1}
+
+.dd-demo-platform{
+  height:20px!important;
+  overflow:hidden;
+  border:1.5px solid rgba(255,255,255,.76)!important;
+  border-radius:5px;
+  background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.12))!important;
+  box-shadow:0 13px 28px rgba(7,12,44,.24),inset 0 1px rgba(255,255,255,.26)!important;
+}
+.dd-demo-platform i{
+  position:absolute;
+  inset:4px 10px;
+  border-radius:2px;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 20px,transparent 20px 28px);
+}
+.dd-demo-player{
+  z-index:5!important;
+  width:28px!important;
+  height:44px!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.dd-demo-player::before{display:none!important}
+.dd-demo-player__head{
+  position:absolute;
+  left:50%;top:0;
+  width:12px;height:12px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 0 5px rgba(255,255,255,.08);
+}
+.dd-demo-player__body{
+  position:absolute;
+  left:50%;top:14px;
+  width:12px;height:22px;
+  transform:translateX(-50%);
+  border-radius:7px 7px 4px 4px;
+  background:#fff;
+}
+.dd-demo-player__body::before,
+.dd-demo-player__body::after{
+  content:"";
+  position:absolute;
+  bottom:-8px;
+  width:3px;height:11px;
+  border-radius:3px;
+  background:#fff;
+}
+.dd-demo-player__body::before{left:2px;transform:rotate(12deg)}
+.dd-demo-player__body::after{right:2px;transform:rotate(-12deg)}
+
+.dd-demo-anchor,.dd-demo-field{
+  width:48px!important;
+  height:48px!important;
+  border:1.5px solid rgba(255,255,255,.62)!important;
+  background:rgba(22,24,58,.30)!important;
+  box-shadow:0 0 0 7px rgba(255,255,255,.045),0 10px 24px rgba(9,15,48,.2);
+}
+.dd-demo-anchor svg,.dd-demo-field svg{
+  width:25px;height:25px;
+  fill:none;
+  stroke:#fff;
+  stroke-width:1.7;
+  stroke-linecap:round;
+}
+.dd-stage-callout{
+  position:absolute;
+  z-index:6;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 10px;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:999px;
+  background:rgba(20,24,57,.34);
+  backdrop-filter:blur(8px);
+  color:#fff;
+  font:600 9px/1.2 "DM Mono",monospace;
+  transition:opacity .3s ease,transform .3s ease;
+}
+.dd-stage-callout i{
+  width:7px;height:7px;
+  border-radius:50%;
+  background:#fff;
+}
+.dd-stage-callout--anchor{left:47%;top:14%}
+.dd-stage-callout--route{right:7%;bottom:29%}
+.dd-shift-stage.is-two .dd-stage-callout--anchor{opacity:0;transform:translateY(-5px)}
+.dd-shift-stage.is-two .dd-stage-callout--route{background:rgba(17,63,82,.40)}
+.dd-shift-stage__caption{
+  z-index:7;
+  padding:13px 15px!important;
+  background:rgba(17,20,50,.42)!important;
+}
+.dd-shift-stage__caption strong{
+  max-width:60%;
+  font-size:13px!important;
+  line-height:1.4;
+}
+
+/* TRAVERSAL CARDS: diagram becomes a central visual layer */
+.dd-traversal-card{
+  min-height:535px;
+  padding:32px;
+}
+.dd-traversal-card h3{
+  max-width:430px;
+  margin:38px 0 11px;
+}
+.dd-traversal-card>p:not(.dd-card-note){
+  max-width:480px;
+  font-size:13.5px;
+  line-height:1.68;
+}
+.dd-traversal-card--grapple>p:not(.dd-card-note){
+  color:rgba(255,255,255,.84)!important;
+}
+.dd-traversal-card--gravity>p:not(.dd-card-note){
+  color:#626d82!important;
+}
+.dd-motion-diagram,.dd-platform-diagram{
+  position:absolute;
+  right:24px;
+  bottom:82px;
+  width:300px!important;
+  height:190px!important;
+  border-radius:20px;
+}
+.dd-motion-diagram{
+  background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.09));
+  border:1px solid rgba(255,255,255,.11);
+}
+.dd-platform-diagram{
+  background:linear-gradient(145deg,rgba(49,149,188,.04),rgba(49,149,188,.10));
+  border:1px solid rgba(49,149,188,.12);
+}
+.dd-motion-diagram svg,.dd-platform-diagram svg{
+  position:absolute;
+  inset:8px;
+  width:calc(100% - 16px);
+  height:calc(100% - 16px);
+  overflow:visible;
+}
+.dd-svg-anchor-halo{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.16);stroke-width:1.5}
+.dd-svg-anchor{fill:none;stroke:#fff;stroke-width:4}
+.dd-svg-arc{fill:none;stroke:rgba(255,255,255,.48);stroke-width:2;stroke-dasharray:7 7}
+.dd-svg-rope{fill:none;stroke:rgba(255,255,255,.94);stroke-width:2.5}
+.dd-svg-player{fill:#fff;stroke:#fff;stroke-width:3;stroke-linecap:round}
+.dd-svg-release{fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round}
+.dd-svg-release marker path{fill:#fff}
+.dd-svg-release-point{fill:#f2e46e;stroke:#fff;stroke-width:2}
+
+.dd-svg-platform-ghost{
+  fill:rgba(49,149,188,.03);
+  stroke:rgba(49,149,188,.35);
+  stroke-width:2;
+  stroke-dasharray:7 6;
+}
+.dd-svg-platform-live{
+  fill:rgba(49,149,188,.16);
+  stroke:#3195bc;
+  stroke-width:2.5;
+}
+.dd-svg-platform-secondary{
+  fill:rgba(49,149,188,.08);
+  stroke:rgba(49,149,188,.58);
+  stroke-width:2;
+}
+.dd-svg-platform-move{
+  fill:none;
+  stroke:#3195bc;
+  stroke-width:2.5;
+  stroke-dasharray:6 5;
+}
+.dd-svg-platform-move marker path{fill:#3195bc}
+.dd-svg-cursor{
+  fill:rgba(255,255,255,.94);
+  stroke:#257f9f;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.dd-diagram-label{
+  position:absolute;
+  z-index:2;
+  padding:6px 8px;
+  border-radius:999px;
+  font:700 8px/1.15 "DM Mono",monospace;
+  letter-spacing:.04em;
+}
+.dd-motion-diagram .dd-diagram-label{
+  color:#fff;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(30,28,74,.58);
+}
+.dd-platform-diagram .dd-diagram-label{
+  color:#267e9e;
+  border:1px solid rgba(49,149,188,.16);
+  background:rgba(255,255,255,.86);
+}
+.dd-diagram-label--attach{left:14px;top:14px}
+.dd-diagram-label--release{right:13px;bottom:13px}
+.dd-diagram-label--select{left:13px;bottom:13px}
+.dd-diagram-label--move{right:13px;top:13px}
+
+/* replace old CSS-built diagrams */
+.dd-motion-anchor,.dd-motion-rope,.dd-motion-player,.dd-motion-arc,.dd-motion-arrow,
+.dd-platform-box,.dd-platform-cursor{display:none!important}
+
+.dd-card-note{
+  z-index:3;
+  font-size:11.5px!important;
+  line-height:1.55!important;
+  opacity:.86!important;
+}
+.dd-traversal-card--grapple .dd-card-note{color:rgba(255,255,255,.78)!important}
+.dd-traversal-card--gravity .dd-card-note{color:#667187!important}
+
+.dd-momentum-strip{
+  min-height:82px;
+  background:
+    linear-gradient(90deg,rgba(117,102,235,.05),#fff 40%,rgba(49,149,188,.05));
+}
+.dd-momentum-flow{
+  gap:10px;
+  font-size:10px!important;
+}
+.dd-momentum-flow b{
+  padding:6px 8px;
+  border-radius:8px;
+  background:#f5f5fb;
+}
+.dd-momentum-flow i{font-size:14px}
+
+@media(max-width:980px){
+  .dd-motion-diagram,.dd-platform-diagram{
+    position:relative;
+    right:auto;
+    bottom:auto;
+    width:100%!important;
+    height:220px!important;
+    margin:24px 0 54px;
+  }
+  .dd-traversal-card{
+    min-height:0;
+  }
+}
+@media(max-width:620px){
+  .dd-shift-stage{min-height:390px}
+  .dd-stage-callout{font-size:7px}
+  .dd-stage-callout--anchor{left:41%;top:13%}
+  .dd-stage-callout--route{right:5%;bottom:33%}
+  .dd-motion-diagram,.dd-platform-diagram{
+    height:190px!important;
+    transform:none!important;
+  }
+}
+

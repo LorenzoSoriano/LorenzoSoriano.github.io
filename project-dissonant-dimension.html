@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/css/core/refinements.css">
   <link rel="stylesheet" href="assets/css/core/portfolio-expanded.css?v=1">
   <link rel="stylesheet" href="assets/css/core/project-facts.css?v=5">
-  <link rel="stylesheet" href="assets/css/projects/dissonant/dissonant.css?v=5">
+  <link rel="stylesheet" href="assets/css/projects/dissonant/dissonant.css?v=6">
 </head>
 <body data-page="dissonant">
   <header class="site-header">
@@ -115,13 +115,39 @@
 
         <div class="dd-shift-stage is-one">
           <div class="dd-shift-stage__wash"></div>
-          <span class="dd-demo-platform dd-demo-platform--a"></span>
-          <span class="dd-demo-platform dd-demo-platform--b"></span>
-          <span class="dd-demo-platform dd-demo-platform--c"></span>
-          <span class="dd-demo-player"></span>
-          <span class="dd-demo-anchor dd-demo-anchor--one">⌁</span>
-          <span class="dd-demo-anchor dd-demo-anchor--two">⌁</span>
-          <span class="dd-demo-field">✦</span>
+          <svg class="dd-stage-blueprint" viewBox="0 0 620 420" aria-hidden="true">
+            <path class="dd-stage-ruin" d="M32 338h92v-88h44v-54h52v142h72v-74h52v-61h67v135h74v-111h54v111h54"></path>
+            <path class="dd-stage-ruin is-faint" d="M56 169h66v-43h50v43h78M397 153h64v-52h51v52h54"></path>
+            <path class="dd-stage-route route-one" d="M86 291 C160 244 208 195 281 170 S411 154 502 112"></path>
+            <path class="dd-stage-route route-two" d="M92 292 C176 302 237 282 310 242 S431 215 528 255"></path>
+          </svg>
+
+          <span class="dd-demo-platform dd-demo-platform--a"><i></i></span>
+          <span class="dd-demo-platform dd-demo-platform--b"><i></i></span>
+          <span class="dd-demo-platform dd-demo-platform--c"><i></i></span>
+
+          <span class="dd-demo-player">
+            <i class="dd-demo-player__head"></i>
+            <i class="dd-demo-player__body"></i>
+          </span>
+
+          <span class="dd-demo-anchor dd-demo-anchor--one">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5.5"></circle><path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path></svg>
+          </span>
+          <span class="dd-demo-anchor dd-demo-anchor--two">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5.5"></circle><path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path></svg>
+          </span>
+          <span class="dd-demo-field">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M12 4v16"></path><path d="m7 7 10 10M17 7 7 17"></path></svg>
+          </span>
+
+          <span class="dd-stage-callout dd-stage-callout--anchor">
+            <i></i><b data-i18n="dissonant.diagramAnchor"></b>
+          </span>
+          <span class="dd-stage-callout dd-stage-callout--route">
+            <i></i><b data-i18n="dissonant.diagramRoute"></b>
+          </span>
+
           <div class="dd-shift-stage__caption">
             <span data-i18n="dissonant.shiftVisualLabel"></span>
             <strong data-i18n="dissonant.shiftVisualTitle"></strong>
@@ -163,11 +189,26 @@
           <h3 data-i18n="dissonant.grappleTitle"></h3>
           <p data-i18n="dissonant.grappleDesc"></p>
           <div class="dd-motion-diagram" aria-hidden="true">
-            <span class="dd-motion-anchor"></span>
-            <span class="dd-motion-rope"></span>
-            <span class="dd-motion-player"></span>
-            <span class="dd-motion-arc"></span>
-            <span class="dd-motion-arrow">→</span>
+            <svg viewBox="0 0 360 220">
+              <defs>
+                <marker id="dd-arrow-light" markerWidth="8" markerHeight="8" refX="6.5" refY="3.5" orient="auto">
+                  <path d="M0 0 7 3.5 0 7Z"></path>
+                </marker>
+              </defs>
+              <circle class="dd-svg-anchor-halo" cx="184" cy="34" r="23"></circle>
+              <circle class="dd-svg-anchor" cx="184" cy="34" r="8"></circle>
+              <path class="dd-svg-arc" d="M93 168 A120 120 0 0 1 283 151"></path>
+              <path class="dd-svg-rope" d="M184 42 118 142"></path>
+              <g class="dd-svg-player" transform="translate(109 139)">
+                <circle cx="10" cy="6" r="6"></circle>
+                <rect x="3" y="13" width="14" height="25" rx="6"></rect>
+                <path d="M5 38 0 52M15 38 21 52M3 20-8 30M17 20 29 14"></path>
+              </g>
+              <path class="dd-svg-release" d="M128 163 C186 188 235 185 307 154" marker-end="url(#dd-arrow-light)"></path>
+              <circle class="dd-svg-release-point" cx="128" cy="163" r="5"></circle>
+            </svg>
+            <span class="dd-diagram-label dd-diagram-label--attach" data-i18n="dissonant.diagramAttach"></span>
+            <span class="dd-diagram-label dd-diagram-label--release" data-i18n="dissonant.diagramRelease"></span>
           </div>
           <p class="dd-card-note" data-i18n="dissonant.grappleNote"></p>
         </article>
@@ -180,10 +221,24 @@
           <h3 data-i18n="dissonant.gravityTitle"></h3>
           <p data-i18n="dissonant.gravityDesc"></p>
           <div class="dd-platform-diagram" aria-hidden="true">
-            <span class="dd-platform-box box-a"></span>
-            <span class="dd-platform-box box-b"></span>
-            <span class="dd-platform-box box-c"></span>
-            <span class="dd-platform-cursor">↗</span>
+            <svg viewBox="0 0 360 220">
+              <defs>
+                <marker id="dd-arrow-cyan" markerWidth="8" markerHeight="8" refX="6.5" refY="3.5" orient="auto">
+                  <path d="M0 0 7 3.5 0 7Z"></path>
+                </marker>
+              </defs>
+              <rect class="dd-svg-platform-ghost" x="54" y="124" width="120" height="26" rx="5"></rect>
+              <rect class="dd-svg-platform-live" x="188" y="72" width="120" height="26" rx="5"></rect>
+              <rect class="dd-svg-platform-secondary" x="39" y="46" width="94" height="20" rx="4"></rect>
+              <path class="dd-svg-platform-move" d="M157 116 C186 98 197 89 220 82" marker-end="url(#dd-arrow-cyan)"></path>
+              <g class="dd-svg-cursor" transform="translate(195 112)">
+                <path d="M0 0 28 12 16 18 12 31Z"></path>
+                <circle cx="34" cy="4" r="3"></circle>
+                <path d="M34-4v-7M34 12v7M26 4h-7M42 4h7"></path>
+              </g>
+            </svg>
+            <span class="dd-diagram-label dd-diagram-label--select" data-i18n="dissonant.diagramSelect"></span>
+            <span class="dd-diagram-label dd-diagram-label--move" data-i18n="dissonant.diagramMove"></span>
           </div>
           <p class="dd-card-note" data-i18n="dissonant.gravityNote"></p>
         </article>
@@ -440,7 +495,7 @@
   <script src="assets/i18n/translations.js"></script>
   <script src="assets/i18n/translations-expanded.js?v=20260921-1"></script>
   <script src="assets/i18n/translations-project-facts.js?v=1"></script>
-  <script src="assets/i18n/translations-dissonant.js?v=4"></script>
+  <script src="assets/i18n/translations-dissonant.js?v=5"></script>
   <script src="assets/js/core/script.js?v=20260921-2"></script>
   <script src="assets/js/projects/dissonant/dissonant.js?v=1"></script>
 </body>
