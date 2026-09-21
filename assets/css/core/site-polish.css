@@ -1,0 +1,132 @@
+/* Site-wide refinement layer. It keeps the existing visual system while
+   giving project groups a less rigid rhythm and motion a clearer purpose. */
+
+html{overflow-x:clip}
+
+.reveal{
+  filter:blur(3px);
+  transition:
+    opacity .68s cubic-bezier(.22,.61,.36,1),
+    transform .68s cubic-bezier(.22,.61,.36,1),
+    filter .68s ease;
+  transition-delay:var(--reveal-delay,0ms);
+}
+
+.reveal.visible{filter:none}
+
+:where(a,button,input,textarea,select,[tabindex]):focus-visible{
+  outline:3px solid rgba(94,160,240,.48);
+  outline-offset:4px;
+}
+
+/* Project grids keep their hierarchy without looking like identical tiles. */
+body[data-page="game-dev"] .portfolio-project-grid{
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  align-items:stretch;
+}
+
+body[data-page="game-dev"] .portfolio-project-card{grid-column:span 6;min-height:280px}
+body[data-page="game-dev"] .portfolio-project-card:nth-child(1){grid-column:span 7}
+body[data-page="game-dev"] .portfolio-project-card:nth-child(2){grid-column:span 5}
+body[data-page="game-dev"] .portfolio-project-card:nth-child(3){grid-column:span 5}
+body[data-page="game-dev"] .portfolio-project-card:nth-child(4){grid-column:span 7}
+body[data-page="game-dev"] .portfolio-project-card:nth-child(5){grid-column:span 12;min-height:240px}
+
+body[data-page="production"] .portfolio-project-card.featured{
+  min-height:280px;
+}
+
+body[data-page="production"] .portfolio-project-card.featured::before{
+  content:"Case study in development";
+  position:static;
+  display:inline-flex;
+  width:max-content;
+  height:auto;
+  inset:auto;
+  margin:0 0 20px;
+  padding:7px 10px;
+  border:1px solid rgba(94,160,240,.24);
+  border-radius:999px;
+  background:rgba(94,160,240,.08);
+  color:var(--text);
+  font:600 10px/1.2 "IBM Plex Mono","DM Mono",monospace;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  opacity:1;
+}
+
+html[lang="it"] body[data-page="production"] .portfolio-project-card.featured::before{
+  content:"Case study in sviluppo";
+}
+
+/* Skills read as an editorial list instead of a second wall of cards. */
+body[data-page="game-dev"] .capability-grid,
+body[data-page="3d-art"] .capability-grid,
+body[data-page="game-design"] .capability-grid,
+body[data-page="narrative"] .capability-grid,
+body[data-page="production"] .capability-grid{
+  gap:0 42px;
+}
+
+body[data-page="game-dev"] .capability-grid .content-card,
+body[data-page="3d-art"] .capability-grid .content-card,
+body[data-page="game-design"] .capability-grid .content-card,
+body[data-page="narrative"] .capability-grid .content-card,
+body[data-page="production"] .capability-grid .content-card{
+  min-height:0;
+  padding:26px 4px 30px;
+  overflow:visible;
+  border:0!important;
+  border-top:1px solid var(--line)!important;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+body[data-page="game-dev"] .capability-grid .content-card::before,
+body[data-page="3d-art"] .capability-grid .content-card::before,
+body[data-page="game-design"] .capability-grid .content-card::before,
+body[data-page="narrative"] .capability-grid .content-card::before,
+body[data-page="production"] .capability-grid .content-card::before{
+  width:54px;
+  right:auto;
+  height:2px;
+}
+
+@media(hover:hover) and (pointer:fine){
+  :is(.portfolio-project-card,.project-card,.art-tile){
+    transition:transform .3s cubic-bezier(.22,.61,.36,1),border-color .3s ease,box-shadow .3s ease;
+  }
+
+  :is(.portfolio-project-card,.project-card,.art-tile):hover{
+    transform:translateY(-6px);
+  }
+
+  :is(.portfolio-project-card,.project-card) h3{
+    transition:transform .3s cubic-bezier(.22,.61,.36,1);
+  }
+
+  :is(.portfolio-project-card,.project-card):hover h3{transform:translateX(5px)}
+  .project-media-image{transition:transform .65s cubic-bezier(.22,.61,.36,1)}
+  .project-card:hover .project-media-image{transform:scale(1.035)}
+}
+
+@media(max-width:980px){
+  body[data-page="game-dev"] .portfolio-project-card,
+  body[data-page="game-dev"] .portfolio-project-card:nth-child(n){
+    grid-column:1/-1;
+    min-height:0;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    transition-delay:0ms!important;
+  }
+  .reveal{opacity:1!important;filter:none!important;transform:none!important}
+}

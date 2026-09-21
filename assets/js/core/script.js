@@ -29,11 +29,11 @@ bubbleResponsiveStyles.href = 'assets/css/components/bubble-responsive.css?v=3';
 bubbleResponsiveStyles.dataset.bubbleResponsive = 'true';
 document.head.appendChild(bubbleResponsiveStyles);
 
-const uiAudioStyles = document.createElement('link');
-uiAudioStyles.rel = 'stylesheet';
-uiAudioStyles.href = 'assets/css/components/ui-audio.css?v=2';
-uiAudioStyles.dataset.uiAudio = 'true';
-document.head.appendChild(uiAudioStyles);
+const sitePolishStyles = document.createElement('link');
+sitePolishStyles.rel = 'stylesheet';
+sitePolishStyles.href = 'assets/css/core/site-polish.css?v=1';
+sitePolishStyles.dataset.sitePolish = 'true';
+document.head.appendChild(sitePolishStyles);
 
 const page = document.body.dataset.page || 'home';
 
@@ -120,6 +120,108 @@ if (window.TRANSLATIONS) {
     "vitis.moreTitle": "Altri breakdown in arrivo.",
     "vitis.moreDesc": "Questo case study verrà ampliato con video, catture dell’editor, confronti prima/dopo e breakdown tecnici.",
     "vitis.back": "Torna a Game Development"
+  });
+
+  Object.assign(window.TRANSLATIONS.en, {
+    "home.title": "I build <em>games, systems</em> and tools in Unity.",
+    "home.intro": "I work across development, visual design and game design. These case studies show what I built, how it works and which production problem it was meant to solve.",
+    "dev.title": "Unity systems and tools tested inside real projects.",
+    "dev.intro": "My work starts from practical production problems: building environments faster, managing water and climate, organising content or making a mechanic easier to read. Those needs become editor tools, shaders and gameplay systems.",
+    "art.title": "Environments, assets and visual studies between Blender and Unity.",
+    "art.intro": "This section will collect finished renders alongside concise breakdowns of modeling, materials, composition and real-time presentation.",
+    "art.note": "The visual gallery is in development. These three spaces define the material that will be added: an environment, an asset breakdown and a stylized study.",
+    "art.placeholderEnvironment": "Environment preview in development",
+    "art.placeholderAsset": "Asset breakdown in development",
+    "art.placeholderStylized": "Stylized study in development",
+    "design.title": "I design mechanics, then test how they work together.",
+    "design.intro": "The projects in this section show how a concept becomes a playable structure through rules, constraints, iteration and documentation.",
+    "narrative.title": "I use space, pacing and interaction to tell a story.",
+    "narrative.intro": "My narrative work starts from what the player does and understands: environments, choices and mechanics carry the story together with dialogue.",
+    "production.title": "From a concept to a production plan that can be discussed and revised.",
+    "production.intro": "This area focuses on the practical material behind a project: scope, GDDs, milestones, pitches and the decisions that connect design to production.",
+    "production.dissonantDesc": "Case study in development based on an academic GDD and production exercise: 11-month plan, €85,000 test budget, target, platforms and premium positioning.",
+    "about.title": "I develop games with a technical, visual and design perspective.",
+    "about.body1": "I mainly work in Unity, where I build gameplay systems, custom tools and visual solutions for the projects I am developing.",
+    "about.body2": "In this portfolio I document the problems I faced, the contribution I made and the decisions that changed the final result.",
+    "about.approachHeading": "A practical method built around iteration.",
+    "about.approachIntro": "I begin by understanding the problem, build a focused prototype and then refine it through testing and feedback. I document the decisions that affect more than one system and avoid adding complexity that does not improve the project.",
+    "about.strength1": "Understand the problem first",
+    "about.strength2": "Prototype on a small scale",
+    "about.strength3": "Document key decisions",
+    "about.strength4": "Use feedback in practice",
+    "about.strength5": "Refine by priority",
+    "about.strength6": "Adapt the process",
+    "contact.pageTitle": "Let’s talk about a project or an opportunity.",
+    "contact.pageIntro": "For a role, a collaboration or a project discussion, you can contact me directly or use the form.",
+    "dissonant.title": "Two dimensions, one traversal system and a production plan built around the concept.",
+    "dissonant.intro": "Dissonant Dimension is an academic studio-management exercise that combines a GDD with a test production plan for a dimension-shifting 2D puzzle-action game.",
+    "dissonant.status": "Case study in development",
+    "dissonant.dimensionA": "Dimension A",
+    "dissonant.dimensionB": "Dimension B",
+    "dissonant.shift": "SHIFT",
+    "dissonant.developmentLabel": "CURRENT STATUS",
+    "dissonant.developmentTitle": "The project structure is defined. The visual case study is still being developed.",
+    "dissonant.definedTitle": "Already defined",
+    "dissonant.definedDesc": "Core mechanic, traversal, genre, target, budget, schedule, platforms and premium positioning.",
+    "dissonant.nextTitle": "Next page update",
+    "dissonant.nextDesc": "Dimension-shift diagrams, level examples, GDD extracts and a readable production timeline.",
+    "dissonant.overviewTitle": "Dimension shifting changes the space; scope and constraints define how the concept can be produced.",
+    "dissonant.system1Label": "SPACE",
+    "dissonant.system2Label": "MOVEMENT",
+    "dissonant.system3Label": "PRODUCTION",
+    "dissonant.callTitle": "The project connects what the player does with what the team needs to build.",
+    "dissonant.callDesc": "The same material explains both the mechanics and their production impact: every feature is considered together with time, budget, platform and target."
+  });
+
+  Object.assign(window.TRANSLATIONS.it, {
+    "home.title": "Sviluppo <em>giochi, sistemi</em> e strumenti in Unity.",
+    "home.intro": "Lavoro tra sviluppo, direzione visiva e game design. Nei case study mostro cosa ho realizzato, come funziona e quale problema di produzione volevo risolvere.",
+    "dev.title": "Sistemi e strumenti Unity testati dentro progetti reali.",
+    "dev.intro": "Il mio lavoro parte da problemi concreti di produzione: costruire ambienti più velocemente, gestire acqua e clima, organizzare contenuti o rendere una meccanica più leggibile. Da queste esigenze nascono editor tool, shader e sistemi di gameplay.",
+    "art.title": "Ambienti, asset e studi visivi tra Blender e Unity.",
+    "art.intro": "Questa sezione raccoglierà render finali e breakdown sintetici dedicati a modellazione, materiali, composizione e presentazione real-time.",
+    "art.note": "La galleria visiva è in sviluppo. Questi tre spazi definiscono i materiali che verranno inseriti: un ambiente, il breakdown di un asset e uno studio stilizzato.",
+    "art.placeholderEnvironment": "Anteprima ambiente in preparazione",
+    "art.placeholderAsset": "Breakdown asset in preparazione",
+    "art.placeholderStylized": "Studio stilizzato in preparazione",
+    "design.title": "Progetto le meccaniche e verifico come funzionano insieme.",
+    "design.intro": "I progetti di questa sezione mostrano come un concept diventa una struttura giocabile attraverso regole, vincoli, iterazione e documentazione.",
+    "narrative.title": "Uso spazio, ritmo e interazione per raccontare una storia.",
+    "narrative.intro": "Il mio lavoro narrativo parte da ciò che il giocatore fa e comprende: ambienti, scelte e meccaniche raccontano insieme ai dialoghi.",
+    "production.title": "Dal concept a un piano di produzione che può essere discusso e rivisto.",
+    "production.intro": "Questa area raccoglie il materiale pratico dietro un progetto: scope, GDD, milestone, pitch e decisioni che collegano design e produzione.",
+    "production.dissonantDesc": "Case study in sviluppo basato su un GDD e un'esercitazione accademica di produzione: piano di 11 mesi, budget di prova da 85.000 €, target, piattaforme e posizionamento premium.",
+    "about.title": "Sviluppo giochi con uno sguardo tecnico, visivo e progettuale.",
+    "about.body1": "Lavoro soprattutto in Unity, dove costruisco sistemi di gameplay, strumenti custom e soluzioni visive per i progetti che sto sviluppando.",
+    "about.body2": "Nel portfolio documento i problemi affrontati, il mio contributo e le decisioni che hanno modificato il risultato finale.",
+    "about.approachHeading": "Un metodo pratico costruito sull'iterazione.",
+    "about.approachIntro": "Parto dalla comprensione del problema, costruisco un prototipo mirato e lo rifinisco attraverso test e feedback. Documento le decisioni che coinvolgono più sistemi ed evito di aggiungere complessità che non migliora il progetto.",
+    "about.strength1": "Capire prima il problema",
+    "about.strength2": "Prototipare in piccolo",
+    "about.strength3": "Documentare le decisioni",
+    "about.strength4": "Usare il feedback",
+    "about.strength5": "Rifinire per priorità",
+    "about.strength6": "Adattare il processo",
+    "contact.pageTitle": "Parliamo di un progetto o di un'opportunità.",
+    "contact.pageIntro": "Per una posizione, una collaborazione o un progetto puoi contattarmi direttamente oppure usare il form.",
+    "dissonant.title": "Due dimensioni, un sistema di movimento e un piano produttivo costruito intorno al concept.",
+    "dissonant.intro": "Dissonant Dimension è un'esercitazione accademica di studio management che combina un GDD con un piano produttivo di prova per un puzzle-action 2D basato sul cambio dimensionale.",
+    "dissonant.status": "Case study in sviluppo",
+    "dissonant.dimensionA": "Dimensione A",
+    "dissonant.dimensionB": "Dimensione B",
+    "dissonant.shift": "CAMBIO",
+    "dissonant.developmentLabel": "STATO ATTUALE",
+    "dissonant.developmentTitle": "La struttura del progetto è definita. Il case study visivo è ancora in sviluppo.",
+    "dissonant.definedTitle": "Già definito",
+    "dissonant.definedDesc": "Meccanica centrale, movimento, genere, target, budget, calendario, piattaforme e posizionamento premium.",
+    "dissonant.nextTitle": "Prossimo aggiornamento",
+    "dissonant.nextDesc": "Diagrammi del cambio dimensionale, esempi di livello, estratti dal GDD e una timeline produttiva leggibile.",
+    "dissonant.overviewTitle": "Il cambio dimensionale modifica lo spazio; scope e vincoli definiscono come produrre il concept.",
+    "dissonant.system1Label": "SPAZIO",
+    "dissonant.system2Label": "MOVIMENTO",
+    "dissonant.system3Label": "PRODUZIONE",
+    "dissonant.callTitle": "Il progetto collega ciò che il giocatore fa a ciò che il team deve produrre.",
+    "dissonant.callDesc": "Lo stesso materiale spiega sia le meccaniche sia il loro impatto produttivo: ogni feature viene valutata insieme a tempi, budget, piattaforma e target."
   });
 }
 
@@ -223,6 +325,12 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: .08 });
 
+document.querySelectorAll('.portal-grid,.portfolio-project-grid,.capability-grid,.project-facts,.case-system-grid,.art-gallery').forEach(group => {
+  [...group.querySelectorAll(':scope > .reveal')].forEach((item, index) => {
+    item.style.setProperty('--reveal-delay', `${Math.min(index, 5) * 65}ms`);
+  });
+});
+
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 document.querySelectorAll('.nav a[data-page]').forEach(link => {
@@ -286,13 +394,3 @@ contactForm?.addEventListener('submit', event => {
 
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
-
-const transitionController = document.createElement('script');
-transitionController.src = 'page-transitions.js?v=3';
-transitionController.async = false;
-document.head.appendChild(transitionController);
-
-const uiAudioController = document.createElement('script');
-uiAudioController.src = 'ui-audio.js?v=2';
-uiAudioController.async = false;
-document.head.appendChild(uiAudioController);
