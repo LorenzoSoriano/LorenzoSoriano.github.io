@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Dissonant Dimension — a 2D puzzle-action Game Design and Game Production case study built around dimension shifting, momentum and grappling.">
+  <meta name="description" content="Dissonant Dimension — 2D watercolor puzzle-action case study about dimension shifting, traversal, narrative discovery and production planning.">
   <title>Dissonant Dimension — Lorenzo Soriano</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/css/core/refinements.css">
   <link rel="stylesheet" href="assets/css/core/portfolio-expanded.css?v=1">
   <link rel="stylesheet" href="assets/css/core/project-facts.css?v=5">
-  <link rel="stylesheet" href="assets/css/projects/dissonant/dissonant.css?v=1">
+  <link rel="stylesheet" href="assets/css/projects/dissonant/dissonant.css?v=2">
 </head>
 <body data-page="dissonant">
   <header class="site-header">
@@ -28,68 +28,339 @@
     <section class="page-intro section-shell case-hero dd-hero">
       <div class="case-hero-copy reveal">
         <p class="page-label" data-i18n="dissonant.label"></p>
-        <h1 data-i18n="dissonant.title">A 2D puzzle-action concept built around shifting between two versions of the same space.</h1>
-        <p data-i18n="dissonant.intro">Dissonant Dimension is an academic Game Design and Game Production exercise. The project defines the game first — dimension shifting, momentum, grappling and traversal — then translates those choices into scope, schedule, budget and positioning.</p>
-        <p class="dd-status"><span aria-hidden="true"></span><strong data-i18n="dissonant.status">Case study in development</strong></p>
+        <h1 data-i18n="dissonant.title"></h1>
+        <p data-i18n="dissonant.intro"></p>
+        <div class="dd-hero-actions">
+          <span class="dd-project-note"><i aria-hidden="true"></i><span data-i18n="dissonant.projectNote"></span></span>
+          <a class="dd-notion-link" href="https://app.notion.com/p/2d8d6210c70280e19dd3dfe5c933efde?pvs=204" target="_blank" rel="noopener noreferrer">
+            <strong aria-hidden="true">N</strong><span data-i18n="dissonant.openNotion"></span>
+          </a>
+        </div>
       </div>
 
       <div class="case-visual dd-hero-visual reveal" aria-hidden="true">
-        <div class="dd-dimension dd-dimension--a">
-          <span class="dd-dimension__label" data-i18n="dissonant.dimensionA">Dimension A</span>
-          <span class="dd-platform dd-platform--one"></span>
-          <span class="dd-platform dd-platform--two"></span>
+        <div class="dd-watercolor dd-watercolor--violet"></div>
+        <div class="dd-watercolor dd-watercolor--cyan"></div>
+        <div class="dd-hero-world dd-hero-world--left">
+          <span class="dd-hero-world__name">01</span>
+          <span class="dd-hero-platform p1"></span>
+          <span class="dd-hero-platform p2"></span>
+          <span class="dd-hero-anchor">⌁</span>
         </div>
-        <div class="dd-dimension dd-dimension--b">
-          <span class="dd-dimension__label" data-i18n="dissonant.dimensionB">Dimension B</span>
-          <span class="dd-platform dd-platform--one"></span>
-          <span class="dd-platform dd-platform--two"></span>
+        <div class="dd-hero-world dd-hero-world--right">
+          <span class="dd-hero-world__name">02</span>
+          <span class="dd-hero-platform p1"></span>
+          <span class="dd-hero-platform p2"></span>
+          <span class="dd-hero-gravity">✦</span>
         </div>
-        <span class="dd-player"></span>
-        <span class="dd-shift" data-i18n="dissonant.shift">SHIFT</span>
+        <span class="dd-hero-character"></span>
+        <span class="dd-hero-divider"></span>
+        <span class="dd-hero-shift">⇄</span>
       </div>
     </section>
 
     <section class="section-shell project-facts-section">
-      <div class="project-facts reveal">
+      <div class="project-facts dd-facts reveal">
         <article class="project-fact"><span class="project-fact__label" data-i18n="facts.focus"></span><strong data-i18n="dissonant.focus"></strong></article>
         <article class="project-fact"><span class="project-fact__label" data-i18n="facts.context"></span><strong data-i18n="dissonant.context"></strong></article>
         <article class="project-fact"><span class="project-fact__label" data-i18n="facts.genre"></span><strong data-i18n="dissonant.type"></strong></article>
+        <article class="project-fact"><span class="project-fact__label" data-i18n="facts.style"></span><strong data-i18n="dissonant.style"></strong></article>
+        <article class="project-fact"><span class="project-fact__label" data-i18n="facts.target"></span><strong data-i18n="dissonant.target"></strong></article>
+        <article class="project-fact"><span class="project-fact__label" data-i18n="facts.platform"></span><strong data-i18n="dissonant.platforms"></strong></article>
         <article class="project-fact"><span class="project-fact__label" data-i18n="facts.budget"></span><strong data-i18n="facts.dissonantBudget"></strong></article>
         <article class="project-fact"><span class="project-fact__label" data-i18n="facts.timeline"></span><strong data-i18n="facts.dissonantTimeline"></strong></article>
-        <article class="project-fact"><span class="project-fact__label" data-i18n="facts.price"></span><strong data-i18n="facts.dissonantPrice"></strong></article>
-      </div>
-    </section>
-
-    <section class="section-shell section-block dd-development reveal">
-      <div class="dd-development__heading">
-        <p class="page-label" data-i18n="dissonant.developmentLabel">CASE STUDY STATUS</p>
-        <h2 data-i18n="dissonant.developmentTitle">The game concept and production plan are defined; the page is being expanded with visual material from the original documentation.</h2>
-      </div>
-      <div class="dd-development__items">
-        <article><span class="dd-development__dot"></span><div><h3 data-i18n="dissonant.definedTitle">Defined in the project</h3><p data-i18n="dissonant.definedDesc"></p></div></article>
-        <article><span class="dd-development__dot dd-development__dot--next"></span><div><h3 data-i18n="dissonant.nextTitle">Being added to the portfolio</h3><p data-i18n="dissonant.nextDesc"></p></div></article>
       </div>
     </section>
 
     <section class="section-shell section-block">
-      <div class="case-overview">
-        <div class="reveal"><p class="page-label" data-i18n="case.overview"></p><h2 data-i18n="dissonant.overviewTitle">The case study connects spatial problem solving with the constraints required to produce it.</h2></div>
-        <div class="case-copy reveal"><p data-i18n="dissonant.overview1">Each level is conceived as two overlapping states of the same space. Shifting dimension changes which platforms, routes and interactive elements are available, so the player solves traversal problems by reading both versions of the environment rather than treating the shift as a simple visual swap.</p><p data-i18n="dissonant.overview2">The same work then tests the concept as a production proposal: an €85,000 exercise budget, an 11-month schedule, target platforms, a €14.99 premium price and an intended audience. These values are planning constraints for the academic exercise, not forecasts for a released product.</p></div>
+      <div class="dd-premise">
+        <article class="dd-premise__story reveal">
+          <p class="page-label" data-i18n="dissonant.premiseLabel"></p>
+          <h2 data-i18n="dissonant.premiseTitle"></h2>
+          <p data-i18n="dissonant.premiseDesc"></p>
+        </article>
+        <aside class="dd-premise__thesis reveal">
+          <span class="dd-premise__symbol" aria-hidden="true">⌬</span>
+          <p class="page-label" data-i18n="dissonant.designIdeaLabel"></p>
+          <h3 data-i18n="dissonant.designIdeaTitle"></h3>
+          <p data-i18n="dissonant.designIdeaDesc"></p>
+        </aside>
       </div>
     </section>
 
     <section class="section-shell section-block">
-      <div class="category-projects-heading reveal"><p class="page-label" data-i18n="case.systems"></p></div>
-      <div class="case-system-grid dd-system-list">
-        <article class="case-system reveal"><p class="eyebrow" data-i18n="dissonant.system1Label">SPACE</p><div><h3 data-i18n="dissonant.s1">Two states, one level</h3><p data-i18n="dissonant.s1d">The dimension shift rewrites the traversable layout of the same scene. A route blocked in one state can become possible in the other, making spatial comparison the basis of the puzzles.</p></div></article>
-        <article class="case-system reveal"><p class="eyebrow" data-i18n="dissonant.system2Label">TRAVERSAL</p><div><h3 data-i18n="dissonant.s2">Movement as problem solving</h3><p data-i18n="dissonant.s2d">Jumping, momentum and grappling are designed as tools for reading and crossing the level. Traversal is therefore part of the puzzle instead of a separate layer placed between challenges.</p></div></article>
-        <article class="case-system reveal"><p class="eyebrow" data-i18n="dissonant.system3Label">PRODUCTION</p><div><h3 data-i18n="dissonant.s3">From design to scope</h3><p data-i18n="dissonant.s3d">The core mechanics are translated into a production plan with schedule, exercise budget, platforms, audience and price positioning, showing how the concept changes once feasibility becomes part of the design discussion.</p></div></article>
+      <div class="dd-section-heading reveal">
+        <p class="page-label" data-i18n="dissonant.shiftLabel"></p>
+        <h2 data-i18n="dissonant.shiftTitle"></h2>
+        <p data-i18n="dissonant.shiftIntro"></p>
+      </div>
+
+      <div class="dd-shift-system reveal" data-dd-shift>
+        <div class="dd-shift-tabs" role="tablist" aria-label="Dimension selector">
+          <button class="dd-shift-tab is-active" type="button" role="tab" aria-selected="true" data-dimension="one">
+            <span>01</span><strong data-i18n="dissonant.dimension1"></strong>
+          </button>
+          <button class="dd-shift-tab" type="button" role="tab" aria-selected="false" data-dimension="two">
+            <span>02</span><strong data-i18n="dissonant.dimension2"></strong>
+          </button>
+        </div>
+
+        <div class="dd-shift-stage is-one">
+          <div class="dd-shift-stage__wash"></div>
+          <span class="dd-demo-platform dd-demo-platform--a"></span>
+          <span class="dd-demo-platform dd-demo-platform--b"></span>
+          <span class="dd-demo-platform dd-demo-platform--c"></span>
+          <span class="dd-demo-player"></span>
+          <span class="dd-demo-anchor dd-demo-anchor--one">⌁</span>
+          <span class="dd-demo-anchor dd-demo-anchor--two">⌁</span>
+          <span class="dd-demo-field">✦</span>
+          <div class="dd-shift-stage__caption">
+            <span data-i18n="dissonant.shiftVisualLabel"></span>
+            <strong data-i18n="dissonant.shiftVisualTitle"></strong>
+          </div>
+        </div>
+
+        <div class="dd-shift-explanation">
+          <article>
+            <span class="dd-mini-label">01</span>
+            <h3 data-i18n="dissonant.shiftRule1Title"></h3>
+            <p data-i18n="dissonant.shiftRule1Desc"></p>
+          </article>
+          <article>
+            <span class="dd-mini-label">02</span>
+            <h3 data-i18n="dissonant.shiftRule2Title"></h3>
+            <p data-i18n="dissonant.shiftRule2Desc"></p>
+          </article>
+          <article>
+            <span class="dd-mini-label">03</span>
+            <h3 data-i18n="dissonant.shiftRule3Title"></h3>
+            <p data-i18n="dissonant.shiftRule3Desc"></p>
+          </article>
+        </div>
       </div>
     </section>
 
     <section class="section-shell section-block">
-      <div class="case-callout reveal"><h3 data-i18n="dissonant.callTitle">The project tests whether a strong mechanic can survive contact with production constraints.</h3><p data-i18n="dissonant.callDesc">Its value is not only the dimension-shift concept, but the passage from player-facing systems to a project that can be scoped, scheduled and communicated.</p></div>
-      <div class="related-links"><a class="button ghost" href="game-production.html" data-i18n="case.backProduction">Back to Game Production &amp; Communication</a></div>
+      <div class="dd-section-heading reveal">
+        <p class="page-label" data-i18n="dissonant.traversalLabel"></p>
+        <h2 data-i18n="dissonant.traversalTitle"></h2>
+      </div>
+
+      <div class="dd-traversal-grid">
+        <article class="dd-traversal-card dd-traversal-card--grapple reveal">
+          <div class="dd-traversal-card__top">
+            <span class="dd-dimension-chip">DIM 01</span>
+            <span class="dd-traversal-icon" aria-hidden="true">⌁</span>
+          </div>
+          <h3 data-i18n="dissonant.grappleTitle"></h3>
+          <p data-i18n="dissonant.grappleDesc"></p>
+          <div class="dd-motion-diagram" aria-hidden="true">
+            <span class="dd-motion-anchor"></span>
+            <span class="dd-motion-rope"></span>
+            <span class="dd-motion-player"></span>
+            <span class="dd-motion-arc"></span>
+            <span class="dd-motion-arrow">→</span>
+          </div>
+          <p class="dd-card-note" data-i18n="dissonant.grappleNote"></p>
+        </article>
+
+        <article class="dd-traversal-card dd-traversal-card--gravity reveal">
+          <div class="dd-traversal-card__top">
+            <span class="dd-dimension-chip">DIM 02</span>
+            <span class="dd-traversal-icon" aria-hidden="true">✦</span>
+          </div>
+          <h3 data-i18n="dissonant.gravityTitle"></h3>
+          <p data-i18n="dissonant.gravityDesc"></p>
+          <div class="dd-platform-diagram" aria-hidden="true">
+            <span class="dd-platform-box box-a"></span>
+            <span class="dd-platform-box box-b"></span>
+            <span class="dd-platform-box box-c"></span>
+            <span class="dd-platform-cursor">↗</span>
+          </div>
+          <p class="dd-card-note" data-i18n="dissonant.gravityNote"></p>
+        </article>
+      </div>
+
+      <div class="dd-momentum-strip reveal">
+        <span data-i18n="dissonant.momentumLabel"></span>
+        <div class="dd-momentum-flow" aria-hidden="true">
+          <b>MOVE</b><i>→</i><b>JUMP</b><i>→</i><b>SWING</b><i>→</i><b>RELEASE</b>
+        </div>
+        <p data-i18n="dissonant.momentumDesc"></p>
+      </div>
+    </section>
+
+    <section class="section-shell section-block">
+      <div class="dd-section-heading reveal">
+        <p class="page-label" data-i18n="dissonant.discoveryLabel"></p>
+        <h2 data-i18n="dissonant.discoveryTitle"></h2>
+        <p data-i18n="dissonant.discoveryIntro"></p>
+      </div>
+
+      <div class="dd-discovery-loop reveal">
+        <article><span class="dd-discovery-icon">◆</span><strong data-i18n="dissonant.discovery1Title"></strong><p data-i18n="dissonant.discovery1Desc"></p></article>
+        <span class="dd-loop-arrow" aria-hidden="true">→</span>
+        <article><span class="dd-discovery-icon">⌁</span><strong data-i18n="dissonant.discovery2Title"></strong><p data-i18n="dissonant.discovery2Desc"></p></article>
+        <span class="dd-loop-arrow" aria-hidden="true">→</span>
+        <article><span class="dd-discovery-icon">▤</span><strong data-i18n="dissonant.discovery3Title"></strong><p data-i18n="dissonant.discovery3Desc"></p></article>
+        <span class="dd-loop-arrow" aria-hidden="true">↺</span>
+        <article><span class="dd-discovery-icon">◎</span><strong data-i18n="dissonant.discovery4Title"></strong><p data-i18n="dissonant.discovery4Desc"></p></article>
+      </div>
+
+      <div class="dd-collectible-evolution reveal">
+        <div>
+          <p class="page-label" data-i18n="dissonant.collectibleLabel"></p>
+          <h3 data-i18n="dissonant.collectibleTitle"></h3>
+        </div>
+        <div class="dd-collectible-path">
+          <span class="dd-collectible-stage"><i aria-hidden="true">€</i><b data-i18n="dissonant.collectibleStart"></b></span>
+          <span class="dd-collectible-line"></span>
+          <span class="dd-collectible-stage"><i aria-hidden="true">◇</i><b data-i18n="dissonant.collectibleEnd"></b></span>
+        </div>
+        <p data-i18n="dissonant.collectibleDesc"></p>
+      </div>
+    </section>
+
+    <section class="section-shell section-block">
+      <div class="dd-section-heading reveal">
+        <p class="page-label" data-i18n="dissonant.uxLabel"></p>
+        <h2 data-i18n="dissonant.uxTitle"></h2>
+      </div>
+      <div class="dd-ux-grid">
+        <article class="dd-ux-card reveal"><span aria-hidden="true">↺</span><h3 data-i18n="dissonant.resetTitle"></h3><p data-i18n="dissonant.resetDesc"></p></article>
+        <article class="dd-ux-card reveal"><span aria-hidden="true">?</span><h3 data-i18n="dissonant.hintTitle"></h3><p data-i18n="dissonant.hintDesc"></p></article>
+        <article class="dd-ux-card reveal"><span aria-hidden="true">⌖</span><h3 data-i18n="dissonant.mapTitle"></h3><p data-i18n="dissonant.mapDesc"></p></article>
+        <article class="dd-ux-card reveal"><span aria-hidden="true">⇥</span><h3 data-i18n="dissonant.fastTitle"></h3><p data-i18n="dissonant.fastDesc"></p></article>
+      </div>
+
+      <div class="dd-difficulty reveal">
+        <div><p class="page-label" data-i18n="dissonant.difficultyLabel"></p><h3 data-i18n="dissonant.difficultyTitle"></h3></div>
+        <div class="dd-difficulty__modes">
+          <span><b data-i18n="dissonant.easy"></b><small data-i18n="dissonant.easyDesc"></small></span>
+          <span><b data-i18n="dissonant.medium"></b><small data-i18n="dissonant.mediumDesc"></small></span>
+          <span><b data-i18n="dissonant.hard"></b><small data-i18n="dissonant.hardDesc"></small></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell section-block dd-production-section">
+      <div class="dd-section-heading reveal">
+        <p class="page-label" data-i18n="dissonant.productionLabel"></p>
+        <h2 data-i18n="dissonant.productionTitle"></h2>
+        <p data-i18n="dissonant.productionIntro"></p>
+      </div>
+
+      <div class="dd-production-timeline reveal">
+        <article class="dd-production-phase dd-production-phase--pre">
+          <div class="dd-phase-head"><span>2</span><small data-i18n="dissonant.months"></small></div>
+          <h3 data-i18n="dissonant.preTitle"></h3>
+          <p data-i18n="dissonant.preDesc"></p>
+          <strong>11.200 €</strong>
+        </article>
+        <article class="dd-production-phase dd-production-phase--main">
+          <div class="dd-phase-head"><span>7</span><small data-i18n="dissonant.months"></small></div>
+          <h3 data-i18n="dissonant.mainTitle"></h3>
+          <p data-i18n="dissonant.mainDesc"></p>
+          <strong>49.300 €</strong>
+        </article>
+        <article class="dd-production-phase dd-production-phase--post">
+          <div class="dd-phase-head"><span>2</span><small data-i18n="dissonant.months"></small></div>
+          <h3 data-i18n="dissonant.postTitle"></h3>
+          <p data-i18n="dissonant.postDesc"></p>
+          <strong>7.700 €</strong>
+        </article>
+      </div>
+
+      <p class="dd-production-note reveal" data-i18n="dissonant.productionNote"></p>
+    </section>
+
+    <section class="section-shell section-block">
+      <div class="dd-budget-team">
+        <article class="dd-budget-panel reveal">
+          <p class="page-label" data-i18n="dissonant.budgetLabel"></p>
+          <h2 data-i18n="dissonant.budgetTitle"></h2>
+          <div class="dd-budget-total"><strong>85.000 €</strong><span data-i18n="dissonant.budgetTotalNote"></span></div>
+          <div class="dd-budget-row">
+            <div><b data-i18n="dissonant.budgetDev"></b><span>68.200 €</span></div>
+            <i><span style="--dd-bar:80.2%"></span></i>
+          </div>
+          <div class="dd-budget-row">
+            <div><b data-i18n="dissonant.budgetMarketing"></b><span>13.185 €</span></div>
+            <i><span style="--dd-bar:15.5%"></span></i>
+          </div>
+          <p class="dd-budget-footnote" data-i18n="dissonant.budgetFootnote"></p>
+        </article>
+
+        <article class="dd-team-panel reveal">
+          <p class="page-label" data-i18n="dissonant.teamLabel"></p>
+          <h2 data-i18n="dissonant.teamTitle"></h2>
+          <div class="dd-team-list">
+            <span><b data-i18n="dissonant.team1"></b><small>9 mesi · 15.300 €</small></span>
+            <span><b data-i18n="dissonant.team2"></b><small>9 mesi · 16.200 €</small></span>
+            <span><b data-i18n="dissonant.team3"></b><small>9 mesi · 32.400 €</small></span>
+            <span><b data-i18n="dissonant.team4"></b><small>2 mesi · 2.800 €</small></span>
+            <span><b data-i18n="dissonant.team5"></b><small>outsourcing · 1.500 €</small></span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell section-block">
+      <div class="dd-section-heading reveal">
+        <p class="page-label" data-i18n="dissonant.positioningLabel"></p>
+        <h2 data-i18n="dissonant.positioningTitle"></h2>
+        <p data-i18n="dissonant.positioningIntro"></p>
+      </div>
+
+      <div class="dd-reference-grid">
+        <article class="dd-reference reveal"><span>WORLD SHIFT</span><h3>Cocoon</h3><p data-i18n="dissonant.refCocoon"></p></article>
+        <article class="dd-reference reveal"><span>LANGUAGE</span><h3>Heaven’s Vault</h3><p data-i18n="dissonant.refHeaven"></p></article>
+        <article class="dd-reference reveal"><span>NARRATIVE 2.5D</span><h3>Planet of Lana</h3><p data-i18n="dissonant.refLana"></p></article>
+        <article class="dd-reference reveal"><span>SPACE</span><h3>Maquette</h3><p data-i18n="dissonant.refMaquette"></p></article>
+      </div>
+
+      <div class="dd-market-grid">
+        <article class="dd-market-card reveal">
+          <p class="page-label" data-i18n="dissonant.marketLabel"></p>
+          <h3 data-i18n="dissonant.marketTitle"></h3>
+          <div class="dd-market-flow">
+            <span><b data-i18n="dissonant.market1Title"></b><small data-i18n="dissonant.market1Desc"></small></span>
+            <i>→</i>
+            <span><b data-i18n="dissonant.market2Title"></b><small data-i18n="dissonant.market2Desc"></small></span>
+            <i>→</i>
+            <span><b data-i18n="dissonant.market3Title"></b><small data-i18n="dissonant.market3Desc"></small></span>
+            <i>→</i>
+            <span><b data-i18n="dissonant.market4Title"></b><small data-i18n="dissonant.market4Desc"></small></span>
+          </div>
+        </article>
+
+        <article class="dd-break-even reveal">
+          <p class="page-label" data-i18n="dissonant.breakEvenLabel"></p>
+          <h3 data-i18n="dissonant.breakEvenTitle"></h3>
+          <strong>≈ 10.000</strong>
+          <p data-i18n="dissonant.breakEvenDesc"></p>
+        </article>
+      </div>
+
+      <div class="dd-postlaunch reveal">
+        <span><b>&lt; 5K</b><small data-i18n="dissonant.post1"></small></span>
+        <span><b>5–10K</b><small data-i18n="dissonant.post2"></small></span>
+        <span><b>15–25K</b><small data-i18n="dissonant.post3"></small></span>
+        <span><b>25–50K</b><small data-i18n="dissonant.post4"></small></span>
+        <span><b>&gt; 50K</b><small data-i18n="dissonant.post5"></small></span>
+      </div>
+      <p class="dd-scenario-note reveal" data-i18n="dissonant.scenarioNote"></p>
+    </section>
+
+    <section class="section-shell section-block">
+      <div class="case-callout dd-final-callout reveal">
+        <h3 data-i18n="dissonant.callTitle"></h3>
+        <p data-i18n="dissonant.callDesc"></p>
+      </div>
+      <div class="related-links">
+        <a class="button ghost" href="game-design.html" data-i18n="case.backDesign">Back to Game Design</a>
+        <a class="button ghost" href="game-production.html" data-i18n="case.backProduction">Back to Game Production &amp; Communication</a>
+      </div>
     </section>
   </main>
 
@@ -97,6 +368,8 @@
   <script src="assets/i18n/translations.js"></script>
   <script src="assets/i18n/translations-expanded.js?v=20260921-1"></script>
   <script src="assets/i18n/translations-project-facts.js?v=1"></script>
+  <script src="assets/i18n/translations-dissonant.js?v=1"></script>
   <script src="assets/js/core/script.js?v=20260921-2"></script>
+  <script src="assets/js/projects/dissonant/dissonant.js?v=1"></script>
 </body>
 </html>
