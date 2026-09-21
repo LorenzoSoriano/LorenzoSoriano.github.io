@@ -356,3 +356,40 @@ body[data-page="dissonant"] .dd-final-callout{padding:32px 36px;border:1px solid
   .dd-gantt-header,.dd-gantt-row{grid-template-columns:230px minmax(0,1fr)}
 }
 
+/* v4 — final Dissonant hero artwork */
+.dd-hero-cover{
+  position:relative;
+  min-height:0;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  border-radius:28px;
+  background:#252748;
+  box-shadow:0 26px 62px rgba(31,38,73,.18);
+}
+.dd-hero-cover::before,
+.dd-hero-cover::after{
+  display:none!important;
+}
+.dd-hero-cover img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+.dd-hero-cover:hover img{
+  transform:scale(1.012);
+}
+.dd-hero-cover img{
+  transition:transform .45s cubic-bezier(.22,.61,.36,1);
+}
+@media(max-width:980px){
+  .dd-hero-cover{
+    width:100%;
+    max-width:none;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .dd-hero-cover img{transition:none!important}
+}
+

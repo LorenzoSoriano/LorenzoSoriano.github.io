@@ -160,8 +160,8 @@ Object.assign(window.TRANSLATIONS.en,{
   "dissonant.outsourcingTitle":"Why outsource?",
   "dissonant.outsourcingDesc":"The plan keeps continuous design, programming and art ownership inside the core team while buying short, specialist contributions for sound and localization. This reduces the need to carry every role for the full eleven-month schedule.",
 
-  "dissonant.callTitle":"The case study follows one mechanic from design logic to production logic.",
-  "dissonant.callDesc":"The first half explains why the two-dimensional shift works as gameplay; the second shows how the same concept is scoped through deliverables, dependencies, people, time and budget."
+  "dissonant.callTitle":"From mechanic to production plan: what Dissonant Dimension taught me.",
+  "dissonant.callDesc":"The project left me with a more complete way of thinking about game design. A strong mechanic is only the starting point: it also creates dependencies, production costs, risks and priorities. Building the GDD, schedule and budget alongside the game concept taught me to treat production as part of design itself, and to use documents and milestones as tools for making concrete decisions rather than as paperwork added at the end."
 });
 
 Object.assign(window.TRANSLATIONS.it,{
@@ -324,6 +324,6 @@ Object.assign(window.TRANSLATIONS.it,{
   "dissonant.outsourcingTitle":"Perché usare outsourcing?",
   "dissonant.outsourcingDesc":"Il piano mantiene ownership continua di design, programmazione e arte nel team centrale e acquista contributi specialistici brevi per sound e localizzazione. In questo modo non è necessario sostenere ogni ruolo per tutti gli undici mesi.",
 
-  "dissonant.callTitle":"Il case study segue la stessa idea dalla logica di design alla logica produttiva.",
-  "dissonant.callDesc":"La prima metà spiega perché il salto tra due dimensioni funziona come gameplay; la seconda mostra come lo stesso concept viene dimensionato attraverso deliverable, dipendenze, persone, tempo e budget."
+  "dissonant.callTitle":"Dalla meccanica al piano produttivo: cosa mi ha lasciato Dissonant Dimension.",
+  "dissonant.callDesc":"Il progetto mi ha lasciato soprattutto un modo più completo di ragionare sul game design. Una buona meccanica è solo il punto di partenza: genera anche dipendenze, costi, rischi e priorità. Costruire GDD, calendario e budget insieme al concept mi ha aiutato a vedere la produzione come parte del design stesso e a usare documenti e milestone come strumenti per prendere decisioni concrete, non come materiale da aggiungere soltanto alla fine."
 });
