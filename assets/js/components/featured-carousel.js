@@ -10,21 +10,12 @@
   if (!track || slides.length < 2 || !dotsWrap) return;
 
   let index = 0;
-  let timer = null;
-  let paused = false;
-  let userPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const playback = document.createElement('button');
-  playback.type = 'button';
-  playback.className = 'carousel-playback';
-  carousel.append(playback);
   const label = key => window.TRANSLATIONS?.[document.documentElement.lang]?.[key] || key;
   function updateLabels() {
-    playback.textContent = label(userPaused ? 'play' : 'pause');
     prev?.setAttribute('aria-label', label('previous'));
     next?.setAttribute('aria-label', label('next'));
     dots.forEach((dot, i) => dot.setAttribute('aria-label', `${label('show')} ${slides[i].querySelector('h3')?.textContent.trim()}`));
   }
-  playback.addEventListener('click', () => { userPaused = !userPaused; updateLabels(); if (userPaused) stop(); else start(); });
   document.addEventListener('portfolio:language', updateLabels);
   let touchStartX = 0;
 
@@ -34,7 +25,7 @@
     dot.className = 'featured-carousel-dot';
     dot.setAttribute('aria-label', `Show ${slide.querySelector('h3')?.textContent?.trim() || `project ${i + 1}`}`);
     dot.addEventListener('click', () => {
-      goTo(i, true);
+      goTo(i);
     });
     dotsWrap.appendChild(dot);
     return dot;
@@ -46,59 +37,23 @@
     slides.forEach((slide, i) => { slide.setAttribute('aria-hidden', String(i !== index)); slide.inert = i !== index; });
   }
 
-  function goTo(nextIndex, userAction = false) {
+  function goTo(nextIndex) {
     index = (nextIndex + slides.length) % slides.length;
     update();
-    if (userAction) restart();
   }
 
-  function start() {
-    if (paused || userPaused || document.hidden || (carousel.contains(document.activeElement) && document.activeElement !== playback)) return;
-    clearInterval(timer);
-    timer = setInterval(() => goTo(index + 1), 10000);
-  }
-
-  function stop() {
-    clearInterval(timer);
-    timer = null;
-  }
-
-  function restart() {
-    stop();
-    start();
-  }
-
-  prev?.addEventListener('click', () => goTo(index - 1, true));
-  next?.addEventListener('click', () => goTo(index + 1, true));
-
-  carousel.addEventListener('mouseenter', () => {
-    paused = true;
-    stop();
-  });
-  carousel.addEventListener('mouseleave', () => {
-    paused = false;
-    start();
-  });
-  carousel.addEventListener('focusin', () => { userPaused = true; stop(); updateLabels(); });
-  carousel.addEventListener('focusout', () => { if (!paused) start(); });
+  prev?.addEventListener('click', () => goTo(index - 1));
+  next?.addEventListener('click', () => goTo(index + 1));
 
   carousel.addEventListener('touchstart', event => {
     touchStartX = event.changedTouches[0]?.clientX || 0;
-    stop();
   }, { passive: true });
   carousel.addEventListener('touchend', event => {
     const endX = event.changedTouches[0]?.clientX || 0;
     const delta = endX - touchStartX;
-    if (Math.abs(delta) > 45) goTo(index + (delta < 0 ? 1 : -1), true);
-    else start();
+    if (Math.abs(delta) > 45) goTo(index + (delta < 0 ? 1 : -1));
   }, { passive: true });
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stop();
-    else if (!paused) start();
-  });
 
   update();
   updateLabels();
-  start();
 })();
