@@ -30,7 +30,7 @@ Il sito è mantenuto come static HTML/CSS/JS per restare semplice da modificare 
 
 Le pagine caricano gli stili condivisi nel documento, prima del rendering. Le regole finali comuni sono in `assets/css/core/accessibility.css`, dopo gli stili di progetto. I font restano quelli del portfolio e vengono richiesti direttamente dal documento, senza import CSS concatenati.
 
-`assets/js/core/accessibility.js` gestisce etichette IT/EN, navigazione da tastiera e dialog della sezione 3D. Il dialog si apre ad ogni visita: “Torna alla Home” naviga a `index.html`; Chiudi ed Escape restituiscono il focus al contenuto della pagina, conservando i placeholder.
+`assets/js/core/accessibility.js` gestisce etichette IT/EN, navigazione da tastiera e dialog della sezione 3D. Il dialog si apre ad ogni visita: “Torna alla Home” naviga a `index.html`; il popup non può essere chiuso con Escape o clic sullo sfondo. Il collegamento alla Home è l’unica azione disponibile; i placeholder restano conservati nella pagina.
 
 Il sito è statico: non richiede installazione di dipendenze o compilazione locale. Per l’anteprima usare un server HTTP dalla radice del repository. GitHub Pages esegue la propria build e pubblicazione dopo il push a `main`.
 

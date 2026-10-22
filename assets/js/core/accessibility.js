@@ -1,7 +1,7 @@
 (() => {
   const strings = {
-    it: { 'a11y.skip': 'Salta al contenuto', 'construction.title': 'Sezione in costruzione', 'construction.description': 'Sto preparando render e approfondimenti. Puoi tornare alla Home oppure chiudere questo avviso per esplorare l’anteprima.', 'construction.home': 'Torna alla Home', close: 'Chiudi', menu: 'Apri navigazione', menuClose: 'Chiudi navigazione', nav: 'Navigazione principale', footer: 'Navigazione nel footer', home: 'Home', contact: 'Contattami', previous: 'Progetto precedente', next: 'Progetto successivo', show: 'Mostra', pause: 'Pausa carosello', play: 'Avvia carosello', projects: 'Progetti in evidenza' },
-    en: { 'a11y.skip': 'Skip to content', 'construction.title': 'Section under construction', 'construction.description': 'Renders and breakdowns are on their way. Return to the Home page or close this notice to explore the preview.', 'construction.home': 'Back to Home', close: 'Close', menu: 'Open navigation', menuClose: 'Close navigation', nav: 'Main navigation', footer: 'Footer navigation', home: 'Home', contact: 'Contact', previous: 'Previous project', next: 'Next project', show: 'Show', pause: 'Pause carousel', play: 'Start carousel', projects: 'Featured projects' }
+    it: { 'a11y.skip': 'Salta al contenuto', 'construction.title': 'Sezione in costruzione', 'construction.description': 'Sto preparando render e approfondimenti. Torna alla Home per esplorare le altre sezioni del portfolio.', 'construction.home': 'Torna alla Home', close: 'Chiudi', menu: 'Apri navigazione', menuClose: 'Chiudi navigazione', nav: 'Navigazione principale', footer: 'Navigazione nel footer', home: 'Home', contact: 'Contattami', previous: 'Progetto precedente', next: 'Progetto successivo', show: 'Mostra', pause: 'Pausa carosello', play: 'Avvia carosello', projects: 'Progetti in evidenza' },
+    en: { 'a11y.skip': 'Skip to content', 'construction.title': 'Section under construction', 'construction.description': 'Renders and breakdowns are on their way. Return to the Home page to explore the other portfolio sections.', 'construction.home': 'Back to Home', close: 'Close', menu: 'Open navigation', menuClose: 'Close navigation', nav: 'Main navigation', footer: 'Footer navigation', home: 'Home', contact: 'Contact', previous: 'Previous project', next: 'Next project', show: 'Show', pause: 'Pause carousel', play: 'Start carousel', projects: 'Featured projects' }
   };
   Object.entries(strings).forEach(([lang, dict]) => Object.assign(window.TRANSLATIONS?.[lang] || {}, dict));
   const nav = document.querySelector('.nav');
@@ -54,9 +54,7 @@
   applyLanguage(document.documentElement.lang === 'it' ? 'it' : 'en');
   const dialog = document.querySelector('.construction-dialog');
   if (dialog) {
-    const main = document.querySelector('main');
-    dialog.querySelector('[data-close-construction]').addEventListener('click', () => dialog.close());
-    dialog.addEventListener('close', () => main?.focus({ preventScroll: true }));
+    dialog.addEventListener('cancel', event => event.preventDefault());
     dialog.showModal();
   }
 })();

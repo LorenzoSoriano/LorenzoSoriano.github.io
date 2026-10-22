@@ -59,13 +59,13 @@ html[lang="it"] body[data-page="production"] .portfolio-project-card.featured::b
   content:"Case study in sviluppo";
 }
 
-/* Skills read as an editorial list instead of a second wall of cards. */
+/* Shared skills cards across every portfolio area. */
 body[data-page="game-dev"] .capability-grid,
 body[data-page="3d-art"] .capability-grid,
 body[data-page="game-design"] .capability-grid,
 body[data-page="narrative"] .capability-grid,
 body[data-page="production"] .capability-grid{
-  gap:0 42px;
+  gap:18px;
 }
 
 body[data-page="game-dev"] .capability-grid .content-card,
@@ -73,14 +73,13 @@ body[data-page="3d-art"] .capability-grid .content-card,
 body[data-page="game-design"] .capability-grid .content-card,
 body[data-page="narrative"] .capability-grid .content-card,
 body[data-page="production"] .capability-grid .content-card{
-  min-height:0;
-  padding:26px 4px 30px;
-  overflow:visible;
-  border:0!important;
-  border-top:1px solid var(--line)!important;
-  border-radius:0;
-  background:transparent;
-  box-shadow:none;
+  min-height:190px;
+  padding:26px;
+  overflow:hidden;
+  border:1px solid var(--line)!important;
+  border-radius:var(--radius);
+  background:rgba(255,255,255,.88);
+  box-shadow:var(--shadow);
 }
 
 body[data-page="game-dev"] .capability-grid .content-card::before,
