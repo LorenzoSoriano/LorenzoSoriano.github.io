@@ -1,14 +1,6 @@
 (() => {
   if (document.body.dataset.page !== 'home') return;
 
-  if (!document.querySelector('link[data-home-thread-styles]')) {
-    const threadStyles = document.createElement('link');
-    threadStyles.rel = 'stylesheet';
-    threadStyles.href = 'home-thread.css?v=7';
-    threadStyles.dataset.homeThreadStyles = 'true';
-    document.head.appendChild(threadStyles);
-  }
-
   const main = document.querySelector('main');
   const hero = document.querySelector('.home-hero');
   const grid = document.querySelector('.portal-grid');

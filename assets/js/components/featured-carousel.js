@@ -12,6 +12,20 @@
   let index = 0;
   let timer = null;
   let paused = false;
+  let userPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const playback = document.createElement('button');
+  playback.type = 'button';
+  playback.className = 'carousel-playback';
+  carousel.append(playback);
+  const label = key => window.TRANSLATIONS?.[document.documentElement.lang]?.[key] || key;
+  function updateLabels() {
+    playback.textContent = label(userPaused ? 'play' : 'pause');
+    prev?.setAttribute('aria-label', label('previous'));
+    next?.setAttribute('aria-label', label('next'));
+    dots.forEach((dot, i) => dot.setAttribute('aria-label', `${label('show')} ${slides[i].querySelector('h3')?.textContent.trim()}`));
+  }
+  playback.addEventListener('click', () => { userPaused = !userPaused; updateLabels(); if (userPaused) stop(); else start(); });
+  document.addEventListener('portfolio:language', updateLabels);
   let touchStartX = 0;
 
   const dots = slides.map((slide, i) => {
@@ -28,8 +42,8 @@
 
   function update() {
     track.style.transform = `translateX(-${index * 100}%)`;
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-    slides.forEach((slide, i) => slide.setAttribute('aria-hidden', i === index ? 'false' : 'true'));
+    dots.forEach((dot, i) => { dot.classList.toggle('active', i === index); dot.setAttribute('aria-pressed', String(i === index)); });
+    slides.forEach((slide, i) => { slide.setAttribute('aria-hidden', String(i !== index)); slide.inert = i !== index; });
   }
 
   function goTo(nextIndex, userAction = false) {
@@ -39,7 +53,7 @@
   }
 
   function start() {
-    if (paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (paused || userPaused || document.hidden || (carousel.contains(document.activeElement) && document.activeElement !== playback)) return;
     clearInterval(timer);
     timer = setInterval(() => goTo(index + 1), 10000);
   }
@@ -65,7 +79,7 @@
     paused = false;
     start();
   });
-  carousel.addEventListener('focusin', stop);
+  carousel.addEventListener('focusin', () => { userPaused = true; stop(); updateLabels(); });
   carousel.addEventListener('focusout', () => { if (!paused) start(); });
 
   carousel.addEventListener('touchstart', event => {
@@ -85,5 +99,6 @@
   });
 
   update();
+  updateLabels();
   start();
 })();

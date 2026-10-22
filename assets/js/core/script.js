@@ -1,40 +1,3 @@
-const graphicsStyles = document.createElement('link');
-graphicsStyles.rel = 'stylesheet';
-graphicsStyles.href = 'assets/css/core/graphics-overrides.css?v=10';
-document.head.appendChild(graphicsStyles);
-
-const timelineStyles = document.createElement('link');
-timelineStyles.rel = 'stylesheet';
-timelineStyles.href = 'assets/css/pages/about/about-timeline.css?v=4';
-document.head.appendChild(timelineStyles);
-
-const typographyStyles = document.createElement('link');
-typographyStyles.rel = 'stylesheet';
-typographyStyles.href = 'assets/css/core/typography.css?v=4';
-document.head.appendChild(typographyStyles);
-
-const backgroundLayerStyles = document.createElement('link');
-backgroundLayerStyles.rel = 'stylesheet';
-backgroundLayerStyles.href = 'assets/css/core/background-layer.css?v=3';
-document.head.appendChild(backgroundLayerStyles);
-
-const sectionThemeStyles = document.createElement('link');
-sectionThemeStyles.rel = 'stylesheet';
-sectionThemeStyles.href = 'assets/css/core/section-themes.css?v=4';
-document.head.appendChild(sectionThemeStyles);
-
-const bubbleResponsiveStyles = document.createElement('link');
-bubbleResponsiveStyles.rel = 'stylesheet';
-bubbleResponsiveStyles.href = 'assets/css/components/bubble-responsive.css?v=3';
-bubbleResponsiveStyles.dataset.bubbleResponsive = 'true';
-document.head.appendChild(bubbleResponsiveStyles);
-
-const sitePolishStyles = document.createElement('link');
-sitePolishStyles.rel = 'stylesheet';
-sitePolishStyles.href = 'assets/css/core/site-polish.css?v=1';
-sitePolishStyles.dataset.sitePolish = 'true';
-document.head.appendChild(sitePolishStyles);
-
 const page = document.body.dataset.page || 'home';
 
 if (window.TRANSLATIONS) {
@@ -204,7 +167,7 @@ function buildPrimaryNav() {
   portfolio.className = 'portfolio-menu';
   portfolio.innerHTML = `
     <button class="portfolio-toggle" type="button" aria-expanded="false">
-      <span data-i18n="nav.portfolio">Portfolio</span><span class="dropdown-chevron">⌄</span>
+      <span data-i18n="nav.portfolio">Portfolio</span><span class="dropdown-chevron" aria-hidden="true">⌄</span>
     </button>
     <div class="portfolio-dropdown">
       <a href="game-development.html" data-page="game-dev" data-i18n="nav.game-dev">Game Dev</a>
@@ -296,11 +259,12 @@ document.querySelectorAll('.portal-grid,.portfolio-project-grid,.capability-grid
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 document.querySelectorAll('.nav a[data-page]').forEach(link => {
-  if (link.dataset.page === page) link.classList.add('active');
+  if (link.dataset.page === page) { link.classList.add('active'); link.setAttribute('aria-current', 'page'); }
 });
 
 function getLanguage() {
-  const saved = localStorage.getItem('portfolioLang');
+  let saved;
+  try { saved = localStorage.getItem('portfolioLang'); } catch {}
   if (saved === 'it' || saved === 'en') return saved;
   return navigator.language?.toLowerCase().startsWith('it') ? 'it' : 'en';
 }
@@ -320,10 +284,11 @@ function applyLanguage(lang) {
     const value = dict[el.dataset.i18nPlaceholder];
     if (value !== undefined) el.setAttribute('placeholder', value);
   });
-  document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+  document.querySelectorAll('[data-lang]').forEach(btn => (btn.classList.toggle('active', btn.dataset.lang === lang), btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang))));
   const title = dict[`title.${page}`];
   if (title) document.title = title;
-  localStorage.setItem('portfolioLang', lang);
+  try { localStorage.setItem('portfolioLang', lang); } catch {}
+  document.dispatchEvent(new CustomEvent('portfolio:language', { detail: lang }));
 }
 
 document.querySelectorAll('[data-lang]').forEach(btn => btn.addEventListener('click', () => applyLanguage(btn.dataset.lang)));
