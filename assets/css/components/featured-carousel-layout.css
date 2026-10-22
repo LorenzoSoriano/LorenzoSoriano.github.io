@@ -1,0 +1,24 @@
+/* One shared image frame for every featured project. */
+.featured-carousel .project-card{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);min-height:480px}
+.featured-carousel .project-media{height:auto;min-height:0;align-self:stretch}
+.featured-carousel .project-media .project-media-image{width:100%;height:100%;max-width:none;object-fit:cover;object-position:center;transform:none}
+.featured-carousel .project-info{min-height:480px;padding:32px}
+.featured-carousel .project-info h3{font-size:clamp(28px,2.5vw,38px)!important}
+.featured-carousel .project-summary{min-height:0}
+.featured-carousel .project-fact-tags{margin-top:22px;grid-auto-rows:minmax(72px,auto)}
+.featured-carousel .project-fact-tag{min-height:72px;padding:12px;gap:7px}
+.featured-carousel .project-card:hover .project-media-image{transform:none}
+@media(max-width:1320px){
+ .featured-carousel .project-media{aspect-ratio:16/10;min-height:0!important;height:auto!important}
+ .featured-carousel .project-info{min-height:0}
+}
+@media(max-width:700px){
+ .featured-carousel .project-info{padding:24px!important}
+ .featured-carousel .project-fact-tags{grid-auto-rows:auto}
+ .featured-carousel .project-fact-tag{min-height:0}
+}
+.featured-carousel .project-media{min-width:0;width:100%;box-sizing:border-box}
+@media(max-width:1320px){
+ .featured-carousel .project-card{grid-template-rows:auto 1fr;align-content:start}
+ .featured-carousel .project-media{align-self:start}
+}
