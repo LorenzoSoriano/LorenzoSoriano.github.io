@@ -53,3 +53,8 @@ html:has(.construction-dialog[open]){overflow:hidden}
 }
 
 @media(max-width:700px){.ms-level-tabs{flex-wrap:wrap;overflow:visible;padding-inline:18px}.ms-level-tabs button{min-height:44px;white-space:normal}}
+
+/* Keep small visual dots inside generous touch targets. */
+.featured-carousel .featured-carousel-dot{display:grid;place-items:center;width:44px;height:44px;padding:0;background:transparent!important;border:0;transform:none!important;box-shadow:none!important}
+.featured-carousel-dot::after{content:"";display:block;width:10px;height:10px;border-radius:50%;background:#c8cbd7;transition:background .2s ease}
+.featured-carousel-dot.active::after{background:var(--purple);width:12px;height:12px}
